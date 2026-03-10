@@ -11,3 +11,6 @@ desktop.ini
 .idea/
 *.swp
 *.swo
+
+# 翻譯參考倉庫（外部）
+translation-reference/
