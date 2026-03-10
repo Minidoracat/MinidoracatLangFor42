@@ -9,12 +9,15 @@ Project Zomboid Build 42 繁體中文 / 簡體中文完全翻譯模組。
 ## 功能特色
 
 - 繁體中文 / 簡體中文完整支援
-- 出生點地圖漢化（城市名稱、世界地圖標籤）
+- 出生點地圖漢化（城市名稱、世界地圖標籤、中文地圖圖片）
+- 世界地圖街道名稱中文化（SP / MP 均支援）
+- 地圖選項面板完整翻譯
+- 動態命名物品翻譯修復（護照、身分證等）
 - 報紙 / 傳單內容漢化（135 張傳單圖片）
 - 技能書書名漢化
 - 新手引導漢化
 - CJK 字元換行處理（無需空格斷行）
-- 配方分類、建造視窗、釣魚視窗等 UI 翻譯修補
+- 配方分類、建造視窗、釣魚視窗、管理面板等 UI 翻譯修補
 
 ## MOD 資訊
 
@@ -22,8 +25,8 @@ Project Zomboid Build 42 繁體中文 / 簡體中文完全翻譯模組。
 |------|-----|
 | **Mod ID** | `CatLangFor42` |
 | **Workshop ID** | `3386633401` |
-| **支援版本** | Build 42.13.1+ |
-| **Mod 版本** | 42-1.1.0 |
+| **支援版本** | Build 42.15.1+ |
+| **Mod 版本** | 42.15.1-1.2.0 |
 
 ## 專案結構
 
@@ -33,6 +36,8 @@ MinidoracatLangFor42/
 ├── PZ_Test.bat                    # PZ 本地測試啟動器（雙擊啟動）
 ├── scripts/
 │   ├── sync_translations.py    # 翻譯同步工具（uv run）
+│   ├── convert_txt_to_json.py  # 格式轉換工具（.txt → .json）
+│   ├── pz_translate.py         # 共用翻譯解析模組
 │   ├── opencc_fixes.json       # OpenCC 後處理修正字典
 │   ├── link_workshop.ps1       # 符號連結管理腳本（PowerShell）
 │   └── PZ_Test.ps1             # 遊戲測試啟動器（PowerShell）
@@ -45,10 +50,11 @@ MinidoracatLangFor42/
         └── media/
             ├── fonts/             # 中文字型（CH/CN 各 4 DPI）
             ├── lua/
-            │   ├── client/        # UI 覆寫腳本（10 個檔案）
+            │   ├── client/        # UI 覆寫腳本（12 個檔案）
+            │   ├── shared/Items/   # 動態物品命名修復
             │   └── shared/Translate/
-            │       ├── CH/        # 繁體中文翻譯（37 檔）
-            │       └── CN/        # 簡體中文翻譯（37 檔）
+            │       ├── CH/        # 繁體中文翻譯（34 json + 2 txt）
+            │       └── CN/        # 簡體中文翻譯（34 json + 2 txt）
             ├── maps/              # 地圖漢化（出生點 + 世界地圖標籤）
             └── textures/          # 傳單圖片（135 張）
 ```
@@ -62,15 +68,18 @@ MinidoracatLangFor42/
 
 ### 快速開始
 
-#### 1. 掛載到 Workshop 目錄
+#### 1. 掛載到遊戲目錄
 
 雙擊 `link_workshop.bat`，選擇 **[1] 掛載**。
 
-腳本會建立符號連結：
+腳本會建立兩個符號連結：
 
 ```
 %UserProfile%\Zomboid\Workshop\MinidoracatLangFor42
   → <專案目錄>\MOD\MinidoracatLangFor42
+
+%UserProfile%\Zomboid\mods\CatLangFor42
+  → <專案目錄>\MOD\MinidoracatLangFor42\Contents\mods\MinidoracatLangFor42
 ```
 
 > 如果權限不足，會自動彈出 UAC 提示，不需要手動以管理員啟動。
