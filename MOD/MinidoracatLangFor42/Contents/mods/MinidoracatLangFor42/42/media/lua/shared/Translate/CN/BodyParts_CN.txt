@@ -1,0 +1,13 @@
+BodyParts_CN = {
+    BODYPART_PELVIS = "腹股沟",
+    BODYPART_SPINE = "脖子",
+    BODYPART_HEAD = "头部",
+    BODYPART_LEFT_UPPER_LEG = "左大腿",
+    BODYPART_LEFT_LOWER_LEG = "左小腿",
+    BODYPART_RIGHT_UPPER_LEG = "右大腿",
+    BODYPART_RIGHT_LOWER_LEG = "右小腿",
+    BODYPART_LEFT_UPPER_ARM = "左上臂",
+    BODYPART_LEFT_LOWER_ARM = "左前臂",
+    BODYPART_RIGHT_UPPER_ARM = "右上臂",
+    BODYPART_RIGHT_LOWER_ARM = "右前臂",
+}

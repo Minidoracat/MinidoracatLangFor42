@@ -1,0 +1,139 @@
+VERSION = 1,
+
+font Code
+{
+	fnt = zomboidCode.fnt,
+	img = zomboidCode_0.png,
+}
+
+font Cred1
+{
+	fnt = zomboidLargeCN.fnt,
+}
+
+font Cred2
+{
+	fnt = zomboidLargeCN.fnt,
+}
+
+font Dialogue
+{
+	fnt = zomboidMediumCN.fnt,
+}
+
+font Intro
+{
+	fnt = zomboidLargeCN.fnt,
+}
+
+font Handwritten
+{
+	fnt = zomboidMediumCN.fnt,
+}
+
+font MainMenu1
+{
+	fnt = mainfont.fnt,
+	img = mainfont_0.png,
+}
+
+font MainMenu2
+{
+	fnt = mainfont2.fnt,
+	img = mainfont2_0.png,
+}
+
+font Massive
+{
+	fnt = zomboidLargeCN.fnt,
+}
+
+font NewSmall
+{
+	fnt = zomboidSmallCN.fnt,
+}
+
+font AutoNormSmall
+{
+	fnt = zomboidSmallCN.fnt,
+}
+
+font NewMedium
+{
+	fnt = zomboidMediumCN.fnt,
+}
+
+font AutoNormMedium
+{
+	fnt = zomboidMediumCN.fnt,
+}
+
+font MediumNew
+{
+	fnt = zomboidMediumCN.fnt,
+}
+
+font NewLarge
+{
+	fnt = zomboidLargeCN.fnt,
+}
+
+font AutoNormLarge
+{
+	fnt = zomboidLargeCN.fnt,
+}
+
+font Small
+{
+	fnt = zomboidSmallCN.fnt,
+}
+
+font Medium
+{
+	fnt = zomboidMediumCN.fnt,
+}
+
+font Large
+{
+	fnt = zomboidLargeCN.fnt,
+}
+
+font Title
+{
+	fnt = zomboidMediumCN.fnt,
+}
+
+font SdfRegular
+{
+	fnt = zomboidLargeCN.fnt,
+}
+
+font SdfBold
+{
+	fnt = zomboidLargeCN.fnt,
+}
+
+font SdfOldBold
+{
+	fnt = zomboidLargeCN.fnt,
+}
+
+font SdfOldBoldItalic
+{
+	fnt = zomboidLargeCN.fnt,
+}
+
+font SdfOldRegular
+{
+	fnt = zomboidLargeCN.fnt,
+}
+
+font SdfRobertoSans
+{
+	fnt = zomboidLargeCN.fnt,
+}
+
+font SdfCaveat
+{
+	fnt = zomboidLargeCN.fnt,
+}

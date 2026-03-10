@@ -1,0 +1,74 @@
+Challenge_CN = {
+    Challenge_YouHaveOneDay_name = "最后时刻",
+    Challenge_YouHaveOneDay_desc = " 你 回 到 了 诺 克 斯 县 , 又 回 到 了 僵 尸 毁 灭 工 程 最 初 的 地 图 上 . <LINE> <LINE> 你 只 有 一 天 时 间 做 准 备 . 然 后 尸 潮 将 会 蜂 拥 而 至 , 它 们 会 无 情 的 猎 杀 你 . 昔 日 你 曾 在 何 处 坚 守 阵 地 ? 赶 紧 找 到 它 . <LINE> <LINE>[ 感 谢 社 区 地 图 制 作 者 BobHeckling 使 用 当 前 的 PZ 工 具 集 重 新 创 建 了 0.1.5 版 本 的 地 图 ! ]",
+
+    Challenge_WinterIsComing_name = "凛冬将至",
+    Challenge_WinterIsComing_desc = " 现 在 是 七 月 中 旬 , 但 微 风 中 突 然 传 来 一 股 寒 意 . 再 过 三 天 就 会 迎 来 一 个 前 所 未 有 的 冬 天 . <LINE> <LINE> 在 一 个 与 世 隔 绝 的 地 方 醒 来 . 你 的 物 资 匮 乏 , 僵 尸 可 能 会 因 为 严 寒 而 减 慢 脚 步 , 但 仍 然 致 命 . <LINE> <LINE> 多 穿 点 , 幸 存 者 … ",
+
+    Challenge_OpeningHours_name = "营业时间",
+    Challenge_OpeningHours_desc = " 商 场 被 包 围 了 , 这 里 曾 经 是 它 们 生 活 中 的 重 要 场 所 . 本 能 将 它 们 引 向 大 门 . 就 像 活 着 的 时 候 那 样 … <LINE> <LINE> 你 独 自 一 人 , 但 坚 持 不 了 太 久 . 上 午 九 点 , 商 场 将 开 始 营 业 : 门 会 打 开 , 成 群 的 僵 尸 将 无 情 闯 入 . <LINE> <LINE> 趁 还 没 死 , 赶 紧 搜 刮 .",
+
+    Challenge_AReallyCDDAy_name = "真大灾变",
+    Challenge_AReallyCDDAy_desc = " 你 从 浴 室 出 来 就 摔 得 很 惨 . 昨 晚 喝 得 烂 醉 如 泥 , 现 在 还 得 了 重 感 冒 . <LINE> <LINE> 更 糟 糕 的 是 , 房 子 着 火 了 ! 今 天 绝 对 不 是 你 的 幸 运 日 . <LINE> <LINE>( 这 个 挑 战 的 灵 感 来 自 于 超 赞 , 精 彩 , 必 玩 的 《 大 灾 变 : 黑 暗 之 日 》 中 的 " 真 正 糟 糕 的 一 天 ")",
+
+    Challenge_Challenge1_name = "林中小屋 - 背水一战",
+    Challenge_Challenge1_desc = " 你 能 听 到 它 们 正 在 靠 近 . 成 群 结 队 的 尸 潮 , 从 四 面 八 方 涌 向 你 与 世 隔 绝 的 小 屋 . 死 亡 不 可 避 免 的 , 但 猎 枪 就 在 身 旁 . <LINE> <LINE> 背 水 一 战 的 特 色 是 数 量 不 断 增 加 的 无 尽 尸 潮 . 在 压 倒 性 的 困 难 中 尽 可 能 生 存 下 去 .",
+
+    Challenge_Challenge2_name = "林中小屋 - 背水一战 累计赏金",
+    Challenge_Challenge2_desc = " 另 一 天 , 另 一 间 准 备 浴 血 的 小 屋 . 大 批 尸 潮 向 你 涌 来 , 你 的 死 亡 将 无 比 痛 苦 且 可 怕 . 所 以 殊 死 一 搏 吧 … <LINE> <LINE> 背 水 一 战 - 累 计 赏 金 的 特 色 是 数 量 不 断 增 加 的 无 尽 尸 潮 . 用 击 杀 僵 尸 赚 到 的 钱 来 购 买 装 备 , 提 升 等 级 和 修 理 你 的 武 器 .",
+
+    Challenge_AStormIsComing_name = "暴风骤雨",
+    Challenge_AStormIsComing_desc = " 肯 塔 基 州 上 空 乌 云 密 布 . 远 处 传 来 雷 鸣 . <LINE> <LINE> 随 着 天 色 渐 暗 , 地 上 的 死 者 开 始 躁 动 不 安 . <LINE> <LINE> 这 场 来 势 凶 猛 的 风 暴 时 强 时 弱 , 但 永 远 不 会 结 束 .",
+
+    Challenge_TheDescendingFog_name = "迷雾降临",
+    Challenge_TheDescendingFog_desc = " 人 们 第 一 次 看 到 它 是 在 水 面 上 . 像 一 条 淡 淡 的 白 色 毯 子 覆 盖 着 俄 亥 俄 河 . <LINE> <LINE> 它 开 始 只 是 一 片 薄 雾 . 很 快 笼 罩 了 整 个 城 镇 . 人 们 在 阴 霾 中 尖 叫 着 死 去 , 现 在 它 们 走 出 来 了 . <LINE> <LINE> 在 对 生 者 的 追 逐 中 , 无 形 , 无 声 , 无 情 .",
+
+    Challenge_Kingsmouth_name = "王口岛",
+    Challenge_Kingsmouth_desc = " 远 离 世 俗 , 来 这 处 热 带 天 堂 ! 快 去 探 索 这 座 独 特 的 岛 屿 小 镇 : 四 层 楼 的 度 假 村 , 木 板 路 连 接 的 水 上 小 屋 , 还 有 热 情 好 客 的 居 民 ! <LINE><LINE> 无 论 是 钓 鱼 , 游 泳 , 品 尝 美 食 美 酒 , 还 是 放 松 身 心 , 王 口 岛 都 是 您 的 理 想 之 选 . 别 忘 了 带 上 防 晒 霜 哦 ! <LINE><LINE>",
+
+    Challenge_Studio_name = "影棚",
+    Challenge_Studio_desc = " 美 洲 狮 影 业 (Mountain Lion Pictures Studios) 的 外 景 地 现 已 开 放 参 观 ! 快 来 参 观 《 赛 博 杀 手 2 》 《 妈 妈 的 男 孩 》 和 《 狗 妖 精 》 等 经 典 电 影 的 拍 摄 地 吧 ! <LINE><LINE> 你 可 以 探 索 我 们 的 拍 摄 场 景 : 例 如 小 镇 , 墓 地 还 有 鬼 屋 . 也 可 以 借 用 我 们 的 蓝 幕 , 摇 身 一 变 成 为 经 典 电 影 的 明 星 ! 还 可 以 在 这 里 的 靶 场 把 玩 经 典 武 器 的 复 制 品 , 例 如 " 肮 脏 者 " 拉 里 · 萨 拉 奇 的 马 格 南 手 枪 , 或 是 赛 博 杀 手 的 短 管 JS2000 步 枪 . 没 准 你 还 能 看 见 一 两 位 明 星 哦 ! <LINE><LINE> 注 意 : 参 观 仅 在 夜 间 进 行 . 白 天 , 我 们 的 演 职 人 员 总 是 因 喝 太 多 咖 啡 而 兴 奋 不 已 !",
+    -- On-screen UI
+    Challenge_Challenge2_PressKey = "按 "o" 键 花点钱并获得永久加成.",
+    Challenge_Challenge2_WaveStart = "第 %1 波: %2 (按 Enter 键跳过)",
+    Challenge_Challenge2_WaveDuration = "第 %1 波: %2",
+    Challenge_Challenge2_ZombiesLeft = "剩余僵尸: %1",
+    Challenge_Challenge2_Money = "金钱: %1",
+    Challenge_Challenge2_Money2 = "玩家 %1 金钱: %2",
+    Challenge_Challenge2_WaveFinished = "第 %1 波 完成时间: %2",
+    Challenge_Challenge2_MoneyGained = "获得金钱: %1",
+    Challenge_Challenge2_XPGained = "获得经验: %1",
+    -- Window
+    Challenge_Challenge2_WindowTitle = "背水一战",
+    Challenge_Challenge2_TabPlayer = "玩家",
+    Challenge_Challenge2_Weapons = "武器",
+    Challenge_Challenge2_TabItems = "物品",
+    Challenge_Challenge2_TabRepair = "修理",
+    Challenge_Challenge2_CurrentXp = "经验: %1",
+    Challenge_Challenge2_ButtonSkill = "%1 等级 %2 - %3 经验",
+    Challenge_Challenge2_ButtonSkillMax = "%1 满级",
+    Challenge_Challenge2_GoldBonus = "金钱奖励",
+    Challenge_Challenge2_XpBonus = "经验奖励",
+    Challenge_Challenge2_ButtonBonus = "%1% %2 - %3 经验",
+    Challenge_Challenge2_ButtonBonusMax = "%1 最大",
+    Challenge_Challenge2_ButtonStartGold = "+%1 初始金钱 - %2 经验",
+    Challenge_Challenge2_ButtonStartGoldMax = "最大初始金钱 %1",
+    -- PlayerUpWindow
+    Challenge_Challenge2_Skills = "技能",
+    Challenge_Challenge2_PermanentBonus = "永久加成",
+    -- VariousItemWindow
+    Challenge_Challenge2_Carpentry = "木工",
+    Challenge_Challenge2_Health = "健康",
+    Challenge_Challenge2_ItemButton = "%1 - %2",
+    Challenge_Challenge2_ItemButton2 = "%1 x%2 - %3",
+    -- WeaponRepairWindow
+    Challenge_Challenge2_RepairWeapon = "修理武器",
+    -- WeaponUpWindow
+    Challenge_Challenge2_Health = "健康",
+
+    Challenge_OpeningHoursInfoBox = "<CENTRE> 商 场 在 上 午 九 点 开 门 . <LINE> <LINE> 准 备 好 迎 接 尸 潮 … ",
+    Challenge_WinterIsComingInfoBox = " <CENTRE> 再 过 三 天 无 尽 的 冬 天 就 开 始 了 . <LINE> <LINE> 多 穿 点 … ",
+    Challenge_YouHaveOneDayInfoBox = " <CENTRE>再过 24 小时你在诺克斯县的旅程就会变得困难无比…",
+    Challenge_AStormIsComingInfoBox = " <CENTRE>你将面对无穷无尽的恶劣天气…",
+    Challenge_TheDescendingFogInfoBox = " <CENTRE>越来越朦胧了…",
+}

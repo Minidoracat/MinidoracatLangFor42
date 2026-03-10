@@ -1,0 +1,6 @@
+version=1
+id=3386633401
+title=[B42]繁體簡體中文完全翻譯 By Minidoracat 如一漢化組
+description=[B42]繁體簡體中文完全翻譯 By Minidoracat 如一漢化組
+tags=Build 42;Language/Translation
+visibility=public
