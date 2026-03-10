@@ -1,3 +1,0 @@
-RecipeGroupsCH {
-    RecipeGroup_OpenBox = "開啟盒子",
-}

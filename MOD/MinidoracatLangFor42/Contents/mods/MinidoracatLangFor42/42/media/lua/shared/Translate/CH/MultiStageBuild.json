@@ -1,0 +1,22 @@
+{
+    "MultiStageBuild_CreateWoodenWall_1": "建造不結實的木牆",
+    "MultiStageBuild_UpgradeWoodenWall_1To2": "升級到普通木牆",
+    "MultiStageBuild_CreateWoodenWall_2": "建造普通木牆",
+    "MultiStageBuild_UpgradeWoodenWall_1To3": "升級到堅固木牆",
+    "MultiStageBuild_UpgradeWoodenWall_2To3": "升級到堅固木牆",
+    "MultiStageBuild_CreateWoodenWall_3": "建造堅固木牆",
+    "MultiStageBuild_CreateWoodenWindow_1": "建造不結實的木窗",
+    "MultiStageBuild_UpgradeWoodenWindow_1To2": "升級到普通木窗",
+    "MultiStageBuild_CreateWoodenWindow_2": "建造普通木窗",
+    "MultiStageBuild_UpgradeWoodenWindow_1To3": "升級到堅固木窗",
+    "MultiStageBuild_UpgradeWoodenWindow_2To3": "升級到堅固木窗",
+    "MultiStageBuild_CreateWoodenWindow_3": "建造堅固木窗",
+    "MultiStageBuild_CreateMetalWall_1": "建造普通金屬牆",
+    "MultiStageBuild_UpgradeMetalWall_1To2": "升級到堅固金屬牆",
+    "MultiStageBuild_CreateMetalWall_2": "建造堅固金屬牆",
+    "MultiStageBuild_CreateMetalWindow_1": "建造普通金屬窗",
+    "MultiStageBuild_UpgradeMetalWindow_1To2": "升級到堅固金屬窗",
+    "MultiStageBuild_CreateMetalWindow_2": "建造堅固金屬窗",
+    "MultiStageBuild_UpgradeWoodenDoorFrame_1To2": "升級到穩定木門框",
+    "MultiStageBuild_UpgradeWoodenDoorFrame_2To3": "升級到堅固木門框"
+}

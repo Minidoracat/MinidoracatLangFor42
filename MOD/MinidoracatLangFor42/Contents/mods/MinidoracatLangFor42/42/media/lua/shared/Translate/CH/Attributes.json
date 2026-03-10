@@ -1,0 +1,14 @@
+{
+    "Attributes_Type_None": "無",
+    "Attributes_Type_Quality": "質量",
+    "Attributes_Type_Durability": "耐久",
+    "Attributes_Type_WoodWetness": "木材溼度",
+    "Attributes_Type_Uses": "使用次數",
+    "Attributes_Type_DurabilityOnUse": "使用耐久",
+    "Attributes_Type_CraftedBy": "製作者",
+    "Attributes_Type_MetalType": "金屬型別",
+    "Attributes_Type_WoodType": "木材型別",
+    "Attributes_Type_ContainsWood": "包含木材",
+    "Attributes_Type_ContainsMetal": "包含金屬",
+    "Attributes_TooltipOverride_Durability": "使用耐久"
+}
