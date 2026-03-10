@@ -2,6 +2,7 @@
 # dependencies = ["opencc-python-reimplemented"]
 # requires-python = ">=3.10"
 # ///
+# pyright: reportMissingImports=false, reportMissingTypeArgument=false
 """
 PZ 翻譯同步工具
 用途：將 translation-reference (簡體中文) 同步到 MOD 目錄（CN + CH）
@@ -18,12 +19,12 @@ PZ 翻譯同步工具
 from __future__ import annotations
 
 import argparse
-import difflib
 import hashlib
 import json
 import re
 import shutil
 import sys
+from collections import OrderedDict
 from pathlib import Path
 
 import opencc
@@ -32,6 +33,21 @@ import opencc
 # 路徑配置
 # ============================================================
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from scripts.pz_translate import (
+    PREFIX_STRIP_CATEGORIES,
+    SKIP_FILES as PZ_SKIP_FILES,
+    detect_category,
+    parse_city_directory,
+    parse_lua_translation,
+    parse_recorded_media,
+    read_translation,
+    txt_to_json_filename,
+    write_translation_json,
+)
 
 REF_BASE = PROJECT_ROOT / "translation-reference" / "B42Trans_CN_As1" / "42.0" / "media"
 MOD_BASE = (
@@ -57,12 +73,6 @@ MOD_LUA = MOD_BASE / "lua" / "client"
 # ============================================================
 # language.txt: CH 版本有自己的語言定義，不能從 CN 轉換
 SKIP_CH_CONVERT = {"language.txt"}
-
-# 這些檔案沒有 Lua 表頭（第一行不是 `XXX_CN = {`）
-NO_LUA_HEADER = {"streets.txt", "credits.txt", "language.txt"}
-
-# Recorded_Media 是自動生成格式，第一行是 `// Auto-generated file`
-AUTO_GENERATED_PREFIX = "// Auto-generated file"
 
 # Lua 腳本中 As1 的版本註釋標記，合併時應跳過
 AS1_COMMENT_PATTERN = re.compile(r"^--\s*As\s*1\s*--", re.MULTILINE)
@@ -148,77 +158,12 @@ def sha256(path: Path) -> str:
     return h.hexdigest()
 
 
-def cn_to_ch_filename(name: str) -> str:
-    """將 CN 檔名轉換為 CH 檔名"""
-    return name.replace("_CN", "_CH")
-
-
-def cn_to_ch_path(cn_path: Path, cn_dir: Path, ch_dir: Path) -> Path:
-    """將 CN 檔案路徑轉換為對應的 CH 路徑"""
-    rel = cn_path.relative_to(cn_dir)
-    ch_rel = Path(cn_to_ch_filename(str(rel)))
-    return ch_dir / ch_rel
-
-
 def convert_s2twp(text: str) -> str:
     """簡體 → 繁體（台灣用語）轉換 + 後處理修正"""
     result = CONVERTER.convert(text)
     for pattern, replacement, _desc in POST_FIXES:
         result = pattern.sub(replacement, result)
     return result
-
-
-def convert_translation_header(line: str, from_suffix: str = "CN", to_suffix: str = "CH") -> str:
-    """轉換翻譯檔表頭的語言後綴
-    
-    處理多種格式：
-    - `ItemName_CN = {`  → `ItemName_CH = {`
-    - `RecipesCN {`      → `RecipesCH {`
-    - `ContextMenu_CN = {` → `ContextMenu_CH = {`
-    """
-    # 格式1: XXX_CN = { 或 XXX_CN {
-    line = re.sub(
-        rf"^(\w+)_{from_suffix}(\s*=?\s*\{{)",
-        rf"\1_{to_suffix}\2",
-        line,
-    )
-    # 格式2: XXXCN { （無底線，如 RecipesCN {）
-    line = re.sub(
-        rf"^(\w+){from_suffix}(\s+\{{)",
-        rf"\1{to_suffix}\2",
-        line,
-    )
-    return line
-
-
-def convert_cn_to_ch_content(cn_content: str, filename: str) -> str:
-    """將 CN 翻譯內容轉換為 CH 版本
-    
-    處理：
-    1. OpenCC s2twp 轉換
-    2. 表頭語言後綴替換
-    3. 後處理修正
-    """
-    # OpenCC 轉換（已含後處理修正）
-    ch_content = convert_s2twp(cn_content)
-    
-    # 處理表頭
-    lines = ch_content.split("\n")
-    
-    if filename in NO_LUA_HEADER:
-        # streets.txt, credits.txt 等沒有 Lua 表頭，直接返回
-        return ch_content
-    
-    if lines and lines[0].startswith(AUTO_GENERATED_PREFIX):
-        # Recorded_Media 等自動生成檔案，只轉換內容即可
-        return ch_content
-    
-    # 標準翻譯檔：轉換第一行的語言後綴
-    if lines:
-        lines[0] = convert_translation_header(lines[0])
-        ch_content = "\n".join(lines)
-    
-    return ch_content
 
 
 def check_suspicious(text: str, filename: str) -> list[str]:
@@ -261,38 +206,74 @@ def check_suspicious(text: str, filename: str) -> list[str]:
 # 比對功能
 # ============================================================
 def find_changed_files(ref_dir: Path, mod_dir: Path) -> dict[str, dict]:
-    """找出有差異的翻譯檔案（僅比對 *.txt）"""
+    """Find changed translation files (REF .txt vs MOD .json)"""
     changes: dict[str, dict] = {}
-    
-    for ref_file in sorted(ref_dir.rglob("*.txt")):
+
+    # Process .txt files in REF
+    for ref_file in sorted(ref_dir.glob("*.txt")):
         if not ref_file.is_file():
             continue
+        if ref_file.name in PZ_SKIP_FILES:
+            continue
+
         rel = str(ref_file.relative_to(ref_dir))
-        mod_file = mod_dir / rel
-        
+        json_name = txt_to_json_filename(ref_file.name)
+        mod_file = mod_dir / json_name
+
         if not mod_file.exists():
             changes[rel] = {
                 "status": "new",
                 "ref_path": ref_file,
                 "mod_path": mod_file,
+                "json_name": json_name,
                 "ref_size": ref_file.stat().st_size,
             }
             continue
-        
-        if sha256(ref_file) != sha256(mod_file):
-            ref_lines = ref_file.read_text(encoding="utf-8-sig").splitlines()
-            mod_lines = mod_file.read_text(encoding="utf-8-sig").splitlines()
+
+        # Compare parsed content
+        ref_data = read_translation(ref_file)
+        mod_data = read_translation(mod_file)
+        if ref_data != mod_data:
             changes[rel] = {
                 "status": "modified",
                 "ref_path": ref_file,
                 "mod_path": mod_file,
-                "ref_size": ref_file.stat().st_size,
-                "mod_size": mod_file.stat().st_size,
-                "ref_lines": len(ref_lines),
-                "mod_lines": len(mod_lines),
-                "line_delta": len(ref_lines) - len(mod_lines),
+                "json_name": json_name,
+                "ref_keys": len(ref_data),
+                "mod_keys": len(mod_data),
+                "key_delta": len(ref_data) - len(mod_data),
             }
-    
+
+    # Process city directories in REF
+    for city_dir in sorted(d for d in ref_dir.iterdir() if d.is_dir()):
+        title_path = city_dir / "title.txt"
+        desc_path = city_dir / "description.txt"
+        if not title_path.exists() or not desc_path.exists():
+            continue
+
+        rel = city_dir.name + "/"
+        json_name = f"{city_dir.name}.json"
+        mod_file = mod_dir / json_name
+
+        if not mod_file.exists():
+            changes[rel] = {
+                "status": "new",
+                "ref_path": city_dir,
+                "mod_path": mod_file,
+                "json_name": json_name,
+            }
+            continue
+
+        ref_data = parse_city_directory(city_dir)
+        mod_data = read_translation(mod_file)
+        if ref_data != mod_data:
+            changes[rel] = {
+                "status": "modified",
+                "ref_path": city_dir,
+                "mod_path": mod_file,
+                "json_name": json_name,
+            }
+
     return changes
 
 
@@ -311,32 +292,48 @@ def cmd_compare():
     else:
         for name, info in sorted(cn_changes.items()):
             if info["status"] == "new":
-                print(f"  ➕ {name} (新增, {info['ref_size']}B)")
+                print(f"  ➕ {name} → {info['json_name']} (新增, {info['ref_size']}B)")
             elif info["status"] == "modified":
-                delta = info["line_delta"]
+                delta = info["key_delta"]
                 sign = "+" if delta > 0 else ""
-                print(f"  📝 {name} (ref={info['ref_lines']}L mod={info['mod_lines']}L {sign}{delta}L)")
-    
-    # CN vs CH (line count only)
-    print(f"\n📁 REF CN vs MOD CH（簡繁比對，僅行數差異）")
+                print(
+                    f"  📝 {name} → {info['json_name']} "
+                    f"(CN={info['ref_keys']} keys MOD={info['mod_keys']} keys {sign}{delta})"
+                )
+
+    # CN vs CH
+    print(f"\n📁 REF CN vs MOD CH（簡繁比對）")
     print("-" * 40)
-    for ref_file in sorted(REF_CN.rglob("*.txt")):
-        rel = ref_file.relative_to(REF_CN)
-        # 跳過不需要 CH 轉換的檔案（如 language.txt）
+    for ref_file in sorted(REF_CN.glob("*.txt")):
         if ref_file.name in SKIP_CH_CONVERT:
             continue
-        ch_rel = Path(cn_to_ch_filename(str(rel)))
-        ch_file = MOD_CH / ch_rel
-        if not ch_file.exists():
-            print(f"  ❌ {rel} → {ch_rel} (CH 不存在)")
+        if ref_file.name in PZ_SKIP_FILES:
             continue
-        ref_lines = len(ref_file.read_text(encoding="utf-8-sig").splitlines())
-        ch_lines = len(ch_file.read_text(encoding="utf-8-sig").splitlines())
-        if ref_lines != ch_lines:
-            delta = ref_lines - ch_lines
+        json_name = txt_to_json_filename(ref_file.name)
+        ch_file = MOD_CH / json_name
+        if not ch_file.exists():
+            print(f"  ❌ {ref_file.name} → {json_name} (CH 不存在)")
+            continue
+        ref_data = read_translation(ref_file)
+        ch_data = read_translation(ch_file)
+        if len(ref_data) != len(ch_data):
+            delta = len(ref_data) - len(ch_data)
             sign = "+" if delta > 0 else ""
-            print(f"  📝 {rel} → {ch_rel} (CN={ref_lines}L CH={ch_lines}L {sign}{delta}L)")
-    
+            print(
+                f"  📝 {ref_file.name} → {json_name} "
+                f"(CN={len(ref_data)} keys CH={len(ch_data)} keys {sign}{delta})"
+            )
+
+    # Also check city directories
+    for city_dir in sorted(d for d in REF_CN.iterdir() if d.is_dir()):
+        title_path = city_dir / "title.txt"
+        if not title_path.exists():
+            continue
+        json_name = f"{city_dir.name}.json"
+        ch_file = MOD_CH / json_name
+        if not ch_file.exists():
+            print(f"  ❌ {city_dir.name}/ → {json_name} (CH 不存在)")
+
     # Lua 腳本（從 LUA_PAIRS / FLX_FILES 衍生）
     print(f"\n📁 Lua 腳本比對")
     print("-" * 40)
@@ -377,95 +374,232 @@ def cmd_compare():
 # 同步功能
 # ============================================================
 def cmd_sync_cn():
-    """同步 CN 翻譯檔：REF CN → MOD CN（直接複製）"""
+    """同步 CN 翻譯檔：REF CN → MOD CN（解析後輸出 JSON）"""
     print("=" * 60)
-    print("同步 CN 翻譯檔（REF CN → MOD CN）")
+    print("同步 CN 翻譯檔（REF CN → MOD CN .json）")
     print("=" * 60)
-    
-    changes = find_changed_files(REF_CN, MOD_CN)
+
     updated = 0
-    
-    for name, info in sorted(changes.items()):
-        if info["status"] in ("new", "modified"):
-            ref_path: Path = info["ref_path"]
-            mod_path: Path = info.get("mod_path", MOD_CN / name)
-            mod_path.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(ref_path, mod_path)
-            status = "新增" if info["status"] == "new" else "更新"
-            print(f"  ✅ {status}: {name}")
-            updated += 1
-    
+
+    # Process .txt translation files
+    for ref_file in sorted(REF_CN.glob("*.txt")):
+        if not ref_file.is_file():
+            continue
+        filename = ref_file.name
+
+        if filename in PZ_SKIP_FILES:
+            # language.txt, credits.txt, streets.txt — copy as-is
+            mod_file = MOD_CN / filename
+            if not mod_file.exists() or sha256(ref_file) != sha256(mod_file):
+                mod_file.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(ref_file, mod_file)
+                print(f"  ✅ 複製: {filename}")
+                updated += 1
+            continue
+
+        json_name = txt_to_json_filename(filename)
+        mod_file = MOD_CN / json_name
+
+        ref_data = read_translation(ref_file)
+
+        # Compare with existing
+        if mod_file.exists():
+            mod_data = read_translation(mod_file)
+            if ref_data == mod_data:
+                continue
+            print(f"  📝 更新: {filename} → {json_name} ({len(ref_data)} keys)")
+        else:
+            print(f"  ➕ 新增: {filename} → {json_name} ({len(ref_data)} keys)")
+
+        write_translation_json(ref_data, mod_file)
+        updated += 1
+
+    # Process city directories
+    for city_dir in sorted(d for d in REF_CN.iterdir() if d.is_dir()):
+        title_path = city_dir / "title.txt"
+        desc_path = city_dir / "description.txt"
+        if not title_path.exists() or not desc_path.exists():
+            continue
+
+        json_name = f"{city_dir.name}.json"
+        mod_file = MOD_CN / json_name
+
+        ref_data = parse_city_directory(city_dir)
+
+        if mod_file.exists():
+            mod_data = read_translation(mod_file)
+            if ref_data == mod_data:
+                continue
+            print(f"  📝 更新: {city_dir.name}/ → {json_name}")
+        else:
+            print(f"  ➕ 新增: {city_dir.name}/ → {json_name}")
+
+        write_translation_json(ref_data, mod_file)
+        updated += 1
+
     if updated == 0:
         print("  ℹ️ 沒有需要同步的檔案")
     print(f"\n完成：{updated} 個檔案已同步")
 
 
 def cmd_sync_ch():
-    """同步 CH 翻譯檔：REF CN → OpenCC s2twp → MOD CH
-    
-    直接遍歷 REF CN 所有檔案進行轉換，不依賴 MOD CN 的差異狀態。
-    這樣即使 CN 已經先同步完成，CH 仍能正確更新。
-    """
+    """同步 CH 翻譯檔：REF CN → OpenCC s2twp → MOD CH .json"""
     print("=" * 60)
-    print("同步 CH 翻譯檔（REF CN → OpenCC s2twp → MOD CH）")
+    print("同步 CH 翻譯檔（REF CN → OpenCC s2twp → MOD CH .json）")
     print("=" * 60)
-    
+
     updated = 0
     skipped = 0
     unchanged = 0
     all_issues: list[str] = []
-    
-    for ref_file in sorted(REF_CN.rglob("*.txt")):
+
+    # Process .txt translation files
+    for ref_file in sorted(REF_CN.glob("*.txt")):
         if not ref_file.is_file():
             continue
-        
+
         filename = ref_file.name
-        rel = ref_file.relative_to(REF_CN)
-        ch_rel = Path(cn_to_ch_filename(str(rel)))
-        ch_path = MOD_CH / ch_rel
-        
-        # language.txt 不轉換（CH 有自己的語言定義）
+
+        # language.txt: CH has its own definition, don't convert
         if filename in SKIP_CH_CONVERT:
             print(f"  ⏭️ 跳過: {filename} (CH 版本保持不變)")
             skipped += 1
             continue
-        
-        # 讀取 REF CN 內容並轉換為 CH（utf-8-sig 自動跳過 BOM）
-        cn_content = ref_file.read_text(encoding="utf-8-sig")
-        ch_content = convert_cn_to_ch_content(cn_content, filename)
-        
-        # 與現有 CH 檔案比對，只有內容不同才更新
+
+        # Skip files that stay as .txt (streets.txt, credits.txt)
+        if filename in PZ_SKIP_FILES:
+            # For these, just do text-level OpenCC conversion and copy
+            ref_content = ref_file.read_text(encoding="utf-8-sig")
+            ch_content = convert_s2twp(ref_content)
+            ch_path = MOD_CH / filename
+            if ch_path.exists():
+                old_content = ch_path.read_text(encoding="utf-8-sig")
+                if old_content == ch_content:
+                    unchanged += 1
+                    continue
+            ch_path.parent.mkdir(parents=True, exist_ok=True)
+            ch_path.write_text(ch_content, encoding="utf-8", newline="\n")
+            print(f"  ✅ 轉換: {filename} (保留 .txt)")
+            updated += 1
+            continue
+
+        json_name = txt_to_json_filename(filename)
+        ch_path = MOD_CH / json_name
+
+        # Parse REF .txt → dict
+        ref_data = read_translation(ref_file)
+
+        # OpenCC convert VALUES only
+        ch_data: OrderedDict[str, str] = OrderedDict()
+        for key, value in ref_data.items():
+            ch_data[key] = convert_s2twp(value)
+
+        # Compare with existing CH
         if ch_path.exists():
-            old_ch = ch_path.read_text(encoding="utf-8-sig")
-            if old_ch == ch_content:
+            old_data = read_translation(ch_path)
+            if old_data == ch_data:
                 unchanged += 1
                 continue
-            # 顯示 diff 摘要
-            old_lines = old_ch.splitlines()
-            new_lines = ch_content.splitlines()
-            diff = list(difflib.unified_diff(old_lines, new_lines, lineterm="", n=0))
-            added = sum(1 for line in diff if line.startswith("+") and not line.startswith("+++"))
-            removed = sum(1 for line in diff if line.startswith("-") and not line.startswith("---"))
-            print(f"  📝 更新: {ch_rel} (+{added}/-{removed} 行)")
+            added = len(set(ch_data) - set(old_data))
+            removed = len(set(old_data) - set(ch_data))
+            print(f"  📝 更新: {json_name} (+{added}/-{removed} keys)")
         else:
             ch_path.parent.mkdir(parents=True, exist_ok=True)
-            print(f"  ➕ 新增: {ch_rel}")
-        
-        ch_path.write_text(ch_content, encoding="utf-8")
+            print(f"  ➕ 新增: {json_name} ({len(ch_data)} keys)")
+
+        write_translation_json(ch_data, ch_path)
         updated += 1
-        
-        # 檢查可疑模式
-        issues = check_suspicious(ch_content, str(ch_rel))
+
+        # Check suspicious patterns in values
+        ch_text = "\n".join(ch_data.values())
+        issues = check_suspicious(ch_text, json_name)
         all_issues.extend(issues)
-    
+
+    # Process city directories
+    for city_dir in sorted(d for d in REF_CN.iterdir() if d.is_dir()):
+        title_path = city_dir / "title.txt"
+        desc_path = city_dir / "description.txt"
+        if not title_path.exists() or not desc_path.exists():
+            continue
+
+        json_name = f"{city_dir.name}.json"
+        ch_path = MOD_CH / json_name
+
+        ref_data = parse_city_directory(city_dir)
+        ch_data: OrderedDict[str, str] = OrderedDict()
+        for key, value in ref_data.items():
+            ch_data[key] = convert_s2twp(value)
+
+        if ch_path.exists():
+            old_data = read_translation(ch_path)
+            if old_data == ch_data:
+                unchanged += 1
+                continue
+            print(f"  📝 更新: {json_name}")
+        else:
+            print(f"  ➕ 新增: {json_name}")
+
+        write_translation_json(ch_data, ch_path)
+        updated += 1
+
     print(f"\n完成：{updated} 個 CH 檔案已更新，{skipped} 個已跳過，{unchanged} 個無變化")
-    
+
     if all_issues:
         print(f"\n⚠️ 發現 {len(all_issues)} 處可能需要人工檢查：")
-        for issue in all_issues[:50]:  # 限制輸出
+        for issue in all_issues[:50]:
             print(issue)
         if len(all_issues) > 50:
             print(f"  ... 還有 {len(all_issues) - 50} 處")
+
+
+def cmd_fix_check():
+    """檢查 OpenCC 轉換常見錯誤"""
+    print("=" * 60)
+    print("OpenCC 轉換結果檢查（CH 翻譯檔 + CH Lua）")
+    print("=" * 60)
+
+    all_issues: list[str] = []
+
+    # Check CH translation JSON files
+    for ch_file in sorted(MOD_CH.rglob("*.json")):
+        data = read_translation(ch_file)
+        # Check values for suspicious patterns
+        content = "\n".join(data.values())
+        rel_path = ch_file.relative_to(MOD_CH)
+        issues = check_suspicious(content, str(rel_path))
+        all_issues.extend(issues)
+
+    # Check remaining .txt files (streets.txt, credits.txt)
+    for ch_file in sorted(MOD_CH.rglob("*.txt")):
+        if ch_file.name in {"language.txt"}:
+            continue
+        content = ch_file.read_text(encoding="utf-8-sig")
+        rel_path = ch_file.relative_to(MOD_CH)
+        issues = check_suspicious(content, str(rel_path))
+        all_issues.extend(issues)
+
+    # Check CH Lua scripts
+    for _ref_name, _cn_name, ch_name in LUA_PAIRS:
+        lua_f = MOD_LUA / ch_name
+        if lua_f.exists():
+            content = lua_f.read_text(encoding="utf-8-sig")
+            issues = check_suspicious(content, ch_name)
+            all_issues.extend(issues)
+
+    if all_issues:
+        print(f"\n⚠️ 發現 {len(all_issues)} 處可能需要人工檢查：")
+        for issue in all_issues:
+            print(issue)
+    else:
+        print("\n✅ 未發現可疑的轉換錯誤")
+
+
+_ = (
+    PREFIX_STRIP_CATEGORIES,
+    detect_category,
+    parse_lua_translation,
+    parse_recorded_media,
+)
 
 def cmd_sync_lua():
     """同步 Lua 腳本
@@ -530,7 +664,7 @@ def cmd_sync_lua():
                 continue
         
         mod_f.parent.mkdir(parents=True, exist_ok=True)
-        mod_f.write_text(ch_content, encoding="utf-8")
+        mod_f.write_text(ch_content, encoding="utf-8", newline="\n")
         print(f"  ✅ CH: {ch_name}")
         updated += 1
     
@@ -550,37 +684,6 @@ def cmd_sync_lua():
     if updated == 0:
         print("  ℹ️ 沒有需要同步的腳本")
     print(f"\n完成：{updated} 個 Lua 腳本已同步")
-
-
-def cmd_fix_check():
-    """檢查 OpenCC 轉換常見錯誤"""
-    print("=" * 60)
-    print("OpenCC 轉換結果檢查（CH 翻譯檔 + CH Lua）")
-    print("=" * 60)
-    
-    all_issues: list[str] = []
-    
-    # 檢查 CH 翻譯檔
-    for ch_file in sorted(MOD_CH.rglob("*.txt")):
-        content = ch_file.read_text(encoding="utf-8-sig")
-        rel_path = ch_file.relative_to(MOD_CH)
-        issues = check_suspicious(content, str(rel_path))
-        all_issues.extend(issues)
-    
-    # 檢查 CH Lua 腳本（從 LUA_PAIRS 衍生）
-    for _ref_name, _cn_name, ch_name in LUA_PAIRS:
-        lua_f = MOD_LUA / ch_name
-        if lua_f.exists():
-            content = lua_f.read_text(encoding="utf-8-sig")
-            issues = check_suspicious(content, ch_name)
-            all_issues.extend(issues)
-    
-    if all_issues:
-        print(f"\n⚠️ 發現 {len(all_issues)} 處可能需要人工檢查：")
-        for issue in all_issues:
-            print(issue)
-    else:
-        print("\n✅ 未發現可疑的轉換錯誤")
 
 
 def cmd_sync_all():
