@@ -52,7 +52,7 @@ Print_Media_KnoxKnews_July2_info = "<type:parent, width:805, height:910>"..
 "<type:texture, x:404, y:24, width:367, height:97, r:200/255, g:200/255, b:200/255>"..
 "<type:texture, texture:getTexture("media/textures/printMedia/NewspaperPics/paper_stains_1.png"), width:789, height:900, pivotX:1, pivotY:1, scaleX:-1, scaleY:-1, angle:0, a:0.4>"..
 "<type:text, x:35, y:35, r:0, g:0, b:0, a:0.9, scaleX:0.75, scaleY:0.75, textLeading:-4, font:UIFont.SdfOldBold> 迪 莉 娅 号 无 限 期 停 泊 在 勃 兰 登 堡 ""..
-"<type:text, x:35+380, y:35, r:0, g:0, b:0, a:0.9, scaleX:0.75, scaleY:0.75, textLeading:-4, font:UIFont.SdfOldBold> 圣 堂 山 马 场 计 划 修 建 弗 吉 尼 亚 赛 道 "..
+"<type:text, x:35+380, y:35, r:0, g:0, b:0, a:0.9, scaleX:0.75, scaleY:0.75, textLeading:-4, font:UIFont.SdfOldBold> 圣 堂 山 跑 马 场 计 划 修 建 弗 吉 尼 亚 赛 道 "..
 "<type:text, x:180, y:95, r:0, g:0, b:0, a:0.9, scaleX:0.6, scaleY:0.6, textLeading:-4, font:UIFont.SdfOldBold> 参 见 第 2 页 "..
 "<type:text, x:180+380, y:95, r:0, g:0, b:0, a:0.9, scaleX:0.6, scaleY:0.6, textLeading:-4, font:UIFont.SdfOldBold> 参 见 第 4 页 "..
 "<type:text, x:410, y:135, r:0, g:0, b:0, a:1, pivotX:0.5, scaleX:0.7, scaleY:0.7, font:UIFont.SdfOldBold> 周 五 "..
@@ -75,7 +75,7 @@ Print_Media_KnoxKnews_July2_info = "<type:parent, width:805, height:910>"..
 "<type:texture, texture:getTexture("media/textures/printMedia/logos/kk.png"), width:675, height:200, x:790/2, y:200, pivotX:0.5, pivotY:0.5, a:0.9>"..
 "<type:texture, texture:getTexture("media/textures/printMedia/NewspaperPics/KK_Gradient_1.png"), width:789, height:901, pivotX:0.0004, pivotY:0.0004, a:1>",
 
-Print_Media_KnoxKnews_July3_title = "Knox Knews - 1993年7月3日",
+Print_Media_KnoxKnews_July3_title = "诺克斯新闻 - 1993年7月3日",
 
 Print_Media_KnoxKnews_July3_info = "<type:parent, width:805, height:910>"..
 "<type:texture, width:794, height:900, pivotX:-0.01, pivotY:0, angle:0.1, r:145/255.0, g:145/255.0, b:145/255.0>"..
@@ -137,7 +137,7 @@ Print_Media_KnoxKnews_July4_info = "<type:parent, width:805, height:910>"..
 "<type:text, x:22, y:285, r:0, g:0, b:0, a:0.9, pivotX:0, pivotY:0, scaleX:1.2, scaleY:1.2, textLeading:-4, font:UIFont.SdfOldBold> 陆 军 称 坠 机 事 件 后 " 不 会 对 公 众 造 成 危 险 ""..
 "<type:text, x:295, y:615, r:0, g:0, b:0, a:0.9, scaleX:0.5, scaleY:0.5, font:UIFont.SdfOldBoldItalic> 现 场 已 被 军 方 封 锁 保 护 ."..
 "<type:text, x:25, y:470, r:0, g:0, b:0, a:0.9, scaleX:0.6, scaleY:0.6, autoWidth:247/0.6, textLeading:3, font:UIFont.SdfOldRegular> 三 月 岭 社 区 - 周 六 下 午 约 3 点 15 分 , 一 辆 载 有 危 险 废 物 的 军 用 卡 车 在 三 月 岭 社 区 以 北 翻 车 . 卡 车 装 载 的 物 品 未 向 公 众 披 露 , 但 尼 尔 · 奥 马 利 上 校 表 示 , " 这 些 材 料 虽 然 因 操 作 原 因 需 要 保 密 , 但 几 乎 不 会 对 公 众 构 成 危 害 . "^ 目 击 者 称 , 卡 车 在 60 号 公 路 上 失 控 , 在 农 产 品 超 市 以 南 , 险 些 撞 上 一 辆 过 往 车 辆 后 滑 进 草 地 , 最 终 在 路 堤 翻 车 . 官 员 们 没 有 否 认 卡 车 超 载 . ^ 这 是 诺 克 斯 地 区 发 生 的 多 起 涉 及 危 险 材 料 的 事 件 之 一 . 环 保 人 士 批 评 标 准 " 过 于 宽 松 ", 弹 药 储 存 不 当 产 生 的 有 毒 化 学 物 质 和 化 合 物 是 诺 克 斯 地 区 呼 吸 系 统 疾 病 发 病 率 高 于 平 均 水 平 的 原 因 . 州 议 员 最 近 废 除 了 几 项 环 境 法 , 这 一 举 措 … ( 续 第 2 页 )"..
-"<type:text, x:305, y:640, r:0, g:0, b:0, a:0.9, pivotX:0, pivotY:0, scaleX:0.8, scaleY:0.8, textLeading:-4, font:UIFont.SdfOldBold>Speedway 赛 道 可 以 举 办 X 级 方 程 式 赛 车 比 赛 "..
+"<type:text, x:305, y:640, r:0, g:0, b:0, a:0.9, pivotX:0, pivotY:0, scaleX:0.8, scaleY:0.8, textLeading:-4, font:UIFont.SdfOldBold>Speedway 赛 道 有 望 举 办 极 限 方 程 式 赛 车 比 赛 "..
 "<type:text, x:305, y:716, r:0, g:0, b:0, a:0.9, scaleX:0.6, scaleY:0.6, autoWidth:217/0.6, textLeading:3, font:UIFont.SdfOldRegular> 欧 文 顿 - 方 程 式 · X 赛 事 组 织 者 初 步 确 认 欧 文 顿 Speedway 赛 道 将 作 为 1996 年 美 国 大 奖 赛 举 办 地 . 尽 管 仍 在 协 商 中 , 但 官 员 们 个 人 更 倾 向 于 该 赛 道 , 因 为 它 靠 近 路 易 斯 维 尔 , 设 计 新 颖 , 且 当 局 持 开 放 态 度 … ( 续 第 4 页 )"..
 "<type:text, x:550, y:640, r:0, g:0, b:0, a:0.9, pivotX:0, pivotY:0, scaleX:0.8, scaleY:0.8, textLeading:-4, font:UIFont.SdfOldBold> 诺 克 斯 新 闻 祝 您 独 立 日 快 乐 ! "..
 "<type:text, x:550, y:732, r:0, g:0, b:0, a:0.9, scaleX:0.6, scaleY:0.6, autoWidth:220/0.6, textLeading:3, font:UIFont.SdfOldRegular> 克 斯 新 闻 - 在 诺 克 斯 新 闻 能 连 续 度 过 两 个 7 月 4 日 是 我 的 荣 幸 . 我 们 希 望 读 者 们 度 过 美 好 的 一 天 , 铭 记 美 国 建 国 历 史 , 并 畅 想 它 未 来 的 模 样 . ^ 顺 致 最 诚 挚 的 祝 福 ^ 伊 恩 · J · 麦 卡 罗 克 ^ 总 编 辑 "..
@@ -709,7 +709,7 @@ Print_Media_LouisvilleSunTimes_July13_info = "<type:parent, width:820, height:81
 "<type:texture, width:789, height:300, x:0, y:-100, texture:getTexture("media/textures/printMedia/logos/LST.png")>"..
 "<type:texture, texture:getTexture("media/textures/printMedia/NewspaperPics/KK_Gradient_1.png"), width:805, height:801, pivotX:0.0004, pivotY:0.0004, a:1>",
 
-Print_Media_LouisvilleSunTimes_July14_title = "Louisville Sun Times - 1993年7月14日",
+Print_Media_LouisvilleSunTimes_July14_title = "路易斯维尔太阳时报 - 1993年7月14日",
 
 Print_Media_LouisvilleSunTimes_July14_info = "<type:parent, width:820, height:810>"..
 "<type:texture, width:805, height:800, pivotX:-0.012, pivotY:0, angle:0.2, r:145/255.0, g:145/255.0, b:145/255.0>"..
@@ -844,7 +844,7 @@ Print_Media_Fossoil8_title = "福索石油 (南路易斯维尔)",
 
 Print_Media_Delilah_title = "迪莉娅号蒸汽船",
 
-Print_Media_ChapelmountDownsRacetrack_title = "圣堂山马场赛道",
+Print_Media_ChapelmountDownsRacetrack_title = "圣堂山跑马场赛道",
 
 Print_Media_BensCabin_title = "小屋出租 (西点)",
 

@@ -16,14 +16,14 @@ SurvivalGuide_CN = {
                                     "<H1> DON'T DIE <BR> <TEXT> 无 论 何 时 , 千 万 别 死 . <BR>",
 
     SurvivalGuide_entrie2title = "#2 - 隐秘行动",
-    SurvivalGuide_entrie2txt = "<CENTRE>"<SIZE:medium> #2 - 隐 秘 行 动 <LINE><IMAGECENTRE:media/ui/spiffo/dontrun.png><LINE><BR> 使 用 <SPACE><KEY:Run><SPACE> 进 行 慢 跑 , 使 用 <SPACE><KEY:Sprint><SPACE> 进 行 冲 刺 , 但 要 小 心 ! ",
-    SurvivalGuide_entrie2moreinfo = "<H1> 僵 尸 感 知 <BR><TEXT> 僵 尸 会 对 视 线 和 声 音 做 出 反 应 . 要 极 其 警 惕 警 报 器 , 警 报 和 枪 声 等 响 亮 的 噪 音 , 因 为 附 近 的 僵 尸 群 肯 定 会 来 到 这 里 . <LINE><BR>"..
+    SurvivalGuide_entrie2txt = "<CENTRE>"<SIZE:medium> #2 - 隐 秘 行 动 <LINE><IMAGECENTRE:media/ui/spiffo/dontrun.png><LINE><BR> 使 用 <SPACE><KEY:Run><SPACE> 进 行 慢 跑 , 使 用 <SPACE><KEY:Sprint><SPACE> 进 行 冲 刺 , 但 要 小 心 !",
+    SurvivalGuide_entrie2moreinfo = "<H1> 僵 尸 感 知 <BR><TEXT> 僵 尸 会 对 视 线 和 声 音 做 出 反 应 . 要 极 其 警 惕 警 报 器 , 闹 钟 和 枪 声 等 响 亮 的 噪 音 , 因 为 附 近 的 僵 尸 群 肯 定 会 来 到 这 里 . <LINE><BR>"..
                                     "<H1> 奔 跑 <BR> <IMAGECENTRE:media/ui/tutimages/shiftrun.png> <TEXT> <LINE> 可 以 按 下 <SPACE><KEY:Run><SPACE> 键 来 小 跑 , 按 下 <SPACE><KEY:Sprint><SPACE> 键 来 冲 刺 . 奔 跑 会 发 出 声 音 , 并 让 你 更 容 易 被 注 意 到 . 你 可 以 在 短 时 间 内 甩 掉 那 些 活 死 人 , 但 这 不 是 长 久 之 计 ."..
                                     " <BR> <H1> 蹲 下 <BR> <TEXT> 幸 存 者 可 以 通 过 按 <SPACE><KEY:Crouch><SPACE> 键 蹲 下 以 降 低 可 见 度 , 也 可 以 蹲 在 墙 壁 和 栅 栏 旁 边 以 进 一 步 降 低 可 见 度 ( 注 意 , 当 你 的 角 色 在 掩 体 后 时 蹲 得 更 低 ). 你 也 可 以 在 此 状 态 下 小 跑 . <BR> <IMAGECENTRE:media/ui/tutimages/sneak2.png> <LINE>" ..
                                     " 僵 尸 毁 灭 工 程 可 不 是 人 气 比 拼 . 僵 尸 不 会 跟 着 你 索 要 签 名 - 它 们 只 想 咬 你 . 而 且 它 们 也 不 会 抱 抱 你 . <BR>",
 
     SurvivalGuide_entrie3title = "#3 - 近战技巧",
-    SurvivalGuide_entrie3txt = "<CENTRE>"<SIZE:large> #3 - 近 战 技 巧 <LINE><IMAGECENTRE:media/ui/spiffo/be_precise.png><LINE><SIZE:medium> 持 续 攻 击 直 到 你 听 到 头 骨 的 破 碎 声 ! ",
+    SurvivalGuide_entrie3txt = "<CENTRE>"<SIZE:large> #3 - 近 战 技 巧 <LINE><IMAGECENTRE:media/ui/spiffo/be_precise.png><LINE><SIZE:medium> 持 续 攻 击 直 到 你 听 到 头 骨 的 破 碎 声 !",
     SurvivalGuide_entrie3moreinfo = "<H1> 基 础 知 识 <BR><TEXT> 每 把 近 战 武 器 都 能 造 成 一 定 的 伤 害 . 但 是 , 它 的 威 力 和 精 度 取 决 于 你 的 技 能 和 你 对 武 器 的 熟 悉 程 度 ."..
                                     " <BR> <VIDEOCENTRE:guide_combat_2.bk2,1920,1080,media/ui/tutimages/combat2.png> <LINE> <TEXT> 按 住 右 键 或 <SPACE><KEY:Aim><SPACE> 以 进 入 瞄 准 模 式 , 然 后 按 左 键 攻 击 . ( 要 开 关 近 战 武 器 的 瞄 准 轮 廓 , 请 使 用 " 选 项 " 屏 幕 的 " 用 户 界 面 " 选 项 卡 上 的 " 瞄 准 轮 廓 " 设 置 . )"..
                                     " <BR> <TEXT> 像 刀 子 这 样 的 戳 刺 武 器 有 时 能 " 处 决 " 僵 尸 , 一 击 毙 命 . 不 过 , 黄 油 刀 的 作 用 就 别 太 期 待 了 . <BR> <IMAGECENTRE:media/ui/tutimages/combatknife.png> <LINE> "..
@@ -56,7 +56,7 @@ SurvivalGuide_CN = {
                                     " <H1> 搜 寻 <BR> <TEXT> 找 不 到 吃 的 ? 点 击 屏 幕 左 上 角 的 放 大 镜 图 标 , 然 后 点 击 " 启 用 搜 寻 模 式 ", 尝 试 从 大 自 然 中 寻 找 食 物 . 参 阅 本 指 南 第 12 页 以 便 了 解 更 多 信 息 . <BR>",
 
     SurvivalGuide_entrie9title = "#9 - 精心搜刮",
-    SurvivalGuide_entrie9txt = " <CENTRE> "<SIZE:large> #9 - 精 心 搜 刮 <LINE> <IMAGECENTRE:media/ui/spiffo/packing.png> <LINE> <SIZE:medium> 快 速 有 效 地 管 理 您 的 库 存 可 以 节 省 时 间 , 有 时 候 还 能 救 你 一 命 ! ",
+    SurvivalGuide_entrie9txt = " <CENTRE> "<SIZE:large> #9 - 精 心 搜 刮 <LINE> <IMAGECENTRE:media/ui/spiffo/packing.png> <LINE> <SIZE:medium> 快 速 有 效 地 管 理 您 的 物 品 栏 可 以 节 省 时 间 , 有 时 候 还 能 救 你 一 命 !",
     SurvivalGuide_entrie9moreinfo = "<H1> 选 择 <BR><TEXT> 如 何 在 僵 毁 里 翻 找 , 拿 取 , 放 置 和 使 用 ? 主 要 的 方 法 是 拖 动 , 或 者 右 键 单 击 以 调 出 菜 单 . <BR><IMAGECENTRE:media/ui/tutimages/invrbtnselect.png><LINE>" ..
                                     " 按 住 左 SHIFT 键 就 可 以 选 中 多 个 物 品 . <BR> <IMAGECENTRE:media/ui/tutimages/invshiftselect.png> <LINE> <TEXT> 或 者 , 也 可 以 用 鼠 标 来 框 出 需 要 选 择 的 物 品 . <BR> <IMAGECENTRE:media/ui/tutimages/invsquareselect.png> <LINE>  <BR> "..
                                     " 双 击 储 存 空 间 的 物 品 栏 中 的 某 样 东 西 即 可 快 速 拿 取 , 或 者 , 你 也 可 以 单 击 所 选 内 容 右 侧 的 快 速 上 下 文 按 钮 . <BR> <IMAGECENTRE:media/ui/tutimages/invctxbtn.png> <LINE> <TEXT> 如 果 想 拿 取 容 器 中 的 所 有 东 西 , 那 么 还 有 全 部 拿 取 的 选 项 . <LINE> "..
@@ -88,7 +88,7 @@ SurvivalGuide_CN = {
                                       " <IMAGECENTRE:media/ui/tutimages/windchillmoodle.png> <LINE> 风 寒 会 影 响 你 的 身 体 , 但 不 会 在 你 的 电 子 表 上 直 接 显 示 体 温 变 化 . 留 意 你 的 状 态 栏 , 这 样 就 能 了 解 它 何 时 对 你 产 生 影 响 . <BR> "<H1> 衣 物 防 护 <BR> <IMAGECENTRE:media/ui/spiffo/clothingprotection.png> <LINE> <TEXT> 穿 着 合 适 的 衣 物 可 以 保 护 幸 存 者 免 受 咬 伤 , 抓 伤 以 及 撕 裂 伤 . 按 <SPACE><KEY:Toggle&nbsp;Clothing&nbsp;Protection&nbsp;Panel><SPACE> 打 开 衣 物 防 护 面 板 , 查 看 幸 存 者 当 前 防 护 等 级 概 览 . <BR> 玩 家 可 以 使 用 合 适 的 材 料 和 裁 缝 等 级 修 补 衣 物 上 的 破 洞 , 甚 至 可 以 通 过 打 补 丁 的 方 式 增 强 防 护 . 只 需 右 键 单 击 物 品 栏 中 的 衣 物 , 然 后 单 击 " 检 查 ", 然 后 右 键 单 击 您 想 要 修 补 或 修 补 的 区 域 即 可 . 只 要 物 品 栏 中 有 合 适 的 布 条 以 及 针 线 就 行 . <LINE> <BR> <IMAGECENTRE:media/ui/spiffo/tailoring.png> <BR>" .., 
 
     SurvivalGuide_entrie12title = "#12 - 搜寻物品",
-    SurvivalGuide_entrie12txt = " <CENTRE> "<SIZE:large> #12 - 搜 寻 物 品 <LINE> <IMAGECENTRE:media/ui/spiffo/spiffoSurvivor2.png> <LINE> <SIZE:medium> 世 界 充 满 了 有 用 的 东 西 , 如 果 你 知 道 在 哪 里 ( 以 及 何 时 , 如 何 ) 寻 找 ! <LINE><LINE> 浆 果 , 蘑 菇 , 石 头 … 如 果 你 在 正 确 的 地 方 寻 找 , 谁 知 道 你 会 发 现 什 么 呢 ? ",
+    SurvivalGuide_entrie12txt = " <CENTRE> "<SIZE:large> #12 - 搜 寻 物 品 <LINE> <IMAGECENTRE:media/ui/spiffo/spiffoSurvivor2.png> <LINE> <SIZE:medium> 世 界 充 满 了 有 用 的 东 西 , 如 果 你 知 道 在 哪 里 ( 以 及 何 时 , 如 何 ) 寻 找 ! <LINE><LINE> 浆 果 , 蘑 菇 , 石 头 … 如 果 你 在 正 确 的 地 方 寻 找 , 谁 知 道 你 会 发 现 什 么 呢 ?",
     SurvivalGuide_entrie12moreinfo = " <H1> 搜 寻 系 统 <BR> " ..
                                      " <TEXT> <SIZE:small>" ..
                                      " 调 查 区 域 窗 口 会 显 示 你 的 区 域 . 这 会 影 响 可 找 到 的 物 品 ." ..
@@ -122,14 +122,14 @@ SurvivalGuide_CN = {
                                     "<H1> DON'T DIE <BR> <TEXT> 无 论 何 时 , 千 万 别 死 . <BR>",
 
     SurvivalGuide_Joypad_entrie2title = "#2 - 隐 秘 行 动 ",
-    SurvivalGuide_Joypad_entrie2txt = "<CENTRE>"<SIZE:medium> #2 - 隐 秘 行 动 <LINE><IMAGECENTRE:media/ui/spiffo/dontrun.png><LINE><BR> 使 用 右 扳 机 进 行 慢 跑 , 用 B 进 行 冲 刺 , 但 要 小 心 ! ",
-    SurvivalGuide_Joypad_entrie2moreinfo = "<H1> 僵 尸 感 知 <BR><TEXT> 僵 尸 会 对 视 线 和 声 音 做 出 反 应 . 要 极 其 警 惕 警 报 器 , 警 报 和 枪 声 等 响 亮 的 噪 音 , 因 为 附 近 的 僵 尸 群 肯 定 会 来 到 这 里 . <LINE><BR>"..
+    SurvivalGuide_Joypad_entrie2txt = "<CENTRE>"<SIZE:medium> #2 - 隐 秘 行 动 <LINE><IMAGECENTRE:media/ui/spiffo/dontrun.png><LINE><BR> 使 用 右 扳 机 进 行 慢 跑 , 用 B 进 行 冲 刺 , 但 要 小 心 !",
+    SurvivalGuide_Joypad_entrie2moreinfo = "<H1> 僵 尸 感 知 <BR><TEXT> 僵 尸 会 对 视 线 和 声 音 做 出 反 应 . 要 极 其 警 惕 警 报 器 , 闹 钟 和 枪 声 等 响 亮 的 噪 音 , 因 为 附 近 的 僵 尸 群 肯 定 会 来 到 这 里 . <LINE><BR>"..
                                     "<H1> 奔 跑 <BR> <IMAGECENTRE:media/ui/tutimages/shiftrun.png> <TEXT> <LINE> 可 以 按 下 <JOYPAD:RTrigger, 28, 28> 键 来 小 跑 , 按 下 <JOYPAD:BButton, 28, 28> 键 来 冲 刺 . 奔 跑 会 发 出 声 音 , 并 让 你 更 容 易 被 注 意 到 . 你 可 以 在 短 时 间 内 甩 掉 那 些 活 死 人 , 但 这 不 是 长 久 之 计 ."..
                                     " <BR> <H1> 蹲 下 <BR> <IMAGECENTRE:media/ui/spiffo/crouch.png> <TEXT> 幸 存 者 可 以 通 过 按 <JOYPAD:LStick, 28, 28> 蹲 下 以 降 低 可 见 度 , 也 可 以 蹲 在 墙 壁 和 栅 栏 旁 边 以 进 一 步 降 低 可 见 度 ( 注 意 , 当 你 的 角 色 在 掩 体 后 时 蹲 得 更 低 ). 你 也 可 以 在 此 状 态 下 小 跑 . <BR> <IMAGECENTRE:media/ui/tutimages/sneak2.png> <LINE>" ..
                                     " 僵 尸 毁 灭 工 程 可 不 是 人 气 比 拼 . 僵 尸 不 会 跟 着 你 索 要 签 名 - 它 们 只 想 咬 你 . 而 且 它 们 也 不 会 抱 抱 你 . <BR>",
 
     SurvivalGuide_Joypad_entrie3title = "#3 - 近 战 技 巧 ",
-    SurvivalGuide_Joypad_entrie3txt = "<CENTRE>"<SIZE:large> #3 - 近 战 技 巧 <LINE><IMAGECENTRE:media/ui/spiffo/be_precise.png><LINE><SIZE:medium> 持 续 攻 击 直 到 你 听 到 头 骨 的 破 碎 声 ! ",
+    SurvivalGuide_Joypad_entrie3txt = "<CENTRE>"<SIZE:large> #3 - 近 战 技 巧 <LINE><IMAGECENTRE:media/ui/spiffo/be_precise.png><LINE><SIZE:medium> 持 续 攻 击 直 到 你 听 到 头 骨 的 破 碎 声 !",
     SurvivalGuide_Joypad_entrie3moreinfo = "<H1> 基 础 知 识 <BR><TEXT> 每 把 武 器 都 能 造 成 一 定 的 伤 害 . 但 是 , 它 的 威 力 和 精 度 取 决 于 你 的 技 能 和 你 对 武 器 的 熟 悉 程 度 ."..
                                     " <BR> <IMAGECENTRE:media/ui/tutimages/combat2.png> <LINE> <TEXT> 使 用 <JOYPAD:RStick, 28, 28> 进 行 瞄 准 , 按 下 <JOYPAD:RTrigger, 28, 28> 进 行 攻 击 . 可 以 使 用 <JOYPAD:RBumper, 28, 28> 来 用 物 品 栏 中 已 打 开 的 弹 药 重 新 装 填 枪 支 . 状 态 不 佳 的 武 器 更 有 可 能 卡 壳 . <BR> <LINE> 默 认 情 况 下 , 只 有 枪 械 才 会 显 示 瞄 准 轮 廓 . 红 色 轮 廓 表 示 命 中 率 低 , 绿 色 轮 廓 表 示 命 中 率 高 . 要 同 时 启 用 近 战 武 器 的 瞄 准 轮 廓 , 或 完 全 关 闭 瞄 准 轮 廓 , 请 使 用 " 选 项 " 屏 幕 ( 在 主 菜 单 中 按 两 次 菜 单 按 钮 即 可 打 开 ) 中 " 显 示 " 选 项 卡 上 的 " 瞄 准 轮 廓 " 设 置 . <LINE>"..
                                     " <BR> <TEXT> <IMAGECENTRE:media/ui/tutimages/aimingoutlines.png> <LINE> 像 刀 子 这 样 的 戳 刺 武 器 有 时 能 " 处 决 " 僵 尸 , 一 击 毙 命 . 不 过 , 黄 油 刀 的 作 用 就 别 太 期 待 了 . <BR> <IMAGECENTRE:media/ui/tutimages/combatknife.png> <LINE> "..
@@ -147,7 +147,7 @@ SurvivalGuide_CN = {
     SurvivalGuide_Joypad_entrie5moreinfo = "<H1> 水 源 <BR><TEXT> 供 水 系 统 就 像 电 力 一 样 , 不 会 取 之 不 尽 . 如 果 你 不 想 因 缺 水 而 渴 死 的 话 , 请 好 好 储 备 水 资 源 … <BR> 你 的 角 色 会 自 动 从 你 物 品 栏 中 的 任 何 容 器 中 喝 水 . <BR> 要 喝 水 或 装 水 , 只 需 在 游 戏 中 任 何 提 供 水 的 家 具 / 物 品 上 使 用 <JOYPAD:XButton, 28, 28> 菜 单 . 例 如 水 槽 , 浴 缸 , 水 龙 头 , 等 等 . <BR><IMAGECENTRE:media/ui/tutimages/fillbottle.png><LINE> 你 也 可 以 把 平 底 锅 等 容 器 放 在 雨 中 收 集 水 源 , 也 可 以 从 河 流 中 收 集 水 资 源 , 还 可 以 建 造 木 制 雨 水 收 集 桶 来 储 水 . <BR> 不 过 , 这 样 获 取 的 水 是 被 污 染 的 , 必 须 经 过 煮 沸 才 能 安 全 饮 用 . 被 污 染 的 水 可 以 安 全 地 用 于 浇 灌 庄 稼 或 洗 衣 服 . <BR>",
 
     SurvivalGuide_Joypad_entrie6title = "#6 - 制 作 达 人 ",
-    SurvivalGuide_Joypad_entrie6txt = " <CENTRE> "<SIZE:large> #6 - 制 作 达 人 <LINE> <IMAGECENTRE:media/ui/spiffo/be_crafty.png> <LINE> <SIZE:medium> 僵 尸 会 抓 挠 门 窗 ! 如 有 疑 问 : 快 去 设 置 路 障 ! ",
+    SurvivalGuide_Joypad_entrie6txt = " <CENTRE> "<SIZE:large> #6 - 制 作 达 人 <LINE> <IMAGECENTRE:media/ui/spiffo/be_crafty.png> <LINE> <SIZE:medium> 僵 尸 会 抓 挠 门 窗 ! 如 有 疑 问 : 快 去 设 置 路 障 !",
     SurvivalGuide_Joypad_entrie6moreinfo = " <H1> 物 品 制 作 <BR> <TEXT> 要 加 工 物 品 栏 的 物 品 , 只 需 点 击 <JOYPAD:AButton, 28, 28> 即 可 . <BR> <IMAGECENTRE:media/ui/tutimages/craftingrecipe.png> <LINE> 任 何 可 制 作 的 物 品 都 会 神 奇 地 展 示 出 来 !<BR> 烹 饪 , 木 工 , 医 疗 和 生 存 等 一 系 列 技 巧 将 让 你 在 世 界 末 日 中 占 据 优 势 . <BR> <H1> 加 固 <BR> <TEXT> 你 可 以 通 过 <JOYPAD:XButton, 28, 28> 单 击 来 加 固 门 窗 . 你 需 要 用 物 品 栏 中 的 锤 子 , 木 板 和 钉 子 来 固 定 木 板 , 或 者 使 用 丙 烷 喷 灯 , 焊 接 面 罩 来 焊 接 金 属 板 . <BR> <IMAGECENTRE:media/ui/tutimages/barricademenu.png> <IMAGECENTRE:media/ui/tutimages/barricaded.png> <LINE> <H1> 木 工 和 金 工 <BR> <TEXT> 当 你 找 到 资 源 并 变 得 更 有 能 力 时 , 便 可 以 建 造 建 筑 . 必 须 要 有 锤 子 才 能 建 造 木 质 结 构 , 而 金 属 结 构 则 需 要 丙 烷 喷 灯 和 焊 接 面 罩 . 对 于 大 部 分 金 工 而 言 , 还 需 要 焊 条 . 可 以 使 用 <JOYPAD:XButton, 28, 28> 打 开 建 造 菜 单 . <BR> <IMAGECENTRE:media/ui/tutimages/carpentrymenu.png> <LINE> 从 这 里 你 可 以 看 到 所 能 建 筑 的 家 具 . <BR> 选 择 后 , 你 将 看 到 建 筑 的 透 明 版 , 然 后 你 可 以 在 世 界 各 地 移 动 , 点 击 <JOYPAD:AButton, 28, 28> 放 置 . <BR> <IMAGECENTRE:media/ui/tutimages/placewall.png> <LINE> 这 个 过 程 并 不 快 , 因 为 罗 马 不 是 一 天 建 成 的 . 僵 尸 毁 灭 工 程 是 一 款 以 现 实 主 义 为 核 心 的 游 戏 . 如 果 你 有 过 建 筑 知 识 , 你 就 会 知 道 建 筑 需 要 时 间 . ( 如 果 你 想 的 话 , 你 可 以 在 游 戏 里 倒 杯 茶 放 松 一 下 . ) 你 可 以 在 放 置 前 使 用 <JOYPAD:LBumper, 28, 28> 或 <JOYPAD:RBumper, 28, 28> 来 旋 转 所 要 放 置 的 结 构 . <BR> <IMAGECENTRE:media/ui/tutimages/wallbuilt.png> <LINE> 记 住 : 制 作 得 越 多 , 你 就 会 变 得 越 强 . 更 高 的 技 能 水 平 意 味 着 更 好 的 质 量 , 以 及 更 有 用 的 物 品 . <BR> "..
                                     "<BR> <LINE> <H1>" 捡 " 起 物 品 <BR> <CENTER> <IMAGECENTRE:media/ui/tutimages/movables.png> <BR> <TEXT> 世 界 上 大 多 数 家 具 和 静 态 物 品 都 可 以 拾 取 . 只 需 要 选 中 <JOYPAD:Back, 28, 28> 按 钮 菜 单 中 的 木 质 储 物 柜 图 标 , 即 可 拾 取 物 品 , 放 置 物 品 栏 中 的 物 品 , 旋 转 物 品 或 拆 卸 物 品 . 按 <JOYPAD:LBumper, 28, 28> 键 即 可 切 换 到 下 一 个 模 式 . <BR> 拾 取 和 拆 卸 物 品 可 能 需 要 工 具 或 一 定 程 度 的 技 能 才 能 成 功 . 移 动 物 品 可 以 加 强 基 地 的 防 御 ( 例 如 , 可 以 把 东 西 挡 在 门 或 窗 子 前 ), 也 可 以 将 冰 箱 或 板 条 箱 等 有 用 物 品 移 到 新 位 置 . <BR>",
 
@@ -162,12 +162,12 @@ SurvivalGuide_CN = {
                                     " <H1> FORAGING <BR> <TEXT> 找 不 到 吃 的 ? 试 着 在 <JOYPAD:Back, 28, 28> 按 钮 菜 单 中 的 眼 睛 图 标 处 启 用 搜 寻 模 式 , 尝 试 从 大 自 然 中 寻 找 食 物 . 参 阅 本 指 南 第 12 页 以 便 了 解 更 多 信 息 . <BR> ",
 
     SurvivalGuide_Joypad_entrie9title = "#9 - 精 心 搜 刮 ",
-    SurvivalGuide_Joypad_entrie9txt = " <CENTRE> "<SIZE:large> #9 - 精 心 搜 刮 <LINE> <IMAGECENTRE:media/ui/spiffo/packing.png> <LINE> <SIZE:medium> 快 速 有 效 地 管 理 您 的 库 存 可 以 节 省 时 间 , 有 时 候 还 能 救 你 一 命 ! ",
+    SurvivalGuide_Joypad_entrie9txt = " <CENTRE> "<SIZE:large> #9 - 精 心 搜 刮 <LINE> <IMAGECENTRE:media/ui/spiffo/packing.png> <LINE> <SIZE:medium> 快 速 有 效 地 管 理 您 的 物 品 栏 可 以 节 省 时 间 , 有 时 候 还 能 救 你 一 命 !",
     SurvivalGuide_Joypad_entrie8moreinfo = " <H1> 物 品 栏 <BR> <TEXT> 如 何 在 僵 毁 里 翻 找 , 拿 取 , 放 置 和 使 用 ? 使 用 <JOYPAD:YButton, 28, 28> 打 开 物 品 栏 , 使 用 方 向 键 进 行 选 取 . <JOYPAD:LBumper, 28, 28> 和 <JOYPAD:RBumper, 28, 28> 可 以 在 附 近 的 容 器 ( 自 己 的 物 品 栏 或 者 附 近 区 域 的 容 器 ) 之 间 进 行 切 换 , 而 <JOYPAD:XButton, 28, 28> 则 可 以 把 选 中 的 物 品 在 容 器 间 来 回 移 动 . <BR> <IMAGECENTRE:media/ui/tutimages/invrbtnselect.png> <LINE> " ..
                                     " 你 也 可 以 使 用 <JOYPAD:AButton, 28, 28> 菜 单 中 的 " 全 部 拿 取 " 来 拿 取 容 器 中 的 所 有 东 西 . <LINE> "..
                                     " <BR> <H1> 背 包 之 荣 耀 <BR> <TEXT> 背 包 很 重 要 , 有 助 于 搬 运 物 品 . <BR> 想 装 备 背 包 并 快 速 放 入 物 品 ? 只 需 在 物 品 栏 中 选 中 它 , 使 用 <JOYPAD:AButton, 28, 28> 菜 单 并 将 其 放 置 在 主 手 , 副 手 或 ( 只 对 于 某 些 背 包 可 用 ) 背 上 ."..
                                     " <BR> 然 后 , 你 会 在 物 品 栏 里 看 到 已 装 备 的 背 包 , 你 可 以 将 战 利 品 放 进 去 . 背 包 可 以 减 轻 你 的 负 重 , 让 你 可 以 携 带 更 多 物 品 , 但 要 注 意 : 如 果 背 包 里 装 了 很 多 东 西 , 那 么 移 动 速 度 仍 然 会 变 慢 . <BR> <CENTER> <IMAGECENTRE:media/ui/tutimages/invbag.png> <LINE> "..
-                                    " <H1> 菜 单 <BR> <TEXT> 按 下 <JOYPAD:Back, 28, 28> 按 钮 可 以 打 开 菜 单 , 在 这 里 你 可 以 进 入 生 命 值 菜 单 , 家 具 的 移 动 模 式 , 搜 寻 模 式 等 . 使 用 左 方 向 键 可 以 打 开 武 器 菜 单 , 以 便 快 速 将 武 器 装 备 进 物 品 栏 . 使 用 下 方 向 键 可 以 打 开 姿 势 菜 单 , 给 朋 友 打 个 招 呼 , 或 者 给 自 己 最 喜 欢 的 僵 尸 点 个 赞 ! ",
+                                    " <H1> 菜 单 <BR> <TEXT> 按 下 <JOYPAD:Back, 28, 28> 按 钮 可 以 打 开 菜 单 , 在 这 里 你 可 以 进 入 生 命 值 菜 单 , 家 具 的 移 动 模 式 , 搜 寻 模 式 等 . 使 用 左 方 向 键 可 以 打 开 武 器 菜 单 , 以 便 快 速 将 武 器 装 备 进 物 品 栏 . 使 用 下 方 向 键 可 以 打 开 姿 势 菜 单 , 给 朋 友 打 个 招 呼 , 或 者 给 自 己 最 喜 欢 的 僵 尸 点 个 赞 !",
 
     SurvivalGuide_Joypad_entrie10title = "#10 - 交 通 工 具 ",
     SurvivalGuide_Joypad_entrie10txt = " <CENTRE> "<SIZE:large> #10 - 交 通 工 具 <LINE> <IMAGECENTRE:media/ui/spiffo/driver.png> <LINE> <SIZE:medium> 车 辆 可 以 带 来 生 存 优 势 , 但 也 会 带 来 噪 音 ! 轰 鸣 的 引 擎 声 会 吸 引 远 处 的 尸 群 … ",
@@ -188,7 +188,7 @@ SurvivalGuide_CN = {
                                       " <IMAGECENTRE:media/ui/tutimages/windchillmoodle.png> <LINE> 风 寒 会 影 响 你 的 身 体 , 但 不 会 在 你 的 电 子 表 上 直 接 显 示 体 温 变 化 . 留 意 你 的 状 态 栏 , 这 样 就 能 了 解 它 何 时 对 你 产 生 影 响 . <LINE> <BR> <H1> 衣 物 防 护 <BR> <IMAGECENTRE:media/ui/spiffo/clothingprotection.png> <LINE> <TEXT> 穿 着 合 适 的 衣 物 可 以 保 护 幸 存 者 免 受 咬 伤 , 抓 伤 以 及 割 伤 . 使 用 <JOYPAD:Back, 28, 28> 按 钮 菜 单 打 开 玩 家 信 息 栏 , 然 后 使 用 <JOYPAD:Back, 28, 28> 打 开 衣 物 防 护 面 板 , 查 看 幸 存 者 当 前 防 护 等 级 概 览 . <BR> 玩 家 可 以 使 用 合 适 的 材 料 和 裁 缝 等 级 修 补 衣 物 上 的 破 洞 , 甚 至 可 以 通 过 打 补 丁 的 方 式 增 强 防 护 . 只 需 选 中 物 品 栏 中 的 衣 物 , 然 后 在 <JOYPAD:AButton, 28, 28> 菜 单 中 选 中 " 检 查 " 即 可 . 只 要 物 品 栏 中 有 合 适 的 布 条 以 及 针 线 就 行 . <LINE> <BR> <IMAGECENTRE:media/ui/spiffo/tailoring.png> <BR>" .., 
 
     SurvivalGuide_Joypad_entrie12title = "#12 - 搜 寻 物 品 ",
-    SurvivalGuide_Joypad_entrie12txt = " <CENTRE> "<SIZE:large> #12 - 搜 寻 物 品 <LINE> <IMAGECENTRE:media/ui/spiffo/spiffoSurvivor2.png> <LINE> <SIZE:medium> 世 界 充 满 了 有 用 的 东 西 , 如 果 你 知 道 在 哪 里 ( 以 及 何 时 , 如 何 ) 寻 找 ! <LINE><LINE> 浆 果 , 蘑 菇 , 石 头 … 如 果 你 在 正 确 的 地 方 寻 找 , 谁 知 道 你 会 发 现 什 么 呢 ? ",
+    SurvivalGuide_Joypad_entrie12txt = " <CENTRE> "<SIZE:large> #12 - 搜 寻 物 品 <LINE> <IMAGECENTRE:media/ui/spiffo/spiffoSurvivor2.png> <LINE> <SIZE:medium> 世 界 充 满 了 有 用 的 东 西 , 如 果 你 知 道 在 哪 里 ( 以 及 何 时 , 如 何 ) 寻 找 ! <LINE><LINE> 浆 果 , 蘑 菇 , 石 头 … 如 果 你 在 正 确 的 地 方 寻 找 , 谁 知 道 你 会 发 现 什 么 呢 ?",
     SurvivalGuide_Joypad_entrie12moreinfo = " <H1> 搜 寻 系 统 <BR> " ..
                                      " <TEXT> <SIZE:small>" ..
                                      " 调 查 区 域 窗 口 会 显 示 你 的 区 域 . 这 会 影 响 可 找 到 的 物 品 ." ..
@@ -207,7 +207,7 @@ SurvivalGuide_CN = {
                                      " 例 如 , 垃 圾 可 以 在 垃 圾 堆 中 找 到 , 而 碎 石 经 常 出 现 在 道 路 的 裂 缝 和 坑 洞 中 . <LINE> <LINE> ",}
 
     SurvivalGuide_entrie13title = "#13 - 畜牧养殖",
-    SurvivalGuide_entrie13txt = " <CENTRE> "<SIZE:large> #13 - 畜 牧 养 殖 <LINE> <IMAGECENTRE:media/ui/spiffo/spiffoSurvivor2.png> <LINE> <SIZE:medium> 人 类 可 能 会 灭 绝 , 但 动 物 绝 对 不 会 ! ",
+    SurvivalGuide_entrie13txt = " <CENTRE> "<SIZE:large> #13 - 畜 牧 养 殖 <LINE> <IMAGECENTRE:media/ui/spiffo/spiffoSurvivor2.png> <LINE> <SIZE:medium> 人 类 可 能 会 灭 绝 , 但 动 物 绝 对 不 会 !",
     SurvivalGuide_entrie13moreinfo = " <H1> 农 场 动 物 <LINE>" ..
                                      " <TEXT> <SIZE:small>" ..
                                      " 农 场 动 物 包 括 牛 , 羊 , 猪 和 鸡 等 家 养 动 物 . 有 时 , 你 会 在 旧 农 场 里 发 现 一 些 牲 畜 , 但 如 果 没 有 你 的 帮 助 , 它 们 很 可 能 会 饿 死 . <BR>" ..
@@ -232,7 +232,7 @@ SurvivalGuide_CN = {
                                      " 杀 死 野 生 动 物 或 农 场 动 物 后 , 必 须 用 刀 屠 宰 其 尸 体 以 获 取 肉 和 其 他 材 料 . <LINE> <LINE> ",
 
     SurvivalGuide_Joypad_entrie13title = "#13 - 畜 牧 养 殖 ",
-    SurvivalGuide_Joypad_entrie13txt = " <CENTRE> "<SIZE:large> #12 - 畜 牧 养 殖 <LINE> <IMAGECENTRE:media/ui/spiffo/spiffoSurvivor2.png> <LINE> <SIZE:medium> 人 类 可 能 会 灭 绝 , 但 动 物 绝 对 不 会 ! ",
+    SurvivalGuide_Joypad_entrie13txt = " <CENTRE> "<SIZE:large> #12 - 畜 牧 养 殖 <LINE> <IMAGECENTRE:media/ui/spiffo/spiffoSurvivor2.png> <LINE> <SIZE:medium> 人 类 可 能 会 灭 绝 , 但 动 物 绝 对 不 会 !",
     SurvivalGuide_Joypad_entrie13moreinfo = " <H1> 农 场 动 物 <LINE>" ..
                                      " <TEXT> <SIZE:small>" ..
                                      " 农 场 动 物 包 括 牛 , 羊 , 猪 和 鸡 等 家 养 动 物 . 有 时 , 你 会 在 旧 农 场 里 发 现 一 些 牲 畜 , 但 如 果 没 有 你 的 帮 助 , 它 们 很 可 能 会 饿 死 . <BR>" ..
@@ -257,7 +257,7 @@ SurvivalGuide_CN = {
                                      " 杀 死 野 生 动 物 或 农 场 动 物 后 , 必 须 用 刀 屠 宰 其 尸 体 以 获 取 肉 和 其 他 材 料 . <LINE> <LINE> ",
 
     SurvivalGuide_entrie14title = "#14 - 钓鱼大师",
-    SurvivalGuide_entrie14txt = " <CENTRE> "<SIZE:large> #14 - 钓 鱼 大 师 <LINE> <IMAGECENTRE:media/ui/spiffo/spiffoSurvivor2.png> <LINE> <SIZE:medium> 注 意 气 泡 ! ",
+    SurvivalGuide_entrie14txt = " <CENTRE> "<SIZE:large> #14 - 钓 鱼 大 师 <LINE> <IMAGECENTRE:media/ui/spiffo/spiffoSurvivor2.png> <LINE> <SIZE:medium> 注 意 气 泡 !",
     SurvivalGuide_entrie14moreinfo = " <H1> 钓 鱼 <LINE>" ..
                                      " <TEXT> <SIZE:small>" ..
                                      " 钓 鱼 需 要 鱼 竿 或 渔 网 . 鱼 竿 需 要 一 根 鱼 线 和 一 个 鱼 钩 来 制 作 , 而 鱼 线 和 鱼 钩 都 可 能 断 掉 . 鱼 竿 还 需 要 装 上 钓 饵 来 吸 引 鱼 ." ..
@@ -268,7 +268,7 @@ SurvivalGuide_CN = {
                                      " 鱼 的 数 量 会 受 到 天 气 , 时 间 , 附 近 噪 音 等 因 素 的 影 响 . 过 度 捕 捞 也 会 导 致 某 个 区 域 的 鱼 群 减 少 . <BR> 你 也 可 以 制 作 散 饵 来 吸 引 更 多 鱼 . 右 键 单 击 地 面 上 的 沙 子 可 以 创 建 一 个 " 饵 托 ". 然 后 在 你 的 物 品 栏 中 右 键 单 击 鱼 饵 , 添 加 鱼 饵 . 右 键 单 击 一 片 水 域 , 然 后 选 择 将 鱼 饵 扔 进 去 .",
 
     SurvivalGuide_Joypad_entrie14title = "#14 - 钓 鱼 大 师 ",
-    4SurvivalGuide_Joypad_entrie14txt = " <CENTRE> "<SIZE:large> #14 - 钓 鱼 大 师 <LINE> <IMAGECENTRE:media/ui/spiffo/spiffoSurvivor2.png> <LINE> <SIZE:medium> 人 类 可 能 会 灭 绝 , 但 动 物 绝 对 不 会 ! ",
+    SurvivalGuide_Joypad_entrie14txt = " <CENTRE> "<SIZE:large> #14 - 钓 鱼 大 师 <LINE> <IMAGECENTRE:media/ui/spiffo/spiffoSurvivor2.png> <LINE> <SIZE:medium> 人 类 可 能 会 灭 绝 , 但 动 物 绝 对 不 会 !",
     SurvivalGuide_Joypad_entrie14moreinfo = " <H1> 钓 鱼 <LINE>" ..
                                      " <TEXT> <SIZE:small>" ..
                                      " 钓 鱼 需 要 鱼 竿 或 渔 网 . 它 们 可 以 在 世 界 中 找 到 , 也 可 以 在 有 合 适 的 配 方 的 情 况 下 制 作 . 鱼 竿 需 要 一 根 鱼 线 和 一 个 鱼 钩 来 制 作 , 而 鱼 线 和 鱼 钩 都 可 能 断 掉 . 鱼 竿 还 需 要 装 上 钓 饵 来 吸 引 鱼 ." ..

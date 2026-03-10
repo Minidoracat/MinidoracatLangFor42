@@ -16,7 +16,7 @@ MakeUp_CH = {
     MakeUpType_EyeShadowLightBlue = "淺藍色眼影",
     MakeUpType_EyeShadowBlue = "藍色眼影",
     MakeUpType_EyeShadowRed = "紅色眼影",
-    MakeUpType_EyeShadowPink = "粉紅色眼影",
+    MakeUpType_EyeShadowPink = "粉色眼影",
     MakeUpType_EyeShadowGreen = "綠色眼影",
     MakeUpType_EyeShadowYellow = "黃色眼影",
 
@@ -33,6 +33,6 @@ MakeUp_CH = {
     MakeUpType_LipsBlue = "藍色唇膏",
     MakeUpType_LipsBlack = "黑色唇膏",
     MakeUpType_LipsGreen = "綠色唇膏",
-    MakeUpType_LipsPink = "粉紅色唇膏",
+    MakeUpType_LipsPink = "粉色唇膏",
 }
 

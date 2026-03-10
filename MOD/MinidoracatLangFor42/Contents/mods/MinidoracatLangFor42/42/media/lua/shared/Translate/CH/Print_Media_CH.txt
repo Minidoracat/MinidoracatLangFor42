@@ -52,7 +52,7 @@ Print_Media_KnoxKnews_July2_info = "<type:parent, width:805, height:910>"..
 "<type:texture, x:404, y:24, width:367, height:97, r:200/255, g:200/255, b:200/255>"..
 "<type:texture, texture:getTexture("media/textures/printMedia/NewspaperPics/paper_stains_1.png"), width:789, height:900, pivotX:1, pivotY:1, scaleX:-1, scaleY:-1, angle:0, a:0.4>"..
 "<type:text, x:35, y:35, r:0, g:0, b:0, a:0.9, scaleX:0.75, scaleY:0.75, textLeading:-4, font:UIFont.SdfOldBold> 迪 莉 婭 號 無 限 期 停 泊 在 勃 蘭 登 堡 ""..
-"<type:text, x:35+380, y:35, r:0, g:0, b:0, a:0.9, scaleX:0.75, scaleY:0.75, textLeading:-4, font:UIFont.SdfOldBold> 聖 堂 山 馬 場 計 劃 修 建 弗 吉 尼 亞 賽 道 "..
+"<type:text, x:35+380, y:35, r:0, g:0, b:0, a:0.9, scaleX:0.75, scaleY:0.75, textLeading:-4, font:UIFont.SdfOldBold> 聖 堂 山 跑 馬 場 計 劃 修 建 弗 吉 尼 亞 賽 道 "..
 "<type:text, x:180, y:95, r:0, g:0, b:0, a:0.9, scaleX:0.6, scaleY:0.6, textLeading:-4, font:UIFont.SdfOldBold> 參 見 第 2 頁 "..
 "<type:text, x:180+380, y:95, r:0, g:0, b:0, a:0.9, scaleX:0.6, scaleY:0.6, textLeading:-4, font:UIFont.SdfOldBold> 參 見 第 4 頁 "..
 "<type:text, x:410, y:135, r:0, g:0, b:0, a:1, pivotX:0.5, scaleX:0.7, scaleY:0.7, font:UIFont.SdfOldBold> 周 五 "..
@@ -75,7 +75,7 @@ Print_Media_KnoxKnews_July2_info = "<type:parent, width:805, height:910>"..
 "<type:texture, texture:getTexture("media/textures/printMedia/logos/kk.png"), width:675, height:200, x:790/2, y:200, pivotX:0.5, pivotY:0.5, a:0.9>"..
 "<type:texture, texture:getTexture("media/textures/printMedia/NewspaperPics/KK_Gradient_1.png"), width:789, height:901, pivotX:0.0004, pivotY:0.0004, a:1>",
 
-Print_Media_KnoxKnews_July3_title = "Knox Knews - 1993年7月3日",
+Print_Media_KnoxKnews_July3_title = "諾克斯新聞 - 1993年7月3日",
 
 Print_Media_KnoxKnews_July3_info = "<type:parent, width:805, height:910>"..
 "<type:texture, width:794, height:900, pivotX:-0.01, pivotY:0, angle:0.1, r:145/255.0, g:145/255.0, b:145/255.0>"..
@@ -137,7 +137,7 @@ Print_Media_KnoxKnews_July4_info = "<type:parent, width:805, height:910>"..
 "<type:text, x:22, y:285, r:0, g:0, b:0, a:0.9, pivotX:0, pivotY:0, scaleX:1.2, scaleY:1.2, textLeading:-4, font:UIFont.SdfOldBold> 陸 軍 稱 墜 機 事 件 後 " 不 會 對 公 眾 造 成 危 險 ""..
 "<type:text, x:295, y:615, r:0, g:0, b:0, a:0.9, scaleX:0.5, scaleY:0.5, font:UIFont.SdfOldBoldItalic> 現 場 已 被 軍 方 封 鎖 保 護 ."..
 "<type:text, x:25, y:470, r:0, g:0, b:0, a:0.9, scaleX:0.6, scaleY:0.6, autoWidth:247/0.6, textLeading:3, font:UIFont.SdfOldRegular> 三 月 嶺 社 區 - 周 六 下 午 約 3 點 15 分 , 一 輛 載 有 危 險 廢 物 的 軍 用 卡 車 在 三 月 嶺 社 區 以 北 翻 車 . 卡 車 裝 載 的 物 品 未 向 公 眾 披 露 , 但 尼 爾 · 奧 馬 利 上 校 表 示 , " 這 些 材 料 雖 然 因 操 作 原 因 需 要 保 密 , 但 幾 乎 不 會 對 公 眾 構 成 危 害 . "^ 目 擊 者 稱 , 卡 車 在 60 號 公 路 上 失 控 , 在 農 產 品 超 市 以 南 , 險 些 撞 上 一 輛 過 往 車 輛 後 滑 進 草 地 , 最 終 在 路 堤 翻 車 . 官 員 們 沒 有 否 認 卡 車 超 載 . ^ 這 是 諾 克 斯 地 區 發 生 的 多 起 涉 及 危 險 材 料 的 事 件 之 一 . 環 保 人 士 批 評 標 準 " 過 於 寬 松 ", 彈 藥 儲 存 不 當 產 生 的 有 毒 化 學 物 質 和 化 合 物 是 諾 克 斯 地 區 呼 吸 系 統 疾 病 發 病 率 高 於 平 均 水 平 的 原 因 . 州 議 員 最 近 廢 除 了 幾 項 環 境 法 , 這 一 舉 措 … ( 續 第 2 頁 )"..
-"<type:text, x:305, y:640, r:0, g:0, b:0, a:0.9, pivotX:0, pivotY:0, scaleX:0.8, scaleY:0.8, textLeading:-4, font:UIFont.SdfOldBold>Speedway 賽 道 可 以 舉 辦 X 級 方 程 式 賽 車 比 賽 "..
+"<type:text, x:305, y:640, r:0, g:0, b:0, a:0.9, pivotX:0, pivotY:0, scaleX:0.8, scaleY:0.8, textLeading:-4, font:UIFont.SdfOldBold>Speedway 賽 道 有 望 舉 辦 極 限 方 程 式 賽 車 比 賽 "..
 "<type:text, x:305, y:716, r:0, g:0, b:0, a:0.9, scaleX:0.6, scaleY:0.6, autoWidth:217/0.6, textLeading:3, font:UIFont.SdfOldRegular> 歐 文 頓 - 方 程 式 · X 賽 事 組 織 者 初 步 確 認 歐 文 頓 Speedway 賽 道 將 作 為 1996 年 美 國 大 獎 賽 舉 辦 地 . 盡 管 仍 在 協 商 中 , 但 官 員 們 個 人 更 傾 向 於 該 賽 道 , 因 為 它 靠 近 路 易 斯 維 爾 , 設 計 新 穎 , 且 當 局 持 開 放 態 度 … ( 續 第 4 頁 )"..
 "<type:text, x:550, y:640, r:0, g:0, b:0, a:0.9, pivotX:0, pivotY:0, scaleX:0.8, scaleY:0.8, textLeading:-4, font:UIFont.SdfOldBold> 諾 克 斯 新 聞 祝 您 獨 立 日 快 樂 ! "..
 "<type:text, x:550, y:732, r:0, g:0, b:0, a:0.9, scaleX:0.6, scaleY:0.6, autoWidth:220/0.6, textLeading:3, font:UIFont.SdfOldRegular> 克 斯 新 聞 - 在 諾 克 斯 新 聞 能 連 續 度 過 兩 個 7 月 4 日 是 我 的 榮 幸 . 我 們 希 望 讀 者 們 度 過 美 好 的 一 天 , 銘 記 美 國 建 國 歷 史 , 並 暢 想 它 未 來 的 模 樣 . ^ 順 致 最 誠 摯 的 祝 福 ^ 伊 恩 · J · 麥 卡 羅 克 ^ 總 編 輯 "..
@@ -709,7 +709,7 @@ Print_Media_LouisvilleSunTimes_July13_info = "<type:parent, width:820, height:81
 "<type:texture, width:789, height:300, x:0, y:-100, texture:getTexture("media/textures/printMedia/logos/LST.png")>"..
 "<type:texture, texture:getTexture("media/textures/printMedia/NewspaperPics/KK_Gradient_1.png"), width:805, height:801, pivotX:0.0004, pivotY:0.0004, a:1>",
 
-Print_Media_LouisvilleSunTimes_July14_title = "Louisville Sun Times - 1993年7月14日",
+Print_Media_LouisvilleSunTimes_July14_title = "路易斯維爾太陽時報 - 1993年7月14日",
 
 Print_Media_LouisvilleSunTimes_July14_info = "<type:parent, width:820, height:810>"..
 "<type:texture, width:805, height:800, pivotX:-0.012, pivotY:0, angle:0.2, r:145/255.0, g:145/255.0, b:145/255.0>"..
@@ -734,7 +734,7 @@ Print_Media_LouisvilleSunTimes_July14_info = "<type:parent, width:820, height:81
 "<type:text, x:30, y:135, r:1, g:1, b:1, a:1, pivotX:0, pivotY:0, scaleX:1.5, scaleY:1.5, textLeading:-22, shadow: true, outlineThick:0.3, outlineColorR:0, outlineColorG:0, outlineColorB:0, outlineColorA:1, font:UIFont.SdfRobertoSans> 總 統 離 開 華 盛 頓 - · " 你 們 只 能 靠 自 己 了 !""..
 "<type:text, x:450, y:490, r:1, g:1, b:1, a:1, pivotX:0, pivotY:0, scaleX:0.67, scaleY:0.67, textLeading:-12, shadow: true, outlineThick:0.6, outlineColorR:0, outlineColorG:0, outlineColorB:0, outlineColorA:1, font:UIFont.SdfRobertoSans>" 諾 克 斯 病 毒 "^ 通 過 體 液 傳 播 "..
 "<type:text, x:450, y:580, r:1, g:1, b:1, a:1, pivotX:0, pivotY:0, scaleX:0.67, scaleY:0.67, textLeading:-12, shadow: true, outlineThick:0.6, outlineColorR:0, outlineColorG:0, outlineColorB:0, outlineColorA:1, font:UIFont.SdfRobertoSans> 隔 離 區 軍 方 釋 放 被 扣 押 平 民 "..
-"<type:text, x:450, y:670, r:1, g:1, b:1, a:1, pivotX:0, pivotY:0, scaleX:0.67, scaleY:0.67, textLeading:-12, shadow: true, outlineThick:0.6, outlineColorR:0, outlineColorG:0, outlineColorB:0, outlineColorA:1, font:UIFont.SdfRobertoSans> 信 號 ^ 受 干 擾 中 斷 "..
+"<type:text, x:450, y:670, r:1, g:1, b:1, a:1, pivotX:0, pivotY:0, scaleX:0.67, scaleY:0.67, textLeading:-12, shadow: true, outlineThick:0.6, outlineColorR:0, outlineColorG:0, outlineColorB:0, outlineColorA:1, font:UIFont.SdfRobertoSans> 信 號 ^ 受 干擾 中 斷 "..
 "<type:texture, x:420, y:505, width:22, height:22, r:199/255, g:37/255, b:37/255, a:1>"..
 "<type:texture, x:420, y:595, width:22, height:22, r:199/255, g:37/255, b:37/255, a:1>"..
 "<type:texture, x:420, y:685, width:22, height:22, r:199/255, g:37/255, b:37/255, a:1>"..
@@ -844,7 +844,7 @@ Print_Media_Fossoil8_title = "福索石油 (南路易斯維爾)",
 
 Print_Media_Delilah_title = "迪莉婭號蒸汽船",
 
-Print_Media_ChapelmountDownsRacetrack_title = "聖堂山馬場賽道",
+Print_Media_ChapelmountDownsRacetrack_title = "聖堂山跑馬場賽道",
 
 Print_Media_BensCabin_title = "小屋出租 (西點)",
 

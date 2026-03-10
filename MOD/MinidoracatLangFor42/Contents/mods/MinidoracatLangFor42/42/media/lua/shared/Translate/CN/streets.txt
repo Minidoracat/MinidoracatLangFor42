@@ -4129,7 +4129,7 @@
             <point x="12471.0" y="3089.0"/>
         </points>
     </street>
-    <street name="圣堂山马场" width="9">
+    <street name="圣堂山跑马场" width="9">
         <points>
             <point x="12072.0" y="2571.5"/>
             <point x="12458.0" y="2571.5"/>
@@ -5745,7 +5745,7 @@
             <point x="1647.5" y="7955.0"/>
         </points>
     </street>
-    <street name="营地通道路" width="3">
+    <street name="营地辅路" width="3">
         <points>
             <point x="2281.0" y="10848.0"/>
             <point x="2280.5" y="10587.5"/>
@@ -6527,7 +6527,7 @@
             <point x="14700.0" y="3916.0"/>
         </points>
     </street>
-    <street name="中场通道路" width="8">
+    <street name="中场辅路" width="8">
         <points>
             <point x="15325.0" y="3322.0"/>
             <point x="15325.0" y="3113.0"/>
@@ -7046,7 +7046,7 @@
             <point x="13421.0" y="1950.0"/>
         </points>
     </street>
-    <street name="粘土街" width="3">
+    <street name="黏土街" width="3">
         <points>
             <point x="13364.0" y="1801.5"/>
             <point x="13490.0" y="1801.5"/>
@@ -8459,7 +8459,7 @@
             <point x="12999.0" y="1357.0"/>
         </points>
     </street>
-    <street name="圣堂山马场通道路" width="5">
+    <street name="圣堂山跑马场辅路" width="5">
         <points>
             <point x="12506.0" y="2699.0"/>
             <point x="12431.0" y="2699.0"/>
@@ -8555,7 +8555,7 @@
             <point x="12349.0" y="3600.0"/>
         </points>
     </street>
-    <street name="圣堂山马场后路" width="7">
+    <street name="圣堂山跑马场后路" width="7">
         <points>
             <point x="12072.0" y="2819.5"/>
             <point x="12095.5" y="2819.5"/>
@@ -8569,7 +8569,7 @@
             <point x="12517.5" y="2398.0"/>
         </points>
     </street>
-    <street name="车站通道路" width="7">
+    <street name="车站辅路" width="7">
         <points>
             <point x="12520.0" y="2512.5"/>
             <point x="12710.0" y="2512.5"/>

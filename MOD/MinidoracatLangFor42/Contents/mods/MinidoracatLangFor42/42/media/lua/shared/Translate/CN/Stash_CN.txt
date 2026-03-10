@@ -34,7 +34,7 @@ Stash_CN = {
     Stash_LVMap5_Text2 = "如果你需要帮助就去找他们!",
     Stash_LVMap5_Text3 = "我们看到了那些东西",
     Stash_LVMap5_Text4 = "它们都在健身房旁边",
-    Stash_LVMap5_Text5 = "晚上哪儿也别去! ",
+    Stash_LVMap5_Text5 = "晚上哪儿也别去!",
 
     Stash_LVMap6_Text1 = "金窝银窝, 不如自己的狗窝",
 
@@ -47,7 +47,7 @@ Stash_CN = {
     Stash_LVMap8_Text2 = "快点拿这些药",
     Stash_LVMap8_Text3 = "它们都在这里, 别去",
 
-    Stash_LVMap9_Text1 = "这里有枪支和食物! ",
+    Stash_LVMap9_Text1 = "这里有枪支和食物!",
     Stash_LVMap9_Text2 = "不要在树中迷路",
     Stash_LVMap9_Text3 = "那些东西也在里面",
 
@@ -81,7 +81,7 @@ Stash_CN = {
 
     Stash_LVMap15_Text1 = "如果有谁发现了这张地图, 我是娜塔莉·西格蒙德森",
     Stash_LVMap15_Text2 = "路易斯安那州立大学艺术史讲师",
-    Stash_LVMap15_Text3 = "我已经死了, 但我有一个最后的请求",
+    Stash_LVMap15_Text3 = "我已经死了, 但我有个遗愿.",
     Stash_LVMap15_Text4 = "只有每个人都放任不管时, 世界末日才会真的到来.",
     Stash_LVMap15_Text5 = "我们必须保护美术馆中的珍品",
     Stash_LVMap15_Text6 = "否则, 我们就真的一无所有了",
@@ -97,48 +97,48 @@ Stash_CN = {
 
     Stash_MulMap1_Text1 = "这里的地板下藏有某些东西.",
     Stash_MulMap1_Text2 = "",
-    Stash_MulMap1_Text3 = "一群僵尸? ",
+    Stash_MulMap1_Text3 = "一群僵尸?",
 
-    Stash_MulMap2_Text1 = "远离这里! ",
+    Stash_MulMap2_Text1 = "远离这里!",
     Stash_MulMap2_Text2 = "",
     Stash_MulMap2_Text3 = "",
 
     Stash_MulMap3_Text1 = "这里藏着霰弹枪和弹药.",
-    Stash_MulMap3_Text2 = "一些工具! ",
+    Stash_MulMap3_Text2 = "一些工具!",
     Stash_MulMap3_Text3 = "很多东西在这里.",
 
     Stash_MulMap4_Text1 = "这儿比较容易出去",
     Stash_MulMap4_Text2 = "医疗物资.",
     Stash_MulMap4_Text3 = "它们全都聚在这里",
 
-    Stash_MulMap6_Text1 = "我不想再回到这地狱一般的地方! ",
+    Stash_MulMap6_Text1 = "我不想再回到这地狱一般的地方!",
     Stash_MulMap6_Text2 = "医疗物资在这",
     Stash_MulMap6_Text21 = "这里应该有有一些抗生素和绷带.",
-    Stash_MulMap6_Text3 = "看到一群僵尸正朝这里行进! ",
+    Stash_MulMap6_Text3 = "看到一群僵尸正朝这里行进!",
 
     Stash_MulMap7_Text1 = "B 计划.",
     Stash_MulMap7_Text2 = "商店, 仍然有很多资源.",
-    Stash_MulMap7_Text3 = "搞砸了! ",
+    Stash_MulMap7_Text3 = "搞砸了!",
 
     Stash_MulMap8_Text1 = "把我埋了吧 - 上帝保佑.",
     Stash_MulMap8_Text2 = "",
     Stash_MulMap8_Text3 = "有一大堆僵尸在这待了好几天",
 
-    Stash_MulMap10_Text1 = "死亡小屋! ",
+    Stash_MulMap10_Text1 = "死亡小屋!",
     Stash_MulMap10_Text2 = "",
     Stash_MulMap10_Text3 = "这儿看起来啥都没有",
 
-    Stash_MulMap11_Text1 = "浣熊餐厅里有些枪! ",
+    Stash_MulMap11_Text1 = "浣熊餐厅里有些枪!",
     Stash_MulMap11_Text2 = "",
-    Stash_MulMap11_Text3 = "一些麻烦! ",
+    Stash_MulMap11_Text3 = "一些麻烦!",
 
     Stash_MulMap12_Text1 = "这里有霰弹枪, 也许还有些吃的在厨房里",
     Stash_MulMap12_Text2 = "",
-    Stash_MulMap12_Text3 = "大量僵尸! ",
+    Stash_MulMap12_Text3 = "大量僵尸!",
 
     Stash_MulMap13_Text1 = "不得不放弃了一些东西, 太重了.",
     Stash_MulMap13_Text2 = "五金店里还有很多物资.",
-    Stash_MulMap13_Text3 = "枪声! ",
+    Stash_MulMap13_Text3 = "枪声!",
 
     Stash_MulMap14_Text1 = "安全屋 - 建造路障!",
     Stash_MulMap14_Text2 = "到处都是",
@@ -159,23 +159,23 @@ Stash_CN = {
     Stash_MulMap18_Text11 = "听说他已经变成了它们中的一员",
     Stash_MulMap18_Text12 = "希望他所有的枪都还在",
 
-    Stash_MulMap19_Text1 = "我们所需要的一切! "
+    Stash_MulMap19_Text1 = "我们所需要的一切!",
 
     Stash_WpMap1_Text1 = "这肯定是他住的地方.",
-    Stash_WpMap1_Text2 = "僵尸太多, 无法处理, 谨慎使用枪支! ",
+    Stash_WpMap1_Text2 = "僵尸太多, 无法处理, 谨慎使用枪支!",
 
     Stash_WpMap2_Text1 = "可能有人住在这里.",
     Stash_WpMap2_Text2 = "医疗中心.",
     Stash_WpMap2_Text3 = "看到她在这附件徘徊, 并没有带着枪",
 
-    Stash_WpMap4_Text1 = "勇敢点. 我爱你们! ",
+    Stash_WpMap4_Text1 = "勇敢点. 我爱你们!",
     Stash_WpMap4_Text3 = "梅根已经成为了它们的一员了",
     Stash_WpMap4_Text31 = "别过去",
 
     Stash_WpMap5_Text1 = "工具",
     Stash_WpMap5_Text11 = "我爱你",
     Stash_WpMap5_Text2 = "",
-    Stash_WpMap5_Text3 = "麻烦! ",
+    Stash_WpMap5_Text3 = "麻烦!",
 
     Stash_WpMap6_Text1 = "我现在不再需要这些了, 祝你好运.",
     Stash_WpMap6_Text2 = "",
@@ -189,19 +189,19 @@ Stash_CN = {
     Stash_WpMap9_Text2 = "",
     Stash_WpMap9_Text3 = "爸爸的尸体",
 
-    Stash_WpMap10_Text1 = "各种混乱! ",
+    Stash_WpMap10_Text1 = "各种混乱!",
     Stash_WpMap10_Text2 = "",
-    Stash_WpMap10_Text3 = "更多麻烦! ",
+    Stash_WpMap10_Text3 = "更多麻烦!",
 
     Stash_WpMap11_Text1 = "浣熊餐厅的经理曾留了一把霰弹枪在店里.",
     Stash_WpMap11_Text11 = "鬼知道这儿有什么 ",
     Stash_WpMap11_Text2 = "没有人来过的五金店.",
-    Stash_WpMap11_Text3 = "避免靠近这里, 别来找我! ",
+    Stash_WpMap11_Text3 = "避免靠近这里, 别来找我!",
 
     Stash_WpMap12_Text1 = "办公室的每个人都发烧了.",
     Stash_WpMap12_Text11 = "在它们复活之前我就离开了.",
     Stash_WpMap12_Text2 = "枪店",
-    Stash_WpMap12_Text3 = "大量僵尸! ",
+    Stash_WpMap12_Text3 = "大量僵尸!",
 
     Stash_WpMap13_Text1 = "霰弹枪击杀数: 12",
     Stash_WpMap13_Text2 = "斧头击杀数: 20",
@@ -224,7 +224,7 @@ Stash_CN = {
 
     Stash_MarchRidgeMap1_Text1 = "枪在这里.",
     Stash_MarchRidgeMap1_Text2 = "",
-    Stash_MarchRidgeMap1_Text3 = "不要去这里! ",
+    Stash_MarchRidgeMap1_Text3 = "不要去这里!",
     Stash_MarchRidgeMap2_Text1 = "我留了一把手枪给你",
     Stash_MarchRidgeMap2_Text2 = "商店看起来还有一些补给品.",
     Stash_MarchRidgeMap2_Text3 = "它们在迁移吗? 好像要去这里.",
@@ -235,8 +235,8 @@ Stash_CN = {
 
     Stash_MarchRidgeMap4_Text1 = "如果你能在尸变之前到这里的话, 可以拿走这里的物资",
     Stash_MarchRidgeMap4_Text11 = "没准有一些帮助. 我们会一起回来. 如果可能的话",
-    Stash_MarchRidgeMap4_Text2 = "你会在这儿找到我的尸体, 我爱你们! ",
-    Stash_MarchRidgeMap4_Text3 = "但愿上帝保佑, 千万别去这里! ",
+    Stash_MarchRidgeMap4_Text2 = "你会在这儿找到我的尸体, 我爱你们!",
+    Stash_MarchRidgeMap4_Text3 = "但愿上帝保佑, 千万别去这里!",
 
     Stash_MarchRidgeMap5_Text1 = "这里有一些能当武器用的玩意儿",
     Stash_MarchRidgeMap5_Text2 = "医疗中心",
@@ -248,14 +248,14 @@ Stash_CN = {
 
     Stash_MarchRidgeMap7_Text1 = "我想他就藏在那里.",
     Stash_MarchRidgeMap7_Text2 = "",
-    Stash_MarchRidgeMap7_Text3 = "他在这里, 没有被咬, 不过仍在发烧! ",
+    Stash_MarchRidgeMap7_Text3 = "他在这里, 没有被咬, 不过仍在发烧!",
 
     Stash_MarchRidgeMap8_Text1 = "把我的旧工具留在这里",
     Stash_MarchRidgeMap8_Text2 = "不再需要它们",
 
     Stash_MarchRidgeMap9_Text1 = "欢迎幸存者加入我们",
     Stash_MarchRidgeMap9_Text2 = "需要更多的食物, 枪支和其他东西",
-    Stash_MarchRidgeMap9_Text3 = "在牺牲之前杀了一些! ",
+    Stash_MarchRidgeMap9_Text3 = "在牺牲之前杀了一些!",
 
     Stash_MarchRidgeMap10_Text1 = "祝福善良的灵魂",
     Stash_MarchRidgeMap10_Text2 = "愿你再远离地狱一段时间",
@@ -321,8 +321,8 @@ Stash_CN = {
 
     Stash_BBurgMap2_Text1 = "社区中心",
 
-    Stash_BBurgMap3_Text1 = "亚瑟的枪? ",
-    Stash_BBurgMap3_Text2 = "废弃的餐馆"
+    Stash_BBurgMap3_Text1 = "亚瑟的枪?",
+    Stash_BBurgMap3_Text2 = "废弃的餐馆",
 
     Stash_BBurgMap4_Text1 = "妈妈的拖车",
     Stash_BBurgMap4_Text2 = "记住: 一口即致命",
@@ -334,7 +334,7 @@ Stash_CN = {
     Stash_BBurgMap6_Text2 = "我真的很抱歉",
 
     Stash_BBurgMap7_Text1 = "那些混蛋不让我进去",
-    Stash_BBurgMap7_Text2 = "把它们全杀了! ",
+    Stash_BBurgMap7_Text2 = "把它们全杀了!",
 
     Stash_BBurgMap8_Text1 = "奥利弗, 我搬到这里了, 靠近勃兰登堡",
     Stash_BBurgMap8_Text2 = "妈妈生病了. 我不想让她变成那样",
@@ -342,19 +342,19 @@ Stash_CN = {
     Stash_BBurgMap8_Text4 = "我会解释一切",
 
     Stash_EkronStashMap1_Text1 = "旧工厂",
-    Stash_EkronStashMap1_Text2 = "工具? ",
+    Stash_EkronStashMap1_Text2 = "工具?",
 
     Stash_EkronMap2_Text1 = "蔬菜",
 
     Stash_EkronMap3_Text1 = "货物",
 
     Stash_EkronMap5_Text1 = "学校",
-    Stash_EkronMap5_Text2 = "援助"
-    Stash_EkronMap5_Text3 = "太晚了, 别费劲了"
+    Stash_EkronMap5_Text2 = "援助",
+    Stash_EkronMap5_Text3 = "太晚了, 别费劲了",
 
     Stash_EkronMap6_Text1 = "如果你看到这条信息",
-    Stash_EkronMap6_Text2 = "去死吧! ! ",
-    Stash_EkronMap6_Text3 = "喝漂白剂吧! ! ",
+    Stash_EkronMap6_Text2 = "去死吧!!",
+    Stash_EkronMap6_Text3 = "喝下漂白剂吧!!",
 
     Stash_EkronMap7_Text1 = "以革伦",
 
@@ -389,7 +389,7 @@ Stash_CN = {
     Stash_IrvingtonMap8_Text3 = "我不会是唯一剩下的人",
 
     Stash_IrvingtonMap9_Text1 = "我们可以在这里加强防御",
-    Stash_IrvingtonMap9_Text2 = "一切都会好起来的! ",
+    Stash_IrvingtonMap9_Text2 = "一切都会好起来的!",
 
     Stash_IrvingtonMap10_Text1 = "欧文顿",
     Stash_IrvingtonMap10_Text2 = "我们会在这里",
@@ -398,7 +398,7 @@ Stash_CN = {
     Stash_WorldMap1_Text2 = "慢点开车",
 
     Stash_WorldMap2_Text1 = "很好的基地",
-    Stash_WorldMap2_Text11 = "到达时先设置路障! ",
+    Stash_WorldMap2_Text11 = "到达时先设置路障!",
     Stash_WorldMap2_Text12 = "给你藏了一些枪",
 
     Stash_WorldMap3_Text1 = "这里有丙烷罐",
@@ -425,7 +425,7 @@ Stash_CN = {
     Stash_WorldMap9_Text3 = "办公室, 什么都没有",
     Stash_WorldMap9_Text4 = "仓库",
     Stash_WorldMap9_Text5 = "马尔德劳",
-    Stash_WorldMap9_Text6 = "这里的火车全都没法开? ? ? ",
+    Stash_WorldMap9_Text6 = "这里的火车全都没法开? ? ?",
 
     Stash_WorldMap10_Text1 = "加油站",
     Stash_WorldMap10_Text2 = "服装店",
@@ -456,7 +456,7 @@ Stash_CN = {
     Stash_WorldMap17_Text2 = "V 将在 23: 15 时完全关闭探测器",
     Stash_WorldMap17_Text21 = "不要分心! 带上你的地图, 出去",
 
-    Stash_WorldMap19_Text1 = "顽固的杂种! ",
+    Stash_WorldMap19_Text1 = "顽固的杂种!",
     Stash_WorldMap19_Text11 = "如果你死了, 我永远不会原谅你!!!",
     Stash_WorldMap19_Text12 = "你可能会活过这周",
 
@@ -464,7 +464,7 @@ Stash_CN = {
     Stash_WorldMap20_Text2 = "混蛋",
     Stash_WorldMap20_Text3 = "蠢货",
 
-    Stash_WorldMap22_Text1 = "很好的基地! ",
+    Stash_WorldMap22_Text1 = "很好的基地!",
 
     Stash_WorldMap23_Text1 = "地下室",
     Stash_WorldMap23_Text2 = "雷霆加油站",

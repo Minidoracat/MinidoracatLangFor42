@@ -19,10 +19,11 @@ Project Zomboid Build 42 繁體/簡體中文完全翻譯模組。Mod ID: `CatLan
 ├── README.md                      # 專案說明
 ├── STEAM_DESCRIPTION.md           # Steam 商店頁面描述（BBCode）
 ├── scripts/
-│   ├── link_workshop.ps1          # 符號連結管理（掛載/卸載 Workshop 目錄）
-│   └── PZ_Test.ps1                # 遊戲啟動器（客戶端/伺服器/多人，需改 $PZ_PATH）
-├── docs/
-│   └── translation-fixes.md       # OpenCC 轉換錯誤修正紀錄（61 處）
+│   ├── sync_translations.py    # 翻譯同步工具（uv run，OpenCC s2twp + 後處理）
+│   ├── opencc_fixes.json       # OpenCC 後處理修正字典（post_fixes + suspicious_patterns）
+│   ├── link_workshop.ps1       # 符號連結管理（掛載/卸載 Workshop 目錄）
+│   └── PZ_Test.ps1             # 遊戲啟動器（客戶端/伺服器/多人，需改 $PZ_PATH）
+├── translation-reference/         # 外部簡體翻譯參考倉庫（gitignored，有獨立 .git）
 ├── translation-reference/         # 外部簡體翻譯參考倉庫（gitignored，有獨立 .git）
 └── MOD/MinidoracatLangFor42/      # Workshop 上傳根目錄
     ├── workshop.txt               # Workshop 元資料
@@ -51,17 +52,19 @@ Project Zomboid Build 42 繁體/簡體中文完全翻譯模組。Mod ID: `CatLan
 
 | 任務 | 位置 | 備註 |
 |------|------|------|
-| 新增/修改翻譯文字 | `MOD_ROOT/media/lua/shared/Translate/{CH,CN}/` | CH 和 CN 必須同步修改 |
+| 新增/修改翻譯文字 | `MOD_ROOT/media/lua/shared/Translate/{CH,CN}/` | 使用 `sync_translations.py` 同步，CH 和 CN 必須同步 |
 | UI 行為修補 | `MOD_ROOT/media/lua/client/` | 含子目錄 ISUI/、OptionScreens/ |
 | 字型配置 | `MOD_ROOT/media/fonts/{CH,CN}/fonts.txt` | CH/CN 內容完全相同，修改需同步 |
 | 地圖標籤翻譯 | `MOD_ROOT/media/maps/Riverside, KY/worldmap-annotations.lua` | 包含所有城市標籤（非僅 Riverside） |
 | 城市名稱/描述 | `Translate/{CH,CN}/{城市名, KY}/title.txt` + `description.txt` | 5 個城市 |
-| 翻譯修正紀錄 | `docs/translation-fixes.md` | OpenCC 轉換錯誤追蹤（61 處修正） |
+
 | Workshop 上傳設定 | `MOD/MinidoracatLangFor42/workshop.txt` | 手動透過 PZ 內建工具上傳 |
 | Mod 版本更新 | `MOD_ROOT/mod.info` | `modversion` 格式：`{遊戲版本}-{Mod版本}` |
 | 本地開發環境 | `scripts/link_workshop.ps1` | Workshop 符號連結管理（掛載/卸載） |
 | 遊戲測試 | `scripts/PZ_Test.ps1` | 客戶端/伺服器/多人啟動（首次需改 `$PZ_PATH`） |
 | 翻譯參考來源 | `translation-reference/` | 簡體中文原始翻譯（gitignored，獨立 .git） |
+| 翻譯同步工具 | `scripts/sync_translations.py` | `uv run` 執行，支援 compare/sync-cn/sync-ch/sync-lua/sync-all/fix-check |
+| OpenCC 修正字典 | `scripts/opencc_fixes.json` | 新增修正規則只需改此 JSON，不需改 Python 程式碼 |
 
 ## INITIALIZATION FLOW
 
@@ -119,9 +122,29 @@ end
 | `_Flx` | 功能修正（雙語通用） | `MapLabel_Flx.lua` |
 
 ### 簡繁轉換工具鏈
-- **OpenCC** `s2twp`（簡體→繁體台灣用語）
-- 轉換後**必須人工後處理**：干/乾/幹、发/發/髮、面/麵、系/係、里/裡
-- 所有修正**必須記錄**到 `docs/translation-fixes.md`
+
+**自動化工具**：`scripts/sync_translations.py`（需 `uv`）
+```bash
+uv run scripts/sync_translations.py compare    # 比對 REF CN vs MOD CN/CH 差異
+uv run scripts/sync_translations.py sync-cn     # REF CN → MOD CN（直接複製）
+uv run scripts/sync_translations.py sync-ch     # REF CN → OpenCC s2twp → 後處理 → MOD CH
+uv run scripts/sync_translations.py sync-lua    # 同步 Lua 腳本（CN 直接複製，CH 轉換+移除 As1 註釋）
+uv run scripts/sync_translations.py sync-all    # 執行全部同步
+uv run scripts/sync_translations.py fix-check   # 檢查 CH 中可能的 OpenCC 轉換錯誤
+```
+
+**轉換流程**：OpenCC `s2twp`（簡體→繁體台灣用語）→ `opencc_fixes.json` 後處理修正
+
+**後處理修正字典** (`scripts/opencc_fixes.json`)：
+- `post_fixes`：自動修正規則，按分類組織（幹→乾、幹→干、髮→發、發→髮、係→系、面→麵、里→裡）
+- `suspicious_patterns`：可疑模式檢查，配置前後文排除清單減少假陽性
+- **新增修正**：只需在對應 category 的 rules 陣列中加入 `{"pattern": "...", "replacement": "..."}` 即可
+
+**特殊處理規則**：
+- `language.txt`：CH 版本不轉換（CH=`Traditional Chinese`，CN=`Simplified Chinese`）
+- `streets.txt`、`credits.txt`：無 Lua 表頭，直接轉換內容
+- `Recorded_Media`：自動生成格式（`// Auto-generated file`），只轉換內容
+- Lua 腳本中的 `-- As 1 --` 註釋：As1 翻譯組標記，CH 版本會自動移除
 
 ### 開發工具
 - `link_workshop.bat` → 雙擊啟動，選擇掛載/卸載 Workshop 符號連結
@@ -155,13 +178,17 @@ end
 ```bash
 # 無 CI/CD、無建置腳本、無測試框架
 
+# 翻譯同步（需 uv）
+uv run scripts/sync_translations.py compare     # 查看差異
+uv run scripts/sync_translations.py sync-all    # 全部同步（CN + CH + Lua）
+uv run scripts/sync_translations.py fix-check   # 檢查 OpenCC 轉換錯誤
+
 # 本地開發
 # 1. 掛載：雙擊 link_workshop.bat → 選 [1]（建立 %UserProfile%\Zomboid\Workshop 符號連結）
 # 2. 測試：雙擊 PZ_Test.bat → 選模式（客戶端/伺服器/多人）
 # 3. 卸載：雙擊 link_workshop.bat → 選 [2]
 
 # Workshop 上傳：透過 PZ 遊戲內建 Workshop 工具手動上傳
-# 翻譯流程：OpenCC s2twp 轉換 → 人工校對 → 記錄修正到 docs/
 ```
 
 ## LUA FILES QUICK REFERENCE

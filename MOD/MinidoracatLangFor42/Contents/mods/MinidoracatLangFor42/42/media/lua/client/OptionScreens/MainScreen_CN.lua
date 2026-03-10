@@ -29,3 +29,7 @@ MainScreen.startTutorial = function()
     GameWindow.doRenderEvent(false);
     forceChangeState(LoadingQueueState.new());
 end
+
+-- As 1 --
+-- line 2 is changed from ActiveMods.getById("currentGame") to ActiveMods.getById("default").
+-- line 3 is skipped to ensure that default mods can be loaded.
