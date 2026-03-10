@@ -32,10 +32,10 @@ MinidoracatLangFor42/
 ├── link_workshop.bat              # Workshop 符號連結管理（雙擊啟動）
 ├── PZ_Test.bat                    # PZ 本地測試啟動器（雙擊啟動）
 ├── scripts/
-│   ├── link_workshop.ps1          # 符號連結管理腳本（PowerShell）
-│   └── PZ_Test.ps1                # 遊戲測試啟動器（PowerShell）
-├── docs/
-│   └── translation-fixes.md       # OpenCC 轉換錯誤修正紀錄
+│   ├── sync_translations.py    # 翻譯同步工具（uv run）
+│   ├── opencc_fixes.json       # OpenCC 後處理修正字典
+│   ├── link_workshop.ps1       # 符號連結管理腳本（PowerShell）
+│   └── PZ_Test.ps1             # 遊戲測試啟動器（PowerShell）
 ├── STEAM_DESCRIPTION.md           # Steam 商店頁面描述
 └── MOD/MinidoracatLangFor42/      # Workshop 上傳根目錄
     ├── workshop.txt
@@ -107,7 +107,7 @@ MinidoracatLangFor42/
    - 面 / 麵
    - 系 / 係
    - 里 / 裡
-3. 所有修正記錄到 `docs/translation-fixes.md`
+3. 修正規則紀錄在 `scripts/opencc_fixes.json`，新增修正只需編輯此檔案
 
 ### 注意事項
 

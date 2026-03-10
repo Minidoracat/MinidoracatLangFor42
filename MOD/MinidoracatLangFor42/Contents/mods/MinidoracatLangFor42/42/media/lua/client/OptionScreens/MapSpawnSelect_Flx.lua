@@ -90,6 +90,6 @@ function MapSpawnSelect:_fillList()
 	self.mapPanel.shownInitialLocation = false
 end
 
-if getActivatedMods():contains("\\CatLangFor42") then
+if getActivatedMods():contains("\\B42Trans_CN") then
 	MapSpawnSelect.fillList = MapSpawnSelect._fillList;
 end

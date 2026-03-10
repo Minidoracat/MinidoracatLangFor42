@@ -1,0 +1,146 @@
+{
+  "_comment": "OpenCC s2twp 後處理修正字典。由 sync_translations.py 讀取。",
+  "_usage": "新增修正：在對應 category 的 rules 陣列中加入 {pattern, replacement} 即可。",
+
+  "post_fixes": [
+    {
+      "category": "幹→乾",
+      "description": "乾燥、乾貨相關：OpenCC 常把「乾」誤轉為「幹」",
+      "rules": [
+        {"pattern": "幹(大麥捆|羅勒葉|黑鼠尾草|貓糧|洋甘菊|細香蔥|香菜|聚合草|錦葵|狗糧)", "replacement": "乾\\1", "note": "乾燥物品"},
+        {"pattern": "幹(黑豆|鷹嘴豆|芸豆|扁豆|豌豆)", "replacement": "乾\\1", "note": "乾燥豆類"},
+        {"pattern": "幹(大麻捆|薰衣草花瓣|萬壽菊|薄荷|牛至|歐芹|車前草|罌粟果|玫瑰花瓣|迷迭香|黑麥捆|鼠尾草|向日葵花盤|百里香|菸草|小麥捆|野蒜)", "replacement": "乾\\1", "note": "乾燥植物"},
+        {"pattern": "幹(哈瓦那辣椒|墨西哥辣椒)", "replacement": "乾\\1", "note": "乾燥辣椒"},
+        {"pattern": "杏幹", "replacement": "杏乾"},
+        {"pattern": "幹拉麵", "replacement": "乾拉麵"},
+        {"pattern": "口有點幹", "replacement": "口有點乾"},
+        {"pattern": "幹\\s*草", "replacement": "乾草", "note": "乾草（飼料），含空格版"},
+        {"pattern": "幹燥", "replacement": "乾燥"},
+        {"pattern": "幹爽", "replacement": "乾爽"},
+        {"pattern": "幹淨", "replacement": "乾淨"},
+        {"pattern": "幹糧", "replacement": "乾糧"},
+        {"pattern": "幹柴", "replacement": "乾柴"},
+        {"pattern": "幹葉", "replacement": "乾葉"},
+        {"pattern": "= \"幹\"", "replacement": "= \"乾\"", "note": "UI 溫度狀態 Dry"},
+        {"pattern": "風幹", "replacement": "風乾"},
+        {"pattern": "晾幹", "replacement": "晾乾"},
+        {"pattern": "烘幹", "replacement": "烘乾"},
+        {"pattern": "曬幹", "replacement": "曬乾"},
+        {"pattern": "吹幹", "replacement": "吹乾"},
+        {"pattern": "擦幹", "replacement": "擦乾"},
+        {"pattern": "幹巷", "replacement": "乾巷", "note": "街道名 Dry Lane"},
+        {"pattern": "弄幹", "replacement": "弄乾"}
+      ]
+    },
+    {
+      "category": "幹→干",
+      "description": "干擾、干預：「干」不是「乾」也不是「幹」",
+      "rules": [
+        {"pattern": "幹\\s*擾", "replacement": "干擾", "note": "含空格版（傳單排版）"},
+        {"pattern": "幹預", "replacement": "干預"}
+      ]
+    },
+    {
+      "category": "髮→發",
+      "description": "動詞「發」被誤轉為「髮」",
+      "rules": [
+        {"pattern": "髮生", "replacement": "發生"},
+        {"pattern": "髮現", "replacement": "發現"},
+        {"pattern": "髮射", "replacement": "發射"},
+        {"pattern": "髮動", "replacement": "發動"},
+        {"pattern": "髮出", "replacement": "發出"},
+        {"pattern": "髮展", "replacement": "發展"},
+        {"pattern": "髮送", "replacement": "發送"},
+        {"pattern": "髮佈", "replacement": "發佈"},
+        {"pattern": "髮布", "replacement": "發布"},
+        {"pattern": "髮揮", "replacement": "發揮"},
+        {"pattern": "髮言", "replacement": "發言"},
+        {"pattern": "髮電", "replacement": "發電"},
+        {"pattern": "髮炎", "replacement": "發炎"},
+        {"pattern": "髮燒", "replacement": "發燒"},
+        {"pattern": "髮酵", "replacement": "發酵"},
+        {"pattern": "髮芽", "replacement": "發芽"},
+        {"pattern": "爆髮", "replacement": "爆發"},
+        {"pattern": "開髮", "replacement": "開發"},
+        {"pattern": "觸髮", "replacement": "觸發"},
+        {"pattern": "蒸髮", "replacement": "蒸發"},
+        {"pattern": "揮髮", "replacement": "揮發"},
+        {"pattern": "散髮", "replacement": "散發"},
+        {"pattern": "啟髮", "replacement": "啟發"},
+        {"pattern": "批髮", "replacement": "批發"},
+        {"pattern": "沙髮", "replacement": "沙發"}
+      ]
+    },
+    {
+      "category": "發→髮",
+      "description": "名詞「髮」被誤轉為「發」（髮型名等）",
+      "rules": [
+        {"pattern": "發霧", "replacement": "髮霧"},
+        {"pattern": "胭脂魚發", "replacement": "胭脂魚髮", "note": "髮型名稱"},
+        {"pattern": "掩眼發", "replacement": "掩眼髮", "note": "髮型名稱"}
+      ]
+    },
+    {
+      "category": "係→系",
+      "description": "系統/系數：「係」應為「系」",
+      "rules": [
+        {"pattern": "係數", "replacement": "系數"},
+        {"pattern": "係統", "replacement": "系統"},
+        {"pattern": "關係", "replacement": "關係", "note": "保留不變（正確用法）"}
+      ]
+    },
+    {
+      "category": "面→麵",
+      "description": "麵食相關",
+      "rules": [
+        {"pattern": "面包", "replacement": "麵包"},
+        {"pattern": "面條", "replacement": "麵條"},
+        {"pattern": "面粉", "replacement": "麵粉"},
+        {"pattern": "拉面", "replacement": "拉麵"},
+        {"pattern": "方便面", "replacement": "方便麵"},
+        {"pattern": "掛面", "replacement": "掛麵"},
+        {"pattern": "炒面", "replacement": "炒麵"},
+        {"pattern": "泡面", "replacement": "泡麵"},
+        {"pattern": "面團", "replacement": "麵團"},
+        {"pattern": "面糊", "replacement": "麵糊"}
+      ]
+    },
+    {
+      "category": "里→裡",
+      "description": "「裡面」的「裡」被保留為「里」",
+      "rules": [
+        {"pattern": "里面", "replacement": "裡面"},
+        {"pattern": "這里", "replacement": "這裡"},
+        {"pattern": "那里", "replacement": "那裡"},
+        {"pattern": "哪里", "replacement": "哪裡"},
+        {"pattern": "心里", "replacement": "心裡"},
+        {"pattern": "家里", "replacement": "家裡"},
+        {"pattern": "手里", "replacement": "手裡"},
+        {"pattern": "屋里", "replacement": "屋裡"},
+        {"pattern": "東西里", "replacement": "東西裡"},
+        {"pattern": "劇本里", "replacement": "劇本裡"}
+      ]
+    }
+  ],
+
+  "suspicious_patterns": [
+    {
+      "char": "幹",
+      "description": "可能需要 幹→乾 修正",
+      "before_exclude": ["軀", "主", "事", "能", "若"],
+      "after_exclude": ["掉", "活", "勁", "嘛", "嗎", "了", "的", "就", "麼", "什", "道", "不", "得", "髒", "腳", "部", "線", "事", "員", "涉", "細胞", "將", "過", "到", "完", "他", "你", "她", "我", "這", "那", "啥", "嚒", "?", "!", "\u2026", ","]
+    },
+    {
+      "char": "髮",
+      "description": "可能需要 髮→發 修正",
+      "before_exclude": ["頭", "白", "黑", "金", "紅", "長", "短", "捲", "直", "假", "美", "染", "剪", "洗", "理", "鬢", "碎", "毛", "落", "脫", "束", "結", "編", "一頭", "魚", "眼", "護", "剃", "鬆"],
+      "after_exclude": ["型", "色", "際", "質", "梢", "絲", "根", "端", "飾", "油", "膚", "廊", "辮", "膠", "蠟", "指", "圈", "線", "霧", "髻", "簪", "夾", "帶", "片", "束", "素", "革命"]
+    },
+    {
+      "char": "里",
+      "description": "可能需要 里→裡 修正",
+      "before_exclude": ["阿", "千", "萬", "百", "公", "英", "華", "道", "卡路", "佛羅", "密蘇", "馬德", "士滿", "西西", "科多", "爾德", "所", "底", "歇斯底", "拉", "亨", "莫", "瑪", "凱", "查", "傑", "伯", "卡", "格", "特", "加", "普", "尤", "貝", "德", "帕特", "米特", "布部", "哈", "溫布"],
+      "after_exclude": ["程", "拉", "斯", "約", "昂", "奧", "弗", "尼", "納", "德", "亞", "氏", "爾", "根", "芒", "羅", "布", "克", "巴", "茲", "曼", "奇", "科", "士", "誇", "古", "姆", "維", "諾", "安", "瓦", "昆", "蘭", "森", "高", "波", "田"]
+    }
+  ]
+}
