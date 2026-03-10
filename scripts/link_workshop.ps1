@@ -1,5 +1,5 @@
 # MinidoracatLangFor42 Workshop 符號連結管理
-# 用途：將開發目錄連結到 Zomboid Workshop 目錄，方便本地測試和 Workshop 上傳
+# 用途：將開發目錄連結到 Zomboid Workshop 和 mods 目錄，方便本地測試和 Workshop 上傳
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
@@ -18,8 +18,15 @@ if ($env:PROJECT_ROOT) {
     $ProjectRoot = (Get-Location).Path
 }
 $ModSource = Join-Path $ProjectRoot "MOD\MinidoracatLangFor42"
+$ModContent = Join-Path $ModSource "Contents\mods\MinidoracatLangFor42"
+
+# Workshop 符號連結（用於上傳）
 $WorkshopDir = Join-Path $env:UserProfile "Zomboid\Workshop"
-$LinkTarget = Join-Path $WorkshopDir "MinidoracatLangFor42"
+$WorkshopLink = Join-Path $WorkshopDir "MinidoracatLangFor42"
+
+# Mods 符號連結（用於遊戲載入，PZ 優先從此處讀取）
+$ModsDir = Join-Path $env:UserProfile "Zomboid\mods"
+$ModsLink = Join-Path $ModsDir "CatLangFor42"
 
 # 驗證 MOD 來源目錄
 if (-not (Test-Path (Join-Path $ModSource "workshop.txt"))) {
@@ -63,138 +70,161 @@ function Show-Status {
     }
 
     Write-Host ""
-    Write-Host "=== Workshop 目錄 ===" -ForegroundColor Cyan
-    Write-Host "路徑: $WorkshopDir"
-    if (Test-Path $WorkshopDir) {
-        Write-Host "  [OK] 目錄存在" -ForegroundColor Green
+    Write-Host "=== 連結狀態 ===" -ForegroundColor Cyan
+
+    # Workshop 連結
+    Write-Host "  [Workshop] " -NoNewline
+    if (-not (Test-Path $WorkshopLink)) {
+        Write-Host "未掛載" -ForegroundColor DarkGray
+    } elseif (Test-IsSymlink $WorkshopLink) {
+        $target = (Get-Item $WorkshopLink -Force).Target
+        Write-Host "已掛載 -> $target" -ForegroundColor Green
     } else {
-        Write-Host "  [--] 目錄不存在（掛載時會自動建立）" -ForegroundColor DarkGray
+        Write-Host "實體資料夾（非符號連結）" -ForegroundColor Yellow
     }
 
-    Write-Host ""
-    Write-Host "=== 連結狀態 ===" -ForegroundColor Cyan
-    if (-not (Test-Path $LinkTarget)) {
-        Write-Host "  [未掛載] 連結不存在" -ForegroundColor DarkGray
-    } elseif (Test-IsSymlink $LinkTarget) {
-        $target = (Get-Item $LinkTarget -Force).Target
-        Write-Host "  [已掛載] $LinkTarget" -ForegroundColor Green
-        Write-Host "           -> $target" -ForegroundColor Green
+    # Mods 連結
+    Write-Host "  [Mods]     " -NoNewline
+    if (-not (Test-Path $ModsLink)) {
+        Write-Host "未掛載" -ForegroundColor DarkGray
+    } elseif (Test-IsSymlink $ModsLink) {
+        $target = (Get-Item $ModsLink -Force).Target
+        Write-Host "已掛載 -> $target" -ForegroundColor Green
     } else {
-        Write-Host "  [注意] $LinkTarget 存在但為實體資料夾" -ForegroundColor Yellow
+        Write-Host "實體資料夾（Steam 快取？）" -ForegroundColor Yellow
     }
     Write-Host ""
+}
+
+function New-SymlinkSafe {
+    param([string]$LinkPath, [string]$Target, [string]$Label)
+
+    if (Test-Path $LinkPath) {
+        if (Test-IsSymlink $LinkPath) {
+            $existing = (Get-Item $LinkPath -Force).Target
+            Write-Host "  [$Label] 已掛載 -> $existing" -ForegroundColor Green
+            return
+        }
+        # 實體資料夾（可能是 Steam 快取）—— 自動重新命名
+        $bakPath = "$LinkPath.bak"
+        if (Test-Path $bakPath) {
+            Remove-Item $bakPath -Recurse -Force -ErrorAction SilentlyContinue
+        }
+        Rename-Item $LinkPath $bakPath -Force
+        Write-Host "  [$Label] 已將舊資料夾重新命名為 .bak" -ForegroundColor Yellow
+    }
+
+    # 確保父目錄存在
+    $parentDir = Split-Path -Parent $LinkPath
+    if (-not (Test-Path $parentDir)) {
+        New-Item -ItemType Directory -Path $parentDir -Force | Out-Null
+    }
+
+    # 嘗試建立符號連結
+    try {
+        New-Item -ItemType SymbolicLink -Path $LinkPath -Target $Target -ErrorAction Stop | Out-Null
+        Write-Host "  [$Label] 建立成功" -ForegroundColor Green
+        Write-Host "           $LinkPath" -ForegroundColor DarkGray
+        Write-Host "           -> $Target" -ForegroundColor DarkGray
+        return $true
+    } catch {
+        return $false
+    }
+}
+
+function New-SymlinkElevated {
+    param([string]$LinkPath, [string]$Target, [string]$Label)
+    try {
+        Start-Process powershell.exe -Verb RunAs -Wait -ArgumentList @(
+            "-NoProfile",
+            "-ExecutionPolicy", "Bypass",
+            "-Command",
+            "New-Item -ItemType SymbolicLink -Path '$LinkPath' -Target '$Target' -ErrorAction Stop | Out-Null"
+        )
+        if (Test-IsSymlink $LinkPath) {
+            Write-Host "  [$Label] 建立成功（UAC）" -ForegroundColor Green
+            return $true
+        }
+    } catch {}
+    Write-Host "  [$Label] 建立失敗" -ForegroundColor Red
+    return $false
 }
 
 function Mount-Workshop {
     Write-Host ""
+    Write-Host "正在建立符號連結..." -ForegroundColor Cyan
+    Write-Host ""
 
-    # 檢查是否已存在
-    if (Test-Path $LinkTarget) {
-        if (Test-IsSymlink $LinkTarget) {
-            $target = (Get-Item $LinkTarget -Force).Target
-            Write-Host "[已掛載] 符號連結已存在:" -ForegroundColor Green
-            Write-Host "  $LinkTarget" -ForegroundColor Green
-            Write-Host "  -> $target" -ForegroundColor Green
-            Write-Host ""
-            return
-        }
-        Write-Host "[警告] 目標位置已存在實體資料夾:" -ForegroundColor Yellow
-        Write-Host "  $LinkTarget" -ForegroundColor Yellow
-        Write-Host "請手動處理後再試。"
-        Write-Host ""
-        return
-    }
+    # 嘗試不需提權建立兩個連結
+    $ws = New-SymlinkSafe -LinkPath $WorkshopLink -Target $ModSource -Label "Workshop"
+    $md = New-SymlinkSafe -LinkPath $ModsLink -Target $ModContent -Label "Mods"
 
-    # 確保 Workshop 目錄存在
-    if (-not (Test-Path $WorkshopDir)) {
-        New-Item -ItemType Directory -Path $WorkshopDir -Force | Out-Null
-        Write-Host "[建立] Workshop 目錄: $WorkshopDir" -ForegroundColor Cyan
-    }
+    # 如果任一個失敗，嘗試 UAC 提權
+    $needElevate = @()
+    if ($ws -eq $false) { $needElevate += @{ Link=$WorkshopLink; Target=$ModSource; Label="Workshop" } }
+    if ($md -eq $false) { $needElevate += @{ Link=$ModsLink; Target=$ModContent; Label="Mods" } }
 
-    # 嘗試建立符號連結（不需管理員——開發者模式或已有權限）
-    try {
-        New-Item -ItemType SymbolicLink -Path $LinkTarget -Target $ModSource -ErrorAction Stop | Out-Null
-        Write-Host "[成功] 符號連結已建立！" -ForegroundColor Green
+    if ($needElevate.Count -gt 0) {
         Write-Host ""
-        Write-Host "  $LinkTarget"
-        Write-Host "  -> $ModSource"
-        Write-Host ""
-        Write-Host "現在可以在 PZ 遊戲中看到此 MOD 並進行本地測試。" -ForegroundColor Cyan
-        Write-Host "也可以透過遊戲內建 Workshop 工具直接上傳。" -ForegroundColor Cyan
-    } catch {
-        # 權限不足，自動透過 UAC 提升執行
         Write-Host "[提示] 需要管理員權限，正在請求提升..." -ForegroundColor Yellow
-        try {
-            Start-Process powershell.exe -Verb RunAs -Wait -ArgumentList @(
-                "-NoProfile",
-                "-ExecutionPolicy", "Bypass",
-                "-Command",
-                "New-Item -ItemType SymbolicLink -Path '$LinkTarget' -Target '$ModSource' -ErrorAction Stop | Out-Null"
-            )
-            # 驗證是否成功
-            if (Test-IsSymlink $LinkTarget) {
-                Write-Host "[成功] 符號連結已建立！" -ForegroundColor Green
-                Write-Host ""
-                Write-Host "  $LinkTarget"
-                Write-Host "  -> $ModSource"
-                Write-Host ""
-                Write-Host "現在可以在 PZ 遊戲中看到此 MOD 並進行本地測試。" -ForegroundColor Cyan
-            } else {
-                Write-Host "[失敗] UAC 已取消或建立失敗。" -ForegroundColor Red
-            }
-        } catch {
-            Write-Host "[失敗] 無法建立符號連結。" -ForegroundColor Red
-            Write-Host ""
-            Write-Host "替代方案：啟用 Windows 開發人員模式後即可免管理員建立連結：" -ForegroundColor Yellow
-            Write-Host "  設定 -> 系統 -> 開發人員專用 -> 開發人員模式" -ForegroundColor Yellow
-            Write-Host ""
-            Write-Host "錯誤訊息: $($_.Exception.Message)" -ForegroundColor DarkGray
+        foreach ($item in $needElevate) {
+            New-SymlinkElevated -LinkPath $item.Link -Target $item.Target -Label $item.Label
         }
+    }
+
+    Write-Host ""
+    if ((Test-IsSymlink $WorkshopLink) -and (Test-IsSymlink $ModsLink)) {
+        Write-Host "[全部完成] 現在可以在 PZ 遊戲中測試此 MOD。" -ForegroundColor Green
+    } else {
+        Write-Host "[部分完成] 請檢查上方狀態。" -ForegroundColor Yellow
+        Write-Host "替代方案：啟用 Windows 開發人員模式後即可免管理員建立連結：" -ForegroundColor Yellow
+        Write-Host "  設定 -> 系統 -> 開發人員專用 -> 開發人員模式" -ForegroundColor Yellow
     }
     Write-Host ""
 }
 
-function Dismount-Workshop {
-    Write-Host ""
+function Remove-SymlinkSafe {
+    param([string]$LinkPath, [string]$Label)
 
-    if (-not (Test-Path $LinkTarget)) {
-        Write-Host "[提示] 連結不存在: $LinkTarget" -ForegroundColor DarkGray
-        Write-Host "目前未掛載。"
-        Write-Host ""
+    if (-not (Test-Path $LinkPath)) {
+        Write-Host "  [$Label] 不存在，跳過" -ForegroundColor DarkGray
         return
     }
 
-    if (-not (Test-IsSymlink $LinkTarget)) {
-        Write-Host "[警告] $LinkTarget 不是符號連結，為安全起見不會刪除。" -ForegroundColor Yellow
-        Write-Host "如需移除請手動處理。"
-        Write-Host ""
+    if (-not (Test-IsSymlink $LinkPath)) {
+        Write-Host "  [$Label] 是實體資料夾，跳過（請手動處理）" -ForegroundColor Yellow
         return
     }
 
-    # 嘗試移除
     try {
-        (Get-Item $LinkTarget -Force).Delete()
-        Write-Host "[成功] 符號連結已移除。" -ForegroundColor Green
+        (Get-Item $LinkPath -Force).Delete()
+        Write-Host "  [$Label] 已移除" -ForegroundColor Green
     } catch {
-        # 權限不足，自動提升
-        Write-Host "[提示] 需要管理員權限，正在請求提升..." -ForegroundColor Yellow
+        Write-Host "  [$Label] 需要提權移除..." -ForegroundColor Yellow
         try {
             Start-Process powershell.exe -Verb RunAs -Wait -ArgumentList @(
                 "-NoProfile",
                 "-ExecutionPolicy", "Bypass",
                 "-Command",
-                "(Get-Item '$LinkTarget' -Force).Delete()"
+                "(Get-Item '$LinkPath' -Force).Delete()"
             )
-            if (-not (Test-Path $LinkTarget)) {
-                Write-Host "[成功] 符號連結已移除。" -ForegroundColor Green
+            if (-not (Test-Path $LinkPath)) {
+                Write-Host "  [$Label] 已移除（UAC）" -ForegroundColor Green
             } else {
-                Write-Host "[失敗] UAC 已取消或移除失敗。" -ForegroundColor Red
+                Write-Host "  [$Label] 移除失敗" -ForegroundColor Red
             }
         } catch {
-            Write-Host "[失敗] 無法移除符號連結。" -ForegroundColor Red
-            Write-Host "錯誤訊息: $($_.Exception.Message)" -ForegroundColor DarkGray
+            Write-Host "  [$Label] 移除失敗: $($_.Exception.Message)" -ForegroundColor Red
         }
     }
+}
+
+function Dismount-Workshop {
+    Write-Host ""
+    Write-Host "正在移除符號連結..." -ForegroundColor Cyan
+    Write-Host ""
+    Remove-SymlinkSafe -LinkPath $WorkshopLink -Label "Workshop"
+    Remove-SymlinkSafe -LinkPath $ModsLink -Label "Mods"
     Write-Host ""
 }
 
@@ -206,14 +236,14 @@ $Host.UI.RawUI.WindowTitle = "MinidoracatLangFor42 Workshop 連結管理"
 while ($true) {
     Clear-Host
     Write-Host "============================================" -ForegroundColor Cyan
-    Write-Host "  MinidoracatLangFor42 Workshop 連結管理" -ForegroundColor Cyan
+    Write-Host "  MinidoracatLangFor42 符號連結管理" -ForegroundColor Cyan
     Write-Host "============================================" -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "  來源: $ModSource"
-    Write-Host "  目標: $LinkTarget"
+    Write-Host "  Workshop: $WorkshopLink"
+    Write-Host "  Mods:     $ModsLink"
     Write-Host ""
-    Write-Host "  [1] 掛載 - 建立 Workshop 符號連結"
-    Write-Host "  [2] 卸載 - 移除 Workshop 符號連結"
+    Write-Host "  [1] 掛載 - 建立符號連結（Workshop + Mods）"
+    Write-Host "  [2] 卸載 - 移除符號連結（Workshop + Mods）"
     Write-Host "  [3] 查看目前狀態"
     Write-Host ""
     Write-Host "  [Q] 離開"

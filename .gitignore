@@ -14,3 +14,7 @@ desktop.ini
 
 # 翻譯參考倉庫（外部）
 translation-reference/
+
+# Python
+__pycache__/
+*.pyc
