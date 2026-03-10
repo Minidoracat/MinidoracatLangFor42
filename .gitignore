@@ -1,0 +1,13 @@
+# Claude Code 本機設定
+.claude/
+
+# 系統檔案
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
