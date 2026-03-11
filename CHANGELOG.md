@@ -4,6 +4,27 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.15.1-1.2.1] - 2026-03-11
+
+### Fixed
+
+- 修復報紙/傳單閱讀時 crash（`startLoadingPrintMediaTextures` nil 呼叫）
+  - 根因：4 個 `_info` 翻譯值被截斷，`loadstring()` 回傳 nil
+  - 修復檔案：`Print_Media.json`（CH/CN 各 4 筆：PonyRoamO、McCoyLoggingCorp、NolansUsedCars、BensCabin）
+- 修復 `pz_translate.py` 解析器無法處理 Lua `..` 多行字串拼接的問題
+
+### Changed
+
+- 傳單圖片批量縮小：764MB → 120MB（-84%），對齊原版尺寸的 50%，遊戲內無視覺差異
+- `sync_translations.py` 改進：
+  - 新增 Print_Media `_info` 截斷偵測（未閉合 `getTexture()` / `<type:...>` 標籤）
+  - 新增 `convert_print_media_value()` 僅轉換 `<type:text>` 內容，保留標記參數
+  - 同步時保留 MOD 自訂 key（不在參考來源中的 key 不被覆蓋）
+
+### Added
+
+- `scripts/resize_flyers.py` — 傳單圖片批量縮小工具（對齊原版尺寸 + Lanczos + PNG 壓縮）
+
 ## [42.15.1-1.2.0] - 2026-03-11
 
 ### Added
