@@ -165,6 +165,64 @@ def convert_s2twp(text: str) -> str:
         result = pattern.sub(replacement, result)
     return result
 
+# Print_Media <type:text, ...> 中文字內容的提取模式
+# 匹配 <type:text, ...> 標記後面到下一個 <type: 標記之前（或字串結尾）的文字
+_PRINT_MEDIA_TEXT_RE = re.compile(
+    r'(<type:text\b[^>]*>)'   # group 1: <type:text, ...> 標記本身
+    r'([^<]*)'                 # group 2: 標記後的文字內容
+)
+
+
+def convert_print_media_value(value: str) -> str:
+    """轉換 Print_Media _info 值中的中文文字。
+
+    只對 <type:text, ...> 標記後面的文字做 OpenCC 簡繁轉換，
+    不動 <type:parent/texture> 標記參數（座標、字型名、路徑等）。
+    """
+    if "<type:text" not in value:
+        # 沒有 text 標記（純 texture/parent），直接回傳
+        return value
+
+    def _replace_text_content(m: re.Match) -> str:
+        tag = m.group(1)    # <type:text, ...>
+        text = m.group(2)   # 後面的文字
+        if text:
+            text = convert_s2twp(text)
+        return tag + text
+
+    return _PRINT_MEDIA_TEXT_RE.sub(_replace_text_content, value)
+
+
+def _validate_print_media_info(key: str, value: str) -> str | None:
+    """檢查 Print_Media _info 值是否被截斷。
+
+    Returns:
+        錯誤描述字串，None 表示無問題。
+    """
+    if not key.endswith("_info"):
+        return None
+
+    # 檢查 getTexture( 是否有配對的 )
+    pos = 0
+    while True:
+        idx = value.find("getTexture(", pos)
+        if idx == -1:
+            break
+        paren_start = idx + len("getTexture(")
+        close_pos = value.find(")", paren_start)
+        if close_pos == -1:
+            return "getTexture( 缺少閉合括號 — 值被截斷"
+        pos = close_pos + 1
+
+    # 檢查最後一個 < 是否有對應的 >
+    last_open = value.rfind("<")
+    if last_open != -1:
+        last_close = value.rfind(">")
+        if last_close < last_open:
+            return "未閉合的 <type:...> 標籤 — 值被截斷"
+
+    return None
+
 
 def check_suspicious(text: str, filename: str) -> list[str]:
     """檢查可能需要人工修正的模式（基於 JSON 字典的前後文排除）
@@ -402,12 +460,31 @@ def cmd_sync_cn():
 
         ref_data = read_translation(ref_file)
 
-        # Compare with existing
+        # 保留 MOD 中有但 REF 中沒有的自訂 keys
         if mod_file.exists():
             mod_data = read_translation(mod_file)
-            if ref_data == mod_data:
+            extra_keys = OrderedDict(
+                (k, v) for k, v in mod_data.items() if k not in ref_data
+            )
+            if extra_keys:
+                # 驗證 Print_Media _info 自訂 keys 是否被截斷
+                if json_name == "Print_Media.json":
+                    for k in list(extra_keys):
+                        err = _validate_print_media_info(k, extra_keys[k])
+                        if err:
+                            print(f"  ⚠️  移除截斷的自訂 key: {k} ({err})")
+                            del extra_keys[k]
+                merged = OrderedDict(ref_data)
+                merged.update(extra_keys)
+                ref_data = merged
+
+        # Compare with existing
+        if mod_file.exists():
+            if mod_data == ref_data:
                 continue
-            print(f"  📝 更新: {filename} → {json_name} ({len(ref_data)} keys)")
+            added = len(set(ref_data) - set(mod_data))
+            removed = len(set(mod_data) - set(ref_data))
+            print(f"  📝 更新: {filename} → {json_name} ({len(ref_data)} keys, +{added}/-{removed})")
         else:
             print(f"  ➕ 新增: {filename} → {json_name} ({len(ref_data)} keys)")
 
@@ -490,13 +567,35 @@ def cmd_sync_ch():
         ref_data = read_translation(ref_file)
 
         # OpenCC convert VALUES only
+        # Print_Media _info 值需要特殊處理：只轉換 <type:text> 中的文字
+        is_print_media = json_name == "Print_Media.json"
         ch_data: OrderedDict[str, str] = OrderedDict()
         for key, value in ref_data.items():
-            ch_data[key] = convert_s2twp(value)
+            if is_print_media and key.endswith("_info"):
+                ch_data[key] = convert_print_media_value(value)
+            else:
+                ch_data[key] = convert_s2twp(value)
 
-        # Compare with existing CH
+        # 保留 MOD 中有但 REF 中沒有的自訂 keys
         if ch_path.exists():
             old_data = read_translation(ch_path)
+            extra_keys = OrderedDict(
+                (k, v) for k, v in old_data.items() if k not in ch_data
+            )
+            if extra_keys:
+                # 驗證 Print_Media _info 自訂 keys 是否被截斷
+                if json_name == "Print_Media.json":
+                    for k in list(extra_keys):
+                        err = _validate_print_media_info(k, extra_keys[k])
+                        if err:
+                            print(f"  ⚠️  移除截斷的自訂 key: {k} ({err})")
+                            del extra_keys[k]
+                ch_data.update(extra_keys)
+        else:
+            old_data = None
+
+        # Compare with existing CH
+        if old_data is not None:
             if old_data == ch_data:
                 unchanged += 1
                 continue
@@ -568,6 +667,16 @@ def cmd_fix_check():
         rel_path = ch_file.relative_to(MOD_CH)
         issues = check_suspicious(content, str(rel_path))
         all_issues.extend(issues)
+
+    # Check Print_Media _info values for truncation (CH + CN)
+    for lang, mod_dir in [("CH", MOD_CH), ("CN", MOD_CN)]:
+        pm_file = mod_dir / "Print_Media.json"
+        if pm_file.exists():
+            pm_data = read_translation(pm_file)
+            for key, value in pm_data.items():
+                err = _validate_print_media_info(key, value)
+                if err:
+                    all_issues.append(f"  [{lang}] {key}: {err}")
 
     # Check remaining .txt files (streets.txt, credits.txt)
     for ch_file in sorted(MOD_CH.rglob("*.txt")):

@@ -19,7 +19,7 @@
     "EC_CraftLogic_Completed": "完成",
     "EC_CraftLogic_Tools": "工具",
     "EC_CraftLogic_Progress": "進行中",
-    "EC_CraftLogic_Duration": "所需時間: \n%1",
+    "EC_CraftLogic_Duration": "所需時間: \\n%1",
     "EC_CraftLogic_Duration_Unknown": "所需時間: ??",
     "EC_CraftLogic_Inputs_Full": "欄位已滿!",
     "EC_CraftLogicTooltip_NoCraftInProgress": "沒有進行中的製作.",
