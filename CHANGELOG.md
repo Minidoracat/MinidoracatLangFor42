@@ -4,6 +4,22 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.15.1-1.2.2] - 2026-03-11
+
+### Fixed
+
+- 修復多人遊戲世界地圖街道名稱英文與中文重疊顯示
+  - 重寫 `MapStreets_Flx.lua`：先 `clearStreetData()` 再載入中文版（`addStreetData()` 是疊加而非覆蓋）
+  - 使用固定路徑 `Riverside, KY/streets.xml`，不依賴 `getLotDirectories()`（MP client 不回傳 Riverside）
+- 修復單人遊戲建築物不載入問題
+  - 刪除 MOD 中的 `Muldraugh, KY/` 目錄（`map.info` 導致 PZ 認為 MOD 是地圖資料來源）
+- 修復 Sandbox 「隨機開門數量」選項版面跨版（`\n` 原樣顯示）
+  - `Sandbox_ZDoorOpeningPercentage` 標籤改為簡短文字（CH: 隨機開門數量 / CN: 随机开门数量）
+
+### Changed
+
+- `AGENTS.md` 新增版本發布流程、地圖目錄規則、Sandbox 翻譯規則、MapStreets 載入機制等文件
+
 ## [42.15.1-1.2.1] - 2026-03-11
 
 ### Fixed

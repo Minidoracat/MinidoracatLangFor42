@@ -506,7 +506,7 @@
     "Sandbox_ZCognition_option2": "寻路",
     "Sandbox_ZCognition_option3": "基础寻路能力",
     "Sandbox_ZCognition_option4": "随机行动",
-    "Sandbox_ZDoorOpeningPercentage": "如果启用了随机开门, 那么这会控制能开门的僵尸的百分比. \\n在下方勾选\"高级\"选项以使用自定义百分比.",
+    "Sandbox_ZDoorOpeningPercentage": "随机开门数量",
     "Sandbox_ZCrawlUnderVehicle": "爬过车底",
     "Sandbox_ZCrawlUnderVehicle_tooltip": "僵尸可以在车底爬行的频率.",
     "Sandbox_ZCrawlUnderVehicle_option1": "从不",

@@ -506,7 +506,7 @@
     "Sandbox_ZCognition_option2": "尋路",
     "Sandbox_ZCognition_option3": "基礎尋路能力",
     "Sandbox_ZCognition_option4": "隨機行動",
-    "Sandbox_ZDoorOpeningPercentage": "如果啟用了隨機開門, 那麼這會控制能開門的殭屍的百分比. \\n在下方勾選\"高階\"選項以使用自定義百分比.",
+    "Sandbox_ZDoorOpeningPercentage": "隨機開門數量",
     "Sandbox_ZCrawlUnderVehicle": "爬過車底",
     "Sandbox_ZCrawlUnderVehicle_tooltip": "殭屍可以在車底爬行的頻率.",
     "Sandbox_ZCrawlUnderVehicle_option1": "從不",
