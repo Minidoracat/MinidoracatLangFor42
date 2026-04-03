@@ -235,7 +235,14 @@ def read_translation(path: Path) -> OrderedDict[str, str]:
 
     if path.suffix.lower() == ".json":
         text = path.read_text(encoding="utf-8")
-        return cast(OrderedDict[str, str], json.loads(text, object_pairs_hook=OrderedDict))
+        # PZ 原生 .json 檔可能有 trailing comma，先嘗試標準解析，
+        # 失敗則移除 trailing comma 後重試
+        try:
+            return cast(OrderedDict[str, str], json.loads(text, object_pairs_hook=OrderedDict))
+        except json.JSONDecodeError:
+            import re as _re
+            cleaned = _re.sub(r',(\s*[}\]])', r'\1', text)
+            return cast(OrderedDict[str, str], json.loads(cleaned, object_pairs_hook=OrderedDict))
 
     text = path.read_text(encoding="utf-8")
 

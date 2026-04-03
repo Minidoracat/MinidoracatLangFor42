@@ -21,7 +21,7 @@
         {"pattern": "幹糧", "replacement": "乾糧"},
         {"pattern": "幹柴", "replacement": "乾柴"},
         {"pattern": "幹葉", "replacement": "乾葉"},
-        {"pattern": "= \"幹\"", "replacement": "= \"乾\"", "note": "UI 溫度狀態 Dry"},
+        {"pattern": "^幹$", "replacement": "乾", "note": "獨立值 Dry（如溫度狀態）"},
         {"pattern": "風幹", "replacement": "風乾"},
         {"pattern": "晾幹", "replacement": "晾乾"},
         {"pattern": "烘幹", "replacement": "烘乾"},

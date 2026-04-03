@@ -74,27 +74,14 @@ MOD_LUA = MOD_BASE / "lua" / "client"
 # language.txt: CH 版本有自己的語言定義，不能從 CN 轉換
 SKIP_CH_CONVERT = {"language.txt"}
 
-# Lua 腳本中 As1 的版本註釋標記，合併時應跳過
-AS1_COMMENT_PATTERN = re.compile(r"^--\s*As\s*1\s*--", re.MULTILINE)
-
 # ============================================================
-# Lua 腳本清單（資料驅動，唯一定義處）
+# Lua 腳本清單
 # ============================================================
-# 每組：(REF 中的檔名, MOD 中 CN 檔名, MOD 中 CH 檔名)
-LUA_PAIRS: list[tuple[str, str, str]] = [
-    ("FishWindow_CN.lua", "FishWindow_CN.lua", "FishWindow_CH.lua"),
-    ("ISBuildWindowHeader_CN.lua", "ISBuildWindowHeader_CN.lua", "ISBuildWindowHeader_CH.lua"),
-    ("ISWidgetRecipeCategories_CN.lua", "ISWidgetRecipeCategories_CN.lua", "ISWidgetRecipeCategories_CH.lua"),
-    ("ISUI/ISRichTextPanel_CN.lua", "ISUI/ISRichTextPanel_CN.lua", "ISUI/ISRichTextPanel_CH.lua"),
-    ("ISUI/Maps/ISMapDefinitions_CN.lua", "ISUI/Maps/ISMapDefinitions_CN.lua", "ISUI/Maps/ISMapDefinitions_CH.lua"),
-    ("OptionScreens/MainScreen_CN.lua", "OptionScreens/MainScreen_CN.lua", "OptionScreens/MainScreen_CH.lua"),
-]
-
-# Flx 腳本（雙語通用，直接複製）
+# Flx 腳本（雙語通用，直接從 REF 複製）
+# MOD 統一使用 _Flx.lua 處理雙語，不再建立分離的 _CN/_CH 版本
 FLX_FILES: list[str] = [
     "MapLabel_Flx.lua",
     "ModInfoPanel_FIx.lua",
-    "OptionScreens/MapSpawnSelect_Flx.lua",
 ]
 
 # ============================================================
@@ -264,10 +251,10 @@ def check_suspicious(text: str, filename: str) -> list[str]:
 # 比對功能
 # ============================================================
 def find_changed_files(ref_dir: Path, mod_dir: Path) -> dict[str, dict]:
-    """Find changed translation files (REF .txt vs MOD .json)"""
+    """Find changed translation files (REF .txt/.json vs MOD .json)"""
     changes: dict[str, dict] = {}
 
-    # Process .txt files in REF
+    # Process .txt files in REF (legacy format)
     for ref_file in sorted(ref_dir.glob("*.txt")):
         if not ref_file.is_file():
             continue
@@ -302,7 +289,39 @@ def find_changed_files(ref_dir: Path, mod_dir: Path) -> dict[str, dict]:
                 "key_delta": len(ref_data) - len(mod_data),
             }
 
-    # Process city directories in REF
+    # Process .json files in REF (new format)
+    for ref_file in sorted(ref_dir.glob("*.json")):
+        if not ref_file.is_file():
+            continue
+
+        rel = str(ref_file.relative_to(ref_dir))
+        json_name = ref_file.name
+        mod_file = mod_dir / json_name
+
+        if not mod_file.exists():
+            changes[rel] = {
+                "status": "new",
+                "ref_path": ref_file,
+                "mod_path": mod_file,
+                "json_name": json_name,
+                "ref_size": ref_file.stat().st_size,
+            }
+            continue
+
+        ref_data = read_translation(ref_file)
+        mod_data = read_translation(mod_file)
+        if ref_data != mod_data:
+            changes[rel] = {
+                "status": "modified",
+                "ref_path": ref_file,
+                "mod_path": mod_file,
+                "json_name": json_name,
+                "ref_keys": len(ref_data),
+                "mod_keys": len(mod_data),
+                "key_delta": len(ref_data) - len(mod_data),
+            }
+
+    # Process city directories in REF (legacy format)
     for city_dir in sorted(d for d in ref_dir.iterdir() if d.is_dir()):
         title_path = city_dir / "title.txt"
         desc_path = city_dir / "description.txt"
@@ -312,6 +331,10 @@ def find_changed_files(ref_dir: Path, mod_dir: Path) -> dict[str, dict]:
         rel = city_dir.name + "/"
         json_name = f"{city_dir.name}.json"
         mod_file = mod_dir / json_name
+
+        # Skip if already handled by .json glob above
+        if json_name in {info["json_name"] for info in changes.values()}:
+            continue
 
         if not mod_file.exists():
             changes[rel] = {
@@ -362,6 +385,7 @@ def cmd_compare():
     # CN vs CH
     print(f"\n📁 REF CN vs MOD CH（簡繁比對）")
     print("-" * 40)
+    # Check .txt REF files (legacy)
     for ref_file in sorted(REF_CN.glob("*.txt")):
         if ref_file.name in SKIP_CH_CONVERT:
             continue
@@ -382,7 +406,24 @@ def cmd_compare():
                 f"(CN={len(ref_data)} keys CH={len(ch_data)} keys {sign}{delta})"
             )
 
-    # Also check city directories
+    # Check .json REF files (new format)
+    for ref_file in sorted(REF_CN.glob("*.json")):
+        json_name = ref_file.name
+        ch_file = MOD_CH / json_name
+        if not ch_file.exists():
+            print(f"  ❌ {json_name} (CH 不存在)")
+            continue
+        ref_data = read_translation(ref_file)
+        ch_data = read_translation(ch_file)
+        if len(ref_data) != len(ch_data):
+            delta = len(ref_data) - len(ch_data)
+            sign = "+" if delta > 0 else ""
+            print(
+                f"  📝 {json_name} "
+                f"(CN={len(ref_data)} keys CH={len(ch_data)} keys {sign}{delta})"
+            )
+
+    # Also check city directories (legacy)
     for city_dir in sorted(d for d in REF_CN.iterdir() if d.is_dir()):
         title_path = city_dir / "title.txt"
         if not title_path.exists():
@@ -392,28 +433,9 @@ def cmd_compare():
         if not ch_file.exists():
             print(f"  ❌ {city_dir.name}/ → {json_name} (CH 不存在)")
 
-    # Lua 腳本（從 LUA_PAIRS / FLX_FILES 衍生）
+    # Lua 腳本（Flx 雙語腳本）
     print(f"\n📁 Lua 腳本比對")
     print("-" * 40)
-    for ref_name, _cn_name, ch_name in LUA_PAIRS:
-        ref_f = REF_LUA / ref_name
-        mod_f = MOD_LUA / ch_name
-        if not ref_f.exists():
-            print(f"  ❌ {ref_name} (REF 不存在)")
-            continue
-        if not mod_f.exists():
-            print(f"  ➕ {ref_name} → {ch_name} (MOD 不存在)")
-            continue
-        ref_lc = len(ref_f.read_text(encoding="utf-8-sig").splitlines())
-        mod_lc = len(mod_f.read_text(encoding="utf-8-sig").splitlines())
-        ref_size = ref_f.stat().st_size
-        mod_size = mod_f.stat().st_size
-        if ref_size != mod_size or ref_lc != mod_lc:
-            print(f"  📝 {ref_name} → {ch_name} (ref={ref_lc}L/{ref_size}B mod={mod_lc}L/{mod_size}B)")
-        elif sha256(ref_f) != sha256(mod_f):
-            print(f"  📝 {ref_name} → {ch_name} (同尺寸但內容不同)")
-        else:
-            print(f"  ✅ {ref_name} → {ch_name}")
     for flx in FLX_FILES:
         ref_f = REF_LUA / flx
         mod_f = MOD_LUA / flx
@@ -439,14 +461,14 @@ def cmd_sync_cn():
 
     updated = 0
 
-    # Process .txt translation files
+    # Process .txt translation files (legacy format)
     for ref_file in sorted(REF_CN.glob("*.txt")):
         if not ref_file.is_file():
             continue
         filename = ref_file.name
 
         if filename in PZ_SKIP_FILES:
-            # language.txt, credits.txt, streets.txt — copy as-is
+            # language.txt, credits.txt — copy as-is
             mod_file = MOD_CN / filename
             if not mod_file.exists() or sha256(ref_file) != sha256(mod_file):
                 mod_file.parent.mkdir(parents=True, exist_ok=True)
@@ -467,7 +489,6 @@ def cmd_sync_cn():
                 (k, v) for k, v in mod_data.items() if k not in ref_data
             )
             if extra_keys:
-                # 驗證 Print_Media _info 自訂 keys 是否被截斷
                 if json_name == "Print_Media.json":
                     for k in list(extra_keys):
                         err = _validate_print_media_info(k, extra_keys[k])
@@ -491,7 +512,49 @@ def cmd_sync_cn():
         write_translation_json(ref_data, mod_file)
         updated += 1
 
-    # Process city directories
+    # Process .json translation files (new format)
+    for ref_file in sorted(REF_CN.glob("*.json")):
+        if not ref_file.is_file():
+            continue
+        filename = ref_file.name
+        json_name = filename
+        mod_file = MOD_CN / json_name
+
+        ref_data = read_translation(ref_file)
+
+        # 保留 MOD 中有但 REF 中沒有的自訂 keys
+        if mod_file.exists():
+            mod_data = read_translation(mod_file)
+            extra_keys = OrderedDict(
+                (k, v) for k, v in mod_data.items() if k not in ref_data
+            )
+            if extra_keys:
+                if json_name == "Print_Media.json":
+                    for k in list(extra_keys):
+                        err = _validate_print_media_info(k, extra_keys[k])
+                        if err:
+                            print(f"  ⚠️  移除截斷的自訂 key: {k} ({err})")
+                            del extra_keys[k]
+                merged = OrderedDict(ref_data)
+                merged.update(extra_keys)
+                ref_data = merged
+        else:
+            mod_data = None
+
+        # Compare with existing
+        if mod_data is not None:
+            if mod_data == ref_data:
+                continue
+            added = len(set(ref_data) - set(mod_data))
+            removed = len(set(mod_data) - set(ref_data))
+            print(f"  📝 更新: {json_name} ({len(ref_data)} keys, +{added}/-{removed})")
+        else:
+            print(f"  ➕ 新增: {json_name} ({len(ref_data)} keys)")
+
+        write_translation_json(ref_data, mod_file)
+        updated += 1
+
+    # Process city directories (legacy format)
     for city_dir in sorted(d for d in REF_CN.iterdir() if d.is_dir()):
         title_path = city_dir / "title.txt"
         desc_path = city_dir / "description.txt"
@@ -530,7 +593,7 @@ def cmd_sync_ch():
     unchanged = 0
     all_issues: list[str] = []
 
-    # Process .txt translation files
+    # Process .txt translation files (legacy format)
     for ref_file in sorted(REF_CN.glob("*.txt")):
         if not ref_file.is_file():
             continue
@@ -543,9 +606,8 @@ def cmd_sync_ch():
             skipped += 1
             continue
 
-        # Skip files that stay as .txt (streets.txt, credits.txt)
+        # Skip files that stay as .txt (credits.txt etc.)
         if filename in PZ_SKIP_FILES:
-            # For these, just do text-level OpenCC conversion and copy
             ref_content = ref_file.read_text(encoding="utf-8-sig")
             ch_content = convert_s2twp(ref_content)
             ch_path = MOD_CH / filename
@@ -563,11 +625,8 @@ def cmd_sync_ch():
         json_name = txt_to_json_filename(filename)
         ch_path = MOD_CH / json_name
 
-        # Parse REF .txt → dict
         ref_data = read_translation(ref_file)
 
-        # OpenCC convert VALUES only
-        # Print_Media _info 值需要特殊處理：只轉換 <type:text> 中的文字
         is_print_media = json_name == "Print_Media.json"
         ch_data: OrderedDict[str, str] = OrderedDict()
         for key, value in ref_data.items():
@@ -583,7 +642,6 @@ def cmd_sync_ch():
                 (k, v) for k, v in old_data.items() if k not in ch_data
             )
             if extra_keys:
-                # 驗證 Print_Media _info 自訂 keys 是否被截斷
                 if json_name == "Print_Media.json":
                     for k in list(extra_keys):
                         err = _validate_print_media_info(k, extra_keys[k])
@@ -594,7 +652,6 @@ def cmd_sync_ch():
         else:
             old_data = None
 
-        # Compare with existing CH
         if old_data is not None:
             if old_data == ch_data:
                 unchanged += 1
@@ -609,12 +666,64 @@ def cmd_sync_ch():
         write_translation_json(ch_data, ch_path)
         updated += 1
 
-        # Check suspicious patterns in values
         ch_text = "\n".join(ch_data.values())
         issues = check_suspicious(ch_text, json_name)
         all_issues.extend(issues)
 
-    # Process city directories
+    # Process .json translation files (new format)
+    for ref_file in sorted(REF_CN.glob("*.json")):
+        if not ref_file.is_file():
+            continue
+
+        json_name = ref_file.name
+        ch_path = MOD_CH / json_name
+
+        ref_data = read_translation(ref_file)
+
+        is_print_media = json_name == "Print_Media.json"
+        ch_data: OrderedDict[str, str] = OrderedDict()
+        for key, value in ref_data.items():
+            if is_print_media and key.endswith("_info"):
+                ch_data[key] = convert_print_media_value(value)
+            else:
+                ch_data[key] = convert_s2twp(value)
+
+        # 保留 MOD 中有但 REF 中沒有的自訂 keys
+        if ch_path.exists():
+            old_data = read_translation(ch_path)
+            extra_keys = OrderedDict(
+                (k, v) for k, v in old_data.items() if k not in ch_data
+            )
+            if extra_keys:
+                if json_name == "Print_Media.json":
+                    for k in list(extra_keys):
+                        err = _validate_print_media_info(k, extra_keys[k])
+                        if err:
+                            print(f"  ⚠️  移除截斷的自訂 key: {k} ({err})")
+                            del extra_keys[k]
+                ch_data.update(extra_keys)
+        else:
+            old_data = None
+
+        if old_data is not None:
+            if old_data == ch_data:
+                unchanged += 1
+                continue
+            added = len(set(ch_data) - set(old_data))
+            removed = len(set(old_data) - set(ch_data))
+            print(f"  📝 更新: {json_name} (+{added}/-{removed} keys)")
+        else:
+            ch_path.parent.mkdir(parents=True, exist_ok=True)
+            print(f"  ➕ 新增: {json_name} ({len(ch_data)} keys)")
+
+        write_translation_json(ch_data, ch_path)
+        updated += 1
+
+        ch_text = "\n".join(ch_data.values())
+        issues = check_suspicious(ch_text, json_name)
+        all_issues.extend(issues)
+
+    # Process city directories (legacy format)
     for city_dir in sorted(d for d in REF_CN.iterdir() if d.is_dir()):
         title_path = city_dir / "title.txt"
         desc_path = city_dir / "description.txt"
@@ -623,6 +732,12 @@ def cmd_sync_ch():
 
         json_name = f"{city_dir.name}.json"
         ch_path = MOD_CH / json_name
+
+        # Skip if already handled by .json glob above
+        if ch_path.exists() and any(
+            ref_f.name == json_name for ref_f in REF_CN.glob("*.json")
+        ):
+            continue
 
         ref_data = parse_city_directory(city_dir)
         ch_data: OrderedDict[str, str] = OrderedDict()
@@ -687,12 +802,12 @@ def cmd_fix_check():
         issues = check_suspicious(content, str(rel_path))
         all_issues.extend(issues)
 
-    # Check CH Lua scripts
-    for _ref_name, _cn_name, ch_name in LUA_PAIRS:
-        lua_f = MOD_LUA / ch_name
+    # Check Flx Lua scripts
+    for flx in FLX_FILES:
+        lua_f = MOD_LUA / flx
         if lua_f.exists():
             content = lua_f.read_text(encoding="utf-8-sig")
-            issues = check_suspicious(content, ch_name)
+            issues = check_suspicious(content, flx)
             all_issues.extend(issues)
 
     if all_issues:
@@ -712,72 +827,18 @@ _ = (
 
 def cmd_sync_lua():
     """同步 Lua 腳本
-    
+
     策略：
-    - CN Lua：直接從 REF 複製
-    - CH Lua：從 REF CN 版本轉換，但移除 As1 版本註釋
-    - Flx Lua：直接從 REF 複製（雙語通用），新檔案也會建立
+    - Flx Lua：直接從 REF 複製（雙語通用）
+    - MOD 的其他 _Flx.lua 腳本由 MOD 自行維護，不從 REF 同步
     """
     print("=" * 60)
     print("同步 Lua 腳本")
     print("=" * 60)
-    
+
     updated = 0
-    
-    # 同步 CN Lua
-    for ref_name, cn_name, _ch_name in LUA_PAIRS:
-        ref_f = REF_LUA / ref_name
-        mod_f = MOD_LUA / cn_name
-        if ref_f.exists():
-            if not mod_f.exists() or sha256(ref_f) != sha256(mod_f):
-                mod_f.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(ref_f, mod_f)
-                print(f"  ✅ CN: {cn_name}")
-                updated += 1
-    
-    # 同步 CH Lua（轉換 + 移除 As1 註釋）
-    for ref_name, _cn_name, ch_name in LUA_PAIRS:
-        ref_f = REF_LUA / ref_name
-        mod_f = MOD_LUA / ch_name
-        if not ref_f.exists():
-            continue
-        
-        cn_content = ref_f.read_text(encoding="utf-8-sig")
-        
-        # OpenCC 轉換
-        ch_content = convert_s2twp(cn_content)
-        
-        # 替換語言後綴（函式名、變數名中的 _CN → _CH）
-        ch_content = ch_content.replace("_CN", "_CH")
-        
-        # 移除 As1 版本註釋（`-- As 1 --` 及其後的說明行）
-        lines = ch_content.split("\n")
-        cleaned_lines = []
-        skip_next = False
-        for line in lines:
-            if AS1_COMMENT_PATTERN.match(line.strip()):
-                skip_next = True
-                continue
-            if skip_next and line.strip().startswith("--"):
-                continue  # 跳過 As1 註釋後的說明行
-            skip_next = False
-            cleaned_lines.append(line)
-        ch_content = "\n".join(cleaned_lines)
-        
-        # 確保檔案以 newline 結尾（但不要多餘的空行）
-        ch_content = ch_content.rstrip("\n") + "\n"
-        
-        if mod_f.exists():
-            old_content = mod_f.read_text(encoding="utf-8-sig")
-            if old_content == ch_content:
-                continue
-        
-        mod_f.parent.mkdir(parents=True, exist_ok=True)
-        mod_f.write_text(ch_content, encoding="utf-8", newline="\n")
-        print(f"  ✅ CH: {ch_name}")
-        updated += 1
-    
-    # 同步 Flx 腳本（允許新增，不再要求 MOD 已存在）
+
+    # 同步 Flx 腳本（允許新增）
     for flx in FLX_FILES:
         ref_f = REF_LUA / flx
         if not ref_f.exists():

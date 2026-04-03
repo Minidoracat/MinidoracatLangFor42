@@ -4,6 +4,24 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.16.1-1.3.0] - 2026-04-03
+
+### Changed
+
+- 同步簡體翻譯參考源（如一漢化組）v3.14（對應 B42.16）
+  - 更新 21 個翻譯檔（CN + CH 各 21 個），新增 key：ContextMenu +5, IG_UI +12, Moveables +40, Recipes +55, Sandbox +3, UI +12
+  - 刪除孤兒 `streets.txt`（CN/CH），參考源已移除此檔案
+- `sync_translations.py` 重構：
+  - 新增 `.json → .json` 同步支援（參考源已全面從 .txt 遷移至 .json）
+  - 移除 `LUA_PAIRS` CN/CH 分離邏輯，統一使用 `_Flx.lua` 雙語方案
+- `pz_translate.py`：新增 trailing comma 容錯（PZ 原生 JSON 格式）
+- `opencc_fixes.json`：修正 `幹→乾` 獨立值 pattern（溫度狀態 Dry）
+
+### Fixed
+
+- 修復 UI.json 載入存檔屬性時 crash（移除 14 個帶多餘引號的錯誤 key，如 `"map"` → `map`）
+- 修正 CH `IG_UI.json` 溫度狀態 `幹` → `乾`（Dry）
+
 ## [42.15.1-1.2.2] - 2026-03-11
 
 ### Fixed
