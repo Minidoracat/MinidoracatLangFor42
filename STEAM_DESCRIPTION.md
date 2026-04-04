@@ -45,3 +45,9 @@
 [hr][/hr]
 
 [b]#中文 #繁體中文 #簡體中文 #漢化 #翻譯 #Minidoracat #如一漢化組[/b]
+
+
+Workshop ID: 3386633401
+Mod ID: CatLangFor42
+Map Folder: Muldraugh, KY
+Map Folder: Riverside, KY

@@ -18,3 +18,5 @@ translation-reference/
 # Python
 __pycache__/
 *.pyc
+
+temp/
