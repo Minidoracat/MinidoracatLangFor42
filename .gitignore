@@ -15,8 +15,16 @@ desktop.ini
 # 翻譯參考倉庫（外部）
 translation-reference/
 
+# 反編譯產物（若放在專案內應被忽略；預設位置為專案同層 ../pz-decompiled-reference/）
+pz-decompiled-reference/
+decompiled/
+vineflower-*.jar
+*.class
+
 # Python
 __pycache__/
 *.pyc
 
 temp/
+# Added by code-review-graph
+.code-review-graph/
