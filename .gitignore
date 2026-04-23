@@ -1,5 +1,7 @@
 # Claude Code 本機設定
 .claude/
+.mcp.json
+CLAUDE.md
 
 # 系統檔案
 .DS_Store
