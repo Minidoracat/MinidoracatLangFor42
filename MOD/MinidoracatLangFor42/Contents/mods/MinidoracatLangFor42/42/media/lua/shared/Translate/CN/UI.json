@@ -590,6 +590,8 @@
     "UI_servers_auth_two_factor": "双因素",
     "UI_servers_connectionOptions": "连接选项",
     "UI_servers_useSteamRelay": "使用 Steam 服务器",
+    "UI_servers_streamerMode": "直播模式",
+    "UI_servers_streamerMode_tooltip": "隐藏屏幕上所有 IP 地址. 开始直播前请先开启此选项以避免遭受 DDoS 攻击.",
     "UI_servers_accountAlreadyExist": "账号已存在.",
     "UI_servers_accountNameTooShort": "用户名太短.",
     "UI_servers_accountNameBadWord": "不允许使用%1作为用户名.",

@@ -590,6 +590,8 @@
     "UI_servers_auth_two_factor": "雙因素",
     "UI_servers_connectionOptions": "連線選項",
     "UI_servers_useSteamRelay": "使用 Steam 伺服器",
+    "UI_servers_streamerMode": "實況模式",
+    "UI_servers_streamerMode_tooltip": "隱藏畫面上所有 IP 位址. 開始實況前請先開啟此選項以避免遭受 DDoS 攻擊.",
     "UI_servers_accountAlreadyExist": "賬號已存在.",
     "UI_servers_accountNameTooShort": "使用者名稱太短.",
     "UI_servers_accountNameBadWord": "不允許使用%1作為使用者名稱.",
