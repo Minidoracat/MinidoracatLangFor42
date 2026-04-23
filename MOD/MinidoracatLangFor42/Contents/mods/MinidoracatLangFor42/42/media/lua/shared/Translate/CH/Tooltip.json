@@ -602,5 +602,6 @@
     "Tooltip_NoRecipes_More": "此物品已被標記為<br>無法用於任何配方. ",
     "Tooltip_Unwanted": "不想要",
     "Tooltip_Unwanted_More": "此類物品已被<br>標記為不想要.",
-    "Tooltip_IsEmpty": "無法在空的狀態下啟用."
+    "Tooltip_IsEmpty": "無法在空的狀態下啟用.",
+    "Tooltip_DoorIsLocked": "門已上鎖"
 }

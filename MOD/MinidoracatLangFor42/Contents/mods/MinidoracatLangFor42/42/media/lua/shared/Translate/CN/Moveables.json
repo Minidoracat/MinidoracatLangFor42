@@ -714,7 +714,7 @@
     "Sunstar_Motel_Sign": "日星汽车旅店标牌",
     "Surgeon_Degree_Certificate": "外科医生学位证书",
     "Tabletop_Soda_Machine": "台式汽水机",
-    "Taco_Sign": "墨西哥玉米卷标牌",
+    "Taco_Sign": "墨西哥玉米标签牌",
     "Tactical_Walkie_Talkie": "战术对讲机",
     "Tall_Corner_Hedge": "高树篱转角",
     "Tall_Hedge": "高树篱",
@@ -1009,5 +1009,7 @@
     "Generic_Shop_Shelves": "商店货架",
     "Key_Duplicator": "钥匙复制机",
     "Spiffo_Spiffo_Sleeping_Bag": "斯皮福睡袋",
-    "Cow_Hide": "牛皮"
+    "Cow_Hide": "牛皮",
+    "Fence_Post": "围栏柱",
+    "Green_Fancy_Lamp": "精致台灯"
 }

@@ -433,7 +433,7 @@
     "Tooltip_BookTitle_Farming": "耕作",
     "Tooltip_BookTitle_FirstAid": "急救",
     "Tooltip_BookTitle_Fishing": "钓鱼",
-    "Tooltip_BookTitle_Foraging": "搜寻",
+    "Tooltip_BookTitle_Foraging": "搜索",
     "Tooltip_BookTitle_Mechanics": "技工",
     "Tooltip_BookTitle_MetalWelding": "金工",
     "Tooltip_BookTitle_Tailoring": "缝纫",
@@ -602,5 +602,6 @@
     "Tooltip_NoRecipes_More": "此物品已被标记为<br>无法用于任何配方. ",
     "Tooltip_Unwanted": "不想要",
     "Tooltip_Unwanted_More": "此类物品已被<br>标记为不想要.",
-    "Tooltip_IsEmpty": "无法在空的状态下激活."
+    "Tooltip_IsEmpty": "无法在空的状态下激活.",
+    "Tooltip_DoorIsLocked": "门已上锁"
 }

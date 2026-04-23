@@ -15,7 +15,6 @@ PZ 翻譯同步工具
   sync-lua        - 同步 Lua 腳本
   sync-all        - 執行全部同步
   fix-check       - 檢查 OpenCC 轉換常見錯誤
-  gen-vehicle-map - 從 vanilla EN IG_UI.json 生成 VehicleKey_Flx 反查表
 """
 from __future__ import annotations
 
@@ -869,90 +868,6 @@ def cmd_sync_all():
 
 
 # ============================================================
-# gen-vehicle-map：從 vanilla EN/IG_UI.json 生成英文車名 → IGUI key 反查表
-# ------------------------------------------------------------
-# 目的：修復 Java 層硬編碼英文寫入存檔的車鑰匙顯示名
-#   Java BaseVehicle.keyNamerVehicle 會在車輛 spawn 時呼叫 setName()，
-#   格式為 "Vehicle Key - {英文車名}"，之後即使切換語言也不會重算。
-#   VehicleKey_Flx.lua 用此映射表反查英文車名對應的 IGUI_VehicleName* key，
-#   再用 getText() 取當前語言翻譯，呼叫 item:setName() 修復。
-# ============================================================
-VANILLA_PZ_DEFAULT = Path("D:/SteamLibrary/steamapps/common/ProjectZomboid")
-VEHICLE_KEY_LUA_PATH = (
-    MOD_BASE / "lua" / "shared" / "Items" / "VehicleKey_Flx.lua"
-)
-GEN_BLOCK_START = "-- <AUTO-GEN:VEHICLE_NAME_MAP START>"
-GEN_BLOCK_END = "-- <AUTO-GEN:VEHICLE_NAME_MAP END>"
-
-
-def cmd_gen_vehicle_map(pz_path: Path | None = None):
-    """從 vanilla EN IG_UI.json 生成英文車名 → IGUI key 反查表"""
-    pz_path = pz_path or VANILLA_PZ_DEFAULT
-    en_file = pz_path / "media" / "lua" / "shared" / "Translate" / "EN" / "IG_UI.json"
-
-    print("=" * 60)
-    print("生成車輛英文名反查表（VehicleKey_Flx）")
-    print("=" * 60)
-    print(f"Vanilla EN 來源：{en_file}")
-
-    if not en_file.exists():
-        print(f"❌ 找不到 vanilla EN IG_UI.json：{en_file}")
-        print(f"   請確認 PZ 安裝路徑，或用 --pz-path 指定")
-        sys.exit(1)
-
-    en_data = read_translation(en_file)
-    vn_entries = OrderedDict(
-        (k, v) for k, v in en_data.items() if k.startswith("IGUI_VehicleName")
-    )
-    print(f"讀取到 {len(vn_entries)} 個 IGUI_VehicleName* 條目")
-
-    # 建立 {英文值 → IGUI key} 反查表
-    # 多個 key 共用相同英文值時保留第一個（不影響翻譯結果，因為對應中文也相同）
-    en_to_key: dict[str, str] = {}
-    for key, en_value in vn_entries.items():
-        if en_value and en_value not in en_to_key:
-            en_to_key[en_value] = key
-
-    print(f"去重後共 {len(en_to_key)} 個獨立英文車名")
-
-    # 產生 Lua table 原始碼
-    lines = [GEN_BLOCK_START]
-    lines.append("-- 由 scripts/sync_translations.py gen-vehicle-map 自動產生，請勿手動編輯")
-    lines.append(f"-- 來源：vanilla EN/IG_UI.json（共 {len(en_to_key)} 條）")
-    lines.append("VehicleKeyFlx = VehicleKeyFlx or {}")
-    lines.append("VehicleKeyFlx.EN_TO_KEY = {")
-    for en_value in sorted(en_to_key.keys()):
-        key = en_to_key[en_value]
-        # 轉義 Lua 字串中的 " 和 \
-        en_escaped = en_value.replace("\\", "\\\\").replace('"', '\\"')
-        lines.append(f'    ["{en_escaped}"] = "{key}",')
-    lines.append("}")
-    lines.append(GEN_BLOCK_END)
-    generated_block = "\n".join(lines)
-
-    if not VEHICLE_KEY_LUA_PATH.exists():
-        print(f"❌ 找不到目標 Lua 檔：{VEHICLE_KEY_LUA_PATH}")
-        print(f"   請先建立 VehicleKey_Flx.lua 並包含 AUTO-GEN 標記區塊")
-        sys.exit(1)
-
-    original = VEHICLE_KEY_LUA_PATH.read_text(encoding="utf-8")
-    pattern = re.compile(
-        re.escape(GEN_BLOCK_START) + r".*?" + re.escape(GEN_BLOCK_END),
-        re.DOTALL,
-    )
-    if not pattern.search(original):
-        print(f"❌ {VEHICLE_KEY_LUA_PATH.name} 內找不到 AUTO-GEN 標記區塊")
-        sys.exit(1)
-
-    updated = pattern.sub(lambda _m: generated_block, original)
-    if updated != original:
-        VEHICLE_KEY_LUA_PATH.write_text(updated, encoding="utf-8", newline="\n")
-        print(f"✅ 已更新 {VEHICLE_KEY_LUA_PATH.relative_to(PROJECT_ROOT)}")
-    else:
-        print(f"ℹ️  內容未變動：{VEHICLE_KEY_LUA_PATH.relative_to(PROJECT_ROOT)}")
-
-
-# ============================================================
 # 入口
 # ============================================================
 def main():
@@ -973,25 +888,17 @@ def main():
         "command",
         nargs="?",
         default="compare",
-        choices=["compare", "sync-cn", "sync-ch", "sync-lua", "sync-all", "fix-check", "gen-vehicle-map"],
+        choices=["compare", "sync-cn", "sync-ch", "sync-lua", "sync-all", "fix-check"],
         help="執行的命令（預設：compare）",
     )
-    parser.add_argument(
-        "--pz-path",
-        type=Path,
-        default=None,
-        help="vanilla Project Zomboid 安裝路徑（gen-vehicle-map 使用）",
-    )
     args = parser.parse_args()
-    
-    # 驗證路徑（gen-vehicle-map 不依賴 REF_CN）
-    if args.command != "gen-vehicle-map":
-        if not REF_CN.exists():
-            print(f"❌ 參考目錄不存在：{REF_CN}")
-            sys.exit(1)
-        if not MOD_CN.exists():
-            print(f"❌ MOD CN 目錄不存在：{MOD_CN}")
-            sys.exit(1)
+
+    if not REF_CN.exists():
+        print(f"❌ 參考目錄不存在：{REF_CN}")
+        sys.exit(1)
+    if not MOD_CN.exists():
+        print(f"❌ MOD CN 目錄不存在：{MOD_CN}")
+        sys.exit(1)
 
     match args.command:
         case "compare":
@@ -1006,8 +913,6 @@ def main():
             cmd_sync_all()
         case "fix-check":
             cmd_fix_check()
-        case "gen-vehicle-map":
-            cmd_gen_vehicle_map(args.pz_path)
 
 
 if __name__ == "__main__":

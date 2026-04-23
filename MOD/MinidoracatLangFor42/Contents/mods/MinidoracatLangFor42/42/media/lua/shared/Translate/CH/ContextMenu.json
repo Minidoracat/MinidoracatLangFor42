@@ -846,5 +846,7 @@
     "ContextMenu_Gardening": "園藝",
     "ContextMenu_Fluid": "液體",
     "ContextMenu_FullInventory": "物品欄已滿",
-    "ContextMenu_GreenFloral\"": "綠色花卉"
+    "ContextMenu_GreenFloral\"": "綠色花卉",
+    "ContextMenu_ChangeRadius": "更改範圍",
+    "ContextMenu_TooSimple": "技能等級過高, 閱讀無法獲得經驗值."
 }

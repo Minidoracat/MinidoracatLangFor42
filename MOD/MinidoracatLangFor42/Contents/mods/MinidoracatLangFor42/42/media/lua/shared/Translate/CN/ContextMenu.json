@@ -228,7 +228,7 @@
     "ContextMenu_NameThisContainer": "给容器改名",
     "ContextMenu_RenameBag": "重命名",
     "ContextMenu_RenameFood": "重命名",
-    "ContextMenu_Forage": "搜寻",
+    "ContextMenu_Forage": "搜索",
     "ContextMenu_Take": "服用",
     "ContextMenu_Farming": "农业",
     "ContextMenu_Eat_All": "全部",
@@ -830,8 +830,8 @@
     "ContextMenu_More": "更多",
     "ContextMenu_RecipeProducedByCraft": "可以由制作获得",
     "ContextMenu_RecipeCannotProducedByCraft": "无法由制作获得",
-    "ContextMenu_CanBeForaged": "可以搜寻到",
-    "ContextMenu_CannotBeForaged": "无法搜寻到",
+    "ContextMenu_CanBeForaged": "可以搜索到",
+    "ContextMenu_CannotBeForaged": "无法搜索到",
     "ContextMenu_CanSpawnAsLoot": "可以作为战利品生成",
     "ContextMenu_CannotSpawnAsLoot": "无法作为战利品生成",
     "ContextMenu_Debug": "调试",
@@ -846,5 +846,7 @@
     "ContextMenu_Gardening": "园艺",
     "ContextMenu_Fluid": "液体",
     "ContextMenu_FullInventory": "物品栏已满",
-    "ContextMenu_GreenFloral\"": "绿色花卉"
+    "ContextMenu_GreenFloral\"": "绿色花卉",
+    "ContextMenu_ChangeRadius": "更改范围",
+    "ContextMenu_TooSimple": "技能等级过高, 阅读无法获得经验值."
 }
