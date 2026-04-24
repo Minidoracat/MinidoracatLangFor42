@@ -4,6 +4,26 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.17.0-1.4.2] - 2026-04-24
+
+### Added
+
+- 新增 vanilla `Kale Growing Season` 原始名稱 alias，補齊 VHS / media 顯示使用未正規化 recipe key 時的翻譯。
+- 新增管理面板角色列表顯示修補，翻譯 vanilla 內建角色名稱、描述、唯讀標籤與預設身分標籤。
+- 新增 `PerkName_Flx.lua`，重新套用 `IGUI_perks_*` 到 Java `PerkFactory.Perk.name`，修復技能升級 halo 使用 stale 技能名的情境。
+- 新增 `PlayerStatsXP_Flx.lua` client/server 同步修補，避免多人管理面板提升 / 降低技能等級時 server 再回送英文升級 halo。
+
+### Changed
+
+- `mod.info` 版本：`42.17.0-1.4.1` → `42.17.0-1.4.2`。
+- 管理面板技能升降級在多人模式改用自訂 server command 同步等級 / XP，不再透過 vanilla `/addxp` 產生第二次 server halo。
+
+### Fixed
+
+- 修復製作視窗仍顯示 `Furniture` / `carpentry` 英文分類名稱的問題。
+- 修復管理面板角色列表內建角色、描述與 `[Read Only]` 標籤未翻譯的問題。
+- 修復多人管理面板按「提升等級」時，已顯示一次中文升級提示後又收到一次英文 `+1 Aiming` 類 server 提示的問題。
+
 ## [42.17.0-1.4.1] - 2026-04-24
 
 ### Added
