@@ -30,3 +30,6 @@ __pycache__/
 temp/
 # Added by code-review-graph
 .code-review-graph/
+.omx/
+.omc/
+.codex/

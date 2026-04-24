@@ -15,6 +15,8 @@ PZ 翻譯同步工具
   sync-lua        - 同步 Lua 腳本
   sync-all        - 執行全部同步
   fix-check       - 檢查 OpenCC 轉換常見錯誤
+  gen-vehicle-map - 從 vanilla EN IG_UI.json 生成 VehicleKey_Flx 反查表
+  gen-radio-map   - 從 vanilla/MOD RadioData.json 生成 RadioData_Flx 英文→RD key 反查表
 """
 from __future__ import annotations
 
@@ -24,6 +26,7 @@ import json
 import re
 import shutil
 import sys
+import xml.etree.ElementTree as ET
 from collections import OrderedDict
 from pathlib import Path
 
@@ -868,6 +871,299 @@ def cmd_sync_all():
 
 
 # ============================================================
+# gen-vehicle-map：從 vanilla EN/IG_UI.json 生成英文車名 → IGUI key 反查表
+# ------------------------------------------------------------
+# 目的：修復車鑰匙名稱在 Java 生成時被寫入 InventoryItem.name 後，
+#   於多人 server 英文環境或舊存檔中持久化為英文/raw key 的問題。
+#   VehicleKey_Flx.lua 會用此映射反查英文車名對應的 IGUI_VehicleName* key，
+#   再用玩家端當前語言 getTextOrNull() 重組顯示名稱。
+# ============================================================
+VANILLA_PZ_DEFAULT = Path("D:/SteamLibrary/steamapps/common/ProjectZomboid")
+VEHICLE_KEY_LUA_PATH = MOD_BASE / "lua" / "shared" / "Items" / "VehicleKey_Flx.lua"
+GEN_BLOCK_START = "-- <AUTO-GEN:VEHICLE_NAME_MAP START>"
+GEN_BLOCK_END = "-- <AUTO-GEN:VEHICLE_NAME_MAP END>"
+
+
+def _lua_string(value: str) -> str:
+    """將 Python 字串轉成 Lua 雙引號字串內容。"""
+    return (
+        value.replace("\\", "\\\\")
+        .replace("\r", "\\r")
+        .replace("\n", "\\n")
+        .replace("\t", "\\t")
+        .replace('"', '\\"')
+    )
+
+
+def cmd_gen_vehicle_map(pz_path: Path | None = None):
+    """從 vanilla EN IG_UI.json 生成英文車名 → IGUI key 反查表"""
+    pz_path = pz_path or VANILLA_PZ_DEFAULT
+    en_file = pz_path / "media" / "lua" / "shared" / "Translate" / "EN" / "IG_UI.json"
+
+    print("=" * 60)
+    print("生成車輛英文名反查表（VehicleKey_Flx）")
+    print("=" * 60)
+    print(f"Vanilla EN 來源：{en_file}")
+
+    if not en_file.exists():
+        print(f"❌ 找不到 vanilla EN IG_UI.json：{en_file}")
+        print("   請確認 PZ 安裝路徑，或用 --pz-path 指定")
+        sys.exit(1)
+
+    en_data = read_translation(en_file)
+    vehicle_entries = OrderedDict(
+        (key, value)
+        for key, value in en_data.items()
+        if key.startswith("IGUI_VehicleName") and value
+    )
+    print(f"讀取到 {len(vehicle_entries)} 個 IGUI_VehicleName* 條目")
+
+    # 建立 {英文值 → IGUI key} 反查表。
+    # 多個 key 共用同一英文值時 deterministic 地保留第一個 key；
+    # 這些通常是多個外觀/編號共享相同顯示名稱（例如 Race Car），
+    # VehicleKey_Flx 只需要任一能翻譯到同名值的 key。
+    en_to_key: dict[str, str] = {}
+    duplicate_values: dict[str, list[str]] = {}
+    for key, en_value in vehicle_entries.items():
+        if en_value not in en_to_key:
+            en_to_key[en_value] = key
+        else:
+            duplicate_values.setdefault(en_value, [en_to_key[en_value]]).append(key)
+
+    print(f"去重後共 {len(en_to_key)} 個獨立英文車名")
+    if duplicate_values:
+        print(f"⚠️  {len(duplicate_values)} 個英文車名對應多個 key，已保留第一個 key")
+
+    lines = [GEN_BLOCK_START]
+    lines.append("-- 由 scripts/sync_translations.py gen-vehicle-map 自動產生，請勿手動編輯")
+    lines.append(f"-- 來源：vanilla EN/IG_UI.json（共 {len(en_to_key)} 條）")
+    if duplicate_values:
+        lines.append("-- 注意：重複英文車名已保留第一個 vanilla key；詳見 generator 執行輸出")
+    lines.append("VehicleKeyFlx = VehicleKeyFlx or {}")
+    lines.append("VehicleKeyFlx.EN_TO_KEY = {")
+    for en_value in sorted(en_to_key):
+        key = en_to_key[en_value]
+        lines.append(f'    ["{_lua_string(en_value)}"] = "{_lua_string(key)}",')
+    lines.append("}")
+    lines.append(GEN_BLOCK_END)
+    generated_block = "\n".join(lines)
+
+    if not VEHICLE_KEY_LUA_PATH.exists():
+        print(f"❌ 找不到目標 Lua 檔：{VEHICLE_KEY_LUA_PATH}")
+        print("   請先建立 VehicleKey_Flx.lua 並包含 AUTO-GEN 標記區塊")
+        sys.exit(1)
+
+    original = VEHICLE_KEY_LUA_PATH.read_text(encoding="utf-8-sig")
+    pattern = re.compile(
+        re.escape(GEN_BLOCK_START) + r".*?" + re.escape(GEN_BLOCK_END),
+        re.DOTALL,
+    )
+    if not pattern.search(original):
+        print(f"❌ {VEHICLE_KEY_LUA_PATH.name} 內找不到 AUTO-GEN 標記區塊")
+        sys.exit(1)
+
+    updated = pattern.sub(lambda _m: generated_block, original)
+    if updated != original:
+        VEHICLE_KEY_LUA_PATH.write_text(updated, encoding="utf-8", newline="\n")
+        print(f"✅ 已更新 {VEHICLE_KEY_LUA_PATH.relative_to(PROJECT_ROOT)}")
+    else:
+        print(f"ℹ️  內容未變動：{VEHICLE_KEY_LUA_PATH.relative_to(PROJECT_ROOT)}")
+
+
+# ============================================================
+# gen-radio-map：從 RadioData EN/CH/CN 生成英文台詞 → RD key 反查表
+# ------------------------------------------------------------
+# 目的：修復多人 server 英文環境下，live radio/TV broadcast 由 server
+#   先以英文 Translator.getText("RD_*") 固化後再傳給 client 的問題。
+#   Java WaveSignal packet 不攜帶 RD guid，client 只收到最終字串，因此
+#   RadioData_Flx.lua 需要用「英文原文 → RD key」反查，再用 UTF-8 reader
+#   讀取 CH/CN RadioData.json，避免把大量中文 literals 寫進 Lua source 造成亂碼。
+# ============================================================
+RADIO_DATA_LUA_PATH = MOD_BASE / "lua" / "shared" / "RadioData_Flx.lua"
+RADIO_GEN_BLOCK_START = "-- <AUTO-GEN:RADIO_TEXT_MAP START>"
+RADIO_GEN_BLOCK_END = "-- <AUTO-GEN:RADIO_TEXT_MAP END>"
+
+
+def cmd_gen_radio_map(pz_path: Path | None = None):
+    """從 vanilla/MOD RadioData.json 生成 live radio/TV 英文→RD key 反查表"""
+    pz_path = pz_path or VANILLA_PZ_DEFAULT
+    en_file = pz_path / "media" / "lua" / "shared" / "Translate" / "EN" / "RadioData.json"
+    xml_file = pz_path / "media" / "radio" / "RadioData.xml"
+    ch_file = MOD_CH / "RadioData.json"
+    cn_file = MOD_CN / "RadioData.json"
+
+    print("=" * 60)
+    print("生成 radio/TV 英文台詞反查表（RadioData_Flx）")
+    print("=" * 60)
+    print(f"Vanilla EN 來源：{en_file}")
+    print(f"Vanilla XML 來源：{xml_file}")
+    print(f"MOD CH 來源：{ch_file.relative_to(PROJECT_ROOT)}")
+    print(f"MOD CN 來源：{cn_file.relative_to(PROJECT_ROOT)}")
+
+    for file in (en_file, xml_file, ch_file, cn_file):
+        if not file.exists():
+            print(f"❌ 找不到來源檔：{file}")
+            sys.exit(1)
+
+    en_data = read_translation(en_file)
+    ch_data = read_translation(ch_file)
+    cn_data = read_translation(cn_file)
+
+    missing_ch = [key for key in en_data if key not in ch_data]
+    missing_cn = [key for key in en_data if key not in cn_data]
+    if missing_ch or missing_cn:
+        print(f"❌ RadioData 翻譯缺失：CH={len(missing_ch)}, CN={len(missing_cn)}")
+        for key in (missing_ch[:10] + missing_cn[:10]):
+            print(f"  - {key}")
+        sys.exit(1)
+
+    en_to_key: OrderedDict[str, str] = OrderedDict()
+    duplicate_values: dict[str, list[str]] = {}
+    ambiguous_duplicates: set[str] = set()
+
+    first_key_by_en: dict[str, str] = {}
+    translations_by_en: dict[str, set[tuple[str, str]]] = {}
+    for key, en_value in en_data.items():
+        if not en_value or en_value == "~":
+            continue
+        ch_value = ch_data[key]
+        cn_value = cn_data[key]
+        translations_by_en.setdefault(en_value, set()).add((ch_value, cn_value))
+        if en_value in first_key_by_en:
+            duplicate_values.setdefault(en_value, [first_key_by_en[en_value]]).append(key)
+            if len(translations_by_en[en_value]) > 1:
+                ambiguous_duplicates.add(en_value)
+            continue
+
+        first_key_by_en[en_value] = key
+        if ch_value != en_value or cn_value != en_value:
+            en_to_key[en_value] = key
+
+    print(f"讀取到 {len(en_data)} 個 RD_* 條目")
+    print(f"去重後英文原文：{len(first_key_by_en)} 條")
+    print(f"輸出英文→RD key 反查：{len(en_to_key)} 條")
+    if duplicate_values:
+        print(f"⚠️  {len(duplicate_values)} 個英文原文對應多個 RD key，已保留第一個 key 的譯文")
+    if ambiguous_duplicates:
+        print(f"⚠️  其中 {len(ambiguous_duplicates)} 個重複英文原文有不同譯文，已保留第一個 key 的譯文")
+
+    xml_root = ET.parse(xml_file).getroot()
+    advert_categories: OrderedDict[str, list[dict]] = OrderedDict()
+    adverts_node = xml_root.find("Adverts")
+    if adverts_node is not None:
+        for script_node in adverts_node.findall("ScriptEntry"):
+            category_id = script_node.get("ID")
+            if not category_id:
+                continue
+            segments: list[dict] = []
+            for broadcast_node in script_node.findall("BroadcastEntry"):
+                segment_id = broadcast_node.get("ID")
+                if not segment_id:
+                    continue
+                lines_data = []
+                for line_node in broadcast_node.findall("LineEntry"):
+                    line_id = line_node.get("ID")
+                    if not line_id:
+                        continue
+                    key = f"RD_{line_id}"
+                    lines_data.append(
+                        {
+                            "key": key,
+                            "r": int(line_node.get("r") or 255),
+                            "g": int(line_node.get("g") or 255),
+                            "b": int(line_node.get("b") or 255),
+                            "codes": line_node.get("codes"),
+                        }
+                    )
+                if lines_data:
+                    segments.append({"id": segment_id, "lines": lines_data})
+            if segments:
+                advert_categories[category_id] = segments
+
+    broadcast_advert_categories: OrderedDict[str, str] = OrderedDict()
+    for broadcast_node in xml_root.iter("BroadcastEntry"):
+        broadcast_id = broadcast_node.get("ID")
+        advert_cat = broadcast_node.get("advertCat")
+        is_segment = (broadcast_node.get("isSegment") or "").lower() == "true"
+        if (
+            broadcast_id
+            and advert_cat
+            and advert_cat.lower() != "none"
+            and not is_segment
+            and advert_cat in advert_categories
+        ):
+            broadcast_advert_categories[broadcast_id] = advert_cat
+
+    advert_line_count = sum(
+        len(segment["lines"])
+        for segments in advert_categories.values()
+        for segment in segments
+    )
+    print(f"讀取到 {len(advert_categories)} 個 advert category、{sum(len(v) for v in advert_categories.values())} 個 advert segment、{advert_line_count} 條 advert line")
+    print(f"可重建 translated advert segment 的主 broadcast：{len(broadcast_advert_categories)} 個")
+
+    lines = [RADIO_GEN_BLOCK_START]
+    lines.append("-- 由 scripts/sync_translations.py gen-radio-map 自動產生，請勿手動編輯")
+    lines.append(f"-- 來源：vanilla EN/RadioData.json + MOD CH/CN RadioData.json（EN 共 {len(en_data)} 條）")
+    lines.append("-- 用途：server/SP 載入 live radio/TV scripts 後，將英文 RadioLine.text 反查回 RD key。")
+    lines.append("RadioDataFlx = RadioDataFlx or {}")
+    lines.append("RadioDataFlx.EN_TO_KEY = {")
+    for en_value, key in sorted(en_to_key.items()):
+        lines.append(f'    ["{_lua_string(en_value)}"] = "{_lua_string(key)}",')
+    lines.append("}")
+    lines.append("")
+    lines.append("RadioDataFlx.ADVERT_CATEGORIES = {")
+    for category_id, segments in advert_categories.items():
+        lines.append(f'    ["{_lua_string(category_id)}"] = {{')
+        for segment in segments:
+            lines.append("        {")
+            lines.append(f'            id = "{_lua_string(segment["id"])}",')
+            lines.append("            lines = {")
+            for line in segment["lines"]:
+                parts = [
+                    f'key = "{_lua_string(line["key"])}"',
+                    f'r = {line["r"]}',
+                    f'g = {line["g"]}',
+                    f'b = {line["b"]}',
+                ]
+                if line["codes"]:
+                    parts.append(f'codes = "{_lua_string(line["codes"])}"')
+                lines.append("                { " + ", ".join(parts) + " },")
+            lines.append("            },")
+            lines.append("        },")
+        lines.append("    },")
+    lines.append("}")
+    lines.append("")
+    lines.append("RadioDataFlx.BROADCAST_ADVERT_CATEGORIES = {")
+    for broadcast_id, category_id in broadcast_advert_categories.items():
+        lines.append(f'    ["{_lua_string(broadcast_id)}"] = "{_lua_string(category_id)}",')
+    lines.append("}")
+    lines.append(RADIO_GEN_BLOCK_END)
+    generated_block = "\n".join(lines)
+
+    if not RADIO_DATA_LUA_PATH.exists():
+        print(f"❌ 找不到目標 Lua 檔：{RADIO_DATA_LUA_PATH}")
+        print("   請先建立 RadioData_Flx.lua 並包含 AUTO-GEN 標記區塊")
+        sys.exit(1)
+
+    original = RADIO_DATA_LUA_PATH.read_text(encoding="utf-8-sig")
+    pattern = re.compile(
+        re.escape(RADIO_GEN_BLOCK_START) + r".*?" + re.escape(RADIO_GEN_BLOCK_END),
+        re.DOTALL,
+    )
+    if not pattern.search(original):
+        print(f"❌ {RADIO_DATA_LUA_PATH.name} 內找不到 AUTO-GEN 標記區塊")
+        sys.exit(1)
+
+    updated = pattern.sub(lambda _m: generated_block, original)
+    if updated != original:
+        RADIO_DATA_LUA_PATH.write_text(updated, encoding="utf-8", newline="\n")
+        print(f"✅ 已更新 {RADIO_DATA_LUA_PATH.relative_to(PROJECT_ROOT)}")
+    else:
+        print(f"ℹ️  內容未變動：{RADIO_DATA_LUA_PATH.relative_to(PROJECT_ROOT)}")
+
+
+# ============================================================
 # 入口
 # ============================================================
 def main():
@@ -882,23 +1178,41 @@ def main():
   uv run scripts/sync_translations.py sync-lua     # 只同步 Lua
   uv run scripts/sync_translations.py sync-all     # 全部同步
   uv run scripts/sync_translations.py fix-check    # 檢查轉換錯誤
+  uv run scripts/sync_translations.py gen-vehicle-map --pz-path "D:/SteamLibrary/steamapps/common/ProjectZomboid"
+  uv run scripts/sync_translations.py gen-radio-map --pz-path "D:/SteamLibrary/steamapps/common/ProjectZomboid"
         """,
     )
     parser.add_argument(
         "command",
         nargs="?",
         default="compare",
-        choices=["compare", "sync-cn", "sync-ch", "sync-lua", "sync-all", "fix-check"],
+        choices=[
+            "compare",
+            "sync-cn",
+            "sync-ch",
+            "sync-lua",
+            "sync-all",
+            "fix-check",
+            "gen-vehicle-map",
+            "gen-radio-map",
+        ],
         help="執行的命令（預設：compare）",
+    )
+    parser.add_argument(
+        "--pz-path",
+        type=Path,
+        default=None,
+        help="vanilla Project Zomboid 安裝路徑（gen-vehicle-map / gen-radio-map 使用）",
     )
     args = parser.parse_args()
 
-    if not REF_CN.exists():
-        print(f"❌ 參考目錄不存在：{REF_CN}")
-        sys.exit(1)
-    if not MOD_CN.exists():
-        print(f"❌ MOD CN 目錄不存在：{MOD_CN}")
-        sys.exit(1)
+    if args.command not in {"gen-vehicle-map", "gen-radio-map"}:
+        if not REF_CN.exists():
+            print(f"❌ 參考目錄不存在：{REF_CN}")
+            sys.exit(1)
+        if not MOD_CN.exists():
+            print(f"❌ MOD CN 目錄不存在：{MOD_CN}")
+            sys.exit(1)
 
     match args.command:
         case "compare":
@@ -913,6 +1227,10 @@ def main():
             cmd_sync_all()
         case "fix-check":
             cmd_fix_check()
+        case "gen-vehicle-map":
+            cmd_gen_vehicle_map(args.pz_path)
+        case "gen-radio-map":
+            cmd_gen_radio_map(args.pz_path)
 
 
 if __name__ == "__main__":
