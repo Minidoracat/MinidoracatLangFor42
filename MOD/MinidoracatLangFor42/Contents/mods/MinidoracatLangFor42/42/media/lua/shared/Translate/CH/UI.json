@@ -704,7 +704,7 @@
     "UI_GameLoad_burnedZombiesTodayN": "今天這個伺服器上有%d個殭屍屍體被焚燒.",
     "UI_GameLoad_time": "當前時間: %d: %d",
     "UI_GameLoad_temperature": "溫度: %.1f ºC",
-    "UI_GameLoad_humidity": "溼度: %.1f %%",
+    "UI_GameLoad_humidity": "溼度: %.1f %",
     "UI_GameLoad_windSpeed": "風速: %s, %d 節, %d 公里每小時",
     "UI_GameLoad_windDescription0": "風平浪靜. 煙霧垂直上升, 幾乎沒有漂移.",
     "UI_GameLoad_windDescription1": "風向由煙霧漂移顯示, 而不是風向標. 旗幟幾乎沒有移動. 風幾乎不會吹動樹葉.",

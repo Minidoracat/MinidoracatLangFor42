@@ -704,7 +704,7 @@
     "UI_GameLoad_burnedZombiesTodayN": "今天这个服务器上有%d个僵尸尸体被焚烧.",
     "UI_GameLoad_time": "当前时间: %d: %d",
     "UI_GameLoad_temperature": "温度: %.1f ºC",
-    "UI_GameLoad_humidity": "湿度: %.1f %%",
+    "UI_GameLoad_humidity": "湿度: %.1f %",
     "UI_GameLoad_windSpeed": "风速: %s, %d 节, %d 公里每小时",
     "UI_GameLoad_windDescription0": "风平浪静. 烟雾垂直上升, 几乎没有漂移.",
     "UI_GameLoad_windDescription1": "风向由烟雾漂移显示, 而不是风向标. 旗帜几乎没有移动. 风几乎不会吹动树叶.",

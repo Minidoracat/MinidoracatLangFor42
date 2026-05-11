@@ -451,7 +451,7 @@
     "IGUI_RequestID_MapZone": "地圖區域",
     "IGUI_RequestID_PlayerZombieDescriptors": "殭屍描述詞",
     "IGUI_RequestID_RadioData": "電臺資料",
-    "IGUI_MP_DownloadedLargeFile": "已收到 %2 的 %1%.",
+    "IGUI_MP_DownloadedLargeFile": "已接收 %1% / %2.",
     "IGUI_MP_LoadWorld": "載入地圖中…",
     "IGUI_MP_LoadTileDef": "從硬碟載入區塊定義檔案…",
     "IGUI_MP_Checksum": "校驗檔案 (checksum) 中…",

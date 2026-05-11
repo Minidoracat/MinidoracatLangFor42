@@ -2,7 +2,7 @@
     "GameSound_ButtonAdvanced": "高级",
     "GameSound_ButtonReload": "重新加载",
     "GameSound_ButtonReload_tt": "重新加载所有 sounds.txt 文件.",
-    "GameSound_VolumeControlTooltip": "音量: %1%%<br>主音量: %2 %3%",
+    "GameSound_VolumeControlTooltip": "音量: %1%<br>主音量: %2 %3%",
     "GameSound_Category_AUTO": "自动",
     "GameSound_Category_Item": "选项",
     "GameSound_Category_Meta": "元",

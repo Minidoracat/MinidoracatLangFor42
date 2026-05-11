@@ -451,7 +451,7 @@
     "IGUI_RequestID_MapZone": "地图区域",
     "IGUI_RequestID_PlayerZombieDescriptors": "僵尸描述词",
     "IGUI_RequestID_RadioData": "电台数据",
-    "IGUI_MP_DownloadedLargeFile": "已收到 %2 的 %1%.",
+    "IGUI_MP_DownloadedLargeFile": "已收到 %1% / %2.",
     "IGUI_MP_LoadWorld": "加载地图中…",
     "IGUI_MP_LoadTileDef": "从硬盘加载区块定义文件…",
     "IGUI_MP_Checksum": "校验文件 (checksum) 中…",
