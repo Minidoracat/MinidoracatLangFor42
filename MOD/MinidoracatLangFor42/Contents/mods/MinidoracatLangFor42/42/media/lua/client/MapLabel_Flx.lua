@@ -7,13 +7,11 @@ function MapLabelEdit.isAppropriateKey(text)
     return text:find("^MapLabel_[^%s<>]+$") ~= nil
 end
 
-function MapLabelEdit.applyChanges()
-    if not ISWorldMap_instance then
-        ISWorldMap.ShowWorldMap(0)
-        ISWorldMap_instance:close()
-    end
+function MapLabelEdit.applyChanges(mapInstance)
+    local worldMap = mapInstance or ISWorldMap_instance
+    if not worldMap or not worldMap.javaObject then return end
 
-    local mapAPI = ISWorldMap_instance.javaObject:getAPIv3()
+    local mapAPI = worldMap.javaObject:getAPIv3()
     if not mapAPI then return end
     local symAPI = mapAPI:getSymbolsAPIv2()
     if not symAPI then return end
@@ -42,4 +40,16 @@ function MapLabelEdit.applyChanges()
     end
 end
 
-Events.OnGameStart.Add(MapLabelEdit.applyChanges)
+local function applyChangesIfMapExists()
+    MapLabelEdit.applyChanges(ISWorldMap_instance)
+end
+Events.OnGameStart.Add(applyChangesIfMapExists)
+
+if ISWorldMap and ISWorldMap.ShowWorldMap then
+    local _showWorldMap = ISWorldMap.ShowWorldMap
+    function ISWorldMap.ShowWorldMap(playerNum, centerX, centerY, zoom)
+        local result = _showWorldMap(playerNum, centerX, centerY, zoom)
+        MapLabelEdit.applyChanges(ISWorldMap_instance)
+        return result
+    end
+end

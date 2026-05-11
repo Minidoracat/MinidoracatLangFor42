@@ -275,6 +275,7 @@ end
 --- @param container ItemContainer
 local function fixContainer(container)
     if not container then return end
+    if not instanceof(container, "ItemContainer") then return end
 
     local keys = container:getAllTypeRecurse("Base.CarKey")
     if not keys then return end
