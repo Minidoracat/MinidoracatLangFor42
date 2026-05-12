@@ -603,5 +603,6 @@
     "Tooltip_Unwanted": "不想要",
     "Tooltip_Unwanted_More": "此類物品已被<br>標記為不想要.",
     "Tooltip_IsEmpty": "無法在空的狀態下啟用.",
+    "Tooltip_item_ImprovisedGasMask": "對有害煙霧提供中等防護.",
     "Tooltip_DoorIsLocked": "門已上鎖"
 }

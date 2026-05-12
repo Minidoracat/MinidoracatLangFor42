@@ -264,6 +264,7 @@
     "ContextMenu_Add_Ingredient": "加入 %1 %2",
     "ContextMenu_From_Ingredient": "配料 %1 %2",
     "ContextMenu_Medical_Check": "醫療檢查",
+    "ContextMenu_Medical_Check_Request": "%1 想要對你進行醫療檢查。接受嗎?",
     "ContextMenu_Remove_Bandage": "移除繃帶",
     "ContextMenu_Bandage": "包紮",
     "ContextMenu_Disinfect": "消毒",
