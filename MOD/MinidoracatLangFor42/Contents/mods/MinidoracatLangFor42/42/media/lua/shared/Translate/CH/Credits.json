@@ -76,5 +76,7 @@
     "credits_role.localization": "",
     "credits_role_group.tools": " <SIZE:credits2> 工具 <SIZE:medium> <LINE> <LINE> 音效引擎：FMOD Studio by Firelight Technologies <LINE> <LINE> <IMAGECENTRE:media/ui/Logos/FMOD_credits.png> <LINE> <LINE> <LINE> 使用 Bink Video. Copyright (C) 1997-2026 by Epic Games Tools LLC <LINE> <LINE> <IMAGECENTRE:media/ui/Logos/Bink_credits.png>",
     "credits_role_group.in_loving_memory_of": "謹以此獻上懷念 <LINE> ",
-    "credits_role.in_loving_memory_of": ""
+    "credits_role.in_loving_memory_of": "",
+    "credits_role.senior_qa": "資深 QA 測試員",
+    "credits_role.localisation_lead": "在地化負責人"
 }

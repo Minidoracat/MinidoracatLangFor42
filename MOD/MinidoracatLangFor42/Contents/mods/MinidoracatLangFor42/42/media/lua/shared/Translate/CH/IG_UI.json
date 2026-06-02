@@ -7373,5 +7373,12 @@
     "IGUI_RadioChannel_USR": "USR",
     "IGUI_RadioChannel_CivilianRadio": "民用無線電",
     "IGUI_RadioChannel_UnknownFrequency": "未知頻率",
-    "IGUI_RadioChannel_ClassifiedM1A1": "機密 M1A1"
+    "IGUI_RadioChannel_ClassifiedM1A1": "機密 M1A1",
+    "IGUI_ContainerTitle_dishwasher": "洗碗機",
+    "IGUI_ARFRecording": "動畫/動作錄製",
+    "IGUI_UsersList_ShowOnlineOnlyFilter": "只顯示線上玩家",
+    "IGUI_UsersList_NameColumn": "名稱",
+    "IGUI_UsersList_RoleColumn": "身分",
+    "IGUI_UsersList_WarningsColumn": "警告",
+    "IGUI_UsersList_LastConnectionColumn": "上次連線"
 }

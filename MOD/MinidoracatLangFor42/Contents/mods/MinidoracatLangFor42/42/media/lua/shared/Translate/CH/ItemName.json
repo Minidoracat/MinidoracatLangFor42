@@ -4958,5 +4958,7 @@
     "Base.x2Scope": "瞄準鏡 (2 倍)",
     "Base.x4Scope": "瞄準鏡 (4 倍)",
     "Base.x8Scope": "瞄準鏡 (8 倍)",
-    "Moveables.Moveable": "可移動物"
+    "Moveables.Moveable": "可移動物",
+    "Base.Mov_BrownDishwasher": "棕色洗碗機",
+    "Base.Mov_MetalDishwasher": "金屬洗碗機"
 }
