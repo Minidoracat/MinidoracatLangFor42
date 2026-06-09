@@ -191,6 +191,24 @@ local function fixPlayerItems(playerObj)
     return fixContainer(playerObj:getInventory())
 end
 
+local function fixInventoryPage(page)
+    local pane = page and page.inventoryPane
+    return fixContainer(pane and pane.inventory)
+end
+
+local function fixOpenInventoryPages()
+    if not getPlayerInventory or not getPlayerLoot then return 0 end
+
+    local fixed = 0
+    for playerIndex = 0, 3 do
+        if getSpecificPlayer(playerIndex) then
+            fixed = fixed + fixInventoryPage(getPlayerInventory(playerIndex))
+            fixed = fixed + fixInventoryPage(getPlayerLoot(playerIndex))
+        end
+    end
+    return fixed
+end
+
 local function getPrimaryPlayer()
     return getSpecificPlayer(0) or getPlayer()
 end
@@ -217,8 +235,21 @@ local function onFillContainer(_roomName, _containerType, container)
 end
 Events.OnFillContainer.Add(onFillContainer)
 
+local function onContainerUpdate()
+    if not shouldRunClientRepair() then return end
+    fixOpenInventoryPages()
+end
+Events.OnContainerUpdate.Add(onContainerUpdate)
+
+local function onRefreshInventoryWindowContainers(_page, state)
+    if state ~= "end" or not shouldRunClientRepair() then return end
+    fixOpenInventoryPages()
+end
+Events.OnRefreshInventoryWindowContainers.Add(onRefreshInventoryWindowContainers)
+
 local function onEveryOneMinute()
     if not shouldRunClientRepair() then return end
     fixPlayerItems(getPrimaryPlayer())
+    fixOpenInventoryPages()
 end
 Events.EveryOneMinute.Add(onEveryOneMinute)
