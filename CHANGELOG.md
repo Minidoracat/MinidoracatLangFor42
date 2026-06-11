@@ -4,6 +4,13 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.19.0-1.6.5] - 2026-06-11
+
+### Fixed
+
+- 修復 MP 連線佇列畫面（LoadingQueueUI）溼度顯示的崩潰風險（玩家回報）：`UI_GameLoad_humidity` 原值「溼度: %.1f %」的裸尾 `%` 會原樣進入 Java `String.format` 並觸發 `UnknownFormatConversionException`（JDK `Formatter.parse` 對 trailing `%` 直接拋例外），CH / CN 均改為「%.1f %%」。
+- 此字串不含 `%N` 編號佔位符，不在 Translator 載入期自動轉義的範圍，與 `%1%` 形式的規則不同——已同步修正 AGENTS.md 的百分比規則，明確區分兩種機制。vanilla EN 的 `Humidity: %.1f %` 帶有同樣的官方 bug，本次僅修正 CH / CN 側。
+
 ## [42.19.0-1.6.4] - 2026-06-11
 
 ### Fixed
