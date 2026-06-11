@@ -4,6 +4,23 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.19.0-1.6.4] - 2026-06-11
+
+### Fixed
+
+- 全面修復 PZ 42.19 官方 Java `ItemCodeOnCreate` / `RecipeCodeHelper` 與官方 Lua `Fishing` 在物品生成時把當下語言名稱烘焙進 item name 的動態命名殘留（新增 `DynamicItemName_Flx.lua`）。涵蓋：雪花玻璃球、照片 / 隱密照片 / 限制級照片 / 老照片、明信片、塗鴉、墜飾、主題書籍與平裝書、主題雜誌 / 電視雜誌 / 火辣女郎雜誌、漫畫、新報紙 / 舊報紙、傳單 / 小冊、型錄 / RPG 手冊、股票、寵物狗牌、郵件 / 手寫信、名片、證件（身分證 / 護照 / 徽章 / 信用卡 / 記者證 / 軍牌等）/ 印章戒指、中獎刮刮樂、魚與魚餌底料。
+- modData 保有翻譯 key 的類型直接以當前語言重建；只保存烘焙文字的類型（雪花玻璃球、舊報紙、寵物狗牌、股票、信件、名片）以名稱解析搭配「英文原文 → IGUI key」反查表重組，解析不到的名稱（含玩家自訂名）一律不動，亦不觸碰 collectibleKey / literatureTitle 等已讀與收藏追蹤 modData。
+- 修正 `IGUI_SnowGlobeOf` 翻譯格式順序（原「%1 的 %2」會輸出「雪花玻璃球 的 摩洛哥」，改為與照片一致的「%1 (%2)」呈現「雪花玻璃球 (摩洛哥)」），舊格式殘留名稱由 Lua 修補自動遷移。
+- 修復「活體動物」名稱在 MP / 舊存檔顯示生成端語言（如右鍵選單標題「Holstein Bull」）的問題：官方會在牧場世界生成幼崽、由屍體或抓取物重建動物、MP 同步時把組譯結果烘焙進活體動物 customName 並原樣存檔。`AnimalProductName_Flx.lua` 新增 `IsoAnimal.getFullName` 顯示層包裝，customName 匹配系統生成名模式（EN/CH/CN）時以當前語言重組，一次涵蓋右鍵選單、撿起/宰殺選項、動物資訊面板、畜牧區與雞舍 UI 等所有 Lua 顯示面；玩家自訂動物名不受影響，不改寫存檔資料。
+
+### Added
+
+- `scripts/sync_translations.py` 新增 `gen-dynamic-name-map` 子命令：從 vanilla EN 翻譯自動產生 `DynamicItemName_Flx.lua` 的 AUTO-GEN 反查表（EN 物品名 45、地名 900、舊報紙 25、寵物名 229、信件 24、公司 63、職業 116 條），PZ 版本更新後一鍵重生。
+
+### Notes
+
+- 玩家截圖中其餘英文項目經查證皆屬第三方 mod 範圍，本 MOD 僅涵蓋官方內容、不予處理：「Equipped Items」清單列為 CleanUI（有 CN 無 CH）、Rondel Dagger 與 Bastard Sword Sheath 為 MedievalZ（僅附英文）、原始 key `Fluid_Container_HydrationBackpackPlus` 為 BagUpgradePlus（未附任何 Fluids 翻譯，所有語言皆顯示 raw key）、Tactical Flashlight 推測為 KATTAJ1 系列 mod。請玩家向各 mod 作者或第三方 mod 漢化包回報。
+
 ## [42.19.0-1.6.3] - 2026-06-10
 
 ### Fixed

@@ -1164,6 +1164,254 @@ def cmd_gen_radio_map(pz_path: Path | None = None):
 
 
 # ============================================================
+# gen-dynamic-name-map：從 vanilla EN 翻譯生成 DynamicItemName_Flx 反查表
+# ------------------------------------------------------------
+# 目的：修復 ItemCodeOnCreate / Fishing Lua 在物品生成時把翻譯結果烘焙進
+#   InventoryItem.name 的殘留（雪花玻璃球、舊報紙、寵物牌、股票、信件、名片等）。
+#   modData 只存烘焙文字的類型需要「英文原文 → IGUI key」反查表，
+#   DynamicItemName_Flx.lua 解析名稱後反查 key 再以當前語言重組。
+# ============================================================
+DYNAMIC_NAME_LUA_PATH = MOD_BASE / "lua" / "shared" / "Items" / "DynamicItemName_Flx.lua"
+DYN_GEN_BLOCK_START = "-- <AUTO-GEN:DYNAMIC_NAME_MAP START>"
+DYN_GEN_BLOCK_END = "-- <AUTO-GEN:DYNAMIC_NAME_MAP END>"
+
+# 需要 EN 顯示名的物品（解析殘留名稱時的錨點；來源：42.19.0 generation/*.java）
+DYN_EN_NAME_FULLTYPES = [
+    "Base.SnowGlobe",
+    "Base.Newspaper",
+    "Base.StockCertificate",
+    "Base.DogTag_Pet",
+    "Base.BusinessCard",
+    "Base.BusinessCard_Nolans",
+    "Base.ScratchTicket_Winner",
+    # 印章戒指（onCreateMonogram）
+    "Base.Ring_Left_MiddleFinger_Signet",
+    "Base.Ring_Left_RingFinger_Signet",
+    "Base.Ring_Right_MiddleFinger_Signet",
+    "Base.Ring_Right_RingFinger_Signet",
+    # 證件類（onCreateIDCard*）
+    "Base.Badge",
+    "Base.BrassNameplate",
+    "Base.BusinessCard_Personal",
+    "Base.CreditCard",
+    "Base.CreditCard_Stolen",
+    "Base.IDcard",
+    "Base.IDcard_Stolen",
+    "Base.IDcard_Female",
+    "Base.IDcard_Male",
+    "Base.Necklace_DogTag",
+    "Base.Necklace_DogTag_Female",
+    "Base.Necklace_DogTag_Male",
+    "Base.Passport",
+    "Base.PressID",
+    # 魚（Fishing.onCreateFish / Fish.lua 動態大小命名）
+    "Base.AligatorGar",
+    "Base.BlackCrappie",
+    "Base.BlueCatfish",
+    "Base.Bluegill",
+    "Base.ChannelCatfish",
+    "Base.FlatheadCatfish",
+    "Base.FreshwaterDrum",
+    "Base.GreenSunfish",
+    "Base.LargemouthBass",
+    "Base.Muskellunge",
+    "Base.Paddlefish",
+    "Base.RedearSunfish",
+    "Base.Sauger",
+    "Base.SmallmouthBass",
+    "Base.SpottedBass",
+    "Base.StripedBass",
+    "Base.Walleye",
+    "Base.WhiteBass",
+    "Base.WhiteCrappie",
+    "Base.YellowPerch",
+]
+
+# Letter 註冊表 id（zombie/scripting/objects/Letter.java 42.19.0；key = "IGUI_" + id）
+DYN_LETTER_IDS = [
+    "AcceptanceLetter", "ApplicationLetter", "BankLetter", "Bill",
+    "BusinessLetter", "CharityLetter", "ChildsLetter", "CondolenceLetter",
+    "EmploymentLetter", "FriendlyLetter", "GovernmentLetter", "InvitationLetter",
+    "LegalLetter", "Letter", "OfficialLetter", "OverdueBill",
+    "RejectionLetter", "ResignationLetter", "RomanticLetter", "RudeLetter",
+    "SadLetter", "ScamLetter", "ThankYouLetter", "ThreateningLetter",
+]
+
+# Business 註冊表 id（zombie/scripting/objects/Business.java 42.19.0；key = "IGUI_" + id）
+DYN_BUSINESS_IDS = [
+    "McCoyLogging", "ValuTech", "Egenerex", "UnitedShippingLogistics",
+    "PerfickPotatoCo", "HerrFlickKnives", "CobberMetals", "BansheeHolloway",
+    "BeringCompany", "YuriDesign", "NewcastlePaperandInk", "BusanTelecommunications",
+    "KittenKnives", "ButterflyMachinery", "WirklichlangeswortAG", "SanchezGoldberg",
+    "Beanz", "BruceySoups", "FellowsInc", "InvisibleSledgehammerCorp",
+    "PantherMotors", "KillianFoodstuffs", "GrennadeChemicals", "ReallyHardSteel",
+    "ChinesePetroleum", "BankofKentucky", "LoveheartShipbuilding", "DoubleEntryAccounting",
+    "SwiftThompsonAerospace", "FunXtremeInc", "Imekagi", "WolframWaffen",
+    "Fossoil", "SpiffoCorp", "GigaMart", "KirrusInc",
+    "FranklinMotors", "GlobalComputerSolutions", "ParasolInc", "TISConstruction",
+    "PremiumTechnologies", "MmmInc", "AlgolElectronics", "Fibroil",
+    "SeahorseCoffeeCorp", "HawthornOil", "PopCo", "Chrysalis",
+    "Nikoda", "ValuInsurance", "Zippee", "Pharmahug",
+    "SpecificElectric", "HallowayFramer", "RedmondRedmond", "HavishamHotels",
+    "AmericanTire", "AmeriGlobeInc", "MassGenfacCo", "FinneganGroup",
+    "PalmTravel", "GeneralBroadcastCorporation", "ScittWilkerFirearms",
+]
+
+# Job 註冊表 id（zombie/scripting/objects/Job.java 42.19.0；key = "IGUI_" + id）
+DYN_JOB_IDS = [
+    "Accountant", "Actor", "AlarmInstaller", "AnimalExpert", "Architect",
+    "Artist", "Babysitter", "Barber", "Bodyguard", "Builder",
+    "BusinessCardMaker", "BusinessConsultant", "BusinessOwner", "Butcher",
+    "CarSalesperson", "Carpenter", "Cleaner", "ClothingDesigner", "Clown",
+    "Coder", "Cook", "CultDeprogrammer", "Dancer", "Dentist",
+    "Dermatologist", "Dietician", "DIY", "Doctor", "Drafter", "Driver",
+    "DryCleaner", "EfficiencyExpert", "Electrician", "Engineer", "Escort",
+    "Exorcist", "ExoticDancer", "Exterminator", "FactoryManager", "Fencer",
+    "Film/TVCrew", "FinancialAdvisor", "FitnessInstructor", "Floorer",
+    "FortuneTeller", "Framer", "Gardener", "GeneralManager", "GraphicDesigner",
+    "Hairdresser", "HeadChef", "Historian", "HumorousFakeOccupationName",
+    "Hunter", "InsuranceAgent", "IntimateDiseaseSpecialist", "ITTechnician",
+    "JackofallTrades", "Journalist", "Laborer", "Lawyer", "Lecturer",
+    "LocalHistoryExpert", "LocalPolitician", "Locksmith", "Logger",
+    "LogisticsExpert", "MachineOperator", "MakeupArtist", "Masseuse",
+    "Mechanic", "Metalworker", "Midwife", "Nanny", "Nurse", "Optician",
+    "Orthodontist", "Painter", "Pediatrician", "PersonalTrainer", "Pharmacist",
+    "Photographer", "Physiotherapist", "Pilot", "Plumber", "PrivateInvestigator",
+    "Producer", "Psychiatrist", "Psychic", "Publisher", "RealEstateAgent",
+    "Rehab", "Repairman", "Sailor", "Salesperson", "Scientist",
+    "ScrapyardWorker", "Secretary", "SecurityGuard", "Singer",
+    "StockMarketExpert", "Stonemason", "Tailor", "TaxExpert", "TaxiDriver",
+    "Teacher", "Technician", "TourGuide", "TravelAgent", "Tutor",
+    "Undertaker", "Veterinarian", "Welder", "WindowFitter", "Writer",
+]
+
+
+def _build_en_to_key_map(entries: dict, keys: list[str]) -> "OrderedDict[str, str]":
+    """以 EN 值為索引建立反查表；重複 EN 值 deterministic 地保留第一個 key。"""
+    en_to_key: "OrderedDict[str, str]" = OrderedDict()
+    for key in keys:
+        value = entries.get(key)
+        if not value:
+            continue
+        if value not in en_to_key:
+            en_to_key[value] = key
+    return en_to_key
+
+
+def _emit_lua_map(lines: list[str], name: str, mapping: dict, indent: str = "    "):
+    lines.append(f"{indent}{name} = {{")
+    for map_key in sorted(mapping):
+        lines.append(f'{indent}    ["{_lua_string(map_key)}"] = "{_lua_string(mapping[map_key])}",')
+    lines.append(f"{indent}}},")
+
+
+def cmd_gen_dynamic_name_map(pz_path: Path | None = None):
+    """從 vanilla EN 翻譯生成 DynamicItemName_Flx 的反查表"""
+    pz_path = pz_path or VANILLA_PZ_DEFAULT
+    en_dir = pz_path / "media" / "lua" / "shared" / "Translate" / "EN"
+    ig_ui_file = en_dir / "IG_UI.json"
+    item_name_file = en_dir / "ItemName.json"
+    print_media_file = en_dir / "Print_Media.json"
+
+    print("=" * 60)
+    print("生成動態命名反查表（DynamicItemName_Flx）")
+    print("=" * 60)
+    print(f"Vanilla EN 來源：{en_dir}")
+
+    for required in (ig_ui_file, item_name_file, print_media_file):
+        if not required.exists():
+            print(f"❌ 找不到 vanilla EN 翻譯檔：{required}")
+            print("   請確認 PZ 安裝路徑，或用 --pz-path 指定")
+            sys.exit(1)
+
+    ig_ui = read_translation(ig_ui_file)
+    item_names = read_translation(item_name_file)
+    print_media = read_translation(print_media_file)
+
+    # 物品 EN 顯示名（fullType → EN 名）
+    en_item_names = OrderedDict()
+    missing_items = []
+    for full_type in DYN_EN_NAME_FULLTYPES:
+        value = item_names.get(full_type)
+        if value:
+            en_item_names[full_type] = value
+        else:
+            missing_items.append(full_type)
+    if missing_items:
+        print(f"⚠️  {len(missing_items)} 個 fullType 在 EN ItemName.json 查不到：{missing_items}")
+
+    # 各反查表（EN 值 → IGUI key）
+    place_keys = [key for key in ig_ui if key.startswith("IGUI_Photo_")]
+    newspaper_keys = [key for key in ig_ui if key.startswith("IGUI_NewspaperTitle_")]
+    petname_keys = [key for key in ig_ui if key.startswith("IGUI_PetName_")]
+    letter_keys = [f"IGUI_{letter_id}" for letter_id in DYN_LETTER_IDS]
+    business_keys = [f"IGUI_{business_id}" for business_id in DYN_BUSINESS_IDS]
+    job_keys = [f"IGUI_{job_id}" for job_id in DYN_JOB_IDS]
+
+    place_map = _build_en_to_key_map(ig_ui, place_keys)
+    newspaper_map = _build_en_to_key_map(ig_ui, newspaper_keys)
+    petname_map = _build_en_to_key_map(ig_ui, petname_keys)
+    letter_map = _build_en_to_key_map(ig_ui, letter_keys)
+    business_map = _build_en_to_key_map(ig_ui, business_keys)
+    job_map = _build_en_to_key_map(ig_ui, job_keys)
+
+    # BusinessCard_Nolans 的職業欄位用 Flier.NOLANS_USED_CARS 的 Print_Media 標題
+    nolans_key = "Print_Media_NolansUsedCars_title"
+    nolans_value = print_media.get(nolans_key)
+    if nolans_value and nolans_value not in job_map:
+        job_map[nolans_value] = nolans_key
+
+    stats = {
+        "EN_ITEM_NAMES": len(en_item_names),
+        "PLACE": len(place_map),
+        "NEWSPAPER_TITLE": len(newspaper_map),
+        "PETNAME": len(petname_map),
+        "LETTER": len(letter_map),
+        "BUSINESS": len(business_map),
+        "JOB": len(job_map),
+    }
+    for name, count in stats.items():
+        print(f"  {name}: {count} 條")
+
+    lines = [DYN_GEN_BLOCK_START]
+    lines.append("-- 由 scripts/sync_translations.py gen-dynamic-name-map 自動產生，請勿手動編輯")
+    lines.append(f"-- 來源：vanilla EN/IG_UI.json、ItemName.json、Print_Media.json（{'、'.join(f'{k} {v}' for k, v in stats.items())}）")
+    lines.append("DynamicItemNameFlx = DynamicItemNameFlx or {}")
+    lines.append("DynamicItemNameFlx.MAPS = {")
+    _emit_lua_map(lines, "EN_ITEM_NAMES", en_item_names)
+    _emit_lua_map(lines, "PLACE", place_map)
+    _emit_lua_map(lines, "NEWSPAPER_TITLE", newspaper_map)
+    _emit_lua_map(lines, "PETNAME", petname_map)
+    _emit_lua_map(lines, "LETTER", letter_map)
+    _emit_lua_map(lines, "BUSINESS", business_map)
+    _emit_lua_map(lines, "JOB", job_map)
+    lines.append("}")
+    lines.append(DYN_GEN_BLOCK_END)
+    generated_block = "\n".join(lines)
+
+    if not DYNAMIC_NAME_LUA_PATH.exists():
+        print(f"❌ 找不到目標 Lua 檔：{DYNAMIC_NAME_LUA_PATH}")
+        print("   請先建立 DynamicItemName_Flx.lua 並包含 AUTO-GEN 標記區塊")
+        sys.exit(1)
+
+    original = DYNAMIC_NAME_LUA_PATH.read_text(encoding="utf-8-sig")
+    pattern = re.compile(
+        re.escape(DYN_GEN_BLOCK_START) + r".*?" + re.escape(DYN_GEN_BLOCK_END),
+        re.DOTALL,
+    )
+    if not pattern.search(original):
+        print(f"❌ {DYNAMIC_NAME_LUA_PATH.name} 內找不到 AUTO-GEN 標記區塊")
+        sys.exit(1)
+
+    updated = pattern.sub(lambda _m: generated_block, original)
+    if updated != original:
+        DYNAMIC_NAME_LUA_PATH.write_text(updated, encoding="utf-8", newline="\n")
+        print(f"✅ 已更新 {DYNAMIC_NAME_LUA_PATH.relative_to(PROJECT_ROOT)}")
+    else:
+        print(f"ℹ️  內容未變動：{DYNAMIC_NAME_LUA_PATH.relative_to(PROJECT_ROOT)}")
+
+
+# ============================================================
 # 入口
 # ============================================================
 def main():
@@ -1180,6 +1428,7 @@ def main():
   uv run scripts/sync_translations.py fix-check    # 檢查轉換錯誤
   uv run scripts/sync_translations.py gen-vehicle-map --pz-path "D:/SteamLibrary/steamapps/common/ProjectZomboid"
   uv run scripts/sync_translations.py gen-radio-map --pz-path "D:/SteamLibrary/steamapps/common/ProjectZomboid"
+  uv run scripts/sync_translations.py gen-dynamic-name-map --pz-path "D:/SteamLibrary/steamapps/common/ProjectZomboid"
         """,
     )
     parser.add_argument(
@@ -1195,6 +1444,7 @@ def main():
             "fix-check",
             "gen-vehicle-map",
             "gen-radio-map",
+            "gen-dynamic-name-map",
         ],
         help="執行的命令（預設：compare）",
     )
@@ -1202,11 +1452,11 @@ def main():
         "--pz-path",
         type=Path,
         default=None,
-        help="vanilla Project Zomboid 安裝路徑（gen-vehicle-map / gen-radio-map 使用）",
+        help="vanilla Project Zomboid 安裝路徑（gen-vehicle-map / gen-radio-map / gen-dynamic-name-map 使用）",
     )
     args = parser.parse_args()
 
-    if args.command not in {"gen-vehicle-map", "gen-radio-map"}:
+    if args.command not in {"gen-vehicle-map", "gen-radio-map", "gen-dynamic-name-map"}:
         if not REF_CN.exists():
             print(f"❌ 參考目錄不存在：{REF_CN}")
             sys.exit(1)
@@ -1231,6 +1481,8 @@ def main():
             cmd_gen_vehicle_map(args.pz_path)
         case "gen-radio-map":
             cmd_gen_radio_map(args.pz_path)
+        case "gen-dynamic-name-map":
+            cmd_gen_dynamic_name_map(args.pz_path)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 -- AnimalProductName_Flx.lua
 -- 修復 PZ 42.19 動物屍體與屠宰肉品在 MP / 舊存檔中保留生成端語言名稱的問題。
+-- 另含活體動物顯示名修復：見檔尾「活體動物顯示名修復」段落。
 
 local TAG = "[CatLangFor42]"
 
@@ -338,3 +339,86 @@ local function onEveryOneMinute()
     fixOpenInventoryPages()
 end
 Events.EveryOneMinute.Add(onEveryOneMinute)
+
+-- ============================================================
+-- 活體動物顯示名修復：IsoAnimal.getFullName 顯示層包裝
+-- ------------------------------------------------------------
+-- 官方多處會把組譯結果烘焙進「活體」動物 customName 並存檔 / MP 原樣同步：
+-- 牧場世界生成的幼崽（RandomizedRanchBase 直接 setCustomName 翻譯結果）、
+-- 由屍體或抓取物重建動物時原樣複製屍體 customName、AnimalPacket 同步。
+-- IsoAnimal.getFullName 有 customName 時原樣回傳，造成右鍵選單標題、
+-- 撿起/宰殺選項、動物資訊面板、畜牧區 UI 等顯示生成端語言（如 Holstein Bull）。
+--
+-- 此處以 __classmetatables 包裝 getFullName：customName 完全匹配
+-- 系統生成名模式（EN/CH/CN 來源名表）時，改回傳當前語言重組結果；
+-- 玩家自訂名與無 customName（本就即時組譯）走原始邏輯。
+-- 純顯示層：不呼叫 setCustomName、不寫存檔，MP 安全。
+-- ============================================================
+
+AnimalProductNameFlx = AnimalProductNameFlx or {}
+
+local function getLiveAnimalBreedName(animal)
+    local breedName
+    pcall(function()
+        local data = animal:getData()
+        local breed = data and data:getBreed()
+        breedName = breed and breed:getName() or nil
+    end)
+    return breedName
+end
+
+local function translateLiveAnimalCustomName(animal)
+    if not animal then return nil end
+
+    local customName = animal:getCustomName()
+    if not customName or customName == "" then return nil end
+
+    local animalType = animal:getAnimalType()
+    if not animalType or animalType == "" then return nil end
+
+    local breed = getLiveAnimalBreedName(animal)
+    if not sourceAnimalNameMatches(customName, animalType, breed) then return nil end
+
+    local typeName = translatedText("IGUI_AnimalType_" .. animalType)
+    if not typeName then return nil end
+
+    local breedName = breed and translatedText("IGUI_Breed_" .. breed) or nil
+    local name = breedName and (breedName .. " " .. typeName) or typeName
+
+    local _baseName, hadWildSuffix = stripKnownWildSuffix(customName)
+    if hadWildSuffix or animal:isWild() then
+        local wild = translatedText("IGUI_Animal_Wild")
+        if wild then
+            name = name .. " (" .. wild .. ")"
+        end
+    end
+    return name
+end
+
+AnimalProductNameFlx.translateLiveAnimalCustomName = translateLiveAnimalCustomName
+
+local function installLiveAnimalNameOverride()
+    if not shouldRunClientRepair() then return end
+
+    local ok, err = pcall(function()
+        local classMeta = __classmetatables[IsoAnimal.class]
+        local indexTable = classMeta and classMeta.__index
+        local origGetFullName = indexTable and indexTable.getFullName
+        if type(origGetFullName) ~= "function" then
+            error("IsoAnimal.getFullName not accessible")
+        end
+
+        indexTable.getFullName = function(self)
+            local translatedOk, translated = pcall(translateLiveAnimalCustomName, self)
+            if translatedOk and translated and translated ~= "" then
+                return translated
+            end
+            return origGetFullName(self)
+        end
+    end)
+
+    if not ok then
+        print(TAG .. " [AnimalProductName] live animal name override unavailable: " .. tostring(err))
+    end
+end
+installLiveAnimalNameOverride()
