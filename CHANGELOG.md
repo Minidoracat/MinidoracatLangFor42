@@ -4,6 +4,22 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.19.0-1.6.7] - 2026-06-14
+
+### Added
+
+- 新增伺服器端與客戶端的 MOD 版本顯示：遊戲 / 伺服器啟動時於 console 與 DebugLog 印出 `CatLangFor42 v{版本} [Client/Server]`。版本動態讀取 `mod.info` 的 `modversion`（`getModInfoByID("CatLangFor42"):getModVersion()`），不寫死、不會過期，方便對照玩家回報時是否使用最新版本。新增 `shared/CatLangVersion_Flx.lua`（`getVersion` / `printBanner`）、`client/CatLangVersion_Client.lua`（`OnGameBoot`，含每 process 只印一次的旗標）、`server/CatLangVersion_Server.lua`（`OnServerStarted`）。
+
+### Fixed
+
+- 修正 `client/CatLangDiag.lua` 診斷工具開頭印出的版本字串寫死且過期（`42.15.1-1.2.0`），改為動態讀取 mod.info，與實際版本一致。
+- 版本 banner 改為純 ASCII 輸出：PZ 的 Lua `print()` 寫入 DebugLog / console 不支援多位元組 UTF-8 中文（會變 `?` 亂碼），故 banner 內的中文標語改為 ASCII；版本號等關鍵資訊本即 ASCII、顯示正常。
+
+### Notes
+
+- 此版為工具 / 可維護性改善，未變動任何翻譯內容。
+- AGENTS.md 新增「JDK 格式實證流程」：用本機 JDK 實跑 `String.formatted()` 驗證翻譯 `%` 格式是否會 crash 的方法與危險簽名（字面 `%.`）。
+
 ## [42.19.0-1.6.6] - 2026-06-13
 
 ### Fixed

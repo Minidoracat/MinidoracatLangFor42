@@ -2,15 +2,13 @@
 -- 用途：確認 MOD 翻譯是否正確載入
 -- 移除方式：刪除此檔案即可，不影響其他功能
 
-local MOD_VERSION = "42.15.1-1.2.0"
+-- 版本動態讀取 mod.info（透過 shared/CatLangVersion_Flx.lua），避免寫死後過期
+-- 完整版本橫幅由 client/CatLangVersion_Client.lua 負責，此處只印一行診斷標頭避免重複
+local MOD_VERSION = (CatLangFor42 and CatLangFor42.getVersion and CatLangFor42.getVersion()) or "unknown"
 local TAG = "[CatLangFor42]"
 
--- ============================================
--- 版本資訊（腳本載入時立即輸出）
--- ============================================
-print(TAG .. " ========================================")
-print(TAG .. " CatLangFor42 v" .. MOD_VERSION)
-print(TAG .. " ========================================")
+-- ASCII：PZ log 不支援中文（會亂碼）；診斷內文的中文輸出見下方（屬既有行為）
+print(TAG .. " Diag tool started (v" .. MOD_VERSION .. ")")
 
 -- ============================================
 -- 翻譯載入診斷（OnGameStart 後執行）
