@@ -357,6 +357,11 @@ Events.EveryOneMinute.Add(onEveryOneMinute)
 
 AnimalProductNameFlx = AnimalProductNameFlx or {}
 
+-- 由 installAnimalCustomNameOverride 設定為 IsoAnimal 原始 getCustomName，
+-- 供 translateLiveAnimalCustomName 取「未翻譯的原始 customName」，
+-- 避免與後面新增的 getCustomName 覆寫互相遞迴 / 重複翻譯。
+local origAnimalGetCustomName = nil
+
 local function getLiveAnimalBreedName(animal)
     local breedName
     pcall(function()
@@ -370,7 +375,7 @@ end
 local function translateLiveAnimalCustomName(animal)
     if not animal then return nil end
 
-    local customName = animal:getCustomName()
+    local customName = origAnimalGetCustomName and origAnimalGetCustomName(animal) or animal:getCustomName()
     if not customName or customName == "" then return nil end
 
     local animalType = animal:getAnimalType()
@@ -422,3 +427,112 @@ local function installLiveAnimalNameOverride()
     end
 end
 installLiveAnimalNameOverride()
+
+-- ============================================================
+-- getCustomName 顯示層修復：補齊「直接讀 getCustomName」的官方 UI
+-- ------------------------------------------------------------
+-- 上面的 getFullName 覆寫補不到官方多處「直接讀 getCustomName()」的顯示點，例如：
+--   活體 IsoAnimal：ISAnimalUI 資訊面板標題、ISAnimalGenomeUI、
+--                   ISAnimalContextMenu attach 子選單、ISVehicleAnimalUI 拖車。
+--   屍體 IsoDeadBody：ISDesignationAnimalZoneUI 畜牧指定區「屍體清單」（紅字，
+--                     玩家回報來源）、ISAnimalContextMenu 屍體右鍵 / 取骨、
+--                     ISButcherHookUI 屠宰鉤。
+-- 對策：包裝 IsoAnimal 與 IsoDeadBody 兩個類別的 getCustomName，僅當原始
+-- customName 完全比中「系統生成名」（sourceAnimalNameMatches，EN/CH/CN 來源名表）
+-- 時，回傳當前語言重組的「動物名本身」。
+--
+-- 鐵則：
+--   A. 只回傳動物名（如「灰色 母浣熊」），不外加 IGUI_Item_AnimalCorpse /
+--      IGUI_Item_AnimalSkeleton 外殼 —— 那層由各 UI 自行 getText 包，否則雙重包殼。
+--   B. 絕不呼叫 setCustomName 回寫欄位 —— 純顯示層；存檔 / load / MP 同步皆走
+--      customName 欄位（非 getter），不受 Lua 覆寫影響。
+--   C. 玩家自訂名不比中 → 透傳原值，零影響（改名比對 ISAnimalUI:474 兩端一致）。
+-- 純顯示層、dedicated server 不安裝（shouldRunClientRepair）。
+-- ============================================================
+
+-- 純文字重組：比中系統生成名才回傳重組動物名，否則 nil。與 getCustomName 語義一致：
+-- 僅當原始 customName 自身帶 (Wild)/(野生) 後綴時才補回後綴（不依 isWild 主動加）。
+local function buildTranslatedNameFromParts(customName, animalType, breed)
+    if not customName or customName == "" then return nil end
+    if not animalType or animalType == "" then return nil end
+    if not sourceAnimalNameMatches(customName, animalType, breed) then return nil end
+
+    local typeName = translatedText("IGUI_AnimalType_" .. animalType)
+    if not typeName then return nil end
+
+    local breedName = breed and translatedText("IGUI_Breed_" .. breed) or nil
+    local name = breedName and (breedName .. " " .. typeName) or typeName
+
+    local _baseName, hadWildSuffix = stripKnownWildSuffix(customName)
+    if hadWildSuffix then
+        local wild = translatedText("IGUI_Animal_Wild")
+        if wild then
+            name = name .. " (" .. wild .. ")"
+        end
+    end
+    return name
+end
+
+AnimalProductNameFlx.buildTranslatedNameFromParts = buildTranslatedNameFromParts
+
+-- 活體 IsoAnimal:getCustomName 顯示層包裝
+local function installAnimalCustomNameOverride()
+    if not shouldRunClientRepair() then return end
+
+    local ok, err = pcall(function()
+        local classMeta = __classmetatables[IsoAnimal.class]
+        local indexTable = classMeta and classMeta.__index
+        local origGetCustomName = indexTable and indexTable.getCustomName
+        if type(origGetCustomName) ~= "function" then
+            error("IsoAnimal.getCustomName not accessible")
+        end
+        origAnimalGetCustomName = origGetCustomName
+
+        indexTable.getCustomName = function(self)
+            local raw = origGetCustomName(self)
+            local translatedOk, translated = pcall(function()
+                return buildTranslatedNameFromParts(raw, self:getAnimalType(), getLiveAnimalBreedName(self))
+            end)
+            if translatedOk and translated and translated ~= "" then
+                return translated
+            end
+            return raw
+        end
+    end)
+
+    if not ok then
+        print(TAG .. " [AnimalProductName] live animal getCustomName override unavailable: " .. tostring(err))
+    end
+end
+installAnimalCustomNameOverride()
+
+-- 屍體 IsoDeadBody:getCustomName 顯示層包裝（畜牧區屍體清單等紅字殘留來源）
+local function installCorpseCustomNameOverride()
+    if not shouldRunClientRepair() then return end
+
+    local ok, err = pcall(function()
+        local classMeta = __classmetatables[IsoDeadBody.class]
+        local indexTable = classMeta and classMeta.__index
+        local origGetCustomName = indexTable and indexTable.getCustomName
+        if type(origGetCustomName) ~= "function" then
+            error("IsoDeadBody.getCustomName not accessible")
+        end
+
+        indexTable.getCustomName = function(self)
+            local raw = origGetCustomName(self)
+            local translatedOk, translated = pcall(function()
+                if not self:isAnimal() then return nil end
+                return buildTranslatedNameFromParts(raw, self:getAnimalType(), self:getBreed())
+            end)
+            if translatedOk and translated and translated ~= "" then
+                return translated
+            end
+            return raw
+        end
+    end)
+
+    if not ok then
+        print(TAG .. " [AnimalProductName] dead body getCustomName override unavailable: " .. tostring(err))
+    end
+end
+installCorpseCustomNameOverride()

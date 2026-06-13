@@ -4,6 +4,18 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.19.0-1.6.6] - 2026-06-13
+
+### Fixed
+
+- 修復「動物屍體」名稱在畜牧指定區視窗（`ISDesignationAnimalZoneUI` 屍體清單，紅字）、屍體右鍵選單 / 取骨選項、屠宰掛鉤 UI 等處，於 MP / 舊存檔 / dedicated server 仍顯示生成端語言（玩家回報「Gray Female Raccoon (Sow)」「Gray Male Raccoon (Boar)」）的動態命名殘留。官方在動物死亡時把 `died.getFullName()`（當下語言組譯結果）烘焙進 `IsoDeadBody.customName` 並存檔，而上述 UI 直接讀 `getCustomName()` 顯示，繞過 1.6.4 已加的 `IsoAnimal.getFullName` 顯示層包裝；該名稱也因走 `getCustomName` 路徑而不含 `(Wild)` 後綴。
+- `AnimalProductName_Flx.lua` 新增 `IsoDeadBody.getCustomName` 與 `IsoAnimal.getCustomName` 兩個顯示層包裝：僅當原始 customName 完全比中系統生成名模式（`sourceAnimalNameMatches`，EN/CH/CN 來源名表）時，以當前語言重組「動物名本身」回傳；一併涵蓋動物資訊面板標題、基因面板、繫繩子選單、車輛拖車等同樣直接讀 `getCustomName` 的官方顯示面。重組只回傳動物名本身、不外加 `IGUI_Item_AnimalCorpse/Skeleton` 外殼（由各 UI 自行包），避免雙重包殼。
+- 純顯示層：玩家自訂動物名一律透傳、零影響；不呼叫 `setCustomName`、不改寫存檔；存檔 / load / MP 同步皆走 `customName` 欄位（非 getter）不受 Lua 覆寫影響；dedicated server 不安裝（`shouldRunClientRepair`）。屍體物品名與既有 `getFullName` 覆寫相容、不重複翻譯。
+
+### Notes
+
+- 動物「頭頂世界浮動名牌」（`IsoAnimal.renderCustomName` 直接讀 customName 欄位、不經 getter）非 Lua 可攔截範圍，本次不涵蓋；如有此類回報需 Java patch（本 MOD 無此能力）。
+
 ## [42.19.0-1.6.5] - 2026-06-11
 
 ### Fixed
