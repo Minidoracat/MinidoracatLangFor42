@@ -1186,7 +1186,7 @@
     "IGUI_MapOption_PlaceNames": "地名",
     "IGUI_MapOption_Players": "玩家",
     "IGUI_MapOption_PlayerNames": "玩家名称",
-    "IGUI_MapOption_RemotePlayers": "控制玩家",
+    "IGUI_MapOption_RemotePlayers": "其他玩家",
     "IGUI_MapOption_ShowStreetNames": "显示路名",
     "IGUI_MapOption_Symbols": "标记",
     "IGUI_MapOption_TerrainImage": "地形图片",
