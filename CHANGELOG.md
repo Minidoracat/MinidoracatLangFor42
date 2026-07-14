@@ -4,6 +4,24 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.19.0-1.7.0] - 2026-07-14
+
+### Added
+
+- 管理員/除錯右鍵選單完整翻譯（新增 `client/DebugUIs/DebugContextMenu_Flx.lua`）：官方在除錯/管理員選單大量直接 `addOption("英文")` 且無翻譯鍵，本版以「選單建好後走訪替換」機制在顯示層修復。四個掛載點涵蓋：世界右鍵除錯/管理員選單（除錯全區、AdminContextMenu 工具選單、筆刷工具、坡道、農作/畜牧/飼料槽/車輛除錯選項、搜尋圖示除錯選單）、物品欄除錯選單、大地圖右鍵選單。Randomized Building/Vehicle/Zone 故事名（RB 33、RVS 23、RZS 41、RDS 31，自反編譯 Java 提取全集）一併翻譯；共新增 336 個 `ContextMenu_CatDebug_*` 翻譯鍵（CH/CN 同步）。
+- 連官方 `getText("Tile Report")`/`"Room Report"`/`"Coordinates Report"` 這類「英文原句偽 key」（Translator 前綴路由查不到、任何翻譯檔都攔不到、永遠顯示英文）也以 pattern 規則在選單顯示層翻出。
+- 安全設計：僅在 admin/moderator/除錯模式/各作弊旗標啟用時執行，一般玩家零成本；查無翻譯一律原樣保留，第三方 mod 選單字串不受影響；後處理以 pcall 隔離，任何失敗不影響右鍵選單本體。
+- 新增 `HARDCODE_REGISTRY.md` 硬編碼追蹤登記簿：官方 Java/Lua 硬編碼英文殘留的唯一集中紀錄（A 已修補 / B 待修補 / C 修不到‧不修 / D 已淘汰＋PZ 版本更新盤查 SOP），既有 15 個 `_Flx` 修補全數回填登記；「硬編碼修補登記制度」同步寫入 AGENTS.md。
+
+### Fixed
+
+- 修正 `scripts/sync_translations.py` fix-check 在掃到工具 runtime state（`.omc/`）JSON 時崩潰的問題（rglob 跳過 `.omc` 目錄）。
+
+### Notes
+
+- 玩家如回報管理員選單仍有英文：`Claimed Vehicles Manager`/`Admin Vehicles Manager` 來自第三方 mod「Mysterious Vehicle Claim Key」（Workshop 3643840023，有簡中無繁中），屬該 mod 範圍，建議向其作者回報補繁中。
+- 已知刻意保留英文：筆刷工具「Copy/Destroy tile」子選單的 `[MAIN]`/`[OVERLAY]`/`[ATTACHED]`＋sprite 資源 ID（資源名，翻譯反妨礙除錯）、除錯工具視窗內部按鈕（Brush Tool 管理視窗、健康面板 Cheat 樹、載具機械 CHEAT 區等，見登記簿 B12/B15）。
+
 ## [42.19.0-1.6.7] - 2026-06-14
 
 ### Added

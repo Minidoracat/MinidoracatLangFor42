@@ -777,8 +777,10 @@ def cmd_fix_check():
 
     all_issues: list[str] = []
 
-    # Check CH translation JSON files
+    # Check CH translation JSON files（跳過 .omc 等工具 runtime state 目錄）
     for ch_file in sorted(MOD_CH.rglob("*.json")):
+        if ".omc" in ch_file.parts:
+            continue
         data = read_translation(ch_file)
         # Check values for suspicious patterns
         content = "\n".join(data.values())
@@ -798,7 +800,7 @@ def cmd_fix_check():
 
     # Check remaining .txt files (streets.txt, credits.txt)
     for ch_file in sorted(MOD_CH.rglob("*.txt")):
-        if ch_file.name in {"language.txt"}:
+        if ch_file.name in {"language.txt"} or ".omc" in ch_file.parts:
             continue
         content = ch_file.read_text(encoding="utf-8-sig")
         rel_path = ch_file.relative_to(MOD_CH)
