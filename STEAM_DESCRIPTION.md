@@ -24,6 +24,14 @@
 [/list]
 [hr][/hr]
 
+[h2]🧩 姊妹作：模組翻譯包[/h2]
+本 MOD 涵蓋遊戲本體文本；其他 Workshop 模組的翻譯請搭配訂閱：
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3765907717]👉 [B42]繁體簡體模組翻譯 By Minidoracat 如一漢化組[/url]
+涵蓋 460+ 個 Workshop 模組（600+ 個 mod ID）的繁簡雙語翻譯，兩者搭配即為完整中文體驗。
+[url=https://github.com/Minidoracat/MinidoracatModLangFor42/blob/main/SUPPORTED_MODS.md]📋 完整支援 MOD 清單（含中文名稱與摘要）[/url]
+
+[hr][/hr]
+
 [h2]💬 問題回報 & 交流[/h2]
 如果遇到任何問題或有翻譯建議，歡迎加入 Discord 回報！
 [url=https://discord.gg/Gur2V67]👉 點此加入 Discord 伺服器[/url]
