@@ -44,7 +44,7 @@
       "category": "髮→發",
       "description": "動詞「發」被誤轉為「髮」",
       "rules": [
-        {"pattern": "髮生", "replacement": "發生"},
+        {"pattern": "(?<![毛頭])髮生", "replacement": "發生", "note": "排除「毛髮生長」「頭髮生長」等正確用法"},
         {"pattern": "髮現", "replacement": "發現"},
         {"pattern": "髮射", "replacement": "發射"},
         {"pattern": "髮動", "replacement": "發動"},
@@ -65,7 +65,7 @@
         {"pattern": "觸髮", "replacement": "觸發"},
         {"pattern": "蒸髮", "replacement": "蒸發"},
         {"pattern": "揮髮", "replacement": "揮發"},
-        {"pattern": "散髮", "replacement": "散發"},
+        {"pattern": "(?<!頭)散髮", "replacement": "散發", "note": "排除「披頭散髮」"},
         {"pattern": "啟髮", "replacement": "啟發"},
         {"pattern": "批髮", "replacement": "批發"},
         {"pattern": "沙髮", "replacement": "沙發"}
@@ -84,7 +84,6 @@
       "category": "係→系",
       "description": "系統/系數：「係」應為「系」",
       "rules": [
-        {"pattern": "係數", "replacement": "系數"},
         {"pattern": "係統", "replacement": "系統"},
         {"pattern": "關係", "replacement": "關係", "note": "保留不變（正確用法）"}
       ]
@@ -119,6 +118,21 @@
         {"pattern": "屋里", "replacement": "屋裡"},
         {"pattern": "東西里", "replacement": "東西裡"},
         {"pattern": "劇本里", "replacement": "劇本裡"}
+      ]
+    },
+    {
+      "category": "OpenCC 分詞詞條陷阱",
+      "description": "STPhrases 貪婪比對誤吃相鄰字造成的殘留/誤字（2026-07-19 自模組包同步）",
+      "rules": [
+        {"pattern": "干燥", "replacement": "乾燥", "note": "「近日干燥」等：「日干」被當干支詞條吃掉致「干燥」未轉；繁中無任何語境保留「干燥」"},
+        {"pattern": "箇", "replacement": "個", "note": "「个旧→箇舊」（雲南地名）與「个中→箇中」（成語）誤套；「個中」亦為台灣標準寫法，全域替換無誤傷"}
+      ]
+    },
+    {
+      "category": "s2twp 過度在地化修正",
+      "description": "TWPhrases 詞條套錯語境（2026-07-19 自模組包同步）",
+      "rules": [
+        {"pattern": "高階餐廳", "replacement": "高級餐廳", "note": "高级→高階 針對技術語境；餐廳語境應為高級"}
       ]
     }
   ],
