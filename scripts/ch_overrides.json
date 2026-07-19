@@ -2,7 +2,7 @@
     "_comment": "CH 人工覆寫層（人工真相檔）。sync-ch 機轉全量再生後套用。schema：{\"<檔名>|<鍵>\": {\"value\": \"人工值\", \"ref\": \"登記時 REF 原文 sha256 前 16 碼\"}}；亦接受純字串值（無過時偵測）。",
     "_usage": "REF 原文變更時 sync-ch 會提醒重審（重審後更新 ref）；鍵從 REF 消失時提醒清理。全局字級規則請走 opencc_fixes.json，本檔只收逐鍵人工潤飾。",
     "Brandenburg, KY.json|description": {
-        "value": "<CENTRE> <SIZE:medium> 勃 蘭 登 堡 <LINE> <LINE><LEFT> <SIZE:small> 勃 蘭 登 堡 位 於 俄 亥 俄 河 南 岸 , 在 蒸 汽 船 時 代 曾 是 熱 門 景 點 , 最 近 停 靠 的 迪 莉 婭 號 蒸 汽 船 便 是 那 段 歷 史 的 遺 物 . <LINE> 但 輝 煌 的 過 去 不 代 表 這 裡 是 一 座 守 舊 的 小 鎮 . <LINE> <LINE> 雖 然 還 在 從 四 月 龍 捲 風 的 侵 襲 中 恢 復 , 但 小 鎮 仍 擁 有 寬 敞 的 邦 德 唯 優 購 物 中 心 , 而 老 消 防 隊 長 的 五 級 警 報 消 防 隊 辣 椒 更 吸 引 著 全 州 各 地 的 重 口 味 愛 好 者 ! ",
+        "value": "<CENTRE> <SIZE:medium> 勃 蘭 登 堡 <LINE> <LINE><LEFT> <SIZE:small> 勃 蘭 登 堡 位 於 俄 亥 俄 河 南 岸 , 在 蒸 汽 船 時 代 曾 是 熱 門 景 點 , 最 近 停 靠 的 迪 莉 婭 號 蒸 汽 船 便 是 那 段 歷 史 的 遺 物 . <LINE> 但 輝 煌 的 過 去 不 代 表 這 裡 是 一 座 守 舊 的 小 鎮 . <LINE> <LINE> 雖 然 還 在 從 四 月 龍 捲 風 的 侵 襲 中 恢 復 , 但 小 鎮 仍 擁 有 寬 敞 的 邦 德 唯 優 購 物 中 心 , 而 老 消 防 隊 長 的 五 級 火 辣 餐 館 更 吸 引 著 全 州 各 地 的 重 口 味 愛 好 者 ! ",
         "ref": "b4b2c9e5fa7523cb"
     },
     "ContextMenu.json|ContextMenu_Lure": {
@@ -270,7 +270,7 @@
         "ref": "d8c996925b12e1fd"
     },
     "IG_UI.json|IGUI_Tutorial1_Shotgun3Joypad": {
-        "value": "<SIZE:medium> 它 們 過 來 了 ! <LINE> <LINE> <GHC> 當 僵 屍 周 圍 出 現 綠 色 輪 廓 時 是 最 好 的 開 槍 機 會 ! <RGB:1,1,1> <LINE> <LINE> <SIZE:large> 按 <JOYPAD:RTrigger, 28, 28> 瞄 準 , 按 <JOYPAD:RStick, 28, 28> 射 擊 ",
+        "value": "<SIZE:medium> 它 們 過 來 了 ! <LINE> <LINE> 瞄 準 目 標 時 會 顯 示 紅 色 圓 圈 ! <RGB:1,1,1> <LINE> <LINE> <SIZE:large> 按 住 <JOYPAD:Aiming,28,28> 瞄 準 時 , 按 <JOYPAD:Attack,28,28> 開 火 .",
         "ref": "b614f86c4e1966e0"
     },
     "IG_UI.json|IGUI_mouse_btn_0": {
@@ -310,7 +310,7 @@
         "ref": "1b768deef2c2daa9"
     },
     "Irvington, KY.json|description": {
-        "value": "<CENTRE> <SIZE:medium> 歐 文 頓 <LINE> <LINE><LEFT> <SIZE:small> 儘 管 外 表 樸 實 , 歐 文 頓 卻 是 速 度 的 代 名 詞 ! <LINE> <LINE> 歐 文 頓 賽 車 場 的 OSCC 賽 事 吸 引 世 界 各 地 的 車 迷 , 甚 至 傳 言 即 將 舉 辦 X 方 程 式 賽 . <LINE> <LINE> 非 賽 車 日 時 , 當 地 人 聚 集 在 巫 師 寶 庫 玩 遊 戲 , 到 紀 律 嚴 明 民 兵 店 購 槍 , 或 到 布 羅 特 牛 隻 牧 場 瀏 覽 最 新 牛 隻 . ",
+        "value": "<CENTRE> <SIZE:medium> 歐 文 頓 <LINE> <LINE><LEFT> <SIZE:small> 儘 管 外 表 樸 實 , 歐 文 頓 卻 是 速 度 的 代 名 詞 ! <LINE> <LINE> 歐 文 頓 Speedway 賽 道 的 OSCC 賽 事 吸 引 世 界 各 地 的 車 迷 , 甚 至 傳 言 即 將 舉 辦 極 限 方 程 式 賽 . <LINE> <LINE> 非 賽 車 日 時 , 當 地 人 聚 集 在 巫 師 寶 庫 玩 遊 戲 , 到 紀 律 嚴 明 民 兵 店 購 槍 , 或 到 布 羅 特 牛 隻 牧 場 瀏 覽 最 新 牛 隻 . ",
         "ref": "793264e175ecbfc6"
     },
     "ItemName.json|Base.Socks_Ankle_Black": {
@@ -338,7 +338,7 @@
         "ref": "f8a82355a0f2dfe0"
     },
     "March Ridge, KY.json|description": {
-        "value": "<CENTRE> <SIZE:medium> 三 月 嶺 <LINE> <LINE><LEFT> <SIZE:small> 立 正 ! 三 月 嶺 是 諾 克 斯 堡 眾 多 英 勇 士 兵 及 其 家 屬 的 駐 地 . <LINE> <LINE> 儘 管 佈 局 規 矩 , 進 出 管 制 嚴 格 , 三 月 嶺 仍 有 許 多 休 閒 娛 樂 選 擇 . <LINE> <LINE> 到 熱 門 影 片 店 租 你 最 愛 的 電 影 , 在 星 璃 戲 院 看 最 新 大 片 . <LINE> <LINE> 你 甚 至 可 以 參 觀 廢 棄 的 冷 戰 核 掩 體 , 並 慶 幸 世 界 末 日 從 未 真 正 發 生 ! ",
+        "value": "<CENTRE> <SIZE:medium> 三 月 嶺 <LINE> <LINE><LEFT> <SIZE:small> 立 正 ! 三 月 嶺 是 諾 克 斯 堡 眾 多 英 勇 士 兵 及 其 家 屬 的 駐 地 . <LINE> <LINE> 儘 管 佈 局 規 矩 , 進 出 管 制 嚴 格 , 三 月 嶺 仍 有 許 多 休 閒 娛 樂 選 擇 . <LINE> <LINE> 到 爆 紅 錄 影 帶 租 賃 租 你 最 愛 的 電 影 , 在 星 聚 影 城 看 最 新 大 片 . <LINE> <LINE> 你 甚 至 可 以 參 觀 廢 棄 的 冷 戰 核 掩 體 , 並 慶 幸 世 界 末 日 從 未 真 正 發 生 ! ",
         "ref": "ca6a27c7ea9f57e7"
     },
     "Moveables.json|Green_Fancy_Lamp": {
@@ -346,7 +346,7 @@
         "ref": "71b36cafdf99e86f"
     },
     "Print_Text.json|Print_Text_AmericanTire_info": {
-        "value": "我們用 17 磅橡膠, 鑄就速度! \\n\\n 我們基於牽引力的硫化技術, 讓駕駛充滿活力! \\n\\n 配備美國輪胎的汽車, 致命事故發生率降低 6%。 \\n\\n 東西海岸輪胎, 最好的輪胎! \\n\\n 標準型 - 45 美元, 重型 - 60 美元, 運動型 - 75 美元 \\n\\n基於 32 起事故樣本, 不包括行人死亡 \\n\\n 在路易斯維爾市惠靈頓高地公園以南, 我們門店出示此傳單, 可享買三贈一 (四胎僅付三胎錢). \\n\\n每位顧客限一組, 活動截止 1993 年 6 月 30 日",
+        "value": "我們用 17 磅橡膠, 鑄就速度! \\n\\n 我們基於牽引力的硫化技術, 讓駕駛充滿活力! \\n\\n 配備美國輪胎的汽車, 致命事故發生率降低 6%。 \\n\\n 東西海岸輪胎, 最好的輪胎! \\n\\n 標準型 - 45 美元, 重型 - 60 美元, 運動型 - 75 美元 \\n\\n基於 32 起事故樣本, 不包括行人死亡 \\n\\n 在路易斯維爾市易洛魁公園以南, 我們門店出示此傳單, 可享買三贈一 (四胎僅付三胎錢). \\n\\n每位顧客限一組, 活動截止 1993 年 6 月 30 日",
         "ref": "cab2660757de9196"
     },
     "Print_Text.json|Print_Text_CrossRoadsMall_info": {
@@ -778,7 +778,7 @@
         "ref": "2622dd71d779fae5"
     },
     "Recorded_Media.json|RM_5cbf01e3-e99f-46f0-8daf-f56c091e077a": {
-        "value": "...若已感染, 則消毒, 縫合並包紮.",
+        "value": "...若已感染, 則消毒, 縫合併包紮.",
         "ref": "2df8af002297db97"
     },
     "Recorded_Media.json|RM_5ce3eb48-4fb0-4b26-b10f-eb929a5b7c58": {
@@ -790,7 +790,7 @@
         "ref": "fa0c3fa2353ad595"
     },
     "Recorded_Media.json|RM_5d21b65f-db1c-4616-b465-6dd73d2a71fa": {
-        "value": "這樣就能把牠們薰出來. 嘻嘻.",
+        "value": "這樣就能把牠們燻出來. 嘻嘻.",
         "ref": "508bbdc106f76ff8"
     },
     "Recorded_Media.json|RM_5d6e7512-d8ec-4c97-beeb-d16944976eba": {
@@ -858,7 +858,7 @@
         "ref": "079b6480c03f9c97"
     },
     "Recorded_Media.json|RM_69809ace-98f9-40b0-b7a9-14b903b0c92e": {
-        "value": "艾曼紐·J·雷西再次回歸, 教你如何種植更多食物, 包括玉米, 羽衣甘藍與番薯.",
+        "value": "艾曼紐·J·雷西再次回歸, 教你如何及何時種植更多食物, 包括玉米, 羽衣甘藍與番薯.",
         "ref": "3d8eee99bf5d8953"
     },
     "Recorded_Media.json|RM_6ae82413-3b91-45e7-99ea-55de7255c263": {
@@ -1014,7 +1014,7 @@
         "ref": "8e008de846d460b3"
     },
     "Recorded_Media.json|RM_91fef801-c2d4-44a7-8d45-45b701176d02": {
-        "value": "開始時, 你只需要一張陶藝工作台或轆轤, 以及一些黏土.",
+        "value": "開始時, 你只需要一張陶藝工作台或陶輪, 以及一些黏土.",
         "ref": "6830f00634fb9203"
     },
     "Recorded_Media.json|RM_92a51307-5810-4cbb-8506-347e935f504d": {
@@ -1178,7 +1178,7 @@
         "ref": "79556e6058740bcd"
     },
     "Recorded_Media.json|RM_b4a4beaa-64c2-4740-bd6c-6c9f965064ed": {
-        "value": "動物園老闆蒂莉帶你看一些她每天照顧的可愛動物.",
+        "value": "可愛動物區的主人蒂莉帶你看一些她每天照顧的可愛動物.",
         "ref": "b712c133fda74273"
     },
     "Recorded_Media.json|RM_b4ff05d5-6ceb-440d-8aac-526cc197470f": {
@@ -1238,7 +1238,7 @@
         "ref": "ee100835f68a03e0"
     },
     "Recorded_Media.json|RM_c641d98a-94ea-48e3-8f6d-2bcf2616aa38": {
-        "value": "動物園",
+        "value": "可愛動物區",
         "ref": "3487cfb6793eaca9"
     },
     "Recorded_Media.json|RM_c6db2289-a28c-4882-b064-643763cb73e1": {
@@ -1358,7 +1358,7 @@
         "ref": "c07520ddf6be4392"
     },
     "Recorded_Media.json|RM_e573f31b-91bd-439f-8a0b-5eedd45352f7": {
-        "value": "黏土在工作台或轆轤上塑形.",
+        "value": "黏土在工作台或陶輪上塑形.",
         "ref": "142ca185303759f5"
     },
     "Recorded_Media.json|RM_e5a6fd62-c726-4801-b9dd-44f6335b588b": {
@@ -1374,7 +1374,7 @@
         "ref": "c16345bda4bb8642"
     },
     "Recorded_Media.json|RM_e7d3b48b-4a50-48a7-a406-1397ebb5182a": {
-        "value": "VHS: 動物園",
+        "value": "VHS: 可愛動物區",
         "ref": "e83560d8ca93496d"
     },
     "Recorded_Media.json|RM_e7f19ddc-744c-4847-887a-2b956e319c50": {
@@ -1698,7 +1698,7 @@
         "ref": "d09596f4bee27af3"
     },
     "SurvivalGuide.json|SurvivalGuide_crafting_inventory_title": {
-        "value": "背包製作",
+        "value": "物品欄製作",
         "ref": "26e1dfce0073fe3b"
     },
     "SurvivalGuide.json|SurvivalGuide_crafting_menu_description": {
@@ -1738,7 +1738,7 @@
         "ref": "e368c7b5fdafd23e"
     },
     "SurvivalGuide.json|SurvivalGuide_dig_furrow_description": {
-        "value": "種子只能種在戶外地面的田溝裡. 使用泥鏟, 鐵鍬, 或如果你急迫的話, 用雙手在泥土或草地上挖溝. <LINE> 用 %1 並選擇園藝下的挖溝. <LINE> 你也可能發現一些蠕動的蚯蚓 - 如果你想, 可以叫牠吉姆!",
+        "value": "種子只能種在戶外地面的田溝裡. 使用園藝鏟, 鐵鍬, 或如果你急迫的話, 用雙手在泥土或草地上挖溝. <LINE> 用 %1 並選擇園藝下的翻土. <LINE> 你也可能發現一些蠕動的蚯蚓 - 如果你想, 可以叫牠吉姆!",
         "ref": "13e6268a79180678"
     },
     "SurvivalGuide.json|SurvivalGuide_dig_furrow_title": {
@@ -1978,11 +1978,11 @@
         "ref": "c3168b539953e0c2"
     },
     "SurvivalGuide.json|SurvivalGuide_moodles_description": {
-        "value": "右邊的情緒圖示代表你角色的需求. <LINE> 綠色是好的 %1, 紅色是壞的 %2. <LINE> 如果你看到這個 %3, 那你就什麼都不用擔心了.",
+        "value": "右邊的狀態圖示代表你角色的需求. <LINE> 綠色是好的 %1, 紅色是壞的 %2. <LINE> 如果你看到這個 %3, 那你就什麼都不用擔心了.",
         "ref": "d18e9214dd412258"
     },
     "SurvivalGuide.json|SurvivalGuide_moodles_title": {
-        "value": "情緒管理",
+        "value": "狀態管理",
         "ref": "71dd1f9e0ef47296"
     },
     "SurvivalGuide.json|SurvivalGuide_movement_title": {
@@ -2062,7 +2062,7 @@
         "ref": "b2fbacf784e87eab"
     },
     "SurvivalGuide.json|SurvivalGuide_sheet_ropes_description": {
-        "value": "對窗戶使用 %1 用釘子掛上逃生繩. 你只需要一根釘子和錘子, 但每一層樓到地面都需要一條繩子 (例如二樓需要兩條). <LINE> 我們 (還) 沒教殭屍爬繩, 但牠們仍然能扯斷繩子.",
+        "value": "對窗戶使用 %1 用釘子掛上逃脫繩. 你只需要一根釘子和錘子, 但每一層樓到地面都需要一條繩子 (例如二樓需要兩條). <LINE> 我們 (還) 沒教殭屍爬繩, 但牠們仍然能扯斷繩子.",
         "ref": "aa017a4e132453d6"
     },
     "SurvivalGuide.json|SurvivalGuide_sheet_ropes_title": {
@@ -2070,7 +2070,7 @@
         "ref": "766d532f6f2580d9"
     },
     "SurvivalGuide.json|SurvivalGuide_shooting_description": {
-        "value": "用 %1 瞄準裝備的槍械, 並用 %2 開火. 十字準星越小, 你的射擊越準確. <LINE> 命中率受技能, 情緒, 光線等影響. <LINE> 別朝自己的腳開槍.",
+        "value": "用 %1 瞄準裝備的槍械, 並用 %2 開火. 十字準星越小, 你的射擊越準確. <LINE> 命中率受技能, 狀態, 光線等影響. <LINE> 別朝自己的腳開槍.",
         "ref": "328110fdc3b0cef3"
     },
     "SurvivalGuide.json|SurvivalGuide_shooting_title": {
@@ -2238,7 +2238,7 @@
         "ref": "b2fbacf784e87eab"
     },
     "SurvivalGuide.json|SurvivalGuide_weight_distribution_description": {
-        "value": "你能攜帶多少受力量和情緒限制. <LINE> 裝備背包裡的物品比主物品欄輕. <LINE> 不同背包有不同容量與重量減免.",
+        "value": "你能攜帶多少受力量和狀態限制. <LINE> 裝備背包裡的物品比主物品欄輕. <LINE> 不同背包有不同容量與重量減免.",
         "ref": "5704440258b07b30"
     },
     "SurvivalGuide.json|SurvivalGuide_weight_distribution_title": {
@@ -2282,75 +2282,75 @@
         "ref": "c3396195e91ccdd8"
     },
     "UI.json|UI_WorkshopSubmit_BtnCreateAndUpdate": {
-        "value": "建立/更新模組",
+        "value": "建立/更新物品",
         "ref": "873a119207fab0ef"
     },
     "UI.json|UI_WorkshopSubmit_BtnExistingItem": {
-        "value": "更新該模組. \\n進入 Steam 創意工坊.",
+        "value": "更新該物品. \\n進入 Steam 創意工坊.",
         "ref": "37472bd29f85f520"
     },
     "UI.json|UI_WorkshopSubmit_BtnNewItem": {
-        "value": "這是一個新的 Steam 創意工坊模組. \\n建立一個新的 Steam 創意工坊 ID.",
+        "value": "這是一個新的 Steam 創意工坊物品. \\n建立一個新的 Steam 創意工坊 ID.",
         "ref": "d7417c0fbced3093"
     },
     "UI.json|UI_WorkshopSubmit_BtnOpenWorkshopOverlay": {
-        "value": "開啟 Steam 瀏覽器檢視創意工坊模組",
+        "value": "開啟 Steam 瀏覽器檢視創意工坊物品",
         "ref": "7704996d62734d4d"
     },
     "UI.json|UI_WorkshopSubmit_BtnOpenWorkshopUserOverlay": {
-        "value": "開啟 Steam 瀏覽器檢視我建立的模組",
+        "value": "開啟 Steam 瀏覽器檢視我建立的物品",
         "ref": "38ff27446a31bc65"
     },
     "UI.json|UI_WorkshopSubmit_BtnViewSubscriptions": {
-        "value": "檢視訂閱模組",
+        "value": "檢視訂閱物品",
         "ref": "05a27dec4b2fe6ca"
     },
     "UI.json|UI_WorkshopSubmit_ContentFolder": {
-        "value": "把你的模組放在該目錄下: ",
+        "value": "把你的物品放在該目錄下: ",
         "ref": "17deaf5734fc6114"
     },
     "UI.json|UI_WorkshopSubmit_Legal1": {
-        "value": "你同意提交此模組",
+        "value": "你同意提交此物品",
         "ref": "1208e8d8836293c3"
     },
     "UI.json|UI_WorkshopSubmit_OverlayButton": {
-        "value": "開啟 Steam 瀏覽器檢視該模組",
+        "value": "開啟 Steam 瀏覽器檢視該物品",
         "ref": "24c51894fa8ed162"
     },
     "UI.json|UI_WorkshopSubmit_Title1": {
-        "value": "選擇模組目錄",
+        "value": "選擇物品目錄",
         "ref": "8220218edc742dc5"
     },
     "UI.json|UI_WorkshopSubmit_Title2": {
-        "value": "編輯模組詳細資訊",
+        "value": "編輯物品詳細資訊",
         "ref": "c7da8d4f358d01eb"
     },
     "UI.json|UI_WorkshopSubmit_Title3": {
-        "value": "新的或現有的模組?",
+        "value": "新的或現有的物品?",
         "ref": "60e7288703c6b9bf"
     },
     "UI.json|UI_WorkshopSubmit_Title4": {
-        "value": "輸入模組的 Steam 創意工坊 ID",
+        "value": "輸入物品的 Steam 創意工坊 ID",
         "ref": "497a5fecd75174d5"
     },
     "UI.json|UI_WorkshopSubmit_Title5": {
-        "value": "準備釋出模組",
+        "value": "準備釋出物品",
         "ref": "f9f1b9b27bf88ed5"
     },
     "UI.json|UI_WorkshopSubmit_Title7": {
-        "value": "釋出模組至 Steam 創意工坊",
+        "value": "釋出物品至 Steam 創意工坊",
         "ref": "83bd05c7ce29a063"
     },
     "UI.json|UI_WorkshopSubmit_Title8": {
-        "value": "模組錯誤",
+        "value": "物品錯誤",
         "ref": "1fd489c0272a63de"
     },
     "UI.json|UI_WorkshopSubmit_TitleEditDescription": {
-        "value": "編輯模組描述",
+        "value": "編輯物品描述",
         "ref": "8be057968484a14b"
     },
     "UI.json|UI_WorkshopSubmit_TitleEditTags": {
-        "value": "編輯模組標籤",
+        "value": "編輯物品標籤",
         "ref": "d29c7e2bfa211d87"
     },
     "UI.json|UI_mainscreen_credits": {
@@ -2382,11 +2382,187 @@
         "ref": "71f1a1a3461431b0"
     },
     "Valley Station, KY.json|description": {
-        "value": "<CENTRE> <SIZE:medium> 谷 地 車 站 <LINE> <LINE><LEFT> <SIZE:small> 儘 管 沿 著 迪 克 西 高 速 公 路 距 離 路 易 維 爾 只 有 短 程 車 距 , 谷 地 車 站 卻 是 最 悠 閒 的 鄉 村 生 活 . 花 一 天 看 俄 亥 俄 河 緩 緩 流 過 . 到 傑 佛 遜 森 林 賞 鳥 , 健 行 或 打 獵 . <LINE> <LINE> 當 你 準 備 好 回 到 都 市 生 活 時 , 到 十 字 路 口 購 物 中 心 吧 , 幾 乎 所 有 你 想 要 的 都 能 在 那 裡 找 到 ! ",
+        "value": "<CENTRE> <SIZE:medium> 山 谷 站 <LINE> <LINE><LEFT> <SIZE:small> 儘 管 沿 著 迪 克 西 高 速 公 路 距 離 路 易 維 爾 只 有 短 程 車 距 , 山 谷 站 卻 是 最 悠 閒 的 鄉 村 生 活 . 花 一 天 看 俄 亥 俄 河 緩 緩 流 過 . 到 傑 佛 遜 森 林 賞 鳥 , 健 行 或 打 獵 . <LINE> <LINE> 當 你 準 備 好 回 到 都 市 生 活 時 , 到 十 字 路 口 購 物 中 心 吧 , 幾 乎 所 有 你 想 要 的 都 能 在 那 裡 找 到 ! ",
         "ref": "3b35ed26d1445ed8"
     },
-    "Valley Station, KY.json|title": {
-        "value": "肯塔基州, 谷地車站",
-        "ref": "2f2e4ee7743d2936"
+    "UI.json|UI_WorkshopError_FileTypeNotAllowed": {
+        "value": "錯誤: 你的創意工坊物品中包含不被允許的檔案型別. \\n 不支援下列副檔名: \\n %1",
+        "ref": "4e7d7a1525062a39"
+    },
+    "UI.json|UI_WorkshopError_PreviewNotFound": {
+        "value": "錯誤: 你選擇的資料夾中沒有 preview.png. 任何創意工坊物品都必須包含一張 256x256 大小的預覽影象.",
+        "ref": "5a1bcabe08224bfa"
+    },
+    "UI.json|UI_ServerWorkshopItemScreen_Title": {
+        "value": "伺服器包含的創意工坊物品",
+        "ref": "8ddf8a5005adf314"
+    },
+    "UI.json|UI_ServerWorkshopItemScreen_Prompt": {
+        "value": "該伺服器包含Steam創意工坊物品: ",
+        "ref": "fa8694240e11d44c"
+    },
+    "UI.json|UI_ServerWorkshopItemError_SubscribeItemFalse": {
+        "value": "訂閱物品 SubscribeItem() 呼叫失敗",
+        "ref": "2c6817131a3bdbd0"
+    },
+    "UI.json|UI_ServerWorkshopItemError_DownloadItemFalse": {
+        "value": "下載物品 DownloadItem() 呼叫失敗",
+        "ref": "4ae905c46bf74c50"
+    },
+    "UI.json|UI_ServerWorkshopItemError_GetItemInstallTimeStamp": {
+        "value": "獲取物品安裝時間戳 GetItemInstallTimeStamp() 呼叫失敗",
+        "ref": "07e550a083ad2c6d"
+    },
+    "UI.json|UI_ServerWorkshopItemError_VersionMismatch": {
+        "value": "已安裝物品和服務端物品版本不匹配, 請等待伺服器/客戶端更新",
+        "ref": "dd756da02d7da724"
+    },
+    "UI.json|UI_ServerWorkshopItemError_UnknownItemState": {
+        "value": "錯誤: 未知的物品狀態",
+        "ref": "297391c8d3a7d0c4"
+    },
+    "UI.json|UI_ServerWorkshopItemError_ItemNotSubscribed": {
+        "value": "錯誤: 訂閱創意工坊物品發生異常",
+        "ref": "41cd102feec34545"
+    },
+    "UI.json|UI_ServerWorkshopItemError_ItemNotDownloaded": {
+        "value": "錯誤: 下載創意工坊物品發生異常",
+        "ref": "6e05108be1df0a1d"
+    },
+    "UI.json|UI_OnConnectFailed_CreateQueryUGCDetailsRequest": {
+        "value": "獲取創意工坊物品發生錯誤",
+        "ref": "d01f3371b25cfcea"
+    },
+    "UI.json|UI_ServerSettings_ListOfWorkshopItems": {
+        "value": "伺服器使用的創意工坊物品: ",
+        "ref": "ecc8394c1346810a"
+    },
+    "UI.json|UI_ServerSettings_AddInstalledWorkshopItem": {
+        "value": "新增已安裝的物品到伺服器清單: ",
+        "ref": "021a3b257b8b5f8e"
+    },
+    "UI.json|UI_ServerSettings_AddInstalledWorkshopItem_tooltip": {
+        "value": "伺服器啟動時將自動安裝創意工坊物品. 當客戶端連線伺服器時, 會提示客戶端安裝創意工坊物品.",
+        "ref": "082f11d8ae8c16d8"
+    },
+    "UI.json|UI_ServerSettings_AddOtherWorkshopItem": {
+        "value": "透過創意工坊 ID 新增物品到伺服器清單: ",
+        "ref": "a22686ded052e03e"
+    },
+    "UI.json|UI_ServerSettings_AddOtherWorkshopItem_tooltip": {
+        "value": "輸入創意工坊物品 ID, 然後按 Enter. \\n將此用於尚未安裝的創意工坊物品.",
+        "ref": "a90857e23360d7c3"
+    },
+    "UI.json|UI_ServerOption_WorkshopItems_tooltip": {
+        "value": "列出供伺服器下載的創意工坊物品 ID. 每個必須用分號分隔. 示例: 創意工坊物品=514427485;513111049",
+        "ref": "094ce0c2970b6f89"
+    },
+    "UI.json|UI_ServerStatus_Downloading_Workshop_Items": {
+        "value": "正在下載創意工坊物品",
+        "ref": "b1e5cc9c8b3fce2b"
+    },
+    "UI.json|UI_ServerStatus_Requesting_Workshop_Item_Details": {
+        "value": "正在請求創意工坊物品詳情",
+        "ref": "3ded26cdc3c36175"
+    },
+    "UI.json|UI_ServerStatus_Downloaded_Workshop_Items_Count": {
+        "value": "創意工坊物品數 %1",
+        "ref": "bb767eab20c0b80f"
+    },
+    "IG_UI.json|IGUI_ClimatePlotter_airmass": {
+        "value": "氣團",
+        "ref": "0afd5f62bc49b81c"
+    },
+    "IG_UI.json|IGUI_ClimatePlotter_airmassDaily": {
+        "value": "每日氣團",
+        "ref": "e867c0f9c0af9c7b"
+    },
+    "IG_UI.json|IGUI_ClimatePlotter_airmassTemperature": {
+        "value": "氣團溫度",
+        "ref": "13d11818d1d6ff3b"
+    },
+    "Attributes.json|Attributes_Type_Quality": {
+        "value": "品質",
+        "ref": "55847d2e5bed2ac5"
+    },
+    "IG_UI.json|IGUI_char_Zombies_Killed": {
+        "value": "擊殺殭屍",
+        "ref": "f8f5cbfca9d57b89"
+    },
+    "Sandbox.json|Sandbox_DisableFakeDead": {
+        "value": "假死殭屍復活",
+        "ref": "661bd0d49ef94289"
+    },
+    "Sandbox.json|Sandbox_DisableFakeDead_option1": {
+        "value": "世界上的一些殭屍會假裝死亡",
+        "ref": "61e4f8442e8801c2"
+    },
+    "Sandbox.json|Sandbox_DisableFakeDead_option2": {
+        "value": "世界上的一些殭屍, 以及你\"殺死\"的一些殭屍會假死",
+        "ref": "66036f2ecd60cc6f"
+    },
+    "Recorded_Media.json|RM_697b45bd-3164-4180-a660-fa7aa32df2e8": {
+        "value": "家庭 VHS: 黑洞太空紀錄片",
+        "ref": "32bb7af4746384d7"
+    },
+    "Recorded_Media.json|RM_c2990240-b9c3-421d-b489-b238b4e10488": {
+        "value": "黑洞太空紀錄片",
+        "ref": "406d95e92e07dbb0"
+    },
+    "UI.json|UI_ServerOption_ServerWelcomeMessage_tooltip": {
+        "value": " 在 聊 天 面 板 中 顯 示 的 第 一 則 歡 迎 訊 息 . <br> 將 在 玩 家 登 入 後 立 即 顯 示 . <br> 你 可 以 使 用 RGB 顏 色 決 定 歡 迎 訊 息 的 顏 色 , 也 可 以 使 用 <LINE> 在 文 字 中 換 行 . 使 用 : <RGB:1,0,0> 這 則 訊 息 將 顯 示 為 紅 色 !",
+        "ref": "5ccac930cedc3431"
+    },
+    "UI.json|UI_ReportBug": {
+        "value": "回報 Bug",
+        "ref": "ce72ebfb962a9970"
+    },
+    "UI.json|UI_ModsConflictsInfo": {
+        "value": " 透 過 為 所 選 自 訂 地 圖 設 定 優 先 順 序 來 解 決 地 圖 重 疊 衝 突 .<LINE><LINE> 當 地 圖 重 疊 時 , 優 先 順 序 較 高 的 地 圖 模 組 區 域 不 會 被 移 除 .<LINE><LINE> 清 單 中 越 靠 近 頂 部 的 地 圖 優 先 順 序 越 高 . 若 兩 張 地 圖 在 遊 戲 世 界 中 重 疊 , 將 使 用 優 先 順 序 較 高 那 張 的 區 域 .",
+        "ref": "3d8338ac825c312f"
+    },
+    "UI.json|UI_CharacterCreation": {
+        "value": "<CENTRE><SIZE:medium> 這 是 角 色 建 立 畫 面 .<LINE><LINE><SIZE:small><LEFT> 倖 存 者 的 正 面 與 負 面 特 質 必 須 取 得 平 衡 . 選 擇 有 利 特 質 扣 除 的 點 數 , 必 須 由 選 擇 不 利 特 質 獲 得 的 點 數 補 回 . 雙 擊 特 質 即 可 加 入 角 色 .<LINE><LINE> 在 職 業 上 投 入 點 數 可 獲 得 技 能 加 成 , 且 通 常 會 解 鎖 對 應 的 製 作 配 方 .<LINE><LINE> 角 色 預 設 檔 可 在 畫 面 底 部 儲 存 與 載 入 .",
+        "ref": "1c330d0b670894e2"
+    },
+    "UI.json|UI_worldscreen_SavefileVersion": {
+        "value": " 存 檔 世 界 版 本 : %1 <LINE> 目 前 世 界 版 本 : %2",
+        "ref": "4a491a2d802e567d"
+    },
+    "UI.json|UI_worldscreen_SavefileAnimation": {
+        "value": " 由 於 實 現 動 畫 所 需 的 變 更 , 與 早 期 版 本 的 存 檔 不 相 容 .<LINE><LINE> 存 檔 世 界 版 本 : %1<LINE> 目 前 世 界 版 本 : %2",
+        "ref": "c396c66a3ea104c7"
+    },
+    "Print_Media.json|Print_Media_FlyerTemplate12_info": {
+        "value": "<type:parent, width:500, height:700><type:texture, width:480, height:715, r:225/255.0, g:225/255.0, b:225/255.0><type:texture, x:100, y:10, texture:getTexture(\"media/textures/printMedia/logos/Fossoil.png\"), width:300, height:110, r:225/255.0, g:225/255.0, b:225/255.0><type:texture, x:10, y:400, width:460, height:205, r:0, g:0, b:0><type:texture, x:12, y:402, width:456, height:201, r:225/255.0, g:225/255.0, b:225/255.0><type:text, x:20, y:130, r:0, g:0, b:0, pivotX:0, pivotY:0, scaleX:0.6, scaleY:0.6, autoWidth:440/0.6, font:UIFont.SdfOldBold> 到 日 星 汽 車 旅 館 入 住 ! ! 這 裡 的 客 房 配 備 齊 全 , 舒 適 宜 人 , 均 設 有 空 調 與 彩 色 電 視 . 旅 館 內 餐 館 可 單 獨 提 供 餐 飲 服 務 . ^^ 房 價 ^- 標 準 雙 人 間 / 雙 單 人 間 : 55 美 元 ^- 雙 人 間 及 單 雙 人 間 : 65 美 元 ^- 帶 雙 人 床 及 客 廳 的 客 房 : 70 美 元 ^^ 退 伍 軍 人 和 老 年 人 享 九 折 優 惠 . 另 有 供 日 間 會 面 使 用 的 私 密 客 房 , 詳 情 可 諮 詢 櫃 檯 .<type:text, x:10, y:640, r:0, g:0, b:0, pivotX:0, pivotY:0, scaleX:0.7, scaleY:0.7, font:UIFont.SdfOldBold> 地 址 , 肯 塔 基 州 ",
+        "ref": "00e7a4fb56cfe95f"
+    },
+    "UI.json|UI_mainscreen_TutorialControllerWarn": {
+        "value": " 此 教 學 目 前 不 相 容 控 制 器 . <LINE> <LINE> 仍 要 開 始 教 學 嗎 ?",
+        "ref": "20ca3961dea1a41d"
+    },
+    "UI.json|UI_modselector_help5": {
+        "value": "<H2> 模 組 順 序 <LINE><TEXT> 使 用 模 組 順 序 (Mod Order) 按 鈕 , 你 可 以 更 改 模 組 載 入 的 順 序 . 它 們 可 以 自 動 排 序 , 或 者 使 用 滑 鼠 ( 點 擊 移 動 圖 示 並 拖 動 模 組 ) 或 遊 戲 控 制 器 移 動 . 排 在 上 面 的 模 組 先 載 入 . 更 改 模 組 的 順 序 可 能 有 助 於 解 決 錯 誤 . <BR>",
+        "ref": "8d80a08207377845"
+    },
+    "UI.json|UI_optionscreen_controller": {
+        "value": "控制器",
+        "ref": "63f70ad7f6ca19f5"
+    },
+    "UI.json|UI_optionscreen_controller_tip": {
+        "value": "勾選遊戲要啟用的控制器.",
+        "ref": "f8fdb0d165176222"
+    },
+    "UI.json|UI_ControllerTest_Combo": {
+        "value": "測試控制器: ",
+        "ref": "71a6919c2f75efca"
+    },
+    "UI.json|UI_optionscreen_gamepad_sensitivity_tt": {
+        "value": "遊戲控制器靈敏度",
+        "ref": "0eb6daaa7579faf3"
+    },
+    "UI.json|UI_optionscreen_select_gamepad": {
+        "value": "選擇遊戲控制器",
+        "ref": "9f4dea8201a6b159"
     }
 }

@@ -2,7 +2,7 @@
     "IGUI_MapOption_MapLabels": "地图标签",
     "IGUI_MapOption_Isometric": "等轴测投影",
     "IGUI_perks_Barricades": "路障",
-    "IGUI_Tutorial1_Shotgun4Joypad": " <SIZE:medium> 它 们 都 被 消 灭 了 ! <LINE> <LINE> 森 林 里 的 每 个 僵 尸 都 听 到 了 枪 声 , 它 们 正 在 朝 你 狂 奔 ! <LINE> <LINE> <SIZE:large> 按 <JOYPAD:BButton,28,28> 可 以 翻 越 铁 丝 网 暂 时 避 开 它 们 !",
+    "IGUI_Tutorial1_Shotgun4Joypad": "<SIZE:medium> 它 们 都 被 消 灭 了 ! <LINE> <LINE> 森 林 里 的 每 个 僵 尸 都 听 到 了 枪 声 , 它 们 正 在 朝 你 狂 奔 ! <LINE> <LINE> <SIZE:large> 按 <JOYPAD:ClimbThrough> 或 按 住 <JOYPAD:Interact,28,28> 可 以 翻 越 铁 丝 网 暂 时 避 开 它 们 !",
     "IGUI_AdminPanel_SeeDB": "查看数据库",
     "IGUI_DbViewer_DbViewer": "数据库编辑器",
     "IGUI_DbViewer_Modify": "修改",

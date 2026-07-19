@@ -404,8 +404,224 @@
         },
         {
           "pattern": "外掛(?!背包|式)",
-          "replacement": "模組",
-          "note": "插件→外掛；台灣遊戲圈「外掛」=作弊程式。暫依專案現行 Workshop 語境譯「模組」，終譯（EN 42.19 用詞 item：項目/物件）待階段二定案後全局統一。(?!背包|式) 防車輛外掛式背包等正當用法（模組包 ATA 實證誤傷）"
+          "replacement": "物品",
+          "note": "插件→外掛（作弊歧義）；使用者裁決 Workshop item=物品（Steam 官方譯法）。(?!背包|式) 防正當用法。模組包側 replacement=模組（mod 語境，合理分岔）"
+        }
+      ]
+    },
+    {
+      "category": "台灣用語統一（2026-07-19 全量掃描）",
+      "description": "字級客觀類：簡繁殘留、量詞、既有主流用字統一",
+      "rules": [
+        {
+          "pattern": "僵(\\s*)屍",
+          "replacement": "殭\\1屍",
+          "note": "台灣標準＋本體主流（246 處殭屍 vs 57 殘留）；含「殭屍毀滅工程」遊戲名；含 CJK 空格版"
+        },
+        {
+          "pattern": "自(\\s*)制(?!\\s*(?:力|能力))",
+          "replacement": "自\\1製",
+          "note": "crafted/makeshift 物品名（自製匕首等 45 處）；(?!力) 防「自制力」；codex 修正：\\s* 防「自 制 力」空格版誤傷"
+        },
+        {
+          "pattern": "鼠(\\s*)標",
+          "replacement": "滑\\1鼠",
+          "note": "s2twp 分詞漏網（移動鼠標/按下鼠標左鍵）；含空格版"
+        },
+        {
+          "pattern": "屏(\\s*)幕",
+          "replacement": "螢\\1幕",
+          "note": "s2twp 分詞漏網；含空格版"
+        },
+        {
+          "pattern": "服(\\s*)務(\\s*)器",
+          "replacement": "伺\\1服\\2器",
+          "note": "s2twp 分詞漏網"
+        },
+        {
+          "pattern": "網(\\s*)絡",
+          "replacement": "網\\1路",
+          "note": "s2twp 分詞漏網（電話網絡等）"
+        },
+        {
+          "pattern": "([一每這那幾兩])(\\s*)只(?=\\s*(?:死\\s*)?(?:家\\s*鼠|殭\\s*屍|僵\\s*屍|母\\s*雞|兔\\s*子|小\\s*狗|野\\s*鴨|狗))",
+          "replacement": "\\1\\2隻",
+          "note": "動物量詞誤轉；lookahead 動物集合，絕不可全域（「這只是/那只是」=just）；codex 修正：CJK 空格版（那 只 殭 屍）"
+        },
+        {
+          "pattern": "一(\\s*)只(?=\\s*需\\s*要\\s*柺\\s*杖\\s*的\\s*野\\s*鴨)",
+          "replacement": "一\\1隻",
+          "note": "動物量詞個案（RM 台詞）"
+        },
+        {
+          "pattern": "圖(\\s*)標",
+          "replacement": "圖\\1示",
+          "note": "icon=圖示（37 處）"
+        },
+        {
+          "pattern": "窗(\\s*)口",
+          "replacement": "視\\1窗",
+          "note": "window=視窗（8 處）"
+        },
+        {
+          "pattern": "控(\\s*)件",
+          "replacement": "控\\1制\\1項",
+          "note": "control=控制項"
+        },
+        {
+          "pattern": "滑(\\s*)鼠(\\s*)指(\\s*)針",
+          "replacement": "滑\\1鼠\\2游\\3標",
+          "note": "mouse pointer=滑鼠游標；先於光標規則"
+        },
+        {
+          "pattern": "光(\\s*)標",
+          "replacement": "游\\1標",
+          "note": "cursor=游標；儀表「指針」不受影響"
+        },
+        {
+          "pattern": "搜(\\s*)索",
+          "replacement": "搜\\1尋",
+          "note": "search=搜尋（PZ 全 search 語境，無搜索票法律語境）"
+        },
+        {
+          "pattern": "(?<![縫聚集組整混癒融接結回綜撮])合(\\s*)並",
+          "replacement": "合\\1併",
+          "note": "merge=合併；lookbehind 防「縫合並包扎」（縫合+並，模組包實證誤傷）等動詞+並跨詞"
+        },
+        {
+          "pattern": "幸(\\s*)存",
+          "replacement": "倖\\1存",
+          "note": "倖存=台灣標準（30 處）"
+        },
+        {
+          "pattern": "自(\\s*)定(\\s*)義",
+          "replacement": "自\\1訂",
+          "note": "custom=自訂（24 處）"
+        },
+        {
+          "pattern": "調試",
+          "replacement": "除錯",
+          "note": "debug=除錯"
+        },
+        {
+          "pattern": "教(\\s*)程",
+          "replacement": "教\\1學",
+          "note": "tutorial=教學"
+        },
+        {
+          "pattern": "信(\\s*)息",
+          "replacement": "資\\1訊",
+          "note": "information=資訊；message 語境（ServerWelcomeMessage）由 override 改「訊息」"
+        },
+        {
+          "pattern": "界(\\s*)面",
+          "replacement": "介\\1面",
+          "note": "interface=介面"
+        },
+        {
+          "pattern": "交(\\s*)互",
+          "replacement": "互\\1動",
+          "note": "interaction=互動"
+        },
+        {
+          "pattern": "創(\\s*)建",
+          "replacement": "建\\1立",
+          "note": "create=建立"
+        },
+        {
+          "pattern": "兼(\\s*)容",
+          "replacement": "相\\1容",
+          "note": "compatible=相容"
+        },
+        {
+          "pattern": "加(\\s*)載",
+          "replacement": "載\\1入",
+          "note": "load=載入"
+        },
+        {
+          "pattern": "登(\\s*)錄",
+          "replacement": "登\\1入",
+          "note": "login=登入"
+        },
+        {
+          "pattern": "默(\\s*)認",
+          "replacement": "預\\1設",
+          "note": "default=預設"
+        },
+        {
+          "pattern": "用(\\s*)戶",
+          "replacement": "使\\1用\\1者",
+          "note": "user=使用者"
+        },
+        {
+          "pattern": "菜(\\s*)單",
+          "replacement": "選\\1單",
+          "note": "UI menu=選單。⚠️ 2026-07-19 全量掃描 33 處全 UI 語境；未來如出現餐飲菜單語境（RM 烹飪節目）需改窄化前綴版（codex 警示）"
+        },
+        {
+          "pattern": "列(\\s*)表",
+          "replacement": "清\\1單",
+          "note": "list=清單（67 處；與既有「伺服器清單」override 值一致）"
+        },
+        {
+          "pattern": "當(\\s*)前",
+          "replacement": "目\\1前",
+          "note": "current=目前（56 處）"
+        },
+        {
+          "pattern": "通(\\s*)過(?!\\s*[測考審檢])",
+          "replacement": "透\\1過",
+          "note": "via/through=透過（42 處全掃無測驗語境）；lookahead 防「通過測驗」"
+        },
+        {
+          "pattern": "單(\\s*)擊",
+          "replacement": "點\\1擊",
+          "note": "click=點擊（雙擊不受影響）"
+        },
+        {
+          "pattern": "不(\\s*)支(\\s*)持(?=\\s*的\\s*模\\s*組)",
+          "replacement": "不\\1支\\2援",
+          "note": "unsupported mods 窄版（codex 建議，防「支持某人」）"
+        },
+        {
+          "pattern": "(高|低|睡眠|光照|霧氣|水面|水坑|建築|空氣)(\\s*)質(\\s*)量",
+          "replacement": "\\1\\2品\\3質",
+          "note": "quality 正向詞組（codex 窄化案）"
+        },
+        {
+          "pattern": "質(\\s*)量(\\s*)保(\\s*)證",
+          "replacement": "品\\1質\\2保\\3證",
+          "note": "QA 職稱"
+        },
+        {
+          "pattern": "更好的質量",
+          "replacement": "更好的品質",
+          "note": "quality"
+        },
+        {
+          "pattern": "的(\\s*)質(\\s*)量",
+          "replacement": "的\\1品\\2質",
+          "note": "「捕獲物的質量」等 perks 描述；物理 mass 語境現無（note 防範）"
+        },
+        {
+          "pattern": "(肉類|物品)質量",
+          "replacement": "\\1品質",
+          "note": "perks 描述無「的」變體"
+        },
+        {
+          "pattern": "在設置裡",
+          "replacement": "在設定裡",
+          "note": "settings 語境"
+        },
+        {
+          "pattern": "其他設置",
+          "replacement": "其他設定",
+          "note": "settings 語境"
+        },
+        {
+          "pattern": "諮(\\s*)詢(\\s*)前(\\s*)臺",
+          "replacement": "諮\\1詢\\2櫃\\3檯",
+          "note": "旅館語境（1 處）；含 CJK 空格版"
         }
       ]
     }
