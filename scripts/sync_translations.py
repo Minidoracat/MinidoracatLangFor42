@@ -140,6 +140,93 @@ def _load_fixes() -> tuple[list[tuple[re.Pattern, str, str]], list[dict]]:
 
 POST_FIXES, SUSPICIOUS_PATTERNS = _load_fixes()
 
+# ============================================================
+# CH 人工覆寫層（ch_overrides.json）
+# ------------------------------------------------------------
+# sync-ch 機轉全量再生後套用的人工真相檔。schema：
+#   {"<檔名>|<鍵>": "<人工值>"}                        （簡式，無過時偵測）
+#   {"<檔名>|<鍵>": {"value": "<人工值>", "ref": "<登記時 REF 原文 hash>"}}
+# ref = _ref_hash(REF CN 原文)；sync-ch 發現 REF 原文已變更時提醒重審，
+# 鍵已從 REF 消失時提醒清理。缺檔即報錯（防止誤跑 sync-ch 洗掉人工潤飾）。
+# ============================================================
+OVERRIDES_JSON = Path(__file__).resolve().parent / "ch_overrides.json"
+
+# REF 有 streets.txt 但 CN/CH 皆未版控也無消費端（街道翻譯走
+# maps/Riverside, KY/streets.xml），sync 不得生成。
+EXCLUDE_GENERATE = {"streets.txt"}
+
+# 人工維護檔：CH/CN 的 credits.txt 為結構化名單（老版/新版/電臺組三區塊，
+# Initial commit 以來人工維護），REF 現版為較舊扁平名單，同步會回退名單。
+MANUAL_MAINTAINED = {"credits.txt"}
+
+
+def _ref_hash(value: str) -> str:
+    """REF 原文的短 hash，登記於 override 條目供過時偵測。"""
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()[:16]
+
+
+def _load_overrides() -> dict[str, dict]:
+    """載入 ch_overrides.json；缺檔或格式錯誤即終止，不自動建骨架。"""
+    if not OVERRIDES_JSON.exists():
+        print(f"❌ 人工覆寫檔不存在：{OVERRIDES_JSON}", file=sys.stderr)
+        print("  sync-ch 需要 ch_overrides.json 才能保留人工潤飾，請先建立（勿用空猜測值）。", file=sys.stderr)
+        sys.exit(1)
+    try:
+        data = json.loads(OVERRIDES_JSON.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        print(f"❌ ch_overrides.json 讀取失敗：{exc}", file=sys.stderr)
+        sys.exit(1)
+
+    overrides: dict[str, dict] = {}
+    for ov_key, ent in data.items():
+        if ov_key.startswith("_"):
+            continue  # _comment 等說明欄位
+        if "|" not in ov_key:
+            print(f"❌ ch_overrides.json 鍵格式錯誤（應為 <檔名>|<鍵>）：{ov_key}", file=sys.stderr)
+            sys.exit(1)
+        if isinstance(ent, str):
+            overrides[ov_key] = {"value": ent, "ref": None}
+        elif isinstance(ent, dict) and isinstance(ent.get("value"), str):
+            overrides[ov_key] = {"value": ent["value"], "ref": ent.get("ref")}
+        else:
+            print(f"❌ ch_overrides.json 條目格式錯誤：{ov_key} = {ent!r}", file=sys.stderr)
+            sys.exit(1)
+    return overrides
+
+
+def _group_overrides(overrides: dict[str, dict]) -> dict[str, dict[str, dict]]:
+    """{"檔名|鍵": ent} → {"檔名": {"鍵": ent}}"""
+    by_file: dict[str, dict[str, dict]] = {}
+    for ov_key, ent in overrides.items():
+        fname, _, key = ov_key.partition("|")
+        by_file.setdefault(fname, {})[key] = ent
+    return by_file
+
+
+def _apply_overrides(
+    json_name: str,
+    ref_data: "OrderedDict[str, str]",
+    ch_data: "OrderedDict[str, str]",
+    ov_for_file: dict[str, dict],
+    used_ov: set[str],
+    stale_warnings: list[str],
+) -> int:
+    """機轉結果套用人工覆寫（僅 REF 衍生鍵；MOD 自訂鍵不經此層）。"""
+    applied = 0
+    for key, ent in ov_for_file.items():
+        if key not in ch_data:
+            continue  # 鍵不在本次機轉輸出 → 留給收尾的未命中報告
+        ch_data[key] = ent["value"]
+        used_ov.add(f"{json_name}|{key}")
+        applied += 1
+        if ent["ref"]:
+            cur = _ref_hash(ref_data.get(key, ""))
+            if cur != ent["ref"]:
+                stale_warnings.append(
+                    f"  {json_name}|{key}: REF 原文已變更（登記 {ent['ref']} ≠ 現值 {cur}），請重審此 override"
+                )
+    return applied
+
 
 def sha256(path: Path) -> str:
     """計算檔案 SHA256"""
@@ -470,8 +557,11 @@ def cmd_sync_cn():
             continue
         filename = ref_file.name
 
+        if filename in EXCLUDE_GENERATE or filename in MANUAL_MAINTAINED:
+            continue
+
         if filename in PZ_SKIP_FILES:
-            # language.txt, credits.txt — copy as-is
+            # language.txt — copy as-is
             mod_file = MOD_CN / filename
             if not mod_file.exists() or sha256(ref_file) != sha256(mod_file):
                 mod_file.parent.mkdir(parents=True, exist_ok=True)
@@ -596,6 +686,12 @@ def cmd_sync_ch():
     unchanged = 0
     all_issues: list[str] = []
 
+    overrides = _load_overrides()
+    ov_by_file = _group_overrides(overrides)
+    used_ov: set[str] = set()
+    stale_warnings: list[str] = []
+    applied_total = 0
+
     # Process .txt translation files (legacy format)
     for ref_file in sorted(REF_CN.glob("*.txt")):
         if not ref_file.is_file():
@@ -606,6 +702,16 @@ def cmd_sync_ch():
         # language.txt: CH has its own definition, don't convert
         if filename in SKIP_CH_CONVERT:
             print(f"  ⏭️ 跳過: {filename} (CH 版本保持不變)")
+            skipped += 1
+            continue
+
+        if filename in EXCLUDE_GENERATE:
+            print(f"  ⏭️ 跳過: {filename} (未版控且無消費端，不生成)")
+            skipped += 1
+            continue
+
+        if filename in MANUAL_MAINTAINED:
+            print(f"  ⏭️ 跳過: {filename} (人工維護檔，不從 REF 同步)")
             skipped += 1
             continue
 
@@ -637,6 +743,11 @@ def cmd_sync_ch():
                 ch_data[key] = convert_print_media_value(value)
             else:
                 ch_data[key] = convert_s2twp(value)
+
+        # 機轉之後、自訂鍵合併之前套用人工覆寫
+        applied_total += _apply_overrides(
+            json_name, ref_data, ch_data, ov_by_file.get(json_name, {}), used_ov, stale_warnings
+        )
 
         # 保留 MOD 中有但 REF 中沒有的自訂 keys
         if ch_path.exists():
@@ -690,6 +801,11 @@ def cmd_sync_ch():
                 ch_data[key] = convert_print_media_value(value)
             else:
                 ch_data[key] = convert_s2twp(value)
+
+        # 機轉之後、自訂鍵合併之前套用人工覆寫
+        applied_total += _apply_overrides(
+            json_name, ref_data, ch_data, ov_by_file.get(json_name, {}), used_ov, stale_warnings
+        )
 
         # 保留 MOD 中有但 REF 中沒有的自訂 keys
         if ch_path.exists():
@@ -747,6 +863,10 @@ def cmd_sync_ch():
         for key, value in ref_data.items():
             ch_data[key] = convert_s2twp(value)
 
+        applied_total += _apply_overrides(
+            json_name, ref_data, ch_data, ov_by_file.get(json_name, {}), used_ov, stale_warnings
+        )
+
         if ch_path.exists():
             old_data = read_translation(ch_path)
             if old_data == ch_data:
@@ -760,6 +880,17 @@ def cmd_sync_ch():
         updated += 1
 
     print(f"\n完成：{updated} 個 CH 檔案已更新，{skipped} 個已跳過，{unchanged} 個無變化")
+    print(f"人工覆寫：套用 {applied_total} / {len(overrides)} 筆 ch_overrides")
+
+    unused_ov = sorted(set(overrides) - used_ov)
+    if unused_ov:
+        print(f"\n⚠️ {len(unused_ov)} 筆 override 未命中（鍵已從 REF 消失或檔名不符），請清理：")
+        for k in unused_ov:
+            print(f"  {k}")
+    if stale_warnings:
+        print(f"\n⚠️ {len(stale_warnings)} 筆 override 的 REF 原文已變更，請重審後更新 ref hash：")
+        for w in stale_warnings:
+            print(w)
 
     if all_issues:
         print(f"\n⚠️ 發現 {len(all_issues)} 處可能需要人工檢查：")
