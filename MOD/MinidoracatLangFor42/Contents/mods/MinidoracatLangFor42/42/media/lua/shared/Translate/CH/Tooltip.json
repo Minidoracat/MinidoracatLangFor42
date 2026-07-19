@@ -582,9 +582,9 @@
     "Tooltip_ButcherUI_AddAnimalCorpse": "死亡的動物可以靠近鉤子或在你的物品欄中.",
     "Tooltip_ButcherUI_CantAddThis": "對於屠宰鉤來說, 這不是一隻合適的死動物.",
     "Tooltip_Animal_BetterOnHook": "如果你在沒有屠宰鉤的情況下屠宰, <br>你會得到更少的肉, 且得不到皮革.",
-    "Tooltip_GrappleCorpse": "按住互動鍵來抓取/放下屍體.",
-    "Tooltip_GrappleCorpseFire": "你不能抓取燃燒的屍體!",
-    "Tooltip_campfire_addcorpse": "當營火燃燒時, 新增太危險了.",
+    "Tooltip_GrappleCorpse": "按住互動鍵來搬運/放下屍體.",
+    "Tooltip_GrappleCorpseFire": "你不能搬運燃燒的屍體!",
+    "Tooltip_campfire_addcorpse": "在營火燃燒時放入屍體過於危險.",
     "Tooltip_campfire_addcorpse_far": "太遠了, 無法將屍體扔進營火.",
     "Tooltip_grave_addcorpse_far": "太遠了, 無法將屍體扔進墳墓.",
     "Tooltip_trough_info1": "食槽只能包含食物或水.",
@@ -603,6 +603,6 @@
     "Tooltip_Unwanted": "不想要",
     "Tooltip_Unwanted_More": "此類物品已被<br>標記為不想要.",
     "Tooltip_IsEmpty": "無法在空的狀態下啟用.",
-    "Tooltip_item_ImprovisedGasMask": "對有害煙霧提供中等防護.",
-    "Tooltip_DoorIsLocked": "門已上鎖"
+    "Tooltip_DoorIsLocked": "門已上鎖",
+    "Tooltip_item_ImprovisedGasMask": "對有害煙霧提供中等防護."
 }

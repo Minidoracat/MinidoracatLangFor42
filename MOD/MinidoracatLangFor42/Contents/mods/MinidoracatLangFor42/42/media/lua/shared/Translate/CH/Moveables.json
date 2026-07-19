@@ -273,6 +273,7 @@
     "Fence_gate": "柵欄門",
     "Female_Bust": "女半身像",
     "Female_Statue": "女性雕像",
+    "Fence_Post": "圍欄柱",
     "Fern": "蕨類植物",
     "Finewood_Floor": "細紋木地板",
     "Fitness_Contraption": "健身器材",
@@ -321,6 +322,7 @@
     "Green_Diagonal_Tiles": "綠色斜紋瓷磚",
     "Green_Diner_Floor": "綠色餐廳地板",
     "Green_Dinner_Chair": "綠色木椅",
+    "Green_Fancy_Lamp": "精緻檯燈",
     "Green_Floating_Counter": "綠色壁櫃",
     "Green_Floating_Corner_Counter": "綠色壁櫃",
     "Green_Fridge": "綠色冰箱",
@@ -1009,7 +1011,5 @@
     "Generic_Shop_Shelves": "商店貨架",
     "Key_Duplicator": "鑰匙複製機",
     "Spiffo_Spiffo_Sleeping_Bag": "斯皮福睡袋",
-    "Cow_Hide": "牛皮",
-    "Fence_Post": "圍欄柱",
-    "Green_Fancy_Lamp": "精緻檯燈"
+    "Cow_Hide": "牛皮"
 }

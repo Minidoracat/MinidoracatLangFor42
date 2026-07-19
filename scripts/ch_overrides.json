@@ -1,0 +1,2392 @@
+{
+    "_comment": "CH 人工覆寫層（人工真相檔）。sync-ch 機轉全量再生後套用。schema：{\"<檔名>|<鍵>\": {\"value\": \"人工值\", \"ref\": \"登記時 REF 原文 sha256 前 16 碼\"}}；亦接受純字串值（無過時偵測）。",
+    "_usage": "REF 原文變更時 sync-ch 會提醒重審（重審後更新 ref）；鍵從 REF 消失時提醒清理。全局字級規則請走 opencc_fixes.json，本檔只收逐鍵人工潤飾。",
+    "Brandenburg, KY.json|description": {
+        "value": "<CENTRE> <SIZE:medium> 勃 蘭 登 堡 <LINE> <LINE><LEFT> <SIZE:small> 勃 蘭 登 堡 位 於 俄 亥 俄 河 南 岸 , 在 蒸 汽 船 時 代 曾 是 熱 門 景 點 , 最 近 停 靠 的 迪 莉 婭 號 蒸 汽 船 便 是 那 段 歷 史 的 遺 物 . <LINE> 但 輝 煌 的 過 去 不 代 表 這 裡 是 一 座 守 舊 的 小 鎮 . <LINE> <LINE> 雖 然 還 在 從 四 月 龍 捲 風 的 侵 襲 中 恢 復 , 但 小 鎮 仍 擁 有 寬 敞 的 邦 德 唯 優 購 物 中 心 , 而 老 消 防 隊 長 的 五 級 警 報 消 防 隊 辣 椒 更 吸 引 著 全 州 各 地 的 重 口 味 愛 好 者 ! ",
+        "ref": "b4b2c9e5fa7523cb"
+    },
+    "ContextMenu.json|ContextMenu_Lure": {
+        "value": "誘餌",
+        "ref": "171f9309f7b90e2e"
+    },
+    "ContextMenu.json|ContextMenu_TooSimple": {
+        "value": "技能等級過高, 閱讀無法獲得經驗值.",
+        "ref": "9f668ba2fc8f72eb"
+    },
+    "Credits.json|credits_role.additional_artists": {
+        "value": "支援美術師",
+        "ref": "d9e599dc903da2dc"
+    },
+    "Credits.json|credits_role.additional_code": {
+        "value": "支援程式碼",
+        "ref": "847b7acbc82deff7"
+    },
+    "Credits.json|credits_role.art_director": {
+        "value": "美術總監",
+        "ref": "c1609e8d670edc21"
+    },
+    "Credits.json|credits_role.artists": {
+        "value": "美術師",
+        "ref": "8104520f6e69796d"
+    },
+    "Credits.json|credits_role.associate_producer": {
+        "value": "副製作人",
+        "ref": "6c6abd1d518ccf93"
+    },
+    "Credits.json|credits_role.associate_sound_designer": {
+        "value": "副音效設計師",
+        "ref": "cc015085f8f939c2"
+    },
+    "Credits.json|credits_role.backup_sysadmin": {
+        "value": "備援系統管理員",
+        "ref": "b7ceecf7d8cccf3f"
+    },
+    "Credits.json|credits_role.concept_artist": {
+        "value": "概念美術師",
+        "ref": "7aa59b7458f335f0"
+    },
+    "Credits.json|credits_role.engineers": {
+        "value": "工程師",
+        "ref": "78a7f252a6cba380"
+    },
+    "Credits.json|credits_role.environmental_artists": {
+        "value": "場景美術師",
+        "ref": "d8c7ed102017927a"
+    },
+    "Credits.json|credits_role.founders": {
+        "value": "創辦人",
+        "ref": "ecd0ad3b97b5dc1f"
+    },
+    "Credits.json|credits_role.junior_system_administrator": {
+        "value": "初階系統管理員",
+        "ref": "61ca237a8087a3a6"
+    },
+    "Credits.json|credits_role.lead_gameplay_programmer": {
+        "value": "首席玩法程式設計師",
+        "ref": "74d00ca5ffdc4486"
+    },
+    "Credits.json|credits_role.lead_qa": {
+        "value": "首席 QA",
+        "ref": "2ef6436053ffa39c"
+    },
+    "Credits.json|credits_role.lead_qa_tis": {
+        "value": "品質保證主管",
+        "ref": "2ef6436053ffa39c"
+    },
+    "Credits.json|credits_role.lead_sound_designer_arrival": {
+        "value": "首席音效設計師",
+        "ref": "7f4287cba8af4d5d"
+    },
+    "Credits.json|credits_role.marketing_artist": {
+        "value": "行銷美術師",
+        "ref": "59638ee6679c2d02"
+    },
+    "Credits.json|credits_role.middle_software_developer": {
+        "value": "中階軟體開發者",
+        "ref": "7330044cd9e25173"
+    },
+    "Credits.json|credits_role.operations_manager": {
+        "value": "營運經理",
+        "ref": "961bea0f39be287f"
+    },
+    "Credits.json|credits_role.qa": {
+        "value": "QA",
+        "ref": "b1c6acd467598eef"
+    },
+    "Credits.json|credits_role.quality_assurance": {
+        "value": "品質保證",
+        "ref": "b1c6acd467598eef"
+    },
+    "Credits.json|credits_role.quality_assurance_manager": {
+        "value": "品質保證經理",
+        "ref": "b6568ba92476c348"
+    },
+    "Credits.json|credits_role.quality_assurance_testers": {
+        "value": "品質保證測試員",
+        "ref": "5f7b81afab547c67"
+    },
+    "Credits.json|credits_role.senior_producer": {
+        "value": "資深製作人",
+        "ref": "c9fa88698cca5e9b"
+    },
+    "Credits.json|credits_role.senior_software_developer": {
+        "value": "資深軟體開發者",
+        "ref": "04066cb3940853ea"
+    },
+    "Credits.json|credits_role.sound_designer": {
+        "value": "音效設計師",
+        "ref": "5b904b9989c6a522"
+    },
+    "Credits.json|credits_role.sound_supervisor": {
+        "value": "音效監督",
+        "ref": "f653e416387cdbb5"
+    },
+    "Credits.json|credits_role.special_infected": {
+        "value": "特別感染者",
+        "ref": "7b390ca513ceb6df"
+    },
+    "Credits.json|credits_role.special_thanks": {
+        "value": "特別感謝",
+        "ref": "c08d52bad6f70342"
+    },
+    "Credits.json|credits_role.technical_sound_designer_arrival": {
+        "value": "技術音效設計師",
+        "ref": "77a8152fbecbe291"
+    },
+    "Credits.json|credits_role.titles": {
+        "value": "字幕",
+        "ref": "44a94721f518b220"
+    },
+    "Credits.json|credits_role.wiki_admin": {
+        "value": "Wiki 管理員",
+        "ref": "5ffb2e7a06cb1885"
+    },
+    "Credits.json|credits_role.wiki_editors": {
+        "value": "Wiki 編輯",
+        "ref": "c8d18505b69fcaf2"
+    },
+    "Credits.json|credits_role.writer": {
+        "value": "編劇",
+        "ref": "a6a78aa11740ae75"
+    },
+    "Credits.json|credits_role_group.administration": {
+        "value": "行政管理",
+        "ref": "3e20059f26e451c4"
+    },
+    "Credits.json|credits_role_group.general_arcade": {
+        "value": "GENERAL ARCADE",
+        "ref": "b013eba0fa2cfe5c"
+    },
+    "Credits.json|credits_role_group.in_loving_memory_of": {
+        "value": "謹以此獻上懷念 <LINE> ",
+        "ref": "dae62743bb34cae9"
+    },
+    "Credits.json|credits_role_group.localization": {
+        "value": "在地化 <LINE> <LINE> <SIZE:medium> PZ 社群 <LINE> (個別譯者名單可在翻譯選項中查看)",
+        "ref": "2fff863927448e72"
+    },
+    "Credits.json|credits_role_group.music_by": {
+        "value": "原創配樂作曲",
+        "ref": "a05a0a7685f931ed"
+    },
+    "Credits.json|credits_role_group.quality_assurance": {
+        "value": "品質保證",
+        "ref": "b1c6acd467598eef"
+    },
+    "Credits.json|credits_role_group.research_and_development": {
+        "value": "研究與開發",
+        "ref": "43f1d765f8cc3b21"
+    },
+    "Credits.json|credits_role_group.sound_arrival": {
+        "value": "音效 - ARRIVAL",
+        "ref": "ece2f8d7e529beef"
+    },
+    "Credits.json|credits_role_group.tea": {
+        "value": "茶部門 (The Tea Division)",
+        "ref": "c591b135f3e79149"
+    },
+    "Credits.json|credits_role_group.tools": {
+        "value": " <SIZE:credits2> 工具 <SIZE:medium> <LINE> <LINE> 音效引擎：FMOD Studio by Firelight Technologies <LINE> <LINE> <IMAGECENTRE:media/ui/Logos/FMOD_credits.png> <LINE> <LINE> <LINE> 使用 Bink Video. Copyright (C) 1997-2026 by Epic Games Tools LLC <LINE> <LINE> <IMAGECENTRE:media/ui/Logos/Bink_credits.png>",
+        "ref": "ccd6e0fea8749836"
+    },
+    "Credits.json|credits_role_group.vertex_break": {
+        "value": "VERTEX BREAK",
+        "ref": "68224bf161dadc11"
+    },
+    "Credits.json|credits_start": {
+        "value": " <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <CENTRE> <SIZE:credits2> 殭屍毀滅工程由此團隊驕傲打造 <LINE> <LINE> <LINE> <IMAGECENTRE:media/ui/Logos/TheIndieStoneLogo_credits.png> <LINE> ",
+        "ref": "b5758017be121c55"
+    },
+    "Ekron, KY.json|description": {
+        "value": "<CENTRE> <SIZE:medium> 以 革 倫 <LINE> <LINE><LEFT> <SIZE:small> 以 革 倫 人 口 不 到 兩 百 人 , 當 地 居 民 從 不 打 擾 陌 生 人 . <LINE> <LINE> 大 多 數 居 民 在 AMZ 鋼 鐵 廠 工 作 , 或 每 天 通 勤 到 北 邊 的 勃 蘭 登 堡 或 南 邊 的 歐 文 頓 . <LINE> <LINE> 他 們 沒 有 太 多 閒 暇 時 光 , 但 別 擔 心 , 他 們 總 會 抽 空 隔 著 你 家 後 院 的 籬 笆 聊 上 兩 句 ! ",
+        "ref": "da877a7f4d7230af"
+    },
+    "Fallas Lake, KY.json|description": {
+        "value": "<CENTRE> <SIZE:medium> 法 拉 斯 湖 <LINE> <LINE><LEFT> <SIZE:small> 法 拉 斯 湖 住 著 三 種 人 : 農 夫 , 湖 邊 漁 夫 , 以 及 經 過 此 地 前 往 南 方 羅 斯 伍 德 或 北 方 河 畔 鎮 的 旅 人 . <LINE> <LINE> 但 只 要 在 這 條 迷 人 的 街 道 上 多 待 片 刻 , 你 會 找 到 肯 塔 基 大 城 鎮 無 法 企 及 的 寧 靜 與 祥 和 . ",
+        "ref": "6530fdd6f263c0af"
+    },
+    "Fallas Lake, KY.json|title": {
+        "value": "肯塔基州, 法拉斯湖",
+        "ref": "e33cc643faad4beb"
+    },
+    "GameSound.json|GameSound_VolumeControlTooltip": {
+        "value": "音量: %1%<br>主音量: %2 %3%",
+        "ref": "ea3f6297bc6b74cc"
+    },
+    "IG_UI.json|IGUI_Key_LCONTROL": {
+        "value": "左 Ctrl",
+        "ref": "038e9fa763cd18e3"
+    },
+    "IG_UI.json|IGUI_Key_RCONTROL": {
+        "value": "右 Ctrl",
+        "ref": "3211484901010510"
+    },
+    "IG_UI.json|IGUI_Key_SPACE": {
+        "value": "空白鍵",
+        "ref": "bfa4a6e0fe42ac28"
+    },
+    "IG_UI.json|IGUI_MP_DownloadedLargeFile": {
+        "value": "已接收 %1% / %2.",
+        "ref": "28aa7993b2a4b646"
+    },
+    "IG_UI.json|IGUI_MagazineTitle_Paws": {
+        "value": "爪子",
+        "ref": "fe36b56256427da0"
+    },
+    "IG_UI.json|IGUI_MagazineTitle_Sorbes": {
+        "value": "Sorbe's",
+        "ref": "a4e6a36b2328ae17"
+    },
+    "IG_UI.json|IGUI_MapOption_RemotePlayers": {
+        "value": "其他玩家",
+        "ref": "83ea30243a651cd0"
+    },
+    "IG_UI.json|IGUI_Moveables_BasementWallAdjacentToTheVoid": {
+        "value": "地下室牆壁無法移除.",
+        "ref": "598d97f3e96d0c9a"
+    },
+    "IG_UI.json|IGUI_Paws": {
+        "value": "爪印寵物用品連鎖",
+        "ref": "ed0b349f567c5e4c"
+    },
+    "IG_UI.json|IGUI_PetName_Fraidy": {
+        "value": "畏畏",
+        "ref": "11cc4cf29121f4d2"
+    },
+    "IG_UI.json|IGUI_PetName_MrCheese": {
+        "value": "起司先生",
+        "ref": "e90b4fdf829befe0"
+    },
+    "IG_UI.json|IGUI_PetName_Pauly": {
+        "value": "保利",
+        "ref": "a44809a4d64a5a06"
+    },
+    "IG_UI.json|IGUI_PlayerText_BookObsolete": {
+        "value": "嗯, 這本書的內容已經過時了.",
+        "ref": "b2a630bb28f8e638"
+    },
+    "IG_UI.json|IGUI_SnowGlobeOf": {
+        "value": "%1 (%2)",
+        "ref": "d8c996925b12e1fd"
+    },
+    "IG_UI.json|IGUI_Tutorial1_Shotgun3Joypad": {
+        "value": "<SIZE:medium> 它 們 過 來 了 ! <LINE> <LINE> <GHC> 當 僵 屍 周 圍 出 現 綠 色 輪 廓 時 是 最 好 的 開 槍 機 會 ! <RGB:1,1,1> <LINE> <LINE> <SIZE:large> 按 <JOYPAD:RTrigger, 28, 28> 瞄 準 , 按 <JOYPAD:RStick, 28, 28> 射 擊 ",
+        "ref": "b614f86c4e1966e0"
+    },
+    "IG_UI.json|IGUI_mouse_btn_0": {
+        "value": "左鍵",
+        "ref": "eb782f99d782b3a2"
+    },
+    "IG_UI.json|IGUI_mouse_btn_1": {
+        "value": "右鍵",
+        "ref": "40ac21042e22084e"
+    },
+    "IG_UI.json|IGUI_mouse_btn_2": {
+        "value": "滑鼠鍵 2",
+        "ref": "fc0037c5325fc24a"
+    },
+    "IG_UI.json|IGUI_mouse_btn_3": {
+        "value": "滑鼠鍵 3",
+        "ref": "57ea8c7a14e0a1ed"
+    },
+    "IG_UI.json|IGUI_mouse_btn_4": {
+        "value": "滑鼠鍵 4",
+        "ref": "6ea96e3f9d5b95a2"
+    },
+    "IG_UI.json|IGUI_mouse_btn_5": {
+        "value": "滑鼠鍵 5",
+        "ref": "2d3c06b57328fa01"
+    },
+    "IG_UI.json|IGUI_mouse_btn_6": {
+        "value": "滑鼠鍵 6",
+        "ref": "325d1f04bc34c158"
+    },
+    "IG_UI.json|IGUI_mouse_btn_7": {
+        "value": "滑鼠鍵 7",
+        "ref": "ff6178f23cd9b621"
+    },
+    "IG_UI.json|IGUI_mouse_btn_8": {
+        "value": "滑鼠鍵 8",
+        "ref": "1b768deef2c2daa9"
+    },
+    "Irvington, KY.json|description": {
+        "value": "<CENTRE> <SIZE:medium> 歐 文 頓 <LINE> <LINE><LEFT> <SIZE:small> 儘 管 外 表 樸 實 , 歐 文 頓 卻 是 速 度 的 代 名 詞 ! <LINE> <LINE> 歐 文 頓 賽 車 場 的 OSCC 賽 事 吸 引 世 界 各 地 的 車 迷 , 甚 至 傳 言 即 將 舉 辦 X 方 程 式 賽 . <LINE> <LINE> 非 賽 車 日 時 , 當 地 人 聚 集 在 巫 師 寶 庫 玩 遊 戲 , 到 紀 律 嚴 明 民 兵 店 購 槍 , 或 到 布 羅 特 牛 隻 牧 場 瀏 覽 最 新 牛 隻 . ",
+        "ref": "793264e175ecbfc6"
+    },
+    "ItemName.json|Base.Socks_Ankle_Black": {
+        "value": "短襪 (黑)",
+        "ref": "bfe5fbd225838a74"
+    },
+    "ItemName.json|Base.Socks_Ankle_White": {
+        "value": "短襪 (白)",
+        "ref": "bfe5fbd225838a74"
+    },
+    "ItemName.json|Base.SwimTrunks_Blue": {
+        "value": "四角泳褲 (藍)",
+        "ref": "f8a82355a0f2dfe0"
+    },
+    "ItemName.json|Base.SwimTrunks_Green": {
+        "value": "四角泳褲 (綠)",
+        "ref": "f8a82355a0f2dfe0"
+    },
+    "ItemName.json|Base.SwimTrunks_Red": {
+        "value": "四角泳褲 (紅)",
+        "ref": "f8a82355a0f2dfe0"
+    },
+    "ItemName.json|Base.SwimTrunks_Yellow": {
+        "value": "四角泳褲 (黃)",
+        "ref": "f8a82355a0f2dfe0"
+    },
+    "March Ridge, KY.json|description": {
+        "value": "<CENTRE> <SIZE:medium> 三 月 嶺 <LINE> <LINE><LEFT> <SIZE:small> 立 正 ! 三 月 嶺 是 諾 克 斯 堡 眾 多 英 勇 士 兵 及 其 家 屬 的 駐 地 . <LINE> <LINE> 儘 管 佈 局 規 矩 , 進 出 管 制 嚴 格 , 三 月 嶺 仍 有 許 多 休 閒 娛 樂 選 擇 . <LINE> <LINE> 到 熱 門 影 片 店 租 你 最 愛 的 電 影 , 在 星 璃 戲 院 看 最 新 大 片 . <LINE> <LINE> 你 甚 至 可 以 參 觀 廢 棄 的 冷 戰 核 掩 體 , 並 慶 幸 世 界 末 日 從 未 真 正 發 生 ! ",
+        "ref": "ca6a27c7ea9f57e7"
+    },
+    "Moveables.json|Green_Fancy_Lamp": {
+        "value": "精緻檯燈",
+        "ref": "71b36cafdf99e86f"
+    },
+    "Print_Text.json|Print_Text_AmericanTire_info": {
+        "value": "我們用 17 磅橡膠, 鑄就速度! \\n\\n 我們基於牽引力的硫化技術, 讓駕駛充滿活力! \\n\\n 配備美國輪胎的汽車, 致命事故發生率降低 6%。 \\n\\n 東西海岸輪胎, 最好的輪胎! \\n\\n 標準型 - 45 美元, 重型 - 60 美元, 運動型 - 75 美元 \\n\\n基於 32 起事故樣本, 不包括行人死亡 \\n\\n 在路易斯維爾市惠靈頓高地公園以南, 我們門店出示此傳單, 可享買三贈一 (四胎僅付三胎錢). \\n\\n每位顧客限一組, 活動截止 1993 年 6 月 30 日",
+        "ref": "cab2660757de9196"
+    },
+    "Print_Text.json|Print_Text_CrossRoadsMall_info": {
+        "value": "尋找樂趣, 結交朋友…\\n… 還有購物! \\n\\n 買些美味小吃, 放鬆一下. \\n 瀏覽最新時裝. \\n 在星光影院看最新電影. \\n\\n 一樓 \\n01. 時尚佳人 \\n02. 騷姿時裝 \\n03. 茲裴便利店 \\n04. 時髦美髮服裝店 \\n05. 雨果毛絨玩具 \\n14. 玩具大家族 \\n15. 電子屋 \\n16. 釘螺五金店 \\n17. 示巴珠寶行 \\n18. 明星鞋品 \\n19. 潮流前線 \\n20. 卡莉禮品店 \\n21. 家居用品店 \\n22. 簡約書店 \\n23. 蘿菈莉萌服裝店 \\n24. 山核桃烘焙盒 \\n25. 薩米百貨 \\n26. 家庭時裝 \\n27. 紫龍珠寶 \\n28. 自在家居 \\n29. 運動時刻 \\n30. 再贈禮品店 \\n\\n 美食廣場 \\n06. 潘喬的墨西哥捲餅店 \\n07. 超棒炸魚薯條 \\n08. 我愛搖鍋 \\n09. 旋轉披薩 \\n10. 美食廣場座位區 \\n11. 攪拌反斗城 冰淇淋 \\n12. 超好吃連鎖餐廳 \\n13. 麥芬頓媽媽烘培 \\n31. 斯皮福餐廳 \\n\\n 二樓 \\n32. 十字路口酒吧 \\n33. 針線奇妙工坊 \\n34. 康擁藥業 \\n35. 五元店 \\n36. 海馬咖啡 \\n37. 優視眼鏡 \\n38. 棕櫚旅行社 \\n39. 卡頓與悉尼律師事務所 \\n40. 十字路口醫療中心 \\n41. 優雅二手店 \\n42. 創發紀美髮 \\n43. 薩米百貨 \\n\\n 所有人都在十字路口購物中心相聚, 路易斯維爾以南兩英里! \\n 肯塔基州, 路易斯維爾市, 熊營路 1110-24 號",
+        "ref": "521ba18d9bbf48c6"
+    },
+    "Print_Text.json|Print_Text_FourthofJulyCelebrationDixieMobilePark_info": {
+        "value": "我們要盛大慶祝美國獨立日!\\n\\n地點是馬爾德勞西北方的迪克西拖車公園!\\n歡迎所有居民, 親屬和勇敢的寵物參加!\\n\\n晚上 10 點煙火秀!\\n\\n免費啤酒和漢堡!\\n\\n還有自由!",
+        "ref": "bf62496fe2fbe5ac"
+    },
+    "Print_Text.json|Print_Text_PileoCrepeJobAdCrossRoadsMall_info": {
+        "value": "位於十字路口購物中心旁的門店招聘經理. 要求: 5 年工作的經驗. 薪資極具競爭力, 提供公司用車. \\n\\n 請將簡歷寄至以下地址, 或致電 555-3492. \\n\\n 肯塔基州, 路易斯維爾市, 熊營路 1125 號",
+        "ref": "d0bc52f906d2ad21"
+    },
+    "Print_Text.json|Print_Text_PremisesforLease863_info": {
+        "value": "臥室: 無, 浴室: 2 間, 面積: 635 平方英尺, 租金: 每月 1,000 美元 \\n\\n 位於西點市中心, 黃金地段, 寬敞辦公空間出租. \\n\\n 西點的所有便利設施都在步行範圍內. \\n\\n 肯定會被搶購一空 — 抓緊聯絡我們吧! \\n\\n 請致電 555-9029. \\n\\n 肯塔基州, 西點, 第三街 302 號",
+        "ref": "49caa951cc0e0f94"
+    },
+    "Print_Text.json|Print_Text_TacodelPancho_info": {
+        "value": "你好, 我叫潘喬! \\n\\n 墨西哥捲餅! 玉米煎餅! 鍋巴燴餅! \\n\\n 在潘喬的墨西哥捲餅店, 這些我們都有! \\n\\n 攜帶此傳單到山谷站十字路購物中心美食廣場旁門店, 任何墨西哥捲餅都可享受 8 折優惠! 還送免費鱷梨醬! \\n\\n 快來吧! \\n\\n 肯塔基州, 路易斯維爾市, 熊營路 1115 號",
+        "ref": "0b23f45ac73623c6"
+    },
+    "RadioData.json|RD_70cfbb0e-c7fa-420e-b075-15e074157b0c": {
+        "value": "[img=music] 它來我這兒了. 結束了. [img=music]",
+        "ref": "edc81d60209cb9dd"
+    },
+    "RadioData.json|RD_dd3dad82-61e1-4f75-a3b4-a797285196d4": {
+        "value": "[img=music] 它來我這兒了. 結束了. [img=music]",
+        "ref": "652f6a8caeb214a9"
+    },
+    "RadioData.json|RD_ee036a1d-ca53-42a6-b4d6-e0bdd7fcf4f9": {
+        "value": "[img=music] 它來我這兒了. 結束了. [img=music]",
+        "ref": "edc81d60209cb9dd"
+    },
+    "Recipes.json|OpenCannedFood": {
+        "value": "開啟錫罐食品",
+        "ref": "48aea60f30ef3a0c"
+    },
+    "Recorded_Media.json|RM_0037c9c9-1a79-48b7-8a85-050e6bc2bd68": {
+        "value": "還有我們的高鐵柵欄, 由三卷鐵絲製成…",
+        "ref": "093de2ca4f6b1885"
+    },
+    "Recorded_Media.json|RM_00410808-fc09-45e1-86fa-89a967ef954e": {
+        "value": "電流流動的速率以安培為單位量測.",
+        "ref": "2cf7980005fc4a84"
+    },
+    "Recorded_Media.json|RM_004e5978-9614-4d31-a25f-2b2b9a86d6e3": {
+        "value": "多數陶器物品需要黏土與水或沙.",
+        "ref": "3cfb931267a4134e"
+    },
+    "Recorded_Media.json|RM_00bffc23-328a-4d43-a889-c0c2ff87522d": {
+        "value": "整個太平洋地區.",
+        "ref": "fc436efcb4408392"
+    },
+    "Recorded_Media.json|RM_015375a7-3761-4721-95e0-2a9be69ea306": {
+        "value": "VHS: 居家焊接指南",
+        "ref": "cc7ec858dadff06e"
+    },
+    "Recorded_Media.json|RM_01841e8f-7789-444c-b349-7b993b76d8e1": {
+        "value": "歡迎來到我的工坊. 我是艾德蒙·喬森, 鐵匠.",
+        "ref": "11c6b5bea8c189ec"
+    },
+    "Recorded_Media.json|RM_01e39ae4-f2e9-4afb-9eb8-514cf3ad2b59": {
+        "value": "但我並不是一開始就懷抱宏大夢想.",
+        "ref": "3ce417a3bd45a26a"
+    },
+    "Recorded_Media.json|RM_02119190-b737-4422-9872-3804f027bfd9": {
+        "value": "跟著名專家維克多·達文波特一起學習陶器塑形與上釉.",
+        "ref": "52d98c1136a486b0"
+    },
+    "Recorded_Media.json|RM_033fe82c-c42a-462c-889c-a03048099525": {
+        "value": "...但深度割傷必須到醫院縫合.",
+        "ref": "f5ff10105653a411"
+    },
+    "Recorded_Media.json|RM_054b7530-8802-474f-9233-cedbef08c3a7": {
+        "value": "嗨, 我是蒂莉, 今天我要帶你特別導覽我的動物園!",
+        "ref": "2e59e647281b0e6a"
+    },
+    "Recorded_Media.json|RM_05902a3e-b7f4-4aa8-b20b-e5a400ef2a01": {
+        "value": "將牛奶噴灑在受影響的區域即可去除.",
+        "ref": "9a5e9436c43fa426"
+    },
+    "Recorded_Media.json|RM_05b5a407-e9c1-4beb-bde1-17a51c8c19da": {
+        "value": "我們最受歡迎的物品, 杆柵欄, 由三根杆子製成…",
+        "ref": "ab475597dcd1d901"
+    },
+    "Recorded_Media.json|RM_05d53e8d-ed73-4e3a-9f1c-cfff8e869617": {
+        "value": "VHS: 居家香草栽培",
+        "ref": "d5422daf8e6b5658"
+    },
+    "Recorded_Media.json|RM_05e3ca62-9b02-4ce8-8823-224fdf1fc290": {
+        "value": "...並準備好進階到更複雜的作物.",
+        "ref": "268109e5516f40df"
+    },
+    "Recorded_Media.json|RM_08a9c4ce-21b3-4bbc-b8a2-147009bcbfdb": {
+        "value": "羽衣甘藍不過是受過高等教育的高麗菜, 相當容易栽種.",
+        "ref": "3d9b9bcf44668fa6"
+    },
+    "Recorded_Media.json|RM_08cb8449-f431-4a9f-9c40-79471943c78a": {
+        "value": "它生長緩慢, 但收成驚豔! 嘻嘻.",
+        "ref": "9f61eade5d079db8"
+    },
+    "Recorded_Media.json|RM_09749620-37a0-4523-ad3d-aebded695560": {
+        "value": "雨後的清晨是從土裡抓蚯蚓最簡單的時刻...",
+        "ref": "adc30d012043e9ff"
+    },
+    "Recorded_Media.json|RM_0a27bc3b-3d93-49d1-bdb2-aa03832e8a51": {
+        "value": "差不多就這樣. 你很快就能擁有一些健康的香草...",
+        "ref": "42d9c6f4f8983c8c"
+    },
+    "Recorded_Media.json|RM_0b56335c-3d8e-45fe-92ed-705c38036e19": {
+        "value": "[img=music] 嘿夥伴, 你找對地方了. 你想更快釣到牠們... [img=music]",
+        "ref": "533ad371fa7428b8"
+    },
+    "Recorded_Media.json|RM_0cccedd8-ff3a-4caa-a161-365e86532010": {
+        "value": "牠一定有四十磅重!",
+        "ref": "70f134581d8d385f"
+    },
+    "Recorded_Media.json|RM_0e7667be-58e0-40b7-ba88-a1cab9b4b6ef": {
+        "value": "希望這些基礎知識能幫助你展開電學之旅.",
+        "ref": "16e84e9300f809a8"
+    },
+    "Recorded_Media.json|RM_10170863-f0a8-489a-a1f3-1c93ea61b901": {
+        "value": "永遠忠誠!",
+        "ref": "2e3efd2b7641426d"
+    },
+    "Recorded_Media.json|RM_115f878d-01dc-40ce-84bc-0652e41c277d": {
+        "value": "古埃及人用燧石打造手鐲與臂環...",
+        "ref": "2b4c4cee15b982fc"
+    },
+    "Recorded_Media.json|RM_12cf811e-c2be-4820-b97e-2752ad301fe4": {
+        "value": "...再加上廢金屬與兩根金屬管.",
+        "ref": "f6b55de8bc4c40df"
+    },
+    "Recorded_Media.json|RM_133698cc-5098-4c82-8b36-5ddc90ffcc33": {
+        "value": "祝你種植愉快!",
+        "ref": "b3eb99a252c9ee12"
+    },
+    "Recorded_Media.json|RM_13679e7c-fe08-4fa1-9475-d66c932e48d3": {
+        "value": "...就連新手廚師也能學會.",
+        "ref": "a375b10507e97c5d"
+    },
+    "Recorded_Media.json|RM_14fbb453-6cde-4054-9c69-199bb3f9a432": {
+        "value": "...還很美味!",
+        "ref": "b8b5c9f15a3d0a98"
+    },
+    "Recorded_Media.json|RM_154bbd14-76fb-4a4b-b01c-856f436e1e18": {
+        "value": "哇嗚! 那是一條梭魚!",
+        "ref": "97631e6980d5e61c"
+    },
+    "Recorded_Media.json|RM_15a42c26-38b9-48e5-b97b-1338243c9e33": {
+        "value": "第三件事: 魚餌. 盡量使用假餌...",
+        "ref": "603567d7e3f93408"
+    },
+    "Recorded_Media.json|RM_1677d450-d555-4e54-aaa6-6d3fd927699e": {
+        "value": "這涵蓋了你或親人可能遭受的所有重大傷害.",
+        "ref": "a24cba028becfcad"
+    },
+    "Recorded_Media.json|RM_1741159e-9e04-4ab6-80bf-eeb83dde653e": {
+        "value": "居家陶藝",
+        "ref": "529663f8338d9b2d"
+    },
+    "Recorded_Media.json|RM_179a21a8-118a-4afa-aed7-a17319f61763": {
+        "value": "金屬碎片或玻璃彈片的處理步驟類似.",
+        "ref": "b97b0bdbb51d134b"
+    },
+    "Recorded_Media.json|RM_18ae6490-0320-4169-9671-fdc94bc8b9a2": {
+        "value": "再來點沾醬油的酥炸蝦如何?",
+        "ref": "0b273c3694acbdd8"
+    },
+    "Recorded_Media.json|RM_199fc9cf-b9e7-451b-99d1-ac48342705a3": {
+        "value": "你已盡到本分, 剩下的交給專業人員.",
+        "ref": "4970c401cc90bd3b"
+    },
+    "Recorded_Media.json|RM_1ae83b2e-e77c-4129-aa2f-c87057de4f3d": {
+        "value": "加入我一起參觀我們的工廠, 解開你所有疑惑!",
+        "ref": "9c8244f15a8a1aff"
+    },
+    "Recorded_Media.json|RM_1d456672-d367-4ef4-a9d3-a116c13ce1cc": {
+        "value": "多數香草可由種子栽培, 但如果可能, 從插枝育苗最好.",
+        "ref": "debc972207a9750c"
+    },
+    "Recorded_Media.json|RM_1d91fbe0-92dd-4824-b9a3-883c66421679": {
+        "value": "長大的公動物之間會打架, 所以我們把牠們分開.",
+        "ref": "09c11797ff697cf9"
+    },
+    "Recorded_Media.json|RM_1db1000c-eb71-41f9-bbf8-ac171b1b5bc9": {
+        "value": "瘀青是內出血的徵兆, 嚴重時應送醫.",
+        "ref": "4bf75046b2ce5b4f"
+    },
+    "Recorded_Media.json|RM_1dd77dab-c3de-4984-833f-dfffbdede5e0": {
+        "value": "...到金門大橋!",
+        "ref": "ae1dfdb378d9185c"
+    },
+    "Recorded_Media.json|RM_1edae24e-86e8-49b0-beeb-8096d879a3f3": {
+        "value": "艾德弗佩圍欄是維吉尼亞州最大的金屬圍欄供應商. 在這支限量版影片中, 首席焊工馬克·斯泰爾帶你深入幕後, 揭曉焊接與金屬建構的祕訣.",
+        "ref": "ce7ac35c740b02d5"
+    },
+    "Recorded_Media.json|RM_1f7481dc-0c05-4335-8e5f-d0aa7d36d107": {
+        "value": "人人可做的陶藝",
+        "ref": "765e9a23f0f3fecf"
+    },
+    "Recorded_Media.json|RM_20a89632-4bc5-4adb-842c-43f189c6eb24": {
+        "value": "大家好, 我是 JG 那瓦爾, 來自肯塔基州路易斯維爾的救護人員.",
+        "ref": "7f9a233a66eca1dc"
+    },
+    "Recorded_Media.json|RM_20aae55b-f938-41d8-b818-3e07b9bd4406": {
+        "value": "我們在波斯灣失去了一些好弟兄...",
+        "ref": "d113f54de870850e"
+    },
+    "Recorded_Media.json|RM_2117ec13-dc90-4775-92fd-83170026f14d": {
+        "value": "又一瓶下肚.",
+        "ref": "9bac5f177f5a99d4"
+    },
+    "Recorded_Media.json|RM_2190cadf-8cd6-498e-9ce2-69b3ecf96bc3": {
+        "value": "所有陶器的基本原料就是黏土加沙或水.",
+        "ref": "83e48255a883b778"
+    },
+    "Recorded_Media.json|RM_21dc2f27-3700-4d7d-a8ea-ce44246e9b87": {
+        "value": "燒傷需要很長時間才能癒合, 敷料必須保持...",
+        "ref": "46c9d16360d928a3"
+    },
+    "Recorded_Media.json|RM_225f4cb5-a5d6-4889-adac-4f20f0d9720e": {
+        "value": "現在給你多一些小提示. 嘻嘻.",
+        "ref": "77284f2bbaba4efb"
+    },
+    "Recorded_Media.json|RM_22efa6ac-6819-4be9-8833-c9f5446bb78f": {
+        "value": "謝天謝地, 小梅現在幾乎能自己照顧自己了, 對吧親愛的?",
+        "ref": "3c38b6d32b3a8a5d"
+    },
+    "Recorded_Media.json|RM_24b99cdd-818f-4929-9388-bab986111587": {
+        "value": "...但我來這裡要為你示範這道日本經典料理...",
+        "ref": "941d66809c4663d5"
+    },
+    "Recorded_Media.json|RM_25edb20c-e8f3-4a35-befa-fc85e3067c30": {
+        "value": "這就是所有焊接的基本原理, 從你客廳的層架...",
+        "ref": "0d346e20568f0cc0"
+    },
+    "Recorded_Media.json|RM_272a4d5b-8827-46c0-9619-ea93bab41467": {
+        "value": "...箭鏃或矛頭.",
+        "ref": "75db2a8dd14f1e12"
+    },
+    "Recorded_Media.json|RM_280adaad-29a0-444a-a1f2-ff90ff0d1e73": {
+        "value": "嗨. 我是艾略特·山姆森, 驕傲的持槍者.",
+        "ref": "4242a90342c9a969"
+    },
+    "Recorded_Media.json|RM_282d5377-28cc-42d9-9592-6494ba169071": {
+        "value": "現在我們來聊聊稍微複雜或比較奇特的作物.",
+        "ref": "202569741e8a3a3e"
+    },
+    "Recorded_Media.json|RM_28c04674-f2dc-4641-962b-f39121848613": {
+        "value": "...三根管子加上四塊廢金屬就能讓陽光透進來...",
+        "ref": "6fb4257fd43c897d"
+    },
+    "Recorded_Media.json|RM_290f9a34-c007-4f0b-b8d4-c440b5671b2d": {
+        "value": "嗨, 我是艾德·威利斯, 連續三年獲選南伊利諾年度最佳電工.",
+        "ref": "f56ab5defa98ed95"
+    },
+    "Recorded_Media.json|RM_2cfa6574-608f-4606-aec5-067ce8289e4d": {
+        "value": "馬鈴薯通常用種薯栽種, 而高麗菜則用種子.",
+        "ref": "3dc720bb004c9c7c"
+    },
+    "Recorded_Media.json|RM_2d3be6e2-71d5-49be-ac19-53f9c9afce21": {
+        "value": "想開始焊接卻不知從何下手? 這支實用的影片指南將教你成為高手所需的所有基礎.",
+        "ref": "4e067d3497e59da8"
+    },
+    "Recorded_Media.json|RM_2fdc747c-0e9c-49a4-ab6f-a0e7708220d8": {
+        "value": "都被捲入戰火. 我們的人民…",
+        "ref": "f1bec6f6a31e314c"
+    },
+    "Recorded_Media.json|RM_306243ad-ba3e-48ff-ac89-e88f30f88f2f": {
+        "value": "對付討厭的作物病蟲害",
+        "ref": "d27e1aa524c9a3cb"
+    },
+    "Recorded_Media.json|RM_31090446-4387-42ea-87bd-bf4ea52b979c": {
+        "value": "嚴重傷口必須由醫師處理. 切勿自行手術!",
+        "ref": "315b4b0f77b277b2"
+    },
+    "Recorded_Media.json|RM_317e2283-fdee-4a76-9164-97801721d29b": {
+        "value": "諾克斯持槍俱樂部槍械指南",
+        "ref": "bb5937f2851a36a9"
+    },
+    "Recorded_Media.json|RM_31afbd65-ce98-481f-be60-4b25d75711b6": {
+        "value": "白粉病是一種因濕氣與溫暖而長在葉片上的白色黴菌.",
+        "ref": "63fd0a6663754aab"
+    },
+    "Recorded_Media.json|RM_3269f70f-0eee-4c35-8b93-25e6f81ba3bc": {
+        "value": "盡快收線, 但不要把線拉到快斷的程度...",
+        "ref": "4160614f4b0197f9"
+    },
+    "Recorded_Media.json|RM_32996011-3abf-4f95-ae32-2d66752e73fa": {
+        "value": "VHS: 對付討厭的作物病蟲害",
+        "ref": "fd23d3e68348c37f"
+    },
+    "Recorded_Media.json|RM_3728cf18-1884-45a1-8e90-9766ff802496": {
+        "value": "約翰, 我要去餵豬啦!",
+        "ref": "ffb286ba8525d5b0"
+    },
+    "Recorded_Media.json|RM_3803df9e-dd55-4f1c-b069-36fbb52211c5": {
+        "value": "菸草! 把香菸加進園藝噴霧器, 噴在植物上.",
+        "ref": "67641928055d801e"
+    },
+    "Recorded_Media.json|RM_38ca7a9c-7f36-4152-9734-36e1d871fc42": {
+        "value": "今天收到六顆蛋. 漢娜, 把煎鍋熱起來!",
+        "ref": "9a0eea9d8166f200"
+    },
+    "Recorded_Media.json|RM_39a66905-1a09-4508-891a-4e1d9a6fc6e8": {
+        "value": "...確保電路不會燒毀. ",
+        "ref": "46fe23a3d1afe557"
+    },
+    "Recorded_Media.json|RM_39c9b680-713e-4344-910d-02de07b75a8f": {
+        "value": "嗨, 我是傑拉德·格蘭特. 我在路易斯維爾當裁縫將近二十年.",
+        "ref": "398116aa75f4dc37"
+    },
+    "Recorded_Media.json|RM_3c9d7c8a-fa22-459a-ace8-78c75de45685": {
+        "value": "...現在就撥打螢幕上的號碼.",
+        "ref": "cb5f6921190f5856"
+    },
+    "Recorded_Media.json|RM_3d22bdae-8e78-42c9-ad15-1ef7d21d3a03": {
+        "value": "不禁讓人疑惑, 我們現代的工具有多少能撐那麼久.",
+        "ref": "cbc2fabbe6480d41"
+    },
+    "Recorded_Media.json|RM_3d4fd837-76be-4876-9190-f5131b62c6c0": {
+        "value": "對日本以外的人來說, 壽司經常被誤解...",
+        "ref": "b856d4dca9029f5d"
+    },
+    "Recorded_Media.json|RM_3df58c91-79c1-4aa2-861c-6a6d8b4e9ee5": {
+        "value": "B - Breathing 呼吸. 患者還有呼吸嗎? 若沒有, 你必須進行 CPR.",
+        "ref": "14f7c82c8fcda619"
+    },
+    "Recorded_Media.json|RM_3e1a6564-9d4b-43c2-8691-5e5e29f435ed": {
+        "value": "再見啤酒罐.",
+        "ref": "8cd510830e05ee53"
+    },
+    "Recorded_Media.json|RM_3efc2620-0499-45fe-b0f2-0fe987cbfc6d": {
+        "value": "飯糰的材料和壽司卷一樣... ",
+        "ref": "a3a9dffbc66d8463"
+    },
+    "Recorded_Media.json|RM_419de859-4db5-4579-8091-9f94a3daa846": {
+        "value": "它們都喜歡陽光充足, 排水良好的土壤.",
+        "ref": "3d5cbff8012dbee0"
+    },
+    "Recorded_Media.json|RM_434c4484-67e4-4943-8c0e-5fbf101b2349": {
+        "value": "...到更精密的物品如黏土磚或磁磚.",
+        "ref": "e3675c0c29da2405"
+    },
+    "Recorded_Media.json|RM_43c67679-9842-43c0-b3eb-2d549e4e58c5": {
+        "value": "...然後小間距地推拉針線穿過.",
+        "ref": "0d78e3bf4f4834e3"
+    },
+    "Recorded_Media.json|RM_4530ea49-791f-4f0a-870e-fc14f8f55a3b": {
+        "value": "上釉是讓基本陶器變成精緻工藝品的重要步驟.",
+        "ref": "9f42fba4b546869f"
+    },
+    "Recorded_Media.json|RM_45d49683-e756-445a-8908-9c78deb23218": {
+        "value": "艾德弗佩圍欄特輯",
+        "ref": "ae70643444fac9c1"
+    },
+    "Recorded_Media.json|RM_45fa0c4b-ea3b-4bdc-9188-0a1521270f34": {
+        "value": "我們最熱賣的柱式圍欄由三根柱子製成...",
+        "ref": "ab475597dcd1d901"
+    },
+    "Recorded_Media.json|RM_469fb867-d417-4c7e-a4ae-7eb6e7022781": {
+        "value": "我很快會推出另一支影片專門討論那些內容...",
+        "ref": "ec6b59979904541d"
+    },
+    "Recorded_Media.json|RM_48913287-be32-4b87-8f4d-0f056bdc37d8": {
+        "value": "哈囉. 你可能想知道艾德弗佩圍欄的我們是如何...",
+        "ref": "d1f0bdc545d6b579"
+    },
+    "Recorded_Media.json|RM_492ac10c-9567-44d0-976b-1062fa0e6187": {
+        "value": "\"我們應該大膽地研究每一種動物而不心生厭惡…",
+        "ref": "53f5a529d23c09e3"
+    },
+    "Recorded_Media.json|RM_4a7dd8fc-5993-4cfa-b9d8-9661e8cb2757": {
+        "value": "協助任何傷患的最佳方式是撥打 911, 但你可能需要在救護人員到達前先行急救.",
+        "ref": "e1e8fb6040c2d5d1"
+    },
+    "Recorded_Media.json|RM_4adc559b-4265-496d-b3dc-83f84d2cc3a1": {
+        "value": "VHS: 與傑森·馬斯特一起釣更多魚",
+        "ref": "f0419c8f8fe6a48d"
+    },
+    "Recorded_Media.json|RM_4c2174ac-9c99-48ce-a34b-c125898a92b7": {
+        "value": "雅娜·海爾森指導陶藝新手將近四十年. 現在讓她引領你進入捏塑黏土與製作陶罐的藝術. 你唯一需要的就是 - 黏土!",
+        "ref": "d577b3bf79d7bf0d"
+    },
+    "Recorded_Media.json|RM_4e4b41ab-a2af-43b7-a4d9-aebf2b45aecb": {
+        "value": "首先是一根好的釣竿.",
+        "ref": "401abb2cfcab37b6"
+    },
+    "Recorded_Media.json|RM_4e9f2ce0-a46d-4b5b-8426-bdb01048ec35": {
+        "value": "我們的基本金屬圍欄由一根金屬管製成...",
+        "ref": "7d947ee2a428eb11"
+    },
+    "Recorded_Media.json|RM_4ef1d32e-3cdc-4be0-adbf-9ede74609c32": {
+        "value": "艾曼紐·J·雷西將為你示範一些處理常見蔬果病蟲害的居家良方. 不論你是緊張的業餘新手還是熟練的農耕專家, 都一定能學到東西!",
+        "ref": "917a346caa843bbd"
+    },
+    "Recorded_Media.json|RM_514852c0-0288-4679-8e80-6042e1b71302": {
+        "value": "番薯很能抵抗乾旱.",
+        "ref": "bde1ed2e7828d949"
+    },
+    "Recorded_Media.json|RM_55f590dd-a5ab-4319-99e7-f8a6a4c502a7": {
+        "value": "較大的破洞需要額外布料縫補, 但原理相同.",
+        "ref": "e6004938271b1c92"
+    },
+    "Recorded_Media.json|RM_57e39b9c-b6d8-4e6f-b8b4-2d0678d5921f": {
+        "value": "如果你遵循我的小技巧, 很快就會有魚上鉤!",
+        "ref": "c1133e448daf711d"
+    },
+    "Recorded_Media.json|RM_5a7e8b31-e72a-4594-bbf7-5f52e48dcab8": {
+        "value": "對準瞄具, 吐氣...",
+        "ref": "e8359364b6622de2"
+    },
+    "Recorded_Media.json|RM_5ab74162-939b-47a3-b9ca-41f08ae53a3c": {
+        "value": "電是一種強大的自然力量, 由帶負電的粒子 - 電子 - 的流動構成,",
+        "ref": "eb5365740ca9ca36"
+    },
+    "Recorded_Media.json|RM_5ad26d63-3f7c-4bbf-a65d-18ed429f2c8e": {
+        "value": "焊接簡單說就是用熱把兩塊金屬接合在一起.",
+        "ref": "c584e85cbda24395"
+    },
+    "Recorded_Media.json|RM_5b57f3b8-aa45-457b-b352-b8412ad427fd": {
+        "value": "...並應隨身備有抗生素以防感染.",
+        "ref": "d5db61201630a648"
+    },
+    "Recorded_Media.json|RM_5ba22ebd-e740-4f14-93a3-920de214b2d6": {
+        "value": "但要擁有槍, 你得知道怎麼使用它.",
+        "ref": "2622dd71d779fae5"
+    },
+    "Recorded_Media.json|RM_5cbf01e3-e99f-46f0-8daf-f56c091e077a": {
+        "value": "...若已感染, 則消毒, 縫合並包紮.",
+        "ref": "2df8af002297db97"
+    },
+    "Recorded_Media.json|RM_5ce3eb48-4fb0-4b26-b10f-eb929a5b7c58": {
+        "value": "嗨, 我是艾曼紐·J·雷西, 這是我的花園.",
+        "ref": "612dffbfc591433e"
+    },
+    "Recorded_Media.json|RM_5d14e8c6-5801-4daf-b22b-3e6793598e8a": {
+        "value": "在地主廚雪子·朝倉將教你烹調一些美味的日本傳統料理. 適合所有廚藝程度!",
+        "ref": "fa0c3fa2353ad595"
+    },
+    "Recorded_Media.json|RM_5d21b65f-db1c-4616-b465-6dd73d2a71fa": {
+        "value": "這樣就能把牠們薰出來. 嘻嘻.",
+        "ref": "508bbdc106f76ff8"
+    },
+    "Recorded_Media.json|RM_5d6e7512-d8ec-4c97-beeb-d16944976eba": {
+        "value": "VHS: 艾德弗佩圍欄特輯",
+        "ref": "257debcf8460a76e"
+    },
+    "Recorded_Media.json|RM_5dd9e3ed-964c-4bda-ba1b-da77c2b9c4fd": {
+        "value": "我們熟練的焊工能把這些簡單材料變成特別的東西.",
+        "ref": "d9020490e3777c8f"
+    },
+    "Recorded_Media.json|RM_5de52a43-19b4-4b62-8c7c-550906983a16": {
+        "value": "在金屬加工出現之前的數十萬年, 人類以石頭塑形製作工具, 武器與建築. 珍·奈特利博士帶你探索被遺忘的古老打石藝術.",
+        "ref": "c4d4bd63661b1e26"
+    },
+    "Recorded_Media.json|RM_5e6a0122-1759-4d6a-a9a3-6dfb70d3ef19": {
+        "value": "...然後把它捲成圓筒狀再切片.",
+        "ref": "98dc6e466efd0135"
+    },
+    "Recorded_Media.json|RM_5ef4af17-de3f-412b-b19e-18bf1e016849": {
+        "value": "骨折可以用夾板協助癒合.",
+        "ref": "c2b91d4eb8018d16"
+    },
+    "Recorded_Media.json|RM_5f51986b-a4e7-41fe-a3c7-81ea43ddc021": {
+        "value": "但別擔心! 以下是幾個你可以用來處理常見問題的居家良方.",
+        "ref": "61a9317756d8366d"
+    },
+    "Recorded_Media.json|RM_5f6e68b2-6667-4d56-a7b4-f3c04884ffc4": {
+        "value": "接著傷口必須用縫合針與線縫合.",
+        "ref": "74d8c3c53fed4c16"
+    },
+    "Recorded_Media.json|RM_620a3d47-6f41-46bd-b703-7ce88678af93": {
+        "value": "那邊也有好吃的.",
+        "ref": "d6307ac1daa32f35"
+    },
+    "Recorded_Media.json|RM_6280e1a7-8f99-4027-b906-9d5525278eaf": {
+        "value": "你的衣服一破洞就丟掉嗎? 這支 VHS 將示範縫紉與補綴的基礎, 讓你能穿你最愛的衣服更久.",
+        "ref": "2e6b0670dad650dc"
+    },
+    "Recorded_Media.json|RM_63191bf0-7d9e-4391-af5a-c48f619d3edd": {
+        "value": "從礦石到商店",
+        "ref": "855b35f054c02430"
+    },
+    "Recorded_Media.json|RM_63812feb-d3af-475c-9e6f-8e295f27de4c": {
+        "value": "...非常乾淨並盡可能時常更換.",
+        "ref": "ff06721b460f81a0"
+    },
+    "Recorded_Media.json|RM_66142a5a-860a-4e5c-b6f7-c78877e67863": {
+        "value": "消毒劑, 或緊急時用酒精, 能阻止感染發生.",
+        "ref": "2d878dc48849670c"
+    },
+    "Recorded_Media.json|RM_674825a0-fa1c-4eee-8d7a-f468c0e585de": {
+        "value": "A - Airway 呼吸道. 呼吸道暢通嗎? 若不通, 把頭部向上抬起.",
+        "ref": "b0a6f4c0db151ba5"
+    },
+    "Recorded_Media.json|RM_68a9da56-a5e6-4c65-b05d-bbc10de94b8a": {
+        "value": "[img=music] 試試這支專家傑森·馬斯特的精彩影片. [img=music]",
+        "ref": "30bde69bc5b381cf"
+    },
+    "Recorded_Media.json|RM_68da4b4a-3757-47f4-87af-0264b9514e93": {
+        "value": "其中一些物品已存在長達兩百萬年.",
+        "ref": "28f71f1521f402d1"
+    },
+    "Recorded_Media.json|RM_68e705de-edd5-42a1-baaf-c7dd8a37355f": {
+        "value": "VHS: 居家種植蔬果 1",
+        "ref": "079b6480c03f9c97"
+    },
+    "Recorded_Media.json|RM_69809ace-98f9-40b0-b7a9-14b903b0c92e": {
+        "value": "艾曼紐·J·雷西再次回歸, 教你如何種植更多食物, 包括玉米, 羽衣甘藍與番薯.",
+        "ref": "3d8eee99bf5d8953"
+    },
+    "Recorded_Media.json|RM_6ae82413-3b91-45e7-99ea-55de7255c263": {
+        "value": "嗨, 我是艾曼紐·J·雷西, 這是我的花園.",
+        "ref": "612dffbfc591433e"
+    },
+    "Recorded_Media.json|RM_6bb436c1-739b-4443-b6d3-3c892950c704": {
+        "value": "...一旦發生, 必須立即撥打 911.",
+        "ref": "b138fa027e297083"
+    },
+    "Recorded_Media.json|RM_6c66eebe-487e-44ed-a3c0-7e443d6b2715": {
+        "value": "你夏天不需要那些羊毛了, 諾曼. 讓我幫你.",
+        "ref": "4060aef2cc1ed900"
+    },
+    "Recorded_Media.json|RM_6e8c1320-73bf-440d-85e5-d529be2ed4a3": {
+        "value": "花朵, 作物與樹木都賞心悅目, 與自然完美平衡.",
+        "ref": "337117c692345869"
+    },
+    "Recorded_Media.json|RM_718c7182-58c1-438e-b025-c573d1633b1d": {
+        "value": "嗨. 我是伊凡·菲利普·基頓, 海軍衛勤士長. 我是派駐陸戰隊的綠方醫務兵.",
+        "ref": "43137f78a7bfecaa"
+    },
+    "Recorded_Media.json|RM_72dca849-1d5a-482e-bb11-da609e4e8041": {
+        "value": "嗨, 我是艾曼紐·J·雷西, 這是我的花園.",
+        "ref": "612dffbfc591433e"
+    },
+    "Recorded_Media.json|RM_739794ce-df75-4a08-8c64-7e6e4e0b5eaa": {
+        "value": "現在你把它放進窯裡燒, 陶器就會更堅固, 而且防水.",
+        "ref": "85200a90bcf75966"
+    },
+    "Recorded_Media.json|RM_75de44e9-f33e-4e61-ae0d-ebdc98da3cdf": {
+        "value": "照這些步驟做, 你的弟兄就能活著再戰一天.",
+        "ref": "9789f5641501d07f"
+    },
+    "Recorded_Media.json|RM_78738761-540f-426c-a6fb-0920650dcf49": {
+        "value": "...直到焊條熔化並把它們接合.",
+        "ref": "a767597338bbd569"
+    },
+    "Recorded_Media.json|RM_7a261f68-d9de-4795-8c05-1a45315a3c4e": {
+        "value": "現在, 你能享受宛如置身東京的盛宴.",
+        "ref": "e2c959a7cbf14677"
+    },
+    "Recorded_Media.json|RM_7a5fc6d3-42e0-4c67-abab-aace9542647e": {
+        "value": "最後是樸實的高麗菜卷.",
+        "ref": "fa34d69766b7b14d"
+    },
+    "Recorded_Media.json|RM_7ae0159e-b0d8-44d7-a9de-736c381395ca": {
+        "value": "大家都知道玉米長得有多高, 所以你需要一大塊地.",
+        "ref": "f934eeadaaf00168"
+    },
+    "Recorded_Media.json|RM_7bbe8d80-92ff-4f2e-8a90-f04e1654d519": {
+        "value": "在受影響的地區附近放一個裝了一點啤酒的容器.",
+        "ref": "2f6abbc84098bde6"
+    },
+    "Recorded_Media.json|RM_7cad8717-e8dc-4946-b9fd-a0f8810282f8": {
+        "value": "今天我們要帶你認識一些常見的戰鬥傷口.",
+        "ref": "06e3cfac7a179e47"
+    },
+    "Recorded_Media.json|RM_7de4d59a-61e8-485e-ac8f-cebeda522f8e": {
+        "value": "嗯嗯, 好吃.",
+        "ref": "917b2e5d36f70985"
+    },
+    "Recorded_Media.json|RM_7eb41a5a-039f-47cc-b820-803e004cf4ab": {
+        "value": "...一小片金屬板, 與三塊廢金屬.",
+        "ref": "865f9493904028a6"
+    },
+    "Recorded_Media.json|RM_7eeae353-2f6b-4eba-9261-625ed565a6e9": {
+        "value": "若外傷出血嚴重, 對傷口施壓. ",
+        "ref": "063a2451899df512"
+    },
+    "Recorded_Media.json|RM_8048dd7b-7cd0-4a1d-80e1-18eb00a2b4ea": {
+        "value": "最好從簡單的碗或馬克杯開始, 再進階...",
+        "ref": "78fd8d0ad10ecf2e"
+    },
+    "Recorded_Media.json|RM_820d91c8-1546-492a-a74c-34a21166b59e": {
+        "value": "壽司卷是把海苔, 或美國常見的酪梨加進去捲起來...",
+        "ref": "569420ca9e27c749"
+    },
+    "Recorded_Media.json|RM_8376ee3b-b86c-4f6e-9864-368a15d4e0b9": {
+        "value": "透過這支來自諾克斯持槍俱樂部的實用教學影片, 熟練地行使你的第二修正案權利.",
+        "ref": "e4c14709a455f59d"
+    },
+    "Recorded_Media.json|RM_83f5116b-2884-4bba-a5b3-c366bed38e8b": {
+        "value": "小梅是我們的小鹿. 我們在森林裡發現她的.",
+        "ref": "ee5126b487996609"
+    },
+    "Recorded_Media.json|RM_841218a8-84db-4abf-99a1-aaccc55fc145": {
+        "value": "把玉米種在不希望被遮陰的地方遠處.",
+        "ref": "d27f16f1e949cb63"
+    },
+    "Recorded_Media.json|RM_852a6c19-9f8a-4f84-a57d-48cb03993d19": {
+        "value": "與傑森·馬斯特一起釣更多魚",
+        "ref": "5c91abe591ff6ffc"
+    },
+    "Recorded_Media.json|RM_87004378-ed1c-4252-a87f-37a32ff581dd": {
+        "value": "熔爐有很多種, 但它們都用來熔化金屬, 通常以木炭為燃料...",
+        "ref": "7ca84d225ce1de47"
+    },
+    "Recorded_Media.json|RM_882a0767-b5a9-4767-a7b1-7232c668a87f": {
+        "value": "接著你就能嘗試種蘿蔔, 胡蘿蔔, 洋蔥與青花菜...",
+        "ref": "2fb050e4c093e463"
+    },
+    "Recorded_Media.json|RM_88a98a51-34b0-4dcf-a75a-4fed3b6a0f24": {
+        "value": "VHS: 電是怎麼運作的",
+        "ref": "410d75551bed8089"
+    },
+    "Recorded_Media.json|RM_890581ca-0196-4cce-89c0-47d83317bc28": {
+        "value": "哎呀, 我的手臂該休息了. 祝你釣魚愉快!",
+        "ref": "2b339ddbf824665a"
+    },
+    "Recorded_Media.json|RM_89d97cfa-e0de-4f59-9856-c6800fbfc33e": {
+        "value": "看吧? 很簡單.",
+        "ref": "3e4a610a97741972"
+    },
+    "Recorded_Media.json|RM_8aa2ce62-e48e-42d2-b63a-60437aaa7d82": {
+        "value": "在救護員 JG 那瓦爾的協助下, 學習在醫療緊急狀況時該做什麼.",
+        "ref": "2ca384913cd5f0dd"
+    },
+    "Recorded_Media.json|RM_8cbe45ba-3b9c-4481-ba6c-2ed1f16c9066": {
+        "value": "然後把線拋出去. 等待. 再等...",
+        "ref": "b02faa78b01f6be2"
+    },
+    "Recorded_Media.json|RM_8cec4b46-86cb-4705-9e6e-a75f872ffcb4": {
+        "value": "嗨, 我是艾曼紐·J·雷西, 這是我的花園.",
+        "ref": "612dffbfc591433e"
+    },
+    "Recorded_Media.json|RM_8e025dea-e034-49bd-8f69-d1706e6ed149": {
+        "value": "居家焊接指南",
+        "ref": "22604a71b1f94954"
+    },
+    "Recorded_Media.json|RM_8e2aef63-eeac-4aab-a398-3bcb12f05ea9": {
+        "value": "蛞蝓會把你的青菜啃到見骨. 別讓這種事發生!",
+        "ref": "12c0388908a228c2"
+    },
+    "Recorded_Media.json|RM_8e7598e4-125d-414c-9ecf-6bba966232d8": {
+        "value": "...打造我們堅固穩定的金屬圍欄.",
+        "ref": "f1961341feafd9a9"
+    },
+    "Recorded_Media.json|RM_8eaa1dc5-1816-4d98-a685-625954f52229": {
+        "value": "別擔心如果你的作品塌了, 或是黏土太稀或太濃.",
+        "ref": "08c25e8831e85ccb"
+    },
+    "Recorded_Media.json|RM_90f19fa4-8124-4487-b30a-eac91fb84412": {
+        "value": "像這樣重新裝填彈匣.",
+        "ref": "f480c9c8d02c4800"
+    },
+    "Recorded_Media.json|RM_91283d09-ed61-4f25-9fc0-ed6db7727d08": {
+        "value": "止痛藥能幫助控制疼痛...",
+        "ref": "28e0c4a4fbbeb135"
+    },
+    "Recorded_Media.json|RM_91604c9f-0474-47ca-abf6-725ce729a816": {
+        "value": "總有一天你的作物會被蒼蠅攻擊, 但解法很簡單.",
+        "ref": "8e008de846d460b3"
+    },
+    "Recorded_Media.json|RM_91fef801-c2d4-44a7-8d45-45b701176d02": {
+        "value": "開始時, 你只需要一張陶藝工作台或轆轤, 以及一些黏土.",
+        "ref": "6830f00634fb9203"
+    },
+    "Recorded_Media.json|RM_92a51307-5810-4cbb-8506-347e935f504d": {
+        "value": "電壓是兩個帶電點之間的電位差.",
+        "ref": "d7fd6e24842c85a2"
+    },
+    "Recorded_Media.json|RM_93b48a8b-cebe-4627-8b24-4ea197044255": {
+        "value": "這都是學習過程的一部分. 別放棄!",
+        "ref": "eb7bb148dbe05c06"
+    },
+    "Recorded_Media.json|RM_9471f3a8-d187-48c8-b1db-a418c4784fdb": {
+        "value": "農夫約翰與他妻子漢娜帶你看他們動物農場的典型一天.",
+        "ref": "0e23330f17526ab7"
+    },
+    "Recorded_Media.json|RM_950630dc-9d14-4825-8115-ea5ba07c6089": {
+        "value": "最好從小而簡單的開始. 馬鈴薯與高麗菜最容易上手...",
+        "ref": "32b1b591fb94bb5b"
+    },
+    "Recorded_Media.json|RM_96394994-c069-43be-ab85-f6ef55a20c54": {
+        "value": "...適合等級較高的園丁.",
+        "ref": "b9bdcced71550a65"
+    },
+    "Recorded_Media.json|RM_96ae24c3-a2b6-4e05-9912-d784d118beef": {
+        "value": "我們的鐵絲圍欄只不過是一捲鐵絲...",
+        "ref": "8bff6a146bf4c58d"
+    },
+    "Recorded_Media.json|RM_971b76eb-7799-4df6-93e4-c6224acdfa58": {
+        "value": "碎片或彈片可用鑷子取出, 除非嵌入皮膚深處.",
+        "ref": "bf34a6683d375879"
+    },
+    "Recorded_Media.json|RM_992318e1-f096-4e8a-86dd-19396f9689f3": {
+        "value": "你吃過火雞蛋嗎? 超好吃!",
+        "ref": "a919d35da6d488f1"
+    },
+    "Recorded_Media.json|RM_993d82d6-3ff3-4d1a-a952-d15869303ef5": {
+        "value": "第二件事: 地點!",
+        "ref": "e145827c5b6d4521"
+    },
+    "Recorded_Media.json|RM_9a1671e8-7158-4c40-b449-90074e5ed1c8": {
+        "value": "跟傑森·馬斯特的釣魚大師課, 讓你比以往更會收線! 從餌料, 釣竿到小提示與訣竅, 你會輕鬆釣到從小魚到梭魚的任何獵物!",
+        "ref": "a21a37ac8000e3ab"
+    },
+    "Recorded_Media.json|RM_9a197257-f480-4d57-aa75-efc35d57f127": {
+        "value": "...但用對材料就能做到.",
+        "ref": "ecff8e9041422b6e"
+    },
+    "Recorded_Media.json|RM_9c7f7d85-864a-4423-87df-a5bc8f255d67": {
+        "value": "嘿釣友們! 我是傑森·馬斯特, 1983 到 1992 年世界釣魚錦標賽冠軍.",
+        "ref": "fcc4de600caa108a"
+    },
+    "Recorded_Media.json|RM_9f28d15d-9344-41c4-a7eb-98beaab92f56": {
+        "value": "...歐芹, 鼠尾草, 迷迭香與百里香.",
+        "ref": "64d1f0319f92a6e7"
+    },
+    "Recorded_Media.json|RM_9f76aa23-d52f-471c-85f2-2d596fefa16e": {
+        "value": "急救沒有初看之下那麼複雜. 除非你怕見血.",
+        "ref": "e0b15dd2897f29cf"
+    },
+    "Recorded_Media.json|RM_9faa0b1e-9f5a-4e3f-b11c-d26f3b45e6c9": {
+        "value": "VHS: 羅斯伍德醫院急救",
+        "ref": "570fb0f5840d2e31"
+    },
+    "Recorded_Media.json|RM_9fc64f2b-f6d6-47fd-a89d-7297f09f4095": {
+        "value": "丹寧與皮革物品比較難裁切與縫補...",
+        "ref": "a13bc8e0459c11d0"
+    },
+    "Recorded_Media.json|RM_9fdb149c-6ba7-4caf-9b64-117f84e5fc6a": {
+        "value": "頸部或頭部的出血傷口極為嚴重...",
+        "ref": "b389454a3c05ef7b"
+    },
+    "Recorded_Media.json|RM_a013cafd-6da9-487d-88eb-1e57b1228ac9": {
+        "value": "嗨, 我是維克多·達文波特.",
+        "ref": "b0e4b25bf4e7fe81"
+    },
+    "Recorded_Media.json|RM_a1230de7-2546-4106-a351-adeb7da1a5fa": {
+        "value": "這是一個說明這些原理的基本電池電路.",
+        "ref": "b6a78bb2ba10ad46"
+    },
+    "Recorded_Media.json|RM_a2a20493-1307-4042-9646-dd8cd678f3d2": {
+        "value": "R - Response 反應. 患者對叫名或拍肩有反應嗎?",
+        "ref": "b6e0ad2438d523a9"
+    },
+    "Recorded_Media.json|RM_a30b5567-13fa-4c51-b17e-2a05035fdea1": {
+        "value": "MSR788. 彈匣容量三發 .308 彈.",
+        "ref": "60aaad5e46377ba2"
+    },
+    "Recorded_Media.json|RM_a3e9f132-dddb-4c0e-ab6e-a85cc43559c7": {
+        "value": "大豆能自行支撐, 所以比較好照顧.",
+        "ref": "7517fd6b46caf1a1"
+    },
+    "Recorded_Media.json|RM_a45f69ed-c415-4e3e-b8e8-7e5a7b500b7c": {
+        "value": "陶藝是古老的工藝, 至今仍實用.",
+        "ref": "84d8ea848119eb48"
+    },
+    "Recorded_Media.json|RM_a6374c2a-e81e-4485-8787-0baeedff893f": {
+        "value": "如果你已撥打 911, 救護車應該很快就會到.",
+        "ref": "25d6b192237aa947"
+    },
+    "Recorded_Media.json|RM_a670df23-5d0e-4499-b800-3eed69cf002f": {
+        "value": "加入美國海軍陸戰隊海軍衛勤士長伊凡·菲利普·基頓, 學習軍方處理傷患的基礎.",
+        "ref": "84536d6ceec2408d"
+    },
+    "Recorded_Media.json|RM_a726e893-fbde-4427-8d77-d3f6d8e5d5a8": {
+        "value": "祝你種植愉快!",
+        "ref": "b3eb99a252c9ee12"
+    },
+    "Recorded_Media.json|RM_a7770ca3-ed5a-4fc8-8fc7-d47904ec55bb": {
+        "value": "祝你種植愉快!",
+        "ref": "b3eb99a252c9ee12"
+    },
+    "Recorded_Media.json|RM_a77dd237-a561-4cd5-b9ac-7ccbf9e29fa6": {
+        "value": "今天我要給你一些從小魚到梭魚都適用的小提示.",
+        "ref": "0bbd81a749a49dac"
+    },
+    "Recorded_Media.json|RM_a78381b0-4f59-45f5-9dd8-9bddcdc5d75c": {
+        "value": "勤加練習, 你就能做出從簡單烤盤...",
+        "ref": "ad9d539f360815f8"
+    },
+    "Recorded_Media.json|RM_a9b8d6bd-0cba-41c0-b05e-bcddd2cce82f": {
+        "value": "今天我要分享一些讓你衣服撐更久的小祕訣.",
+        "ref": "624b6afae053c48e"
+    },
+    "Recorded_Media.json|RM_ab7f6df0-615c-43c2-a5f6-df4274433c4a": {
+        "value": "像這樣握住焊條, 讓兩塊連接處對齊. 然後降下焊炬, 沿接縫移動...",
+        "ref": "7312cc2e82bc23c0"
+    },
+    "Recorded_Media.json|RM_ac9b3cad-7bff-422e-a371-d15f7d69d093": {
+        "value": "取出彈片, 如果不深就包紮傷口...",
+        "ref": "06fbfef0ab355972"
+    },
+    "Recorded_Media.json|RM_adc63e0b-f173-4052-b990-75586d495186": {
+        "value": "跟著連續三年獲選南伊利諾年度最佳電工艾德·威利斯, 認識安培與伏特的差別.",
+        "ref": "a41538e2f72e7062"
+    },
+    "Recorded_Media.json|RM_ae21bcac-c36a-44cc-8f6f-e8bc88c2c998": {
+        "value": "很快你就會擁有一座充滿作物的花園, 不只免錢...",
+        "ref": "78de9a5e37450ac8"
+    },
+    "Recorded_Media.json|RM_af97a48a-974f-41c3-8aad-d2df2aaad516": {
+        "value": "嗨! 我是查莉, 舊金山出生的焊工.",
+        "ref": "06b54743deaaf015"
+    },
+    "Recorded_Media.json|RM_b0f5296d-f07d-4ae2-b453-6bea1890851a": {
+        "value": "我這行的基本工具是針, 線, 剪刀與額外的布料碎片.",
+        "ref": "b9f7749008136656"
+    },
+    "Recorded_Media.json|RM_b1e4b221-6b15-424b-9882-e515eecb168f": {
+        "value": "最後, 來點玉米怎麼樣?",
+        "ref": "68b13b868555e130"
+    },
+    "Recorded_Media.json|RM_b384fbc1-2547-4715-a646-3f7ebe2fc14e": {
+        "value": "哎喲, 奶牛波比真的需要擠奶了.",
+        "ref": "da4a4d894c4fdc7e"
+    },
+    "Recorded_Media.json|RM_b3e6d349-2806-4717-bf79-0a5a86b042e8": {
+        "value": "希望很快在「流浪生魚片」店見到你!",
+        "ref": "c010cac39a08789c"
+    },
+    "Recorded_Media.json|RM_b47fd19c-57dd-4100-805c-50013d885430": {
+        "value": "最後是 C - Circulation 循環. 患者在流血嗎?",
+        "ref": "79556e6058740bcd"
+    },
+    "Recorded_Media.json|RM_b4a4beaa-64c2-4740-bd6c-6c9f965064ed": {
+        "value": "動物園老闆蒂莉帶你看一些她每天照顧的可愛動物.",
+        "ref": "b712c133fda74273"
+    },
+    "Recorded_Media.json|RM_b4ff05d5-6ceb-440d-8aac-526cc197470f": {
+        "value": "電是怎麼運作的",
+        "ref": "055f23eaa19a1d03"
+    },
+    "Recorded_Media.json|RM_b8a6effc-e7bc-4bc9-877b-2c436d77b5e8": {
+        "value": "要免費諮詢與索取艾德弗佩圍欄的型錄...",
+        "ref": "c93a457a5512de82"
+    },
+    "Recorded_Media.json|RM_b995c51e-3a31-49cc-ad6d-d0b6628a61e9": {
+        "value": "VHS: 人人可做的陶藝",
+        "ref": "4ae0abcff9857988"
+    },
+    "Recorded_Media.json|RM_bb8764f9-25ea-431a-84d3-5a1aedb51d8b": {
+        "value": "居家壽司製作",
+        "ref": "c6df564801a9c594"
+    },
+    "Recorded_Media.json|RM_bbf1c2b3-e8eb-41c6-907d-d0106e2bd62e": {
+        "value": "嵌在體內的子彈必須用鑷子取出.",
+        "ref": "665405ed99322f80"
+    },
+    "Recorded_Media.json|RM_bc21e1ed-f99b-4aed-ae51-d06ddd852adf": {
+        "value": "羅斯伍德醫院的卡蘿·蘇莎醫師為你帶來一些常見傷害的急救小提示.",
+        "ref": "e361c79dc8dda0ac"
+    },
+    "Recorded_Media.json|RM_bd2eb6d9-0367-47f3-a498-b4f6b044ebb0": {
+        "value": "VHS: 居家種植蔬果 2",
+        "ref": "c7ba02a53253e601"
+    },
+    "Recorded_Media.json|RM_bedf9343-c13c-4a77-8a14-fe815582f042": {
+        "value": "就算只有一小塊花園, 你也能透過自行種植一些食物大幅降低伙食費 - 而且吃得更健康. 透過這支實用的 VHS 指南, 艾曼紐·J·雷西會教你何時與如何種植胡蘿蔔, 青花菜, 蘿蔔等作物!",
+        "ref": "b7e499280c9eab91"
+    },
+    "Recorded_Media.json|RM_bfe0a688-9cda-423b-a1fd-5d80f4f9561c": {
+        "value": "讓我想起大學時代. 嘻嘻.",
+        "ref": "9001f381560456c7"
+    },
+    "Recorded_Media.json|RM_c012cceb-25c1-4a7f-9b66-a0ba2909684e": {
+        "value": "打聲招呼吧, 蘿拉!",
+        "ref": "9df9dfa6a48cd37e"
+    },
+    "Recorded_Media.json|RM_c099c473-39b9-4a6f-9113-caec08392829": {
+        "value": "冬末把它們種在盆裡, 之後再移植到戶外. ",
+        "ref": "1d836d7359babfae"
+    },
+    "Recorded_Media.json|RM_c18df0ff-eeb5-4b2b-898c-175da3adf7fa": {
+        "value": "一塊小金屬板, 三塊廢金屬.",
+        "ref": "865f9493904028a6"
+    },
+    "Recorded_Media.json|RM_c5682a23-94d0-4944-924b-a8d5b9bc97af": {
+        "value": "...但是是用飯糰, 不是壽司卷.",
+        "ref": "817b0c76fe739f46"
+    },
+    "Recorded_Media.json|RM_c6291e5c-c1bb-4489-845c-75e65287bfe2": {
+        "value": "...大型版本則用五根柱子加兩塊廢金屬.",
+        "ref": "ee100835f68a03e0"
+    },
+    "Recorded_Media.json|RM_c641d98a-94ea-48e3-8f6d-2bcf2616aa38": {
+        "value": "動物園",
+        "ref": "3487cfb6793eaca9"
+    },
+    "Recorded_Media.json|RM_c6db2289-a28c-4882-b064-643763cb73e1": {
+        "value": "從碗與杯子, 到菸斗與磁磚, 陶藝是一種擁有千百種用途的藝術.",
+        "ref": "779a813614c62edd"
+    },
+    "Recorded_Media.json|RM_c75ba851-f0a1-494f-93f6-2eec3a2a0377": {
+        "value": "有獵人射殺了她媽媽.",
+        "ref": "33fa49c12e36a4bb"
+    },
+    "Recorded_Media.json|RM_c8142a4b-e944-43a1-84ae-441cfba4de86": {
+        "value": "...到可上戰場的寶劍.",
+        "ref": "ca818648e6914da4"
+    },
+    "Recorded_Media.json|RM_c95fdb62-b368-4b67-88a7-62a0e529ba79": {
+        "value": "想開始種食物卻不知從何下手? 艾曼紐·J·雷西會帶你了解種植美味香草的基礎, 為你的料理增添風味.",
+        "ref": "6a462b582c60f32c"
+    },
+    "Recorded_Media.json|RM_c986dc2e-050e-44aa-9cb7-bccd58a48c38": {
+        "value": "一根棍子加一條線可釣不到什麼!",
+        "ref": "35a2b808d71919ae"
+    },
+    "Recorded_Media.json|RM_cb28f5f2-cbd1-4f37-b05a-247cd932f9e0": {
+        "value": "...同時把狐狸, 狼或野豬擋在你的花園外.",
+        "ref": "d30241ae5d5ba96c"
+    },
+    "Recorded_Media.json|RM_cc400841-8dd8-48e0-86d1-8a59b4902b38": {
+        "value": "只要多加練習, 你甚至能把東西做得跟新的一樣好!",
+        "ref": "e4889855cb412184"
+    },
+    "Recorded_Media.json|RM_d1e7805a-d27b-4649-b3ec-c3301ea54db3": {
+        "value": "三根管子和四塊廢金屬可以讓陽光照進來…",
+        "ref": "6fb4257fd43c897d"
+    },
+    "Recorded_Media.json|RM_d25ca4ba-6a16-488f-901b-2cc6d4c692ee": {
+        "value": "漂亮吧? 但我種大部分可不只是為了好看.",
+        "ref": "0daf655239180709"
+    },
+    "Recorded_Media.json|RM_d41d649a-605d-4b5a-99ca-a1268292f1a3": {
+        "value": "居家種植蔬果 1",
+        "ref": "25d4ea0f1f8d22e3"
+    },
+    "Recorded_Media.json|RM_d4462779-031d-4323-8f0f-54c08502e0bf": {
+        "value": "現在, 來看步槍.",
+        "ref": "b1f1753db68cab59"
+    },
+    "Recorded_Media.json|RM_d57d2fdf-bae5-4e49-8c37-493f82d9eccd": {
+        "value": "第一件事是評估傷口的嚴重程度.",
+        "ref": "c830f4e4e9ba71c9"
+    },
+    "Recorded_Media.json|RM_d61c1404-3931-4049-bd8a-46555f89d538": {
+        "value": "燧石碎片能打造成刀刃或尖端, 當作刀使用...",
+        "ref": "7c00cae3b58f228b"
+    },
+    "Recorded_Media.json|RM_d680f58e-7937-4113-b60b-b665b274d7a3": {
+        "value": "在我上一部影片中, 我談到你可以在地塊或花園種植的一些主食.",
+        "ref": "056a90c053f96a3c"
+    },
+    "Recorded_Media.json|RM_d91bd941-32f3-4b35-abb2-cc4e7e48cb06": {
+        "value": "我用奶瓶餵蘿拉.",
+        "ref": "e77de65d9c2f917d"
+    },
+    "Recorded_Media.json|RM_d9a8fc81-28a6-4ecc-b508-2429559c82d6": {
+        "value": "VHS: 居家陶藝",
+        "ref": "63b0086700f8a03c"
+    },
+    "Recorded_Media.json|RM_d9f11d3f-333d-42a6-9199-5f3d17974bab": {
+        "value": "這是哥布勒家族. 牠們是火雞!",
+        "ref": "30cab3095afc5299"
+    },
+    "Recorded_Media.json|RM_db03387e-4571-4e13-902d-92c2b0196394": {
+        "value": "感謝大家今天加入我的行列. 也許不久的將來我們會再見面!",
+        "ref": "cd51622960922cb5"
+    },
+    "Recorded_Media.json|RM_dc1e16af-406e-47ca-80cc-a9159c8a93a3": {
+        "value": "礦石經由人工或機械挖掘, 再經加工與提煉.",
+        "ref": "737afddc66850b54"
+    },
+    "Recorded_Media.json|RM_dcbe25c7-23df-46bf-9340-fc46b32efad4": {
+        "value": "這是小羊蘿拉.",
+        "ref": "60f35e5ee82dc90d"
+    },
+    "Recorded_Media.json|RM_dd324eb6-7319-4354-b86a-7eac6d388853": {
+        "value": "容易種植, 但仍有一些小技巧能幫助你種出最好的香草.",
+        "ref": "a2fd1766d6d7f82e"
+    },
+    "Recorded_Media.json|RM_dd42d72c-63c6-4e57-b16b-11cdc5eba9b0": {
+        "value": "VHS: 從礦石到商店",
+        "ref": "cf6a53468d2a88ff"
+    },
+    "Recorded_Media.json|RM_dd860b97-22c4-4b5b-a21f-cf712fd875c0": {
+        "value": "VHS: 居家壽司製作",
+        "ref": "97cee19762f84718"
+    },
+    "Recorded_Media.json|RM_df96f5f0-1a8f-492a-b099-3dd2c536ad09": {
+        "value": "確保傷口保持乾淨, 繃帶保持無菌.",
+        "ref": "95994dcbcf2413f9"
+    },
+    "Recorded_Media.json|RM_e17b3497-1e70-4ca8-9d17-721cd6e36d8a": {
+        "value": "VHS: 諾克斯持槍俱樂部槍械指南",
+        "ref": "dc5233df6466802d"
+    },
+    "Recorded_Media.json|RM_e2ad820a-4d4f-4de3-b856-7f51e47b2286": {
+        "value": "我從幾盆歐芹與一個夢想開始.",
+        "ref": "301f57868f68d7a3"
+    },
+    "Recorded_Media.json|RM_e3f1a258-d35e-454f-a4fb-4ce776ae8d9c": {
+        "value": "下次再見. 嘻嘻.",
+        "ref": "95ab6293f21ba82a"
+    },
+    "Recorded_Media.json|RM_e4e4b45e-b9de-4698-be2e-ecb8d03d590e": {
+        "value": "午安. 我是雪子·朝倉, 「流浪生魚片」店主廚.",
+        "ref": "c73354d851921184"
+    },
+    "Recorded_Media.json|RM_e53f697c-c47f-4521-8c82-8a8aec6b1447": {
+        "value": "把槍托緊貼肩膀, 仔細瞄準, 然後扣下扳機...",
+        "ref": "c07520ddf6be4392"
+    },
+    "Recorded_Media.json|RM_e573f31b-91bd-439f-8a0b-5eedd45352f7": {
+        "value": "黏土在工作台或轆轤上塑形.",
+        "ref": "142ca185303759f5"
+    },
+    "Recorded_Media.json|RM_e5a6fd62-c726-4801-b9dd-44f6335b588b": {
+        "value": "看到那個花瓶嗎? 像這樣瞄準...",
+        "ref": "4e1199ef96ea5339"
+    },
+    "Recorded_Media.json|RM_e658d0e7-c6ad-4c01-a377-b214be4b7212": {
+        "value": "這就是我在這裡的原因.",
+        "ref": "6ff412ed9d157ce5"
+    },
+    "Recorded_Media.json|RM_e718b23d-6ada-469b-8e7d-e4559eb7f9dd": {
+        "value": "聽起來像首歌. 嘻嘻.",
+        "ref": "c16345bda4bb8642"
+    },
+    "Recorded_Media.json|RM_e7d3b48b-4a50-48a7-a406-1397ebb5182a": {
+        "value": "VHS: 動物園",
+        "ref": "e83560d8ca93496d"
+    },
+    "Recorded_Media.json|RM_e7f19ddc-744c-4847-887a-2b956e319c50": {
+        "value": "...用小鏟子或手叉.",
+        "ref": "ec93ed2e9f31f70b"
+    },
+    "Recorded_Media.json|RM_e82bb4ed-cd11-4d98-a648-69d74f6c79d9": {
+        "value": "把材料放好並仔細縫上.",
+        "ref": "8338e17a574cc9de"
+    },
+    "Recorded_Media.json|RM_e83d0c82-2215-4f95-9ceb-109e7d593dd6": {
+        "value": "簡單吧?",
+        "ref": "2a8e26cc9cec445e"
+    },
+    "Recorded_Media.json|RM_e93e8814-b1d0-466b-becb-d4223d44350f": {
+        "value": "蒜頭是另一個最愛. 對血好, 還能驅趕吸血鬼.",
+        "ref": "194db15036645fcf"
+    },
+    "Recorded_Media.json|RM_e95e7f38-5309-4e8a-b13e-238b1a6e33ba": {
+        "value": "繃帶應能止住擦傷或淺層傷口的出血...",
+        "ref": "73c8273aaa0987b4"
+    },
+    "Recorded_Media.json|RM_e9710437-f8bb-4561-bc59-7009c6ebe0e0": {
+        "value": "工具, 武器, 宗教偶像...每一樣都是早期人類智慧的結晶.",
+        "ref": "3fafce5125b4180d"
+    },
+    "Recorded_Media.json|RM_e9e0232e-4295-40c7-9999-b8b5641ad002": {
+        "value": "最後, 草莓稍微棘手, 番茄則需要立支架...",
+        "ref": "f88f38ebfca477f4"
+    },
+    "Recorded_Media.json|RM_eabed711-b083-458f-9778-c3a95965e502": {
+        "value": "VHS: 打石術: 古老的藝術",
+        "ref": "ebd1903fa94f822a"
+    },
+    "Recorded_Media.json|RM_ec7dd489-2b32-42bf-9ac8-dab86e77dd7f": {
+        "value": "[img=music] 天啊, 我不會釣魚, 分不清釣竿與釣線... [img=music]",
+        "ref": "8a39ac05e870f3e4"
+    },
+    "Recorded_Media.json|RM_f029ea75-d63a-47e5-9dde-41d2d50efa69": {
+        "value": "你遠距離作戰的最佳夥伴.",
+        "ref": "029264e566db9bce"
+    },
+    "Recorded_Media.json|RM_f2041ea3-03af-4f8c-b645-8768279e9903": {
+        "value": "居家香草栽培",
+        "ref": "81f52978b75be97a"
+    },
+    "Recorded_Media.json|RM_f30f1685-39cf-4dcd-96a2-18ae76348f01": {
+        "value": "或者我弟比利能在法蘭克福賣你一整桶!",
+        "ref": "7edd9747639b8b07"
+    },
+    "Recorded_Media.json|RM_f52101db-9604-4c87-8be0-3a6fb1cb0453": {
+        "value": "打石術: 古老的藝術",
+        "ref": "46f68addf9d723db"
+    },
+    "Recorded_Media.json|RM_f6b4efe5-19d4-445b-ba54-66d35370f328": {
+        "value": "香草是展開園藝或農耕生活的最佳起點.",
+        "ref": "505bc00ce636762e"
+    },
+    "Recorded_Media.json|RM_f6e3237f-cb3f-4895-b9a6-f1e5efe88b3e": {
+        "value": "現在你已準備好應對任何需要擊倒的目標.",
+        "ref": "d356f27c88edcad5"
+    },
+    "Recorded_Media.json|RM_f81b6664-c568-48f3-aaa8-810c6a0b04ce": {
+        "value": "居家種植蔬果 2",
+        "ref": "f01a5ed89e4e4830"
+    },
+    "Recorded_Media.json|RM_f83e715d-fb15-451a-96d4-20c732efc403": {
+        "value": "現在, 重新裝填. 別忘了拉滑套.",
+        "ref": "0bb9f8f698e8d9cc"
+    },
+    "Recorded_Media.json|RM_f8d1ffd6-7c2a-414c-b6b5-4e4331e311bc": {
+        "value": "還有我們的高鐵絲圍欄, 用三捲鐵絲做成...",
+        "ref": "093de2ca4f6b1885"
+    },
+    "Recorded_Media.json|RM_f91b57b9-529b-43e6-b8c2-017994da6719": {
+        "value": "尤其剛下完雨.",
+        "ref": "c5d0318d50a6a34e"
+    },
+    "Recorded_Media.json|RM_f999f5e7-1629-49c9-ab30-930f701802a1": {
+        "value": "那是給你的, 貝西. 還有你, 亞瑟...",
+        "ref": "04b31b5bba6d94a2"
+    },
+    "Recorded_Media.json|RM_fb5343c4-4856-4fa6-9031-14ab0f57e749": {
+        "value": "鐵匠艾德蒙·喬森詳述金屬加工的基礎, 從找礦石到完成成品.",
+        "ref": "a3aab601fdbbf759"
+    },
+    "Recorded_Media.json|RM_fe0010c2-8cb6-4b9e-9c83-9c2ed5f1d50f": {
+        "value": "哈囉. 我是羅斯伍德醫院的卡蘿·蘇莎醫師.",
+        "ref": "3ffa0e9006f99daa"
+    },
+    "Recorded_Media.json|RM_fecbb4ec-0945-4fbc-bc78-03b6d264b7f8": {
+        "value": "至於惡魔水黴菌... 解法很簡單.",
+        "ref": "68282bb7543de359"
+    },
+    "Recorded_Media.json|RM_ff5b977b-53e1-4e27-8c71-e0fd007edb7d": {
+        "value": "歡迎來到我的陶藝課. 我是雅娜·海爾森.",
+        "ref": "4678806ffa013ab3"
+    },
+    "Recorded_Media.json|RM_ffb502eb-214a-4e03-91ac-bab0a6962bcf": {
+        "value": "有蚜蟲嗎? 噴灑消毒劑與水的混合液可以除掉牠們.",
+        "ref": "cc355548191d595d"
+    },
+    "SurvivalGuide.json|SurvivalGuide_activate_pvp_description": {
+        "value": "點選 %1 來開啟或關閉 PvP 安全模式. <LINE> PvP 安全模式關閉時, 你的使用者名稱旁會出現一個骷髏圖示. <LINE> 兩位均開啟 PvP 安全的玩家無法互相攻擊, 但關閉 PvP 安全的玩家可以攻擊任何人.",
+        "ref": "84169c4671b9eb6f"
+    },
+    "SurvivalGuide.json|SurvivalGuide_activate_pvp_title": {
+        "value": "啟用 PVP",
+        "ref": "b7c493df157b3fa6"
+    },
+    "SurvivalGuide.json|SurvivalGuide_add_bait_description": {
+        "value": "對魚竿使用 %1 新增魚餌, 可以提升釣到魚的機率. <LINE> 不同的魚餌會吸引不同種類的魚.",
+        "ref": "d4ffebb629540ee7"
+    },
+    "SurvivalGuide.json|SurvivalGuide_add_bait_title": {
+        "value": "給魚鉤掛餌",
+        "ref": "ca595f9e351ce85b"
+    },
+    "SurvivalGuide.json|SurvivalGuide_aiming_description": {
+        "value": "按住 %1 並移動滑鼠來環顧四周並瞄準. <LINE> 記得檢查你的後方 - 儘管那裡可能什麼都沒有!",
+        "ref": "0d777987baaccecb"
+    },
+    "SurvivalGuide.json|SurvivalGuide_aiming_title": {
+        "value": "瞄準",
+        "ref": "9c4e666f2f545afb"
+    },
+    "SurvivalGuide.json|SurvivalGuide_animal_hutch_description": {
+        "value": "雞和火雞需要雞舍才能在夜晚安全入眠. 你可以使用 %1 開啟雞舍選單並看管它們. <LINE> 晚上記得關好門, 早上再開啟, 以免讓鳥類產生壓力. <LINE> 母雞必須有公雞才能讓蛋受精. ",
+        "ref": "6ef1a16fc87d0ad1"
+    },
+    "SurvivalGuide.json|SurvivalGuide_animal_hutch_title": {
+        "value": "雞舍",
+        "ref": "2e02a42d967a33ce"
+    },
+    "SurvivalGuide.json|SurvivalGuide_animal_menu_description": {
+        "value": "在動物附近按 %1 或對牠使用 %2 可找到相關選項, 包括動物資訊. <LINE> 熟練的畜牧工會看到更多動物資訊.",
+        "ref": "f134f828eed211d6"
+    },
+    "SurvivalGuide.json|SurvivalGuide_animal_menu_title": {
+        "value": "動物選單",
+        "ref": "d0662b8d202587b4"
+    },
+    "SurvivalGuide.json|SurvivalGuide_animal_rope_description": {
+        "value": "在動物附近按 %1 可以用繩子拴住動物來方便移動. <LINE> 你也可以把繩子綁在樹或柱子上. <LINE> 注意, 動物壓力過大時會掙斷繩索.",
+        "ref": "e6e02c5a1e81b744"
+    },
+    "SurvivalGuide.json|SurvivalGuide_animal_rope_title": {
+        "value": "動物繩索",
+        "ref": "ce35ab61b35fd8e9"
+    },
+    "SurvivalGuide.json|SurvivalGuide_animal_stress_description": {
+        "value": "殭屍, 噪音或附近槍擊會讓動物產生壓力, 並影響牠們的健康. <LINE> 與動物建立信任很重要. 需要時間, 關愛和許多零食. <LINE> 別讓公牛抓狂, 不然你會被牛角頂!",
+        "ref": "883e2eff8fd8c497"
+    },
+    "SurvivalGuide.json|SurvivalGuide_animal_stress_title": {
+        "value": "壓力",
+        "ref": "b30ba846ba2e2994"
+    },
+    "SurvivalGuide.json|SurvivalGuide_animal_upkeep_description": {
+        "value": "動物需要食物和水才能存活, 可以加入飼料槽或直接放在牠們的區域內. <LINE> 動物會自行繁殖. 只要確保你的動物血緣是樹狀, 不是環狀!",
+        "ref": "7374e31f6f0b60ff"
+    },
+    "SurvivalGuide.json|SurvivalGuide_animal_upkeep_title": {
+        "value": "動物照料",
+        "ref": "4c524b0be3f11773"
+    },
+    "SurvivalGuide.json|SurvivalGuide_animal_zone_description": {
+        "value": "點選左側的 %1 為你的動物建立區域. <LINE> 冷靜的動物永遠不會離開其區域, 即使沒有圍欄, 只要有水且附近沒有殭屍... <LINE> 區域資訊面板會顯示食物, 水以及區域內所有動物.",
+        "ref": "bb8db7ca0094228d"
+    },
+    "SurvivalGuide.json|SurvivalGuide_animal_zone_description_joypad": {
+        "value": "按 %1 並選擇 %2 為你的動物建立區域. <LINE> 冷靜的動物永遠不會離開其區域, 即使沒有圍欄, 只要有水且附近沒有殭屍... <LINE>  區域資訊面板會顯示食物, 水以及區域內所有動物.",
+        "ref": "834de67fd322586d"
+    },
+    "SurvivalGuide.json|SurvivalGuide_animal_zone_title": {
+        "value": "動物區域",
+        "ref": "bdc6e47f8d5fb76e"
+    },
+    "SurvivalGuide.json|SurvivalGuide_backpacks_description": {
+        "value": "你可以將物品從物品欄拖放到背包, 容器和裝備欄中. <LINE> 左邊的物品欄視窗顯示你攜帶的所有物品. 右邊的視窗顯示附近任何容器或地面上物品的內容. <LINE> 使用 %1 選擇多個物品, 或 %2 選擇單個物品.",
+        "ref": "5da043d625395245"
+    },
+    "SurvivalGuide.json|SurvivalGuide_backpacks_description_joypad": {
+        "value": "你可以將物品從物品欄拖放到背包, 容器和裝備欄中. <LINE> 左邊的物品欄視窗顯示你攜帶的所有物品. 右邊的視窗顯示附近任何容器或地面上物品的內容.",
+        "ref": "b6a871e1a2c06fa9"
+    },
+    "SurvivalGuide.json|SurvivalGuide_backpacks_title": {
+        "value": "物品欄管理",
+        "ref": "c06ea2fdfbade9cd"
+    },
+    "SurvivalGuide.json|SurvivalGuide_bad_gases_description": {
+        "value": "擁有適當技能和配方時, 你可以將發電機連線到房屋供電. <LINE> 絕對不要在室內使用發電機 - 廢氣會傷害你!",
+        "ref": "7ebfad923fc326a9"
+    },
+    "SurvivalGuide.json|SurvivalGuide_bad_gases_title": {
+        "value": "發電機",
+        "ref": "c245951edf395e29"
+    },
+    "SurvivalGuide.json|SurvivalGuide_bad_smells_description": {
+        "value": "末日世界充滿各種惡臭. %1 <LINE> 不要在堆滿屍體的區域停留太久, 否則你可能生病. 遠離這些區域, 埋葬或焚燒屍體, 或戴上口罩!",
+        "ref": "892b0c88ab22e214"
+    },
+    "SurvivalGuide.json|SurvivalGuide_bad_smells_title": {
+        "value": "難聞氣味",
+        "ref": "391c954a58d41d59"
+    },
+    "SurvivalGuide.json|SurvivalGuide_barricades_description": {
+        "value": "使用建造選單 %1 或對窗戶/門使用 %2 來堵住它. 你需要木板, 釘子和錘子來建造基本的木板堵門. <LINE> 堵門能讓門窗獲得更多耐久.",
+        "ref": "602a20994d90a2f0"
+    },
+    "SurvivalGuide.json|SurvivalGuide_barricades_title": {
+        "value": "堵門",
+        "ref": "54c67add94f8a910"
+    },
+    "SurvivalGuide.json|SurvivalGuide_build_menu_description": {
+        "value": "點選左邊的 %1 開啟建造選單. <LINE> 使用正確材料時, 這可以讓你建造靜態物件如圍欄, 牆壁或工作臺. <LINE> 快為自己打造一座末日豪宅!",
+        "ref": "98d854c2d260896e"
+    },
+    "SurvivalGuide.json|SurvivalGuide_build_menu_description_joypad": {
+        "value": "按 %1 並選擇 %2 開啟建造選單. 使用正確材料時, 這可以讓你建造靜態物件如圍欄, 牆壁或工作臺. <LINE> 快為自己打造一座末日豪宅!",
+        "ref": "3e68dfb57d5556c9"
+    },
+    "SurvivalGuide.json|SurvivalGuide_build_menu_title": {
+        "value": "建造選單",
+        "ref": "93db3b3d33477cc1"
+    },
+    "SurvivalGuide.json|SurvivalGuide_build_walls_description": {
+        "value": "木牆或鐵牆都需要先建牆框. <LINE> 然後你可以在框內填充牆面, 門框或窗框. <LINE> 門需要門框, 窗戶則需要... 你猜對了, 窗框!",
+        "ref": "b951898536e3694e"
+    },
+    "SurvivalGuide.json|SurvivalGuide_build_walls_title": {
+        "value": "建造牆壁",
+        "ref": "bb9f9bdf19371fad"
+    },
+    "SurvivalGuide.json|SurvivalGuide_burn_corpse_description": {
+        "value": "一個區域堆積太多屍體會讓你生病. 在屍體旁按住 %1 可拖行. <LINE> 屍體可以埋葬或用汽油與火源焚燒. <LINE> 後者對你的腰比較好!",
+        "ref": "714562cbe897c7b3"
+    },
+    "SurvivalGuide.json|SurvivalGuide_burn_corpse_title": {
+        "value": "處理屍體",
+        "ref": "daaa3c26f1e5523a"
+    },
+    "SurvivalGuide.json|SurvivalGuide_butchering_description": {
+        "value": "可以透過戰鬥或對動物使用 %1 選單來殺死動物. <LINE> 大型動物需要刀, 小動物可以直接徒手解決! 就像奶奶以前那樣做. <LINE> 在屠宰鉤上處理的動物能提供皮革和更多肉.",
+        "ref": "62069207b8da490e"
+    },
+    "SurvivalGuide.json|SurvivalGuide_butchering_title": {
+        "value": "屠宰",
+        "ref": "f60f16f1ae569bed"
+    },
+    "SurvivalGuide.json|SurvivalGuide_cast_and_catch_description": {
+        "value": "裝備魚竿後, 使用 %1 和 %2 拋竿. <LINE> 注意張力表看魚何時上鉤, 然後用 %3 收線. <LINE> 收線太快會拉斷魚線.",
+        "ref": "bd6639659d9b005e"
+    },
+    "SurvivalGuide.json|SurvivalGuide_cast_and_catch_description_joypad": {
+        "value": "裝備魚竿後, 使用 %1 和 %2 拋竿. <LINE> 注意張力表看魚何時上鉤, 逆時針 %3 收線, 順時針放鬆張力. <LINE> 收線太快會拉斷魚線.",
+        "ref": "2f013a0a344199af"
+    },
+    "SurvivalGuide.json|SurvivalGuide_cast_and_catch_title": {
+        "value": "拋竿與收線",
+        "ref": "8a56f49b1720e016"
+    },
+    "SurvivalGuide.json|SurvivalGuide_character_title": {
+        "value": "角色",
+        "ref": "fb497dbaaae982bc"
+    },
+    "SurvivalGuide.json|SurvivalGuide_clean_self_description": {
+        "value": "用水保持臉和身體清潔. 骯髒的身體更容易感染傷口! 肥皂能做得更好. <LINE> 真的, 偶爾洗一下吧, 我們隔著螢幕都聞得到!",
+        "ref": "272b58ea79aafcd1"
+    },
+    "SurvivalGuide.json|SurvivalGuide_clean_self_title": {
+        "value": "清潔自己",
+        "ref": "db293b0458d3f4e6"
+    },
+    "SurvivalGuide.json|SurvivalGuide_cleaning_area_description": {
+        "value": "末日世界可能很髒亂. 使用 %1 搭配清潔液 (如漂白水, 汽油) 和清潔工具 (如海綿) 來檢視清潔選項.",
+        "ref": "28107550c9e1a22d"
+    },
+    "SurvivalGuide.json|SurvivalGuide_cleaning_area_title": {
+        "value": "清潔汙漬",
+        "ref": "68f4716d3cfc5141"
+    },
+    "SurvivalGuide.json|SurvivalGuide_cleaning_title": {
+        "value": "清潔",
+        "ref": "bb98e37e3da840fa"
+    },
+    "SurvivalGuide.json|SurvivalGuide_climbing_description": {
+        "value": "站在高柵欄旁按 %1 可以翻越過去. <LINE> 注意你的負重 - 負重過高會難以攀爬!",
+        "ref": "5649b1a0ee3503ec"
+    },
+    "SurvivalGuide.json|SurvivalGuide_climbing_title": {
+        "value": "跑酷!",
+        "ref": "16ad3eca038f8553"
+    },
+    "SurvivalGuide.json|SurvivalGuide_combat_title": {
+        "value": "戰鬥",
+        "ref": "bd3511851b3a9b6b"
+    },
+    "SurvivalGuide.json|SurvivalGuide_cooking_description": {
+        "value": "把食物放入烤箱, 微波爐, 燒烤架或其他裝置, 然後按下方按鈕開始烹煮. <LINE> 記得關掉烤箱 - 除非你手邊有滅火器!",
+        "ref": "a7e52ce5b1d66e54"
+    },
+    "SurvivalGuide.json|SurvivalGuide_cooking_description_joypad": {
+        "value": "把食物放入烤箱, 微波爐, 燒烤架或其他裝置, 然後用 %1 開始烹煮. <LINE> 記得關掉烤箱 - 除非你手邊有滅火器!",
+        "ref": "22cd41a2453b2c19"
+    },
+    "SurvivalGuide.json|SurvivalGuide_cooking_title": {
+        "value": "烹飪",
+        "ref": "49efd67c6205f8b1"
+    },
+    "SurvivalGuide.json|SurvivalGuide_craft_on_surface_description": {
+        "value": "某些製作配方需要硬質表面才能製作, 例如桌子, 工作臺, 甚至是一塊大石頭! <LINE> 站在這些表面旁邊, 開啟製作選單 %1 檢視它們.",
+        "ref": "81a7c97eb22f0818"
+    },
+    "SurvivalGuide.json|SurvivalGuide_craft_on_surface_title": {
+        "value": "表面製作",
+        "ref": "0291c71149ef10c6"
+    },
+    "SurvivalGuide.json|SurvivalGuide_crafting_inventory_description": {
+        "value": "有些製作配方只需擁有正確材料和工具, 幾乎在任何地方都能用製作選單完成. 一些簡單配方甚至可以直接從物品欄用 %1 製作.",
+        "ref": "d09596f4bee27af3"
+    },
+    "SurvivalGuide.json|SurvivalGuide_crafting_inventory_title": {
+        "value": "背包製作",
+        "ref": "26e1dfce0073fe3b"
+    },
+    "SurvivalGuide.json|SurvivalGuide_crafting_menu_description": {
+        "value": "按 %1 或點選左邊的 %2 開啟製作選單. <LINE> 對物品使用 %3-%4 來搜尋製作方式, 或對產物使用來搜尋它可被用於何處.",
+        "ref": "e3b327df28a5a01b"
+    },
+    "SurvivalGuide.json|SurvivalGuide_crafting_menu_description_joypad": {
+        "value": "按 %1 並選擇 %2 開啟製作選單.",
+        "ref": "6f73072082725e3f"
+    },
+    "SurvivalGuide.json|SurvivalGuide_crafting_menu_title": {
+        "value": "製作選單",
+        "ref": "c91c8e62cad5ffd1"
+    },
+    "SurvivalGuide.json|SurvivalGuide_crafting_station_description": {
+        "value": "建造工作臺能讓你製作更進階的配方. <LINE> 可建造的工作臺很多, 從熔爐到攪拌桶和烘乾架, 有些還有獨特功能!",
+        "ref": "2b19f7d9e6066493"
+    },
+    "SurvivalGuide.json|SurvivalGuide_crafting_station_title": {
+        "value": "建造工作臺",
+        "ref": "f40be972cfb9c133"
+    },
+    "SurvivalGuide.json|SurvivalGuide_crafting_title": {
+        "value": "製作與建造",
+        "ref": "c999fad58e4dc262"
+    },
+    "SurvivalGuide.json|SurvivalGuide_curtains_description": {
+        "value": "窗簾或床單可以掛在窗戶上遮擋視線. <LINE> 使用 %1 和 %2 開關它們.",
+        "ref": "8a7d68fcc178d20a"
+    },
+    "SurvivalGuide.json|SurvivalGuide_curtains_description_joypad": {
+        "value": "窗簾或床單可以掛在窗戶上遮擋視線. <LINE> 使用 %1 並選擇「開窗簾」.",
+        "ref": "a60909607720cec0"
+    },
+    "SurvivalGuide.json|SurvivalGuide_curtains_title": {
+        "value": "開關窗簾",
+        "ref": "e368c7b5fdafd23e"
+    },
+    "SurvivalGuide.json|SurvivalGuide_dig_furrow_description": {
+        "value": "種子只能種在戶外地面的田溝裡. 使用泥鏟, 鐵鍬, 或如果你急迫的話, 用雙手在泥土或草地上挖溝. <LINE> 用 %1 並選擇園藝下的挖溝. <LINE> 你也可能發現一些蠕動的蚯蚓 - 如果你想, 可以叫牠吉姆!",
+        "ref": "13e6268a79180678"
+    },
+    "SurvivalGuide.json|SurvivalGuide_dig_furrow_title": {
+        "value": "挖溝",
+        "ref": "1a61adfa89791983"
+    },
+    "SurvivalGuide.json|SurvivalGuide_doors_description": {
+        "value": "按 %1 或 %2 開關門. 門可擋住殭屍, 也可堵門加強. <LINE> 但別指望門能永遠擋住!",
+        "ref": "d8494bcb163ddc56"
+    },
+    "SurvivalGuide.json|SurvivalGuide_doors_description_joypad": {
+        "value": "按 %1 開關門. 門可擋住殭屍, 也可堵門加強. <LINE> 但別指望門能永遠擋住!",
+        "ref": "ee47c882ceb914ce"
+    },
+    "SurvivalGuide.json|SurvivalGuide_doors_title": {
+        "value": "開關門",
+        "ref": "02ff41eab8d08ae9"
+    },
+    "SurvivalGuide.json|SurvivalGuide_double_click_description": {
+        "value": "雙擊物品可執行情境動作. <LINE> 例如裝備衣物與武器, 閱讀書本, 或從容器拿取物品.",
+        "ref": "cbae8a0a94459acf"
+    },
+    "SurvivalGuide.json|SurvivalGuide_double_click_title": {
+        "value": "雙擊",
+        "ref": "6332b1ba8e7e42dd"
+    },
+    "SurvivalGuide.json|SurvivalGuide_eating_drinking_description": {
+        "value": "雙擊或對食物 / 飲料使用 %1 來食用. <LINE> 預設情況下, 主物品欄內的乾淨水會自動被消耗以止渴. <LINE> 記得均衡飲食, 否則你會變胖或變瘦!",
+        "ref": "9fbaba06a2f0c7b2"
+    },
+    "SurvivalGuide.json|SurvivalGuide_eating_drinking_description_joypad": {
+        "value": "對食物 / 飲料使用 %1 來食用. <LINE> 預設情況下, 主物品欄內的乾淨水會自動被消耗以止渴. <LINE> 記得均衡飲食, 否則你會變胖或變瘦!",
+        "ref": "3da310bd1975a01c"
+    },
+    "SurvivalGuide.json|SurvivalGuide_eating_drinking_title": {
+        "value": "吃喝",
+        "ref": "84d6fe96e3f06182"
+    },
+    "SurvivalGuide.json|SurvivalGuide_equip_primary_description": {
+        "value": "對武器使用 %1 並選擇「裝備主武器」來裝備. <LINE> 從武士刀到電子琴鍵盤, 什麼都能用 - 但結果可能不太一樣!",
+        "ref": "271695d608dd284c"
+    },
+    "SurvivalGuide.json|SurvivalGuide_equip_primary_title": {
+        "value": "裝備武器",
+        "ref": "db5561510e6864d3"
+    },
+    "SurvivalGuide.json|SurvivalGuide_exercise_description": {
+        "value": "跑步或搬重物會讓你隨時間變強. <LINE> 你也可以透過健康選單裡的運動專案來增加力量和體能. 小心肌肉拉傷, 否則隔天會痛苦難當. <LINE> 即使在末日世界, 你也能擁有沙灘身材!",
+        "ref": "06c1e9726749bab1"
+    },
+    "SurvivalGuide.json|SurvivalGuide_exercise_title": {
+        "value": "運動",
+        "ref": "874237a09095f991"
+    },
+    "SurvivalGuide.json|SurvivalGuide_faction_menu_description": {
+        "value": "點選 %1, 然後選擇建立派系, 可以建立僅限邀請加入的群組, 並擁有私聊. <LINE> 可以關閉對派系成員的 PvP, 且成員會顯示在彼此的地圖上. <LINE> 注意: 派系成員不一定共享安全屋, 這需透過安全屋選單操作.",
+        "ref": "ef4872570c83ed12"
+    },
+    "SurvivalGuide.json|SurvivalGuide_faction_menu_title": {
+        "value": "建立派系",
+        "ref": "54ff8863ff9a7243"
+    },
+    "SurvivalGuide.json|SurvivalGuide_farming_title": {
+        "value": "農業",
+        "ref": "8097c79966b42089"
+    },
+    "SurvivalGuide.json|SurvivalGuide_fence_defense_description": {
+        "value": "殭屍翻越圍欄或穿過窗戶時會踉蹌 <LINE> 你可以利用這點反擊 - 前提是牠們沒有先撲倒你!",
+        "ref": "15870f4ed4010315"
+    },
+    "SurvivalGuide.json|SurvivalGuide_fence_defense_title": {
+        "value": "圍欄防禦",
+        "ref": "461c26a10b2419c4"
+    },
+    "SurvivalGuide.json|SurvivalGuide_first_aid_description": {
+        "value": "按 %1 或點選左邊的 %2 開啟健康選單, 並用 %3 對傷處 %4 使用藥物. <LINE> 許多衣物可以撕裂取得破布作為繃帶. <LINE> 為避免感染, 請在繃帶或直接在傷口上使用消毒劑.",
+        "ref": "53a634750726efd3"
+    },
+    "SurvivalGuide.json|SurvivalGuide_first_aid_description_joypad": {
+        "value": "按 %1 開啟健康選單 %2, 用 %3 / %4 切換頁籤, 並用 %5 對傷處 %6 使用藥物. <LINE> 許多衣物可以撕裂取得破布作為繃帶. <LINE> 為避免感染, 請在繃帶或直接在傷口上使用消毒劑.",
+        "ref": "0e3b0eff807b77d8"
+    },
+    "SurvivalGuide.json|SurvivalGuide_first_aid_title": {
+        "value": "健康與急救",
+        "ref": "b3790af6c813549a"
+    },
+    "SurvivalGuide.json|SurvivalGuide_fishing_title": {
+        "value": "釣魚",
+        "ref": "19e1f18544302c7e"
+    },
+    "SurvivalGuide.json|SurvivalGuide_fishing_zone_description": {
+        "value": "水面漣漪代表可以釣魚. <LINE> 使用 %1 開啟釣魚面板. 這會顯示你釣過的魚, 以及影響魚群的資訊. <LINE> 熟練的釣魚者能看到更多資訊.",
+        "ref": "689757f94067eb1d"
+    },
+    "SurvivalGuide.json|SurvivalGuide_fishing_zone_title": {
+        "value": "檢視區域",
+        "ref": "4f98e81fb563b85b"
+    },
+    "SurvivalGuide.json|SurvivalGuide_flashlights_description": {
+        "value": "已裝備的手電筒可以用 %1 開關. <LINE> 所有手電筒都需要電池才能運作, 並會讓你在黑暗中更容易被看見. <LINE> 手電筒嚇不走怪物.",
+        "ref": "2da98ae4f0b79e6b"
+    },
+    "SurvivalGuide.json|SurvivalGuide_flashlights_title": {
+        "value": "手電筒",
+        "ref": "6eded51919976811"
+    },
+    "SurvivalGuide.json|SurvivalGuide_food_and_water_title": {
+        "value": "食物與飲水",
+        "ref": "d5358748ebd4c618"
+    },
+    "SurvivalGuide.json|SurvivalGuide_food_preparation_description": {
+        "value": "使用製作選單或對烹飪容器如碗, 烤盤, 或燉鍋使用 %1 來準備食物配方. <LINE> 某些可能需要先在容器裡裝水. <LINE> 你可以從雜誌和電視節目學習新配方.",
+        "ref": "939fc873571ff417"
+    },
+    "SurvivalGuide.json|SurvivalGuide_food_preparation_title": {
+        "value": "食物準備",
+        "ref": "3593b09dfb440839"
+    },
+    "SurvivalGuide.json|SurvivalGuide_foraging_description": {
+        "value": "點選左邊的望遠鏡圖示 %1 開啟探查區域選單. <LINE> 這視窗顯示你周圍環境的細節. 點選「啟用搜尋模式」開始採集. 你可能會找到漿果, 蘑菇, 動物足跡 - 還有更多. <LINE> 選單甚至會顯示太陽位置和月相!",
+        "ref": "663e70eb4fde8320"
+    },
+    "SurvivalGuide.json|SurvivalGuide_foraging_description_joypad": {
+        "value": "按 %1 並選擇望遠鏡圖示 %2 開啟探查區域選單. <LINE> 這視窗顯示你周圍環境的細節. 按 %3 開始採集. 你可能會找到漿果, 蘑菇, 動物足跡 - 還有更多. <LINE>  選單甚至會顯示太陽位置和月相!",
+        "ref": "f3ad9cff1a08e067"
+    },
+    "SurvivalGuide.json|SurvivalGuide_foraging_mining_title": {
+        "value": "採集與採礦",
+        "ref": "069ae50286516383"
+    },
+    "SurvivalGuide.json|SurvivalGuide_foraging_title": {
+        "value": "搜尋選單",
+        "ref": "db3fd303166ba6d7"
+    },
+    "SurvivalGuide.json|SurvivalGuide_gas_refill_description": {
+        "value": "沒有汽油, 車輛就無法行駛! 使用 %1 選單加油, 前提是物品欄裡有裝著汽油的容器, 或你站在加油泵旁邊. <LINE> 你可以用有電源的加油泵把任何液體容器裝滿汽油. <LINE> 記得檢查燃油表看油箱蓋在哪一側.",
+        "ref": "4b59206fc37814a0"
+    },
+    "SurvivalGuide.json|SurvivalGuide_gas_refill_title": {
+        "value": "加油",
+        "ref": "4feb5b6321054210"
+    },
+    "SurvivalGuide.json|SurvivalGuide_harvesting_description": {
+        "value": "辛苦工作都做完了? 是時候採收作物了! 對植物按 %1 使用「採收」選項. <LINE> 農業技能越高, 採收的作物越多.",
+        "ref": "20d6595cb1e9a658"
+    },
+    "SurvivalGuide.json|SurvivalGuide_harvesting_title": {
+        "value": "採收",
+        "ref": "ebb633b5d2799d69"
+    },
+    "SurvivalGuide.json|SurvivalGuide_hotbar_description": {
+        "value": "使用快捷欄能更快存取武器. 用 %1 把武器繫結到快捷欄槽位, 然後按對應數字或 %2 裝備. <LINE> 穿戴皮帶和槍套能讓你獲得更多快捷欄槽位.",
+        "ref": "174fce8f87a590a1"
+    },
+    "SurvivalGuide.json|SurvivalGuide_hotbar_description_joypad": {
+        "value": "使用快捷欄能更快存取武器. 用 %1 把武器繫結到快捷欄槽位, 然後按 %2 裝備. <LINE> 穿戴皮帶和槍套能讓你獲得更多快捷欄槽位.",
+        "ref": "82e906de74ecc644"
+    },
+    "SurvivalGuide.json|SurvivalGuide_hotbar_title": {
+        "value": "快捷欄",
+        "ref": "f370bc080e797041"
+    },
+    "SurvivalGuide.json|SurvivalGuide_interactable_title": {
+        "value": "可互動物件",
+        "ref": "da14f410a3a4e1ce"
+    },
+    "SurvivalGuide.json|SurvivalGuide_inventory_title": {
+        "value": "戰利品",
+        "ref": "adbb791895bd37f3"
+    },
+    "SurvivalGuide.json|SurvivalGuide_laundry_description": {
+        "value": "最終, 你的衣服會沾上泥土或血跡. 這會讓傷口感染 (但不是殭屍感染) 機率上升, 所以要用肥皂和水保持乾淨. <LINE> 如果你懶得用手洗, 甚至可以使用洗衣機.",
+        "ref": "66ba0fe3719a1d05"
+    },
+    "SurvivalGuide.json|SurvivalGuide_laundry_title": {
+        "value": "洗滌衣物",
+        "ref": "cabed318cef160ea"
+    },
+    "SurvivalGuide.json|SurvivalGuide_lights_description": {
+        "value": "對有電的燈具或開關使用 %1 來開關燈. <LINE> 記住, 燈越亮, 活死人也越容易看到你!",
+        "ref": "b80cdf1b54109fdd"
+    },
+    "SurvivalGuide.json|SurvivalGuide_lights_title": {
+        "value": "開關燈",
+        "ref": "89ecb2c189b4d906"
+    },
+    "SurvivalGuide.json|SurvivalGuide_liquid_description": {
+        "value": "使用 %1 裝液體容器, 例如水瓶, 並檢視選項. <LINE> 使用液體轉移選單可取得更進階選項. <LINE> 開口容器可以收集雨水. 注意, 髒水對你的肚子不好! %2",
+        "ref": "11851853a890be9f"
+    },
+    "SurvivalGuide.json|SurvivalGuide_liquid_title": {
+        "value": "液體?!",
+        "ref": "fe171c2e36cafae5"
+    },
+    "SurvivalGuide.json|SurvivalGuide_map_description": {
+        "value": "按 %1 或點選左邊的 %2 開啟地圖, 檢視你的位置. 地圖可以透過探索或找到地圖 / 傳單來揭示地點. <LINE> 你可以用筆或鉛筆在地圖上做標記. <LINE> 別迷路了!",
+        "ref": "133bd54437105c5d"
+    },
+    "SurvivalGuide.json|SurvivalGuide_map_description_joypad": {
+        "value": "按 %1 並選擇 %2 開啟地圖, 檢視你的位置. 地圖可以透過探索或找到地圖 / 傳單來揭示地點. <LINE> 你可以用筆或鉛筆在地圖上做標記. <LINE> 別迷路了!",
+        "ref": "a13425e0dd0bc5e3"
+    },
+    "SurvivalGuide.json|SurvivalGuide_map_title": {
+        "value": "地圖",
+        "ref": "3f5b6ad3788a1ca9"
+    },
+    "SurvivalGuide.json|SurvivalGuide_mechanics_menu_description": {
+        "value": "在車輛引擎蓋旁按 %1, 或使用 %2 選單並選擇 %3, 檢視車輛狀況. 狀態差的車輛可能需要維修. <LINE> 機械技能能讓維修更容易! 而且事後不用付昂貴的修車費.",
+        "ref": "5a4f425690d79b3c"
+    },
+    "SurvivalGuide.json|SurvivalGuide_mechanics_menu_title": {
+        "value": "機械選單",
+        "ref": "6e8be4868c69499b"
+    },
+    "SurvivalGuide.json|SurvivalGuide_medical_check_description": {
+        "value": "對玩家使用 %1 並選擇執行醫療檢查的選項. <LINE> 在這裡你可以為其他玩家提供援助 - 或是檢查可怕的咬痕.",
+        "ref": "a3328129fbf34570"
+    },
+    "SurvivalGuide.json|SurvivalGuide_medical_check_title": {
+        "value": "醫療檢查",
+        "ref": "701e961345652769"
+    },
+    "SurvivalGuide.json|SurvivalGuide_melee_attack_description": {
+        "value": "按住 %1 瞄準裝備的近戰武器, 並用 %2 攻擊. <LINE> 你會朝等距游標方向攻擊. <LINE> 如果殭屍距離太近超出武器範圍, 你會改為推開牠們.",
+        "ref": "ede57dac4aeeb0d8"
+    },
+    "SurvivalGuide.json|SurvivalGuide_melee_attack_title": {
+        "value": "瞄準與近戰攻擊",
+        "ref": "ce8971a6e00f5f67"
+    },
+    "SurvivalGuide.json|SurvivalGuide_mining_description": {
+        "value": "你可以用鶴嘴鋤清除世界中小到中型的石頭或其他障礙物. <LINE> 瞄準石頭並按 %1 將它敲成可用的碎塊. <LINE> 別不小心敲到你的寵物石頭.",
+        "ref": "d516ac2cafb7e660"
+    },
+    "SurvivalGuide.json|SurvivalGuide_mining_title": {
+        "value": "清除石塊與採礦",
+        "ref": "c3168b539953e0c2"
+    },
+    "SurvivalGuide.json|SurvivalGuide_moodles_description": {
+        "value": "右邊的情緒圖示代表你角色的需求. <LINE> 綠色是好的 %1, 紅色是壞的 %2. <LINE> 如果你看到這個 %3, 那你就什麼都不用擔心了.",
+        "ref": "d18e9214dd412258"
+    },
+    "SurvivalGuide.json|SurvivalGuide_moodles_title": {
+        "value": "情緒管理",
+        "ref": "71dd1f9e0ef47296"
+    },
+    "SurvivalGuide.json|SurvivalGuide_movement_title": {
+        "value": "移動",
+        "ref": "d0b6bbec0cad11e8"
+    },
+    "SurvivalGuide.json|SurvivalGuide_multiplayer_chat_description": {
+        "value": "按 %1 在聊天中輸入文字. 聊天前可加入指令: /all (全域聊天, 不會吸引殭屍), /say 或 /s (本地聊天), /whisper 或 /w 後接使用者名稱 (私訊), <LINE> /yell 或 /y (大喊), /safehouse 或 /sh (安全屋成員), /faction 或 /f (派系成員), <LINE> /admin 或 /a (管理員聊天), /r 或 /radio (用已裝備的無線電發訊息).",
+        "ref": "054ebf0d9717b01e"
+    },
+    "SurvivalGuide.json|SurvivalGuide_multiplayer_chat_title": {
+        "value": "使用聊天框",
+        "ref": "4b8fdc58b4170087"
+    },
+    "SurvivalGuide.json|SurvivalGuide_multiplayer_title": {
+        "value": "多人連線",
+        "ref": "5b190b9ef430006e"
+    },
+    "SurvivalGuide.json|SurvivalGuide_open_cans_description": {
+        "value": "罐頭或罐子裡的食物可以透過製作選單或對其使用 %1 選單開啟. <LINE> 罐頭需要開罐器或刀刃才能開啟.",
+        "ref": "ecc0ec8d692a5342"
+    },
+    "SurvivalGuide.json|SurvivalGuide_open_cans_title": {
+        "value": "開啟罐頭食物",
+        "ref": "10f87bb94cbe9353"
+    },
+    "SurvivalGuide.json|SurvivalGuide_open_seeds_description": {
+        "value": "種子必須先從種子包取出才能種植. <LINE> 你可以對種子包使用 %1, 或透過製作選單來完成.",
+        "ref": "bd1e11c9a5d37cf0"
+    },
+    "SurvivalGuide.json|SurvivalGuide_open_seeds_title": {
+        "value": "開啟種子包",
+        "ref": "835e29db104fe606"
+    },
+    "SurvivalGuide.json|SurvivalGuide_petting_description": {
+        "value": "撫摸動物會降低牠們的壓力 - 還有你的! 每日降壓效果有次數限制. <LINE> 你甚至能和老鼠交朋友. 畢竟末日世界是個孤獨的地方!",
+        "ref": "bc83be261d460847"
+    },
+    "SurvivalGuide.json|SurvivalGuide_petting_title": {
+        "value": "撫摸",
+        "ref": "49bc4876b678c31d"
+    },
+    "SurvivalGuide.json|SurvivalGuide_ranching_title": {
+        "value": "畜牧",
+        "ref": "e163f392b7f96784"
+    },
+    "SurvivalGuide.json|SurvivalGuide_reload_description": {
+        "value": "用 %1 裝填散裝子彈. 彈藥可用 %2 選單取出散裝. 某些槍械需要彈匣. 按住 %3 檢視更多進階裝填選項.",
+        "ref": "57f61c704df963de"
+    },
+    "SurvivalGuide.json|SurvivalGuide_reload_title": {
+        "value": "裝填彈藥",
+        "ref": "2dc05bee9201bc6f"
+    },
+    "SurvivalGuide.json|SurvivalGuide_rest_description": {
+        "value": "別讓疲倦 %1 和精疲力竭 %2 悄悄追上你! 它們會嚴重限制你的意識和能力. <LINE> 坐在椅子上喘口氣, 或睡在舒適的床上效果更好. <LINE> 安眠藥或止痛藥可能有幫助 - 但最好別和酒精混用.",
+        "ref": "ac784c2e733af54e"
+    },
+    "SurvivalGuide.json|SurvivalGuide_rest_title": {
+        "value": "休息與睡眠",
+        "ref": "624471226888b800"
+    },
+    "SurvivalGuide.json|SurvivalGuide_right_click_interact_description": {
+        "value": "許多物品有進階選項, 可透過 %1 檢視. <LINE> 試著對電視, 收音機, 發電機, 甚至在情況緊迫時, 對馬桶也試試看!",
+        "ref": "101a23d0dc3babaf"
+    },
+    "SurvivalGuide.json|SurvivalGuide_right_click_interact_title": {
+        "value": "右鍵互動",
+        "ref": "170261b31dbee907"
+    },
+    "SurvivalGuide.json|SurvivalGuide_seasons_and_weather_description": {
+        "value": "在諾克斯縣, 不只是殭屍才是威脅. <LINE> 雨, 雪, 霧和其他惡劣天氣條件會讓你受冷或淋溼, 並降低視線, 尤其是冬天. 別感冒了!",
+        "ref": "ac76912d52b1b468"
+    },
+    "SurvivalGuide.json|SurvivalGuide_seasons_and_weather_title": {
+        "value": "天氣",
+        "ref": "b2fbacf784e87eab"
+    },
+    "SurvivalGuide.json|SurvivalGuide_sheet_ropes_description": {
+        "value": "對窗戶使用 %1 用釘子掛上逃生繩. 你只需要一根釘子和錘子, 但每一層樓到地面都需要一條繩子 (例如二樓需要兩條). <LINE> 我們 (還) 沒教殭屍爬繩, 但牠們仍然能扯斷繩子.",
+        "ref": "aa017a4e132453d6"
+    },
+    "SurvivalGuide.json|SurvivalGuide_sheet_ropes_title": {
+        "value": "逃生繩",
+        "ref": "766d532f6f2580d9"
+    },
+    "SurvivalGuide.json|SurvivalGuide_shooting_description": {
+        "value": "用 %1 瞄準裝備的槍械, 並用 %2 開火. 十字準星越小, 你的射擊越準確. <LINE> 命中率受技能, 情緒, 光線等影響. <LINE> 別朝自己的腳開槍.",
+        "ref": "328110fdc3b0cef3"
+    },
+    "SurvivalGuide.json|SurvivalGuide_shooting_title": {
+        "value": "射擊",
+        "ref": "c8c6a133e18b7a50"
+    },
+    "SurvivalGuide.json|SurvivalGuide_shouting_description": {
+        "value": "按 %1 大喊吸引附近的殭屍. 蹲著時這麼做會變成耳語. <LINE> 你可以使用某些物品製造更大的聲響, 例如口哨, 口琴等. <LINE> 與傳言相反, 很遺憾, 大喊無法治癒諾克斯病毒.",
+        "ref": "ce0a11e8c977f745"
+    },
+    "SurvivalGuide.json|SurvivalGuide_shouting_description_joypad": {
+        "value": "按 %1 並選擇 %2 大喊吸引附近的殭屍. 蹲著時這麼做會變成耳語. <LINE> 你可以使用某些物品製造更大的聲響, 例如口哨, 口琴等. <LINE> 與傳言相反, 很遺憾, 大喊無法治癒諾克斯病毒.",
+        "ref": "ec5dc2b4e69172c6"
+    },
+    "SurvivalGuide.json|SurvivalGuide_shouting_title": {
+        "value": "大喊",
+        "ref": "cf6406bd53ba36cd"
+    },
+    "SurvivalGuide.json|SurvivalGuide_shove_description": {
+        "value": "按 %1 推開殭屍. 你也可以按 %2 踩踏倒地的殭屍. <LINE> 用腳能保留武器的耐久. <LINE> 記得瞄準頭部!",
+        "ref": "9670bc9180b57e3e"
+    },
+    "SurvivalGuide.json|SurvivalGuide_shove_title": {
+        "value": "推開與踩踏",
+        "ref": "03d7e35a5bbd555a"
+    },
+    "SurvivalGuide.json|SurvivalGuide_skill_books_description": {
+        "value": "有些書會給你技能倍率加速升級. <LINE> 你也可以從雜誌, VHS 錄影帶或其他特殊物品學習製作配方. <LINE> 技能升級有時也會解鎖新配方.",
+        "ref": "66ccdbbc02ada3fd"
+    },
+    "SurvivalGuide.json|SurvivalGuide_skill_books_title": {
+        "value": "技能書",
+        "ref": "311b7acc0e9bd4e7"
+    },
+    "SurvivalGuide.json|SurvivalGuide_sneak_fence_description": {
+        "value": "按 %1 蹲下並保持低姿. 為了更有效隱蔽, 蹲在矮欄杆和車輛旁. <LINE> 如果你靠得太近, 蹲下也阻止不了活死人看到或聽到你! <LINE> 注意, 蹲下比走路消耗更多耐力.",
+        "ref": "60bb820067e5a329"
+    },
+    "SurvivalGuide.json|SurvivalGuide_sneak_fence_title": {
+        "value": "蹲下與潛行",
+        "ref": "8f61b2975b9f13dd"
+    },
+    "SurvivalGuide.json|SurvivalGuide_sow_seeds_description": {
+        "value": "對挖好的田溝使用 %1 種下種子. <LINE> 然後你可以對植物使用 %1 或 %2 檢視資訊面板. <LINE> 留意季節與作物需求.",
+        "ref": "98c7447f09ac25e2"
+    },
+    "SurvivalGuide.json|SurvivalGuide_sow_seeds_description_joypad": {
+        "value": "對挖好的田溝使用 %1 種下種子. <LINE> 然後你可以對植物使用 %1 檢視資訊面板. <LINE> 留意季節與作物需求.",
+        "ref": "c610ea4aad31445b"
+    },
+    "SurvivalGuide.json|SurvivalGuide_sow_seeds_title": {
+        "value": "播種",
+        "ref": "ed584d0829d848d9"
+    },
+    "SurvivalGuide.json|SurvivalGuide_start_vehicle_description": {
+        "value": "如果你在車內並擁有鑰匙, 用 %1 啟動引擎. 使用 %2%3%4%5 開車和轉向. 小心駕駛! 引擎噪音會吸引殭屍. <LINE> 車輛的儀表板會顯示重要資訊, 並讓你解鎖車門或後車廂.",
+        "ref": "3aa513731109e107"
+    },
+    "SurvivalGuide.json|SurvivalGuide_start_vehicle_description_joypad": {
+        "value": "如果你在車內並擁有鑰匙, 用 %1 啟動引擎. 使用 %2 開車和轉向. 小心駕駛! 引擎噪音會吸引殭屍. <LINE> 車輛的儀表板會顯示重要資訊.",
+        "ref": "5f38bcd8cbbf7637"
+    },
+    "SurvivalGuide.json|SurvivalGuide_start_vehicle_title": {
+        "value": "發動車輛",
+        "ref": "c81ac2728a933c8e"
+    },
+    "SurvivalGuide.json|SurvivalGuide_stealth_kill_description": {
+        "value": "夠勇敢嗎? 裝備刀具並潛行到敵人身後. 瞄準, 等手舉起時 - 出手! 無聲但致命.",
+        "ref": "d6e83f15341ce92f"
+    },
+    "SurvivalGuide.json|SurvivalGuide_stealth_kill_title": {
+        "value": "潛行刺殺",
+        "ref": "7b7f141a287de7fd"
+    },
+    "SurvivalGuide.json|SurvivalGuide_strafing_description": {
+        "value": "瞄準時移動就是側步. <LINE> 側步是一種邊觀察邊潛行的方式, 但速度會較慢.",
+        "ref": "352325ffc986042c"
+    },
+    "SurvivalGuide.json|SurvivalGuide_strafing_title": {
+        "value": "側步",
+        "ref": "dd2bf72990084f41"
+    },
+    "SurvivalGuide.json|SurvivalGuide_television_description": {
+        "value": "電視和收音機讓你收聽新聞, 音樂等. 有些還能播放 VHS 錄影帶或 CD. <LINE> 某些節目會給你技能點或新配方. <LINE> 別愛上那個木工哥哥了.",
+        "ref": "cff08f38a58c921e"
+    },
+    "SurvivalGuide.json|SurvivalGuide_television_title": {
+        "value": "電視 / 收音機",
+        "ref": "2695a575c761bc4b"
+    },
+    "SurvivalGuide.json|SurvivalGuide_temperature_description": {
+        "value": "適當的衣物能維持體溫調節. 過高或過低的溫度都會對你造成負面影響. <LINE> 某些衣物能提供不只是天氣的保護, 甚至還能透過裁縫加強!",
+        "ref": "fda3bcdf98f06e1b"
+    },
+    "SurvivalGuide.json|SurvivalGuide_temperature_title": {
+        "value": "衣物與體溫",
+        "ref": "009b33545d81697f"
+    },
+    "SurvivalGuide.json|SurvivalGuide_trailers_description": {
+        "value": "在車輛後方附近使用 %1 選單來掛接 %2 或卸下拖車 %3. <LINE> 拖車能增加額外儲存空間, 或讓你運送動物, 但也會影響車輛操控.",
+        "ref": "5df41f5d9ad253b5"
+    },
+    "SurvivalGuide.json|SurvivalGuide_trailers_title": {
+        "value": "拖車",
+        "ref": "449d62c8e2efa127"
+    },
+    "SurvivalGuide.json|SurvivalGuide_trapping_description": {
+        "value": "在世界中放置陷阱來捕捉小動物. 對物品欄中的陷阱使用 %1 放置, 然後對它使用 %2 選單加入誘餌. <LINE> 裝好誘餌的陷阱需要你遠離一段時間才能抓到動物. <LINE> 陷阱可以活捉兔子或浣熊等動物, 但某些動物如鳥類會被陷阱殺死.",
+        "ref": "efedf7f5f82a1118"
+    },
+    "SurvivalGuide.json|SurvivalGuide_trapping_title": {
+        "value": "陷阱",
+        "ref": "8d9919b36af74ebb"
+    },
+    "SurvivalGuide.json|SurvivalGuide_treat_water_description": {
+        "value": "髒水 (通常來自河流或收集的雨水) 不適合飲用. <LINE> 煮沸或使用淨水錠讓它變安全.",
+        "ref": "2f804214f0046fe0"
+    },
+    "SurvivalGuide.json|SurvivalGuide_treat_water_title": {
+        "value": "淨化水",
+        "ref": "3a2e8b6f4869eb19"
+    },
+    "SurvivalGuide.json|SurvivalGuide_vaulting_description": {
+        "value": "按 %1 可以跳過圍欄. 跑動時也會自動翻越 - 但對牆壁就沒那麼好用了. <LINE> 小心腳步 - 笨手笨腳的人可能會絆倒!",
+        "ref": "57f25c2a98ebef0d"
+    },
+    "SurvivalGuide.json|SurvivalGuide_vaulting_title": {
+        "value": "翻越",
+        "ref": "f30e742086ab7d93"
+    },
+    "SurvivalGuide.json|SurvivalGuide_vehicle_radial_menu_description": {
+        "value": "在車內或車輛附近按 %1 檢視選項. <LINE> 這會讓你做加油, 鎖門, 或打破車窗等事情.",
+        "ref": "066036ba94766870"
+    },
+    "SurvivalGuide.json|SurvivalGuide_vehicle_radial_menu_title": {
+        "value": "車輛選單",
+        "ref": "ba9b6845ab4df889"
+    },
+    "SurvivalGuide.json|SurvivalGuide_vehicle_storage_description": {
+        "value": "車輛後車廂能儲存大量物品 - 或一兩具屍體. <LINE> 手套箱甚至座位也能當儲存空間.",
+        "ref": "29a8be53f3eefd5d"
+    },
+    "SurvivalGuide.json|SurvivalGuide_vehicle_storage_title": {
+        "value": "車輛儲存",
+        "ref": "1f3123198dc377e7"
+    },
+    "SurvivalGuide.json|SurvivalGuide_vehicles_title": {
+        "value": "車輛",
+        "ref": "9c3be434bc376aa3"
+    },
+    "SurvivalGuide.json|SurvivalGuide_walkingrunning_description": {
+        "value": "要移動虛擬雙腿, 使用 %1%2%3%4. 這叫走路. <LINE> 你也可以按 %5 跑步, 或 %6 衝刺. <LINE> 小心 - 跑步或衝刺很吵, 會吸引活死人.",
+        "ref": "bb4e9dbf3423636c"
+    },
+    "SurvivalGuide.json|SurvivalGuide_walkingrunning_description_joypad": {
+        "value": "要移動虛擬雙腿, 使用 %1. 這叫走路. <LINE> 你也可以按 %2 跑步, 或 %3 衝刺. <LINE> 小心 - 跑步或衝刺很吵, 會吸引活死人.",
+        "ref": "1a6bce45efc404e2"
+    },
+    "SurvivalGuide.json|SurvivalGuide_walkingrunning_title": {
+        "value": "行走與奔跑",
+        "ref": "fff48b092f983246"
+    },
+    "SurvivalGuide.json|SurvivalGuide_weather_title": {
+        "value": "天氣",
+        "ref": "b2fbacf784e87eab"
+    },
+    "SurvivalGuide.json|SurvivalGuide_weight_distribution_description": {
+        "value": "你能攜帶多少受力量和情緒限制. <LINE> 裝備背包裡的物品比主物品欄輕. <LINE> 不同背包有不同容量與重量減免.",
+        "ref": "5704440258b07b30"
+    },
+    "SurvivalGuide.json|SurvivalGuide_weight_distribution_title": {
+        "value": "負重",
+        "ref": "7ed09408dddb5a1c"
+    },
+    "SurvivalGuide.json|SurvivalGuide_windows_description": {
+        "value": "在窗邊輕按 %1 可開關窗. 按住 %2 可攀爬穿越. <LINE> 你可以用輕按 %1 強行開啟鎖著的窗戶, 但有時會弄壞鎖. 你也能直接砸破窗戶 - 但小心碎玻璃!",
+        "ref": "95873359e03b858d"
+    },
+    "SurvivalGuide.json|SurvivalGuide_windows_title": {
+        "value": "開關窗戶",
+        "ref": "aa4a846cc3619d0a"
+    },
+    "SurvivalGuide.json|SurvivalGuide_zombie_attacks_description": {
+        "value": "如果活死人包圍你, 牠們能把你拉倒並立刻殺死你! <LINE> 背後攻擊特別危險. 可惜, 沒辦法和殭屍成為朋友.",
+        "ref": "b47c66bff6c4b561"
+    },
+    "SurvivalGuide.json|SurvivalGuide_zombie_attacks_title": {
+        "value": "殭屍攻擊",
+        "ref": "559a1f2b6528a1e0"
+    },
+    "Tooltip.json|Tooltip_Animal_BetterOnHook": {
+        "value": "如果你在沒有屠宰鉤的情況下屠宰, <br>你會得到更少的肉, 且得不到皮革.",
+        "ref": "f192a936336a8b45"
+    },
+    "Tooltip.json|Tooltip_ButcherUI_CantAddThis": {
+        "value": "對於屠宰鉤來說, 這不是一隻合適的死動物.",
+        "ref": "0bf2b364ccf1a508"
+    },
+    "Tooltip.json|Tooltip_DoorIsLocked": {
+        "value": "門已上鎖",
+        "ref": "bfcf6650cb02c4ea"
+    },
+    "Tooltip.json|Tooltip_item_Unattached": {
+        "value": "未安裝",
+        "ref": "2e03e7c94fc7b46f"
+    },
+    "UI.json|UI_Resume": {
+        "value": "繼續",
+        "ref": "c3396195e91ccdd8"
+    },
+    "UI.json|UI_WorkshopSubmit_BtnCreateAndUpdate": {
+        "value": "建立/更新模組",
+        "ref": "873a119207fab0ef"
+    },
+    "UI.json|UI_WorkshopSubmit_BtnExistingItem": {
+        "value": "更新該模組. \\n進入 Steam 創意工坊.",
+        "ref": "37472bd29f85f520"
+    },
+    "UI.json|UI_WorkshopSubmit_BtnNewItem": {
+        "value": "這是一個新的 Steam 創意工坊模組. \\n建立一個新的 Steam 創意工坊 ID.",
+        "ref": "d7417c0fbced3093"
+    },
+    "UI.json|UI_WorkshopSubmit_BtnOpenWorkshopOverlay": {
+        "value": "開啟 Steam 瀏覽器檢視創意工坊模組",
+        "ref": "7704996d62734d4d"
+    },
+    "UI.json|UI_WorkshopSubmit_BtnOpenWorkshopUserOverlay": {
+        "value": "開啟 Steam 瀏覽器檢視我建立的模組",
+        "ref": "38ff27446a31bc65"
+    },
+    "UI.json|UI_WorkshopSubmit_BtnViewSubscriptions": {
+        "value": "檢視訂閱模組",
+        "ref": "05a27dec4b2fe6ca"
+    },
+    "UI.json|UI_WorkshopSubmit_ContentFolder": {
+        "value": "把你的模組放在該目錄下: ",
+        "ref": "17deaf5734fc6114"
+    },
+    "UI.json|UI_WorkshopSubmit_Legal1": {
+        "value": "你同意提交此模組",
+        "ref": "1208e8d8836293c3"
+    },
+    "UI.json|UI_WorkshopSubmit_OverlayButton": {
+        "value": "開啟 Steam 瀏覽器檢視該模組",
+        "ref": "24c51894fa8ed162"
+    },
+    "UI.json|UI_WorkshopSubmit_Title1": {
+        "value": "選擇模組目錄",
+        "ref": "8220218edc742dc5"
+    },
+    "UI.json|UI_WorkshopSubmit_Title2": {
+        "value": "編輯模組詳細資訊",
+        "ref": "c7da8d4f358d01eb"
+    },
+    "UI.json|UI_WorkshopSubmit_Title3": {
+        "value": "新的或現有的模組?",
+        "ref": "60e7288703c6b9bf"
+    },
+    "UI.json|UI_WorkshopSubmit_Title4": {
+        "value": "輸入模組的 Steam 創意工坊 ID",
+        "ref": "497a5fecd75174d5"
+    },
+    "UI.json|UI_WorkshopSubmit_Title5": {
+        "value": "準備釋出模組",
+        "ref": "f9f1b9b27bf88ed5"
+    },
+    "UI.json|UI_WorkshopSubmit_Title7": {
+        "value": "釋出模組至 Steam 創意工坊",
+        "ref": "83bd05c7ce29a063"
+    },
+    "UI.json|UI_WorkshopSubmit_Title8": {
+        "value": "模組錯誤",
+        "ref": "1fd489c0272a63de"
+    },
+    "UI.json|UI_WorkshopSubmit_TitleEditDescription": {
+        "value": "編輯模組描述",
+        "ref": "8be057968484a14b"
+    },
+    "UI.json|UI_WorkshopSubmit_TitleEditTags": {
+        "value": "編輯模組標籤",
+        "ref": "d29c7e2bfa211d87"
+    },
+    "UI.json|UI_mainscreen_credits": {
+        "value": "製作團隊",
+        "ref": "46dd9d38e3296bcc"
+    },
+    "UI.json|UI_mainscreen_credits_escape": {
+        "value": "按 %1 離開.",
+        "ref": "d80c9da802419f4f"
+    },
+    "UI.json|UI_mainscreen_credits_escape_joypad": {
+        "value": "按 <JOYPAD:AButton,28,28> 離開.",
+        "ref": "a847560ad0972a8d"
+    },
+    "UI.json|UI_optionscreen_populateServerListOnStart": {
+        "value": "啟動時載入伺服器清單",
+        "ref": "dbaa73b3e8f29279"
+    },
+    "UI.json|UI_optionscreen_populateServerListOnStartTooltip": {
+        "value": "伺服器清單預設在開啟多人頁籤時載入, 可設定為遊戲啟動時載入.",
+        "ref": "53e769265a52f096"
+    },
+    "UI.json|UI_servers_streamerMode": {
+        "value": "實況模式",
+        "ref": "5974f9f5552f1d2c"
+    },
+    "UI.json|UI_servers_streamerMode_tooltip": {
+        "value": "隱藏畫面上所有 IP 位址. 開始實況前請先開啟此選項以避免遭受 DDoS 攻擊.",
+        "ref": "71f1a1a3461431b0"
+    },
+    "Valley Station, KY.json|description": {
+        "value": "<CENTRE> <SIZE:medium> 谷 地 車 站 <LINE> <LINE><LEFT> <SIZE:small> 儘 管 沿 著 迪 克 西 高 速 公 路 距 離 路 易 維 爾 只 有 短 程 車 距 , 谷 地 車 站 卻 是 最 悠 閒 的 鄉 村 生 活 . 花 一 天 看 俄 亥 俄 河 緩 緩 流 過 . 到 傑 佛 遜 森 林 賞 鳥 , 健 行 或 打 獵 . <LINE> <LINE> 當 你 準 備 好 回 到 都 市 生 活 時 , 到 十 字 路 口 購 物 中 心 吧 , 幾 乎 所 有 你 想 要 的 都 能 在 那 裡 找 到 ! ",
+        "ref": "3b35ed26d1445ed8"
+    },
+    "Valley Station, KY.json|title": {
+        "value": "肯塔基州, 谷地車站",
+        "ref": "2f2e4ee7743d2936"
+    }
+}
