@@ -1,6 +1,6 @@
 {
     "credits_start": " <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <LINE> <CENTRE> <SIZE:credits2> 殭屍毀滅工程由此團隊驕傲打造 <LINE> <LINE> <LINE> <IMAGECENTRE:media/ui/Logos/TheIndieStoneLogo_credits.png> <LINE> ",
-    "credits_role_group.executives_and_leadership": "高管 & 領導層",
+    "credits_role_group.executives_and_leadership": "高 階 主 管 與 領 導 團 隊",
     "credits_role.head_raccoon": "首席浣熊",
     "credits_role.founders": "創辦人",
     "credits_role.art_director": "美術總監",
@@ -13,7 +13,7 @@
     "credits_role.lead_gameplay_programmer": "首席玩法程式設計師",
     "credits_role.lead_technical_programmer": "首席技術程式設計師",
     "credits_role.engineers": "工程師",
-    "credits_role.additional_code": "支援程式碼",
+    "credits_role.additional_code": "額外程式設計",
     "credits_role_group.production": "製作",
     "credits_role.producer": "製作人",
     "credits_role.associate_producer": "副製作人",
@@ -75,7 +75,7 @@
     "credits_role_group.localization": "在地化 <LINE> <LINE> <SIZE:medium> PZ 社群 <LINE> (個別譯者名單可在翻譯選項中查看)",
     "credits_role.localization": "",
     "credits_role_group.tools": " <SIZE:credits2> 工具 <SIZE:medium> <LINE> <LINE> 音效引擎：FMOD Studio by Firelight Technologies <LINE> <LINE> <IMAGECENTRE:media/ui/Logos/FMOD_credits.png> <LINE> <LINE> <LINE> 使用 Bink Video. Copyright (C) 1997-2026 by Epic Games Tools LLC <LINE> <LINE> <IMAGECENTRE:media/ui/Logos/Bink_credits.png>",
-    "credits_role_group.in_loving_memory_of": "謹以此獻上懷念 <LINE> ",
+    "credits_role_group.in_loving_memory_of": "謹此緬懷 <LINE> ",
     "credits_role.in_loving_memory_of": "",
     "credits_role.senior_qa": "資深 QA 測試員",
     "credits_role.localisation_lead": "在地化負責人"

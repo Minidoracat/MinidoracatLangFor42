@@ -1,8 +1,8 @@
 {
     "EC_Entity_DisplayName_Default": "通用實體名稱",
     "EC_Entity_BuildDescription_Default": "通用實體建造描述",
-    "EC_Energy": "電力",
-    "EC_Energies": "能源型別",
+    "EC_Energy": "能量",
+    "EC_Energies": "能源類型",
     "EC_Energy_Not_Set": "未設定能源",
     "EC_Energy_Electric": "電力",
     "EC_Energy_Mechanical": "機械能",
