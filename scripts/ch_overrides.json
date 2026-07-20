@@ -25298,7 +25298,7 @@
         "ref": "54220be4fc5d6237"
     },
     "Recipes.json|Forge_Small_Steel_Sheet": {
-        "value": "鍛造小型鋼板",
+        "value": "鍛造小鋼板",
         "ref": "5bc1653ae5bfbc54"
     },
     "Recipes.json|Forge_Smithing_Hammer_Head": {
@@ -25796,5 +25796,33 @@
     "Recorded_Media.json|RM_64034768-ea44-43da-8b2f-fed8f24bc401": {
         "value": "[img=music] *放克風, 戲劇性的音樂* [img=music]",
         "ref": "1314e6e0613f482b"
+    },
+    "ItemName.json|Base.SmallSheetMetal": {
+        "value": "小鋼板",
+        "ref": "2db293324927e8cd"
+    },
+    "ItemName.json|Base.MetalPipe_Broken": {
+        "value": "鐵管 (斷裂)",
+        "ref": "319f75df5d6816f0"
+    },
+    "ItemName.json|Base.MetalPipe_Railspike": {
+        "value": "鐵管 (鐵軌釘)",
+        "ref": "09a25679cc9a5b83"
+    },
+    "Recipes.json|SawSteelSheetIntoSmallSheets": {
+        "value": "將鋼板鋸成小鋼板",
+        "ref": "5af1878b6c9e0d2f"
+    },
+    "ItemName.json|Base.SteelRodHalf": {
+        "value": "鋼棒 (1/2)",
+        "ref": "fa70f2e3fc85e2a0"
+    },
+    "ItemName.json|Base.SteelRodQuarter": {
+        "value": "鋼棒 (1/4)",
+        "ref": "614f23ce21ba603e"
+    },
+    "Recipes.json|CutSteelSheetIntoSmallSheets": {
+        "value": "將鋼板切割成小鋼板",
+        "ref": "8d04fbfd6a07791d"
     }
 }
