@@ -4,6 +4,12 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.19.0-1.8.1] - 2026-07-20
+
+### Fixed
+
+- **B42 冶金家族 EN 錨定殘漏補齊**（玩家回報追查，8 鍵）：小金屬板→小鋼板（Steel Sheet - Small）、金屬管 (斷裂)/(鐵軌釘)→鐵管（Broken Iron Pipe／Iron Pipe with Railspike）、金屬棒 (1/2)/(1/4)→鋼棒（Steel Rod Half/Quarter）、「將金屬板鋸成鋼片」→「將鋼板鋸成小鋼板」（原譯產物指錯物品）、「切割金屬板」→「將鋼板切割成小鋼板」、「鍛造小型鋼板」→「鍛造小鋼板」。SheetMetal＝鋼板（Steel Sheet）維持——B42 顯示名已區分鐵/鋼（Iron/Steel Bar・Ingot），「金屬片」提議經查證不採納。
+
 ## [42.19.0-1.8.0] - 2026-07-20
 
 ### Added
