@@ -4,6 +4,23 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.19.0-1.8.0] - 2026-07-20
+
+### Added
+
+- **`scripts/ch_overrides.json` 人工覆寫層機制**：sync-ch 機轉全量再生後套用人工真相檔（6,449 筆，schema `{"檔名|鍵": {"value", "ref"}}`，ref 為登記時 REF 原文 hash）——REF 原文變更時提醒重審、鍵從 REF 消失時提醒清理、缺檔報錯不自動建骨架。sync-ch 自此**冪等可安全重跑**，人工潤飾不再被上游同步洗掉。streets.txt 不再誤生成（未版控無消費端）；credits.txt 標人工維護檔，sync-cn/sync-ch 雙向退出同步。
+
+### Changed
+
+- **As1 REF v3.20 甄選同步**：以 vanilla EN 42.19 錨定逐鍵判定（As1 倉庫疑遭歷史重寫、v3.19/v3.20 對 SurvivalGuide/Recorded_Media/城市描述/Credits 含大量舊譯回退，「REF 較新≠較好」）——接受真更新（地址修正、JOYPAD 語意 token 對齊 42.19 鍵位綁定、文案更新），以 override 保護高品質重譯版與既有人工修正；ContextMenu 新增 8 鍵。
+- **全量術語統一**（40 組詞、448 鍵）：殭屍（含遊戲名「殭屍毀滅工程」）／選單／清單／目前／透過／倖存者／使用者／品質／資訊／介面／互動／建立／相容／載入／登入／預設／圖示／視窗／游標／搜尋／自訂／點擊／教學／控制器等；Moodles→狀態／狀態圖示、Workshop item→物品（Steam 官方譯法）、Valley Station 統一「山谷站」、城市描述專名依專案標準（星聚影城、爆紅錄影帶租賃、五級火辣餐館、歐文頓 Speedway 賽道、極限方程式）。
+- **全量深度潤色**（一簡對多繁 62 組字表掃描＋1.9 萬鍵 EN/CN/CH 三方逐句審讀，6,500+ 條修正）：嚴重誤譯修正（DESTROY YOUR SAVIOURS、quiche 法式鹹派、Cock a Rifle 槍機上膛、pupil 義眼瞳孔、left it here 反譯、Man alive 慣用語）、漏譯補回（how and when、FCC 與 CDC、球賽局數）、Moodles 全系列語意校正（Exhausted／Hopeless／At Breaking Point 等）、農作物台灣名（青花菜／馬鈴薯／高麗菜／櫛瓜／地瓜）、字形修正（控制檯→控制台、櫃臺→櫃檯、天后→天後、遊泳／游泳分流、不準→不准、量詞隻）。
+
+### Fixed
+
+- OpenCC 字典新增 50+ 條防護規則（制作、龍捲風、合並、型別、另一頭髮生等，含 CJK 空格版 pattern 與跨詞誤傷防護）；suspicious 巡檢排除清單擴充（秀髮／生髮／峇里島／蒂伯雷里／里子等正確用法不再誤報）。
+- airmass「空氣質量」誤譯修正為「氣團」（ClimatePlotter 三鍵）；petting zoo 三鍵定名「可愛動物區」；Shotgun3 手把教學依 EN 重寫（原版紅圈誤作綠框、瞄準／射擊按鍵顛倒）；上游 typo 鍵 `GUI_Tutorial1_Shotgun4Joypad` 內容搬移至正確鍵（CH/CN）；`%1%` placeholder 崩潰修正與 `6%。` 安全標點持續受 override 保護。
+
 ## [42.19.0-1.7.0] - 2026-07-14
 
 ### Added
