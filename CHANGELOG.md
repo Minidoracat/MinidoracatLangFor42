@@ -4,6 +4,23 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.19.0-1.8.2] - 2026-07-21
+
+### Changed
+
+- **泥作（plaster/trowel）家族台灣化**（玩家反饋裁決＋codex 交叉判讀，28 鍵）：
+  - `PlasterTrowel`「鏝刀」→「**抹刀**」：「鏝刀」是台灣泥作正式術語但一般玩家陌生（社群反映「沒聽過」），依裁決改用通俗名；「石工抹刀」（Mason's Trowel）、「木製石工抹刀」（Wooden Trowel）EN 有別、維持不變。
+  - 動詞 plaster「抹灰」（大陸用語）→「**上灰泥**」：建造選單、配方、tooltip 全面替換。
+  - 桶裝 Plaster 成品「石膏」→「**灰泥**」：一桶 Plaster 可由「石膏粉＋水」或「生石灰＋水」兩條配方調成，生石灰調出的是石灰泥並非石膏，成品採泛稱「灰泥」才涵蓋兩條配方（Quicklime 提示「用作石膏」屬化學錯誤，修正為「調製成灰泥」）；原料 `PlasterPowder` 保留「袋裝**石膏粉**」——台灣五金行品名，原料用具體名、成品用泛稱。
+  - paint 統一「**刷漆**」：「粉刷」依教育部辭典兼指灰作與油漆施工，與 plaster 易混淆，避用；Paintbrush 引用寫回「油漆刷」。
+  - 「牆紙」→「**壁紙**」全家族統一（七色壁紙＋壁紙膠粉）。
+  - 「塗鴉」（Paint Sign 骷髏／箭頭彩繪）全族既有一致，維持不動。
+
+### Fixed
+
+- `ContextMenu_CantPlaster` 指錯工具：EN 明示需要 Plaster Trowel，原譯寫成「石工抹刀」→「抹刀」，材料「石膏」→「灰泥」。
+- legacy 灰泥配方鍵（`Recipe_Make_Bucket_of_Plaster` 系）「石膏」同步為「灰泥」。
+
 ## [42.19.0-1.8.1] - 2026-07-20
 
 ### Fixed
