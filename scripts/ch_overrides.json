@@ -7946,7 +7946,7 @@
         "ref": "1c535124669ebabd"
     },
     "ItemName.json|Base.PlasterTrowel": {
-        "value": "鏝刀",
+        "value": "抹刀",
         "ref": "834d0b3e3a4f0a89"
     },
     "ItemName.json|Base.Pop3": {
@@ -22826,7 +22826,7 @@
         "ref": "43698dec8580b1ca"
     },
     "Tooltip.json|Tooltip_craft_plasterWall": {
-        "value": "給牆或門框/窗框抹灰. 需要其至少達到精工級別.",
+        "value": "為牆或門框/窗框上灰泥. 需要精工級的建築構件.",
         "ref": "0b9fa8fc832bfacd"
     },
     "Tooltip.json|Tooltip_craft_signDesc": {
@@ -22850,11 +22850,11 @@
         "ref": "0cfada6856470e8d"
     },
     "Tooltip.json|Tooltip_craft_wallpaperWall": {
-        "value": "給牆或門框/窗框貼壁紙. 需要其至少達到精工級別.",
+        "value": "給牆或門框/窗框貼壁紙. 需要精工級的建築構件.",
         "ref": "248fab1563892c47"
     },
     "Tooltip.json|Tooltip_craft_woodenFrameDesc": {
-        "value": "安 裝 窗 戶 時 需 要 . <br> 可 以 加 固 ,  抹 灰 和 刷 漆 .",
+        "value": "安 裝 窗 戶 時 需 要 . <br> 可 以 加 固 ,  上 灰 泥 和 刷 漆 .",
         "ref": "c19863b9a4315263"
     },
     "Tooltip.json|Tooltip_craft_woodenStakeDesc": {
@@ -22942,7 +22942,7 @@
         "ref": "e1042a1edf02499c"
     },
     "Tooltip.json|Tooltip_item_Wallpaper": {
-        "value": "可 使 用 油 漆 刷 、 剪 刀 與 壁 紙 膠 ， 將 壁 紙 貼 到 抹 灰 的 牆 面 上 。",
+        "value": "可 使 用 油 漆 刷 、 剪 刀 與 壁 紙 膠 ， 將 壁 紙 貼 到 已 上 灰 泥 的 牆 面 上 。",
         "ref": "c1f2c1669f174189"
     },
     "Tooltip.json|Tooltip_lightFireNoEndurance": {
@@ -24438,11 +24438,11 @@
         "ref": "d83095b3832a445a"
     },
     "ContextMenu.json|ContextMenu_WallCoverings": {
-        "value": "刷漆, 抹灰, 塗鴉和壁紙",
+        "value": "刷漆, 上灰泥, 塗鴉和壁紙",
         "ref": "d8bd1c10674f13fe"
     },
     "ContextMenu.json|ContextMenu_WallCoverings_tooltip": {
-        "value": "刷漆, 抹灰, 塗鴉和壁紙現在已被移動至建造選單.",
+        "value": "刷漆, 上灰泥, 塗鴉和壁紙現在已被移動至建造選單.",
         "ref": "359bab98d6537730"
     },
     "IG_UI.json|IGUI_AdminPanel_ModalAdminPower": {
@@ -25824,5 +25824,85 @@
     "Recipes.json|CutSteelSheetIntoSmallSheets": {
         "value": "將鋼板切割成小鋼板",
         "ref": "8d04fbfd6a07791d"
+    },
+    "ContextMenu.json|ContextMenu_Plaster": {
+        "value": "上灰泥",
+        "ref": "835097ad0d14821a"
+    },
+    "ContextMenu.json|ContextMenu_CantPlaster": {
+        "value": "需要灰泥和抹刀才能在牆面上抹灰泥.",
+        "ref": "cc1a977861eeeba5"
+    },
+    "ItemName.json|Base.BucketPlasterFull": {
+        "value": "水桶 (灰泥)",
+        "ref": "11df5d2f77365ebd"
+    },
+    "ItemName.json|Base.BucketCarvedPlasterFull": {
+        "value": "雕刻木桶 (灰泥)",
+        "ref": "80442f7c6deaa006"
+    },
+    "Recipes.json|MakeBucketOfPlaster": {
+        "value": "調製一桶灰泥",
+        "ref": "db6861b939e9b639"
+    },
+    "Recipes.json|PlasterWall": {
+        "value": "為牆面抹上灰泥",
+        "ref": "53ff2a58eb986bb2"
+    },
+    "Tooltip.json|Tooltip_craft_woodenWallDesc": {
+        "value": "簡單的牆, 可以加固, 上灰泥和刷漆.",
+        "ref": "4514bf9304662689"
+    },
+    "Tooltip.json|Tooltip_craft_paintWall": {
+        "value": "用於為已上灰泥的牆壁或其他物件刷漆.",
+        "ref": "fdadc56095fbade8"
+    },
+    "Tooltip.json|Tooltip_PlasterPowder": {
+        "value": "用於為高階木牆上灰泥, 需要一桶水.",
+        "ref": "626e9ba7f3b77bc6"
+    },
+    "Tooltip.json|Tooltip_Paint": {
+        "value": "用於為已上灰泥的牆壁刷漆, 需要油漆刷.",
+        "ref": "19cf0ca160fbf40d"
+    },
+    "Tooltip.json|Tooltip_item_Quicklime": {
+        "value": "可與水混合, 調製成灰泥.",
+        "ref": "764a68c47fe08fe8"
+    },
+    "ItemName.json|Base.WallpaperPastePowder": {
+        "value": "袋裝壁紙膠粉末",
+        "ref": "0b8133eb51c7ad40"
+    },
+    "ItemName.json|Base.Wallpaper_BeigeStripe": {
+        "value": "壁紙 (米色條紋)",
+        "ref": "d8adef8e824fea82"
+    },
+    "ItemName.json|Base.Wallpaper_BlackFloral": {
+        "value": "壁紙 (黑色花卉)",
+        "ref": "13cc66658b5c34bd"
+    },
+    "ItemName.json|Base.Wallpaper_BlueStripe": {
+        "value": "壁紙 (藍色條紋)",
+        "ref": "d533366f0429bdb9"
+    },
+    "ItemName.json|Base.Wallpaper_GreenDiamond": {
+        "value": "壁紙 (綠色菱形)",
+        "ref": "da6343d539df35f4"
+    },
+    "ItemName.json|Base.Wallpaper_GreenFloral": {
+        "value": "壁紙 (綠色花卉)",
+        "ref": "903e63e8676e75cf"
+    },
+    "ItemName.json|Base.Wallpaper_PinkChevron": {
+        "value": "壁紙 (粉色V形)",
+        "ref": "233999881bb9bacd"
+    },
+    "ItemName.json|Base.Wallpaper_PinkFloral": {
+        "value": "壁紙 (粉色花卉)",
+        "ref": "231746f305bc2323"
+    },
+    "Recipes.json|Recipe_Make_Bucket_of_Plaster": {
+        "value": "製作一桶灰泥",
+        "ref": "e8bb5b4b52f4b7e0"
     }
 }
