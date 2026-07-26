@@ -70,7 +70,7 @@
         {
           "pattern": "^幹$",
           "replacement": "乾",
-          "note": "獨立值 Dry（如溫度狀態）"
+          "note": "獨立值 Dry（如溫度狀態）。本體專用合理分岔：模組包已否決勿移植（UI_Phrases_SWEAR4 髒話「幹」套用即毀，見 skill rules.md 移植警示；2026-07-25 實測誤殺再確認）"
         },
         {
           "pattern": "風幹",

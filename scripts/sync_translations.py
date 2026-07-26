@@ -900,6 +900,97 @@ def cmd_sync_ch():
             print(f"  ... 還有 {len(all_issues) - 50} 處")
 
 
+# ============================================================
+# 跨專案字典一致性檢查（fix-check 附掛）
+# ------------------------------------------------------------
+# 兩專案的 opencc_fixes.json 依 skill 進化協議應人工同步（新規則兩邊加）。
+# 此檢查自動比對，抓出「無註記的分岔」。允許的差異：
+#   - identity 規則（pattern == replacement，保護性文件規則，如 關係→關係）
+#   - note 含「分岔」或「勿移植」的已裁決語境分岔（如 ^幹$、外掛；裁決記錄
+#     見 pz-zhtw-polish skill 的 rules.md 移植警示表）
+# ============================================================
+SIBLING_FIXES_JSON = (
+    PROJECT_ROOT.parent / "MinidoracatModLangFor42" / "sources" / "opencc_fixes.json"
+)
+
+
+def check_dict_sync() -> list[str]:
+    """比對本體與模組包的 opencc_fixes.json，回傳無註記分岔的清單"""
+
+    issues: list[str] = []
+
+    def load(path: Path, side: str) -> tuple[dict[str, dict], dict[str, dict]] | None:
+        # identity 規則（pattern == replacement）為保護性文件規則，不參與比對；
+        # 檔內重複 pattern 會互相遮蔽，直接列為問題
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+            rules: dict[str, dict] = {}
+            for group in data.get("post_fixes", []):
+                for rule in group["rules"]:
+                    pattern = rule["pattern"]
+                    if pattern == rule["replacement"]:
+                        continue
+                    if pattern in rules:
+                        issues.append(f"  {side}字典檔內重複 pattern（後者遮蔽前者）: {pattern}")
+                    rules[pattern] = {
+                        "replacement": rule["replacement"],
+                        "category": group["category"],
+                        "note": rule.get("note", ""),
+                    }
+            sus = {
+                sp["char"]: {
+                    "before": set(sp.get("before_exclude", [])),
+                    "after": set(sp.get("after_exclude", [])),
+                }
+                for sp in data.get("suspicious_patterns", [])
+            }
+            return rules, sus
+        except (OSError, json.JSONDecodeError, KeyError, TypeError) as exc:
+            issues.append(f"  無法讀取{side}字典（{path}）: {exc!r}，本次未比對")
+            return None
+
+    def allowed(rule: dict) -> bool:
+        return "分岔" in rule["note"] or "勿移植" in rule["note"]
+
+    loaded_mine = load(FIXES_JSON, "本體")
+    loaded_theirs = load(SIBLING_FIXES_JSON, "模組包")
+    if loaded_mine is None or loaded_theirs is None:
+        return issues
+    mine, mine_sus = loaded_mine
+    theirs, theirs_sus = loaded_theirs
+
+    for pattern, rule in mine.items():
+        other = theirs.get(pattern)
+        if other is None:
+            if not allowed(rule):
+                issues.append(
+                    f"  本體獨有且無分岔註記: [{rule['category']}] {pattern} → {rule['replacement']}"
+                )
+        elif other["replacement"] != rule["replacement"]:
+            if not (allowed(rule) or allowed(other)):
+                issues.append(
+                    f"  replacement 分歧且無註記: {pattern} → 本體「{rule['replacement']}」/ 模組包「{other['replacement']}」"
+                )
+    for pattern, rule in theirs.items():
+        if pattern not in mine and not allowed(rule):
+            issues.append(
+                f"  模組包獨有且無分岔註記: [{rule['category']}] {pattern} → {rule['replacement']}"
+            )
+    # suspicious_patterns：char 存在性＋前後文排除清單都要同步（description 為純文件，不比對）
+    for char in sorted(set(mine_sus) | set(theirs_sus)):
+        if char not in mine_sus or char not in theirs_sus:
+            side = "本體" if char in mine_sus else "模組包"
+            issues.append(f"  suspicious_patterns 僅{side}有: {char}")
+            continue
+        for field, label in (("before", "before_exclude"), ("after", "after_exclude")):
+            a, b = mine_sus[char][field], theirs_sus[char][field]
+            if a != b:
+                issues.append(
+                    f"  suspicious「{char}」{label} 不同步: 本體獨有={sorted(a - b)} 模組包獨有={sorted(b - a)}"
+                )
+    return issues
+
+
 def cmd_fix_check():
     """檢查 OpenCC 轉換常見錯誤"""
     print("=" * 60)
@@ -952,6 +1043,21 @@ def cmd_fix_check():
             print(issue)
     else:
         print("\n✅ 未發現可疑的轉換錯誤")
+
+    # 跨專案字典一致性（模組包 repo 不存在時跳過）
+    print("\n" + "=" * 60)
+    print("跨專案 opencc_fixes.json 一致性檢查（本體 vs 模組包）")
+    print("=" * 60)
+    if not SIBLING_FIXES_JSON.exists():
+        print(f"ℹ️ 跳過（找不到 {SIBLING_FIXES_JSON}）")
+    else:
+        sync_issues = check_dict_sync()
+        if sync_issues:
+            print(f"⚠️ 字典分岔 {len(sync_issues)} 處（新規則應兩邊同步；語境分岔須在 note 註記「分岔」或「勿移植」）：")
+            for issue in sync_issues:
+                print(issue)
+        else:
+            print("✅ 兩專案字典一致（已註記的語境分岔除外）")
 
 
 _ = (
