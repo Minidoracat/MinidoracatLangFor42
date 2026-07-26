@@ -17,6 +17,7 @@ PZ 翻譯同步工具
   fix-check       - 檢查 OpenCC 轉換常見錯誤
   gen-vehicle-map - 從 vanilla EN IG_UI.json 生成 VehicleKey_Flx 反查表
   gen-radio-map   - 從 vanilla/MOD RadioData.json 生成 RadioData_Flx 英文→RD key 反查表
+  gen-media-map   - 從 vanilla recorded_media.lua + EN Recorded_Media.json 生成 RecordedMediaName_Flx 反查表
 """
 from __future__ import annotations
 
@@ -1210,6 +1211,125 @@ def cmd_gen_vehicle_map(pz_path: Path | None = None):
 
 
 # ============================================================
+# gen-media-map：從 vanilla recorded_media.lua + EN Recorded_Media.json
+#   生成英文媒體物品名 → {RM key, media guid} 反查表
+# ------------------------------------------------------------
+# 目的：修復媒體物品（VHS/CD）在 load 時 media index 解析失敗後，
+#   名稱永久保留生成端英文的問題。index 有效者 vanilla load 會以載入端
+#   當下翻譯自行重刷（InventoryItem.load → setRecordedMediaIndex），
+#   不在修補範圍；詳見 HARDCODE_REGISTRY.md A17 / C7。
+#   RecordedMediaName_Flx.lua 用此表把英文名反查回 RM key（顯示層改名）
+#   與 media guid（SP 端 setRecordedMediaData 重連結、恢復媒體功能）。
+# ============================================================
+MEDIA_NAME_LUA_PATH = MOD_BASE / "lua" / "shared" / "Items" / "RecordedMediaName_Flx.lua"
+MEDIA_GEN_BLOCK_START = "-- <AUTO-GEN:MEDIA_NAME_MAP START>"
+MEDIA_GEN_BLOCK_END = "-- <AUTO-GEN:MEDIA_NAME_MAP END>"
+
+
+def cmd_gen_media_map(pz_path: Path | None = None):
+    """從 vanilla recorded_media.lua + EN Recorded_Media.json 生成英文媒體名反查表"""
+    pz_path = pz_path or VANILLA_PZ_DEFAULT
+    rm_lua = pz_path / "media" / "lua" / "shared" / "RecordedMedia" / "recorded_media.lua"
+    en_file = pz_path / "media" / "lua" / "shared" / "Translate" / "EN" / "Recorded_Media.json"
+
+    print("=" * 60)
+    print("生成媒體物品英文名反查表（RecordedMediaName_Flx）")
+    print("=" * 60)
+    print(f"Vanilla 媒體定義：{rm_lua}")
+    print(f"Vanilla EN 翻譯：{en_file}")
+
+    for required in (rm_lua, en_file):
+        if not required.exists():
+            print(f"❌ 找不到 vanilla 檔案：{required}")
+            print("   請確認 PZ 安裝路徑，或用 --pz-path 指定")
+            sys.exit(1)
+
+    en_data = read_translation(en_file)
+    content = rm_lua.read_text(encoding="utf-8-sig")
+
+    # RecMedia["<guid>"] = { ... itemDisplayName = "RM_..." ... };（區塊以行首 }; 結束）
+    block_re = re.compile(r'RecMedia\["([0-9a-fA-F\-]+)"\]\s*=\s*\{(.*?)\n\};', re.DOTALL)
+    display_re = re.compile(r'itemDisplayName\s*=\s*"(RM_[^"]+)"')
+
+    # {EN 物品名 → (rm_key, guid)}；同名不同媒體 → 歧義剔除，避免誤連結
+    en_to_media: dict[str, tuple[str, str]] = {}
+    ambiguous: set[str] = set()
+    total = 0
+    missing_en = 0
+    for m in block_re.finditer(content):
+        guid, body = m.group(1), m.group(2)
+        dm = display_re.search(body)
+        if not dm:
+            continue
+        total += 1
+        rm_key = dm.group(1)
+        en_name = en_data.get(rm_key)
+        if not en_name:
+            missing_en += 1
+            continue
+        existing = en_to_media.get(en_name)
+        if existing is None:
+            en_to_media[en_name] = (rm_key, guid)
+        elif existing != (rm_key, guid):
+            ambiguous.add(en_name)
+    for name in ambiguous:
+        en_to_media.pop(name, None)
+
+    # 格式漂移防護（fail-closed）：以容忍空白的獨立 regex 計數原始區塊，
+    # 與嚴格 parser 的解析數交叉比對；不一致或零條目時在寫檔前中止，
+    # 避免 vanilla 排版變動（如 }; 改縮排、括號加空白）時把不完整/空表覆寫進 Lua
+    raw_block_count = len(re.findall(r'RecMedia\s*\[\s*"', content))
+    if total == 0 or raw_block_count != total:
+        print(
+            f"❌ RecMedia 原始區塊 {raw_block_count} 個、成功解析 {total} 個——"
+            "vanilla recorded_media.lua 排版可能已變動，請更新 block regex 後重跑（未覆寫任何檔案）"
+        )
+        sys.exit(1)
+
+    print(
+        f"解析 {total} 個媒體定義；EN 缺譯名 {missing_en}；"
+        f"同名歧義剔除 {len(ambiguous)}；產出 {len(en_to_media)} 條"
+    )
+
+    lines = [MEDIA_GEN_BLOCK_START]
+    lines.append("-- 由 scripts/sync_translations.py gen-media-map 自動產生，請勿手動編輯")
+    lines.append(f"-- 來源：vanilla recorded_media.lua + EN/Recorded_Media.json（共 {len(en_to_media)} 條）")
+    if ambiguous:
+        lines.append(f"-- 注意：{len(ambiguous)} 個英文名對應多個媒體，已剔除避免誤連結")
+    lines.append("RecordedMediaNameFlx = RecordedMediaNameFlx or {}")
+    lines.append("RecordedMediaNameFlx.EN_TO_MEDIA = {")
+    for en_name in sorted(en_to_media):
+        rm_key, guid = en_to_media[en_name]
+        lines.append(
+            f'    ["{_lua_string(en_name)}"] = {{ key = "{_lua_string(rm_key)}", id = "{_lua_string(guid)}" }},'
+        )
+    lines.append("}")
+    lines.append(MEDIA_GEN_BLOCK_END)
+    generated_block = "\n".join(lines)
+
+    if not MEDIA_NAME_LUA_PATH.exists():
+        print(f"❌ 找不到目標 Lua 檔：{MEDIA_NAME_LUA_PATH}")
+        print("   請先建立 RecordedMediaName_Flx.lua 並包含 AUTO-GEN 標記區塊")
+        sys.exit(1)
+
+    original = MEDIA_NAME_LUA_PATH.read_text(encoding="utf-8-sig")
+    pattern = re.compile(
+        re.escape(MEDIA_GEN_BLOCK_START) + r".*?" + re.escape(MEDIA_GEN_BLOCK_END),
+        re.DOTALL,
+    )
+    if not pattern.search(original):
+        print(f"❌ {MEDIA_NAME_LUA_PATH.name} 內找不到 AUTO-GEN 標記區塊")
+        sys.exit(1)
+
+    updated = pattern.sub(lambda _m: generated_block, original)
+    if updated != original:
+        MEDIA_NAME_LUA_PATH.write_text(updated, encoding="utf-8", newline="\n")
+        print(f"✅ 已更新 {MEDIA_NAME_LUA_PATH.relative_to(PROJECT_ROOT)}")
+    else:
+        print(f"ℹ️  內容未變動：{MEDIA_NAME_LUA_PATH.relative_to(PROJECT_ROOT)}")
+
+
+# ============================================================
 # gen-radio-map：從 RadioData EN/CH/CN 生成英文台詞 → RD key 反查表
 # ------------------------------------------------------------
 # 目的：修復多人 server 英文環境下，live radio/TV broadcast 由 server
@@ -1668,6 +1788,7 @@ def main():
   uv run scripts/sync_translations.py gen-vehicle-map --pz-path "D:/SteamLibrary/steamapps/common/ProjectZomboid"
   uv run scripts/sync_translations.py gen-radio-map --pz-path "D:/SteamLibrary/steamapps/common/ProjectZomboid"
   uv run scripts/sync_translations.py gen-dynamic-name-map --pz-path "D:/SteamLibrary/steamapps/common/ProjectZomboid"
+  uv run scripts/sync_translations.py gen-media-map --pz-path "D:/SteamLibrary/steamapps/common/ProjectZomboid"
         """,
     )
     parser.add_argument(
@@ -1684,6 +1805,7 @@ def main():
             "gen-vehicle-map",
             "gen-radio-map",
             "gen-dynamic-name-map",
+            "gen-media-map",
         ],
         help="執行的命令（預設：compare）",
     )
@@ -1691,11 +1813,11 @@ def main():
         "--pz-path",
         type=Path,
         default=None,
-        help="vanilla Project Zomboid 安裝路徑（gen-vehicle-map / gen-radio-map / gen-dynamic-name-map 使用）",
+        help="vanilla Project Zomboid 安裝路徑（gen-vehicle-map / gen-radio-map / gen-dynamic-name-map / gen-media-map 使用）",
     )
     args = parser.parse_args()
 
-    if args.command not in {"gen-vehicle-map", "gen-radio-map", "gen-dynamic-name-map"}:
+    if args.command not in {"gen-vehicle-map", "gen-radio-map", "gen-dynamic-name-map", "gen-media-map"}:
         if not REF_CN.exists():
             print(f"❌ 參考目錄不存在：{REF_CN}")
             sys.exit(1)
@@ -1722,6 +1844,8 @@ def main():
             cmd_gen_radio_map(args.pz_path)
         case "gen-dynamic-name-map":
             cmd_gen_dynamic_name_map(args.pz_path)
+        case "gen-media-map":
+            cmd_gen_media_map(args.pz_path)
 
 
 if __name__ == "__main__":
