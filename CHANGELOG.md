@@ -4,6 +4,23 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.19.0-1.9.0] - 2026-07-27
+
+### Added
+
+- **殭屍磁帶名稱修復 `RecordedMediaName_Flx.lua`**（登記簿 A17）：修復 VHS/CD 媒體物品在 media index 失效後，名稱永久保留生成端英文的問題（玩家截圖回報追查）。單機端以 `setRecordedMediaData()` 重新連結媒體資料——**連播放功能一併恢復**；MP 客戶端做顯示層改名。index 有效的媒體物品由遊戲讀檔時自行以現行翻譯重刷、不受影響（C7 調查沿革：42.17.0-1.4.0 前生成的技能教學帶烙印英文，更新翻譯後讀檔即自癒；僅 index 失效的殭屍物品需本修補）。
+- **`gen-media-map` 反查表生成工具**：自 vanilla 媒體定義＋EN 翻譯生成 352 條英文媒體名反查表（AUTO-GEN 注入 Lua，排版漂移偵測不符即中止不覆寫）。
+- **fix-check 跨專案字典一致性檢查**：本體與模組包 `opencc_fixes.json` 的規則與 suspicious 排除清單自動比對，無註記分岔即報告（已裁決語境分岔以 note「分岔／勿移植」放行）；附回歸測試 `test_dict_sync.py`（9 案例）。
+
+### Fixed
+
+- **管理員／除錯媒體右鍵選單翻譯**（A16 三批，鍵表 336→339）：`ADMIN/DBG: Change recording`→「更換錄製內容」、`<NONE>`→「<無>」（`InvContextMedia.lua` 動態前綴組字硬編碼）。
+- **簡中（CN）補齊 8 個世界物件繞路鍵**：窗戶、窗簾、營火、藍色復古燈、星球燈、咖啡機、烤麵包機、餵食——先前僅繁中有鍵，簡中玩家這些物件的右鍵選單標題顯示英文；CH/CN 鍵集恢復完全一致。
+
+### Notes
+
+- 玩家回報的日系食品英文名（Ai Ocha 綠茶、Boss Black 咖啡、KatKot、Pukki 餅乾棒等）查證為第三方 MOD「Project Gurashi Megurigaoka」(3318210146) 內容：該 MOD 僅自帶 EN/JP/RU、無任何中文，非本 MOD 缺漏（登記簿 C8）。
+
 ## [42.19.0-1.8.2] - 2026-07-21
 
 ### Changed
