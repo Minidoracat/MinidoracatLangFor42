@@ -4,6 +4,12 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.19.0-1.9.1] - 2026-07-27
+
+### Fixed
+
+- **釣魚視窗翻譯修補加入模板防護**（`FishWindow_Flx.lua`，玩家回報追查）：第三方 MOD 修改／損壞釣魚視窗（`PZAPI.UI.FishWindow`）結構時，不再產生 `attempted index: bar of non-table: null` 錯誤訊息——該視窗安靜維持原文並於 log 註明原因（模板缺節點時支援部分翻譯）。正常環境行為完全不變；未來 PZ 改版變更該視窗結構時同樣安靜降級。註：視窗結構被改壞本身屬該第三方 MOD 的相容性問題，需由其作者修復。
+
 ## [42.19.0-1.9.0] - 2026-07-27
 
 ### Added
