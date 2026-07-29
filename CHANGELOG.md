@@ -4,6 +4,22 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.0-1.10.1] - 2026-07-30
+
+### Fixed
+
+- **選 Riverside 開局時，出生點被本 MOD 覆蓋成 B41 舊座標**：模組目錄誤留了一份 `maps/Riverside, KY/spawnpoints.lua`（自初版即存在，從未更新）。PZ 的 `ZomboidFileSystem` 會讓 MOD 檔覆寫同相對路徑的官方檔，而 `LuaManager.createRegionFile()` 正是逐一讀取各城鎮目錄下的 `spawnpoints.lua` 來組出生區域，因此這份舊檔實際生效。舊檔只有 10 個職業（官方 42.20 為 25 個）、座標為 B41 時代資料：這 10 個職業被送往舊座標，其餘 15 個（木匠、農夫、漁夫、伐木工、金屬工、鐵匠、老兵等 B42 職業）則依 `CharacterCreationProfession.lua` 的 fallback 全部沿用「無業」的舊座標。移除後改由官方檔提供出生點。純翻譯 MOD 不應動到出生點。
+- **7 個僅限沙盒的城鎮會出現在非沙盒模式的出生城鎮清單**：`MapSpawnSelect_Flx.lua` 覆寫 `fillList()` 時，漏抄了官方 42.20 新增的 `only_for_game_mode` 過濾條件。官方把 Brandenburg、Echo Creek、Ekron、Fallas Lake、Irvington、March Ridge、Valley Station 標記為 `only_for_game_mode=Sandbox`，未過濾時這 7 個城鎮在末日／生存等模式下也會被列出。
+
+### Removed
+
+- **再次清除誤留在模組目錄內的開發工具狀態檔**（2 個 `.omc/` 目錄、5 個檔案）。這些檔案已隨 1.10.0 上傳到 Workshop，內容僅為開發工具自身的執行計數與提示節流時間戳，不含任何個人資料或對話內容。Workshop 上傳是整包打包、不參照 `.gitignore`，發布流程已加入 `MOD/` 隱藏檔檢查以免重演。
+
+### Notes
+
+- 本次未新增或修改任何譯文。
+- 一併核對其餘 18 個覆寫檔是否有同類「複製官方函式後未跟進版本」的問題：`MapSpawnSelect_Flx.lua` 為唯一一例，其餘不是保存原函式再包裝，就是刻意重寫且功能與官方 42.20 對等。
+
 ## [42.20.0-1.10.0] - 2026-07-29
 
 ### Added

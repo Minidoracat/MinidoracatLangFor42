@@ -16,19 +16,21 @@ function MapSpawnSelect:_fillList()
 	for _,v in ipairs(regions) do
 		local info = getMapInfo(v.name)
 		if info then
-			local item = {};
-			item.name = info.title or "NO TITLE";
-			item.region = v;
-			item.dir = v.name;
-			item.desc = info.description or "NO DESCRIPTION";
-			if info.spawnSelectImagePyramid then
-				spawnSelectImagePyramid = info.spawnSelectImagePyramid -- only one is supported
+			if not info.only_for_game_mode or GameMode.get(ResourceLocation.of(getCore():getGameMode())) == info.only_for_game_mode then
+				local item = {};
+				item.name = info.title or "NO TITLE";
+				item.region = v;
+				item.dir = v.name;
+				item.desc = info.description or "NO DESCRIPTION";
+				if info.spawnSelectImagePyramid then
+					spawnSelectImagePyramid = info.spawnSelectImagePyramid -- only one is supported
+				end
+				item.zoomX = info.zoomX
+				item.zoomY = info.zoomY
+				item.zoomS = info.zoomS
+				item.demoVideo = info.demoVideo
+				self:checkSorted(item);
 			end
-			item.zoomX = info.zoomX
-			item.zoomY = info.zoomY
-			item.zoomS = info.zoomS
-			item.demoVideo = info.demoVideo
-			self:checkSorted(item);
 		else
 			local item = {}
 			item.name = v.name;
