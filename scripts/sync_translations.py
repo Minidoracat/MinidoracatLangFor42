@@ -75,8 +75,8 @@ MOD_LUA = MOD_BASE / "lua" / "client"
 # ============================================================
 # 特殊檔案處理規則
 # ============================================================
-# language.txt: CH 版本有自己的語言定義，不能從 CN 轉換
-SKIP_CH_CONVERT = {"language.txt"}
+# （原 SKIP_CH_CONVERT = {"language.txt"} 已移除：42.20 起 language.txt 是死檔，
+#  改由下方 EXCLUDE_GENERATE 統一擋住 CN/CH 兩側生成。）
 
 # ============================================================
 # Lua 腳本清單
@@ -152,12 +152,19 @@ POST_FIXES, SUSPICIOUS_PATTERNS = _load_fixes()
 # ============================================================
 OVERRIDES_JSON = Path(__file__).resolve().parent / "ch_overrides.json"
 
-# REF 有 streets.txt 但 CN/CH 皆未版控也無消費端（街道翻譯走
-# maps/Riverside, KY/streets.xml），sync 不得生成。
-EXCLUDE_GENERATE = {"streets.txt"}
+# 不得生成的 REF 檔：
+# - streets.txt：CN/CH 皆未版控也無消費端（街道翻譯走 maps/Riverside, KY/streets.xml）。
+# - language.txt：PZ 42.20 起 Languages.java 只認 language.json，tryFillMapFromFile 的
+#   路徑模板亦寫死 .json，全快照 grep language.txt 零命中 → 死檔，2026-07-29 已刪除。
+#   （MOD 也**不應**改放 language.json：loadTranslateDirectory 對已存在語言是
+#   languages.set(index, lang)，會直接覆蓋本體的 CH/CN 語言定義。）
+EXCLUDE_GENERATE = {"streets.txt", "language.txt"}
 
 # 人工維護檔：CH/CN 的 credits.txt 為結構化名單（老版/新版/電臺組三區塊，
 # Initial commit 以來人工維護），REF 現版為較舊扁平名單，同步會回退名單。
+# 42.20 官方移除了 credits.txt 的讀取（改為只認本體目錄的 Credits_Translator.json），
+# 名單已於 2026-07-29 遷入 Credits.json 的 credits_CatLangFor42_group / _names
+# 兩個自有鍵，由 CreditsScreen_Flx.lua 包裝 doCreditsText 接回；.txt 本體已刪除。
 MANUAL_MAINTAINED = {"credits.txt"}
 
 
@@ -478,8 +485,6 @@ def cmd_compare():
     print("-" * 40)
     # Check .txt REF files (legacy)
     for ref_file in sorted(REF_CN.glob("*.txt")):
-        if ref_file.name in SKIP_CH_CONVERT:
-            continue
         if ref_file.name in PZ_SKIP_FILES:
             continue
         json_name = txt_to_json_filename(ref_file.name)
@@ -699,12 +704,6 @@ def cmd_sync_ch():
             continue
 
         filename = ref_file.name
-
-        # language.txt: CH has its own definition, don't convert
-        if filename in SKIP_CH_CONVERT:
-            print(f"  ⏭️ 跳過: {filename} (CH 版本保持不變)")
-            skipped += 1
-            continue
 
         if filename in EXCLUDE_GENERATE:
             print(f"  ⏭️ 跳過: {filename} (未版控且無消費端，不生成)")
@@ -992,6 +991,42 @@ def check_dict_sync() -> list[str]:
     return issues
 
 
+# 片段重複偵測：潤色時「擴寫既有短譯」很容易把新增片段貼兩次
+# （2026-07-29 於 42.20 盤查抓到 14 筆，最早可追到 commit 698c262 的全量潤色，
+#  例如「顯示」擴寫成「顯示與效能」時寫成「顯示與效能與效能」）。
+_DUPE_PATTERNS = [
+    re.compile(r"([一-鿿]{2,6})\1$"),      # 尾端整段重複
+    re.compile(r"([一-鿿]{3,8})\1"),       # 句中長片段重複
+    re.compile(r"\b([A-Za-z]{3,}(?: [A-Za-z]+){0,2}) \1\b"),  # 英文詞組重複
+]
+
+# 逐字重複屬正常表達的檔案（歌詞、廣播、報刊、人名等）不掃
+_DUPE_SKIP_FILES = {
+    "RadioData.json", "Print_Media.json", "Recorded_Media.json",
+    "Print_Text.json", "SurvivorNames.json",
+}
+_DUPE_MAX_LEN = 60  # 只掃短字串；長敘述重複詞多為正常修辭
+
+
+def check_duplicated_fragments() -> list[str]:
+    """找出譯文中疑似「片段被貼兩次」的值（CH + CN）。"""
+    issues: list[str] = []
+    for lang, mod_dir in (("CH", MOD_CH), ("CN", MOD_CN)):
+        for path in sorted(mod_dir.rglob("*.json")):
+            if path.name in _DUPE_SKIP_FILES or ".omc" in path.parts:
+                continue
+            try:
+                data = read_translation(path)
+            except Exception:  # noqa: BLE001
+                continue
+            for key, value in data.items():
+                if not isinstance(value, str) or len(value) > _DUPE_MAX_LEN:
+                    continue
+                if any(p.search(value) for p in _DUPE_PATTERNS):
+                    issues.append(f"  [{lang}] {path.name} | {key}: {value!r}")
+    return issues
+
+
 def cmd_fix_check():
     """檢查 OpenCC 轉換常見錯誤"""
     print("=" * 60)
@@ -1044,6 +1079,18 @@ def cmd_fix_check():
             print(issue)
     else:
         print("\n✅ 未發現可疑的轉換錯誤")
+
+    # 片段重複（潤色擴寫時貼兩次）
+    print("\n" + "=" * 60)
+    print("譯文片段重複檢查（CH + CN）")
+    print("=" * 60)
+    dupes = check_duplicated_fragments()
+    if dupes:
+        print(f"⚠️ 發現 {len(dupes)} 處疑似片段重複（多為擴寫短譯時貼兩次）：")
+        for issue in dupes:
+            print(issue)
+    else:
+        print("✅ 未發現片段重複")
 
     # 跨專案字典一致性（模組包 repo 不存在時跳過）
     print("\n" + "=" * 60)

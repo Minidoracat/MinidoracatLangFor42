@@ -1100,5 +1100,8 @@
     "Sandbox_FogCycle_option2": "无雾气",
     "Sandbox_FogCycle_option3": "无尽雾气",
     "Sandbox_UniqueHomeVHS": "唯一家庭录像带",
-    "Sandbox_UniqueHomeVHS_tooltip": "启用时, 每种家庭录像带通常仅会生成一份副本."
+    "Sandbox_UniqueHomeVHS_tooltip": "启用时, 每种家庭录像带通常仅会生成一份副本.",
+    "Sandbox_ZombiesCountBeforeDelete_help": "控制清理前系统追踪的僵尸最大数量. 0代表不会自动清理僵尸.\n强烈推荐使用默认值 300. 调高该数值或设为 0 可能引发严重性能问题.\n如需排查故障或提交 bug 反馈, 请先使用默认参数复现问题后再提交报告.",
+    "Sandbox_WaterShutModifier": "停水调整",
+    "Sandbox_ElecShutModifier": "停电调整"
 }

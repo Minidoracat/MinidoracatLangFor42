@@ -99,6 +99,16 @@ local function walkMenu(menu, depth, visited)
                 changed = true
             end
         end
+        -- 選項 tooltip 的標題同樣可能是硬編碼英文（B9 的 "Zone not valid"／
+        -- "Building not valid"、B10 所在檔的 "Tile params:"）。走同一張查表，
+        -- miss 原樣保留；description 是動態除錯資料，刻意不動。
+        local tip = opt.toolTip
+        if tip and tip.setName and type(tip.name) == "string" then
+            local tt = translateName(tip.name)
+            if tt then
+                tip:setName(tt)
+            end
+        end
         if opt.subOption and menu.getSubMenu then
             walkMenu(menu:getSubMenu(opt.subOption), depth + 1, visited)
         end
@@ -184,3 +194,81 @@ function ISWorldMap:onRightMouseUp(x, y)
     end
     return result
 end
+
+-- ============================================================
+-- 視窗內自建選單（HARDCODE_REGISTRY.md B15/B16/B18/B19）
+-- ------------------------------------------------------------
+-- 這些視窗自己呼叫 ISContextMenu.get(playerNum, ...) 取玩家選單單例，
+-- 不走 OnFill*ContextMenu 事件鏈，所以上面的事件掛鉤涵蓋不到，
+-- 必須逐一包裝各自的選單建構函式，再對同一個單例做同樣的走訪。
+-- 機制與譯文查表完全共用，未登記字串一律原樣保留。
+-- ============================================================
+
+-- vanilla 檔案路徑若在未來改版變動，require 失敗不得讓上面的 A16 主體整個掛掉
+for _, path in ipairs({
+    "ISUI/Hutch/ISHutchUI",
+    "ISUI/ISVehicleAnimalUI",
+    "ISUI/AdminPanel/ISMiniScoreboardUI",
+    "ISUI/AdminPanel/ISUsersList",
+    "XpSystem/ISUI/ISCharacterScreen",
+    "Vehicles/ISUI/ISVehicleMechanics",
+}) do
+    pcall(require, path)
+end
+
+--- 預設取玩家選單單例（各目標都是 ISContextMenu.get(playerNum, ...) 建的）
+local function defaultMenu(_self, playerNum)
+    return getPlayerContextMenu(playerNum)
+end
+
+--- 包裝視窗的選單建構函式；getPlayerNum 從 self 取出玩家編號。
+--- getMenu(self, playerNum) 省略時用 defaultMenu。
+local function wrapWindowMenu(class, methodName, getPlayerNum, getMenu)
+    if type(class) ~= "table" or type(class[methodName]) ~= "function" then
+        return false
+    end
+    local _orig = class[methodName]
+    class[methodName] = function(self, ...)
+        local result = _orig(self, ...)
+        -- 取 playerNum 與選單都可能因 vanilla 結構變動而失敗，不可影響選單本身
+        local ok, playerNum = pcall(getPlayerNum, self)
+        if ok and type(playerNum) == "number" and shouldTranslate(playerNum) then
+            local okMenu, menu = pcall(getMenu or defaultMenu, self, playerNum)
+            if okMenu and menu then
+                translateContextTree(menu)
+            end
+        end
+        return result
+    end
+    return true
+end
+
+local function playerNumField(self) return self.playerNum end
+
+-- 雞舍 UI：巢箱與棲架各自的右鍵選單（gate＝AnimalContextMenu.cheat，走 addDebugOption）
+wrapWindowMenu(ISHutchNestBox, "onRightMouseUp", playerNumField)
+wrapWindowMenu(ISHutchRoost, "onRightMouseUp", playerNumField)
+
+-- 車載動物面板（gate＝AnimalContextMenu.cheat）
+wrapWindowMenu(ISAnimalInVehiclePanel, "onRightMouseUp",
+    function(self) return self.animalUI.playerNum end)
+
+-- 管理員小記分板（gate＝Capability.CanSeePlayersStats）
+wrapWindowMenu(ISMiniScoreboardUI, "doPlayerListContextMenu",
+    function(self) return self.admin:getPlayerNum() end)
+
+-- 管理員使用者清單（gate＝Capability.ChangeAccessLevel；官方父選項英文、子選單已掛鍵）
+wrapWindowMenu(ISUsersList, "doContextMenu",
+    function(self) return self.player:getPlayerNum() end)
+
+-- 角色資訊視窗的髮型／鬍子選單（gate＝isDebugEnabled）
+wrapWindowMenu(ISCharacterScreen, "hairMenu",
+    function(self) return self.char:getPlayerNum() end)
+wrapWindowMenu(ISCharacterScreen, "beardMenu",
+    function(self) return self.char:getPlayerNum() end)
+
+-- 車輛機械視窗（gate＝ISVehicleMechanics.cheat）。選單存在 self.context，
+-- 直接取用比玩家單例可靠（doPartContextMenu 與 onRightMouseUp 都會覆寫它）。
+local function mechanicsContext(self) return self.context end
+wrapWindowMenu(ISVehicleMechanics, "doPartContextMenu", playerNumField, mechanicsContext)
+wrapWindowMenu(ISVehicleMechanics, "onRightMouseUp", playerNumField, mechanicsContext)

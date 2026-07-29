@@ -312,7 +312,7 @@
     "GameSound_VehicleHitCharacter": "車撞人",
     "GameSound_VehicleHitObject": "車撞物",
     "GameSound_VehicleRunOverBody": "車碾過屍體",
-    "GameSound_HitVehiclePartWithWeapon": "武器擊中車輛零件零件",
+    "GameSound_HitVehiclePartWithWeapon": "武器擊中車輛零件",
     "GameSound_HitVehicleWindowWithWeapon": "武器擊中車窗",
     "GameSound_VehicleScrapePastPlant": "車輛擦過植物",
     "GameSound_HouseAlarm": "房屋警報",

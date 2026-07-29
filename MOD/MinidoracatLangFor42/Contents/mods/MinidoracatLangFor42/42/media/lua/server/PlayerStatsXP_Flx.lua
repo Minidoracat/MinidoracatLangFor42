@@ -31,6 +31,18 @@ local function syncXp(target)
         return
     end
 
+    -- 42.20 起反作弊 XP 基準改存於 NetworkCharacterAI.XpChecker，逐技能判定，
+    -- 官方所有加 XP 路徑（AddXPCommand、GameServer.addXp、XP.load）都會呼叫 updateXpChecker() 重設。
+    -- 本修補繞過官方 /addxp 指令，必須自行重設，否則 AntiCheatXPUpdate 會判定 XP 成長異常，
+    -- 累計兩次即依 antiCheatXp 設定踢除或封鎖「被調整技能的玩家」。
+    -- 獨立 pcall：重設失敗（API 變更等）不得連帶讓下方的 syncXp 不執行，否則變成技能不同步。
+    pcall(function()
+        local ai = target:getNetworkCharacterAI()
+        if ai then
+            ai:updateXpChecker()
+        end
+    end)
+
     pcall(function()
         local ai = target:getNetworkCharacterAI()
         if ai then

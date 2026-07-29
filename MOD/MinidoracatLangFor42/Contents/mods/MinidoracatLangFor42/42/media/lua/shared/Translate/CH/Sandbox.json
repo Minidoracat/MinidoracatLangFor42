@@ -1100,5 +1100,8 @@
     "Sandbox_FogCycle_option2": "無霧氣",
     "Sandbox_FogCycle_option3": "無盡霧氣",
     "Sandbox_UniqueHomeVHS": "家庭錄影帶不重複",
-    "Sandbox_UniqueHomeVHS_tooltip": "啟用時, 每種家庭錄影帶通常僅會生成一份副本."
+    "Sandbox_UniqueHomeVHS_tooltip": "啟用時, 每種家庭錄影帶通常僅會生成一份副本.",
+    "Sandbox_ZombiesCountBeforeDelete_help": "控制系統自動清理前追蹤殭屍的數量上限, 設為 0 則永遠不會自動清理殭屍.\n強烈建議使用預設值 300; 調高此數值或設定為 0, 皆可能造成嚴重效能問題.\n若要除錯或回報程式錯誤, 請先使用預設參數重現問題, 再提交回報單.",
+    "Sandbox_WaterShutModifier": "停水修正",
+    "Sandbox_ElecShutModifier": "停電修正"
 }

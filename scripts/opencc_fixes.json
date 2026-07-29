@@ -627,6 +627,26 @@
           "pattern": "型(\\s*)別",
           "replacement": "類\\1型",
           "note": "类型→型別 IT 過度在地化；PZ 語料全為一般類型語境（鋒面類型/音樂類型），無程式資料型別"
+        },
+        {
+          "pattern": "墻",
+          "replacement": "牆",
+          "note": "異體字：官方 CH 用「墻」（陸用），台灣標準為「牆」；語料 牆137/墻0（2026-07-29 42.20 補譯掃描）"
+        },
+        {
+          "pattern": "坐(\\s*)標",
+          "replacement": "座\\1標",
+          "note": "coordinates；語料 座標10/坐標0；含空格版"
+        },
+        {
+          "pattern": "數據包",
+          "replacement": "封包",
+          "note": "network packet；語料 封包2/數據包0"
+        },
+        {
+          "pattern": "拖(\\s*)動",
+          "replacement": "拖\\1曳",
+          "note": "drag；台灣 UI 標準用語；含空格版"
         }
       ]
     }
