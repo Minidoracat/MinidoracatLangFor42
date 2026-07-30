@@ -1,5 +1,5 @@
 # /// script
-# dependencies = ["opencc-python-reimplemented"]
+# dependencies = []
 # requires-python = ">=3.10"
 # ///
 # pyright: reportMissingImports=false, reportMissingTypeArgument=false
@@ -11,10 +11,14 @@ PZ 翻譯同步工具
 命令：
   compare         - 比對差異（預設）
   sync-cn         - 同步 CN 翻譯檔（REF CN → MOD CN）
-  sync-ch         - 同步 CH 翻譯檔（REF CN → OpenCC s2twp → MOD CH）
+  sync-ch         - （已凍結）顯示 CH 維護流程說明，不做任何寫入
   sync-lua        - 同步 Lua 腳本
-  sync-all        - 執行全部同步
-  fix-check       - 檢查 OpenCC 轉換常見錯誤
+  sync-all        - 執行全部同步（CN + Lua + fix-check；CH 已凍結）
+  fix-check       - 檢查轉換常見錯誤（凍結語料照常適用）
+  en-snapshot     - 保存官方 EN 全鍵快照（凍結後維護的基準）
+  en-diff         - 官方 EN 新舊 diff → 新增/改值/刪除 維護佇列
+  ch-lint         - 術語引擎巡檢 CH 語料（select/lint 詞提示）
+  import-new      - 官方 CH 底稿＋術語引擎產出新鍵提案（人工簽核用）
   gen-vehicle-map - 從 vanilla EN IG_UI.json 生成 VehicleKey_Flx 反查表
   gen-radio-map   - 從 vanilla/MOD RadioData.json 生成 RadioData_Flx 英文→RD key 反查表
   gen-media-map   - 從 vanilla recorded_media.lua + EN Recorded_Media.json 生成 RecordedMediaName_Flx 反查表
@@ -31,7 +35,6 @@ import xml.etree.ElementTree as ET
 from collections import OrderedDict
 from pathlib import Path
 
-import opencc
 
 # ============================================================
 # 路徑配置
@@ -89,14 +92,13 @@ FLX_FILES: list[str] = [
 ]
 
 # ============================================================
-# OpenCC 轉換器
-# ============================================================
-CONVERTER = opencc.OpenCC("s2twp")
-
-# ============================================================
 # OpenCC 後處理修正規則（從 JSON 字典載入）
 # ============================================================
 FIXES_JSON = Path(__file__).resolve().parent / "opencc_fixes.json"
+# 模組包字典（跨專案一致性檢查用）
+SIBLING_FIXES_JSON = (
+    PROJECT_ROOT.parent / "MinidoracatModLangFor42" / "sources" / "opencc_fixes.json"
+)
 
 
 def _load_fixes() -> tuple[list[tuple[re.Pattern, str, str]], list[dict]]:
@@ -147,9 +149,10 @@ def _load_fixes() -> tuple[list[tuple[re.Pattern, str, str]], list[dict]]:
 POST_FIXES, SUSPICIOUS_PATTERNS = _load_fixes()
 
 # ============================================================
-# 人工覆寫層（ch_overrides.json / cn_overrides.json）
+# 人工覆寫層（cn_overrides.json；ch_overrides.json 已封存）
 # ------------------------------------------------------------
-# sync-ch / sync-cn 機轉全量再生後套用的人工真相檔。schema：
+# sync-cn 機轉全量再生後套用的人工真相檔（CH 凍結後僅 CN 側使用；
+# ch_overrides.json 為歷史紀錄，管線不再讀取）。schema：
 #   {"<檔名>|<鍵>": "<人工值>"}                        （簡式，無過時偵測）
 #   {"<檔名>|<鍵>": {"value": "<人工值>", "ref": "<登記時 REF 原文 hash>"}}
 #   {"<檔名>|<鍵>": {"drop": true, "note": "<理由>"}}   （deny-list：不得輸出此鍵）
@@ -284,39 +287,13 @@ def sha256(path: Path) -> str:
     return h.hexdigest()
 
 
-def convert_s2twp(text: str) -> str:
-    """簡體 → 繁體（台灣用語）轉換 + 後處理修正"""
-    result = CONVERTER.convert(text)
-    for pattern, replacement, _desc in POST_FIXES:
-        result = pattern.sub(replacement, result)
-    return result
-
-# Print_Media <type:text, ...> 中文字內容的提取模式
-# 匹配 <type:text, ...> 標記後面到下一個 <type: 標記之前（或字串結尾）的文字
-_PRINT_MEDIA_TEXT_RE = re.compile(
-    r'(<type:text\b[^>]*>)'   # group 1: <type:text, ...> 標記本身
-    r'([^<]*)'                 # group 2: 標記後的文字內容
-)
-
-
-def convert_print_media_value(value: str) -> str:
-    """轉換 Print_Media _info 值中的中文文字。
-
-    只對 <type:text, ...> 標記後面的文字做 OpenCC 簡繁轉換，
-    不動 <type:parent/texture> 標記參數（座標、字型名、路徑等）。
-    """
-    if "<type:text" not in value:
-        # 沒有 text 標記（純 texture/parent），直接回傳
-        return value
-
-    def _replace_text_content(m: re.Match) -> str:
-        tag = m.group(1)    # <type:text, ...>
-        text = m.group(2)   # 後面的文字
-        if text:
-            text = convert_s2twp(text)
-        return tag + text
-
-    return _PRINT_MEDIA_TEXT_RE.sub(_replace_text_content, value)
+# ============================================================
+# CH 凍結（2026-07-31）：OpenCC 轉換已退場
+# ------------------------------------------------------------
+# CH 成品即真相；不再由 REF 全量再生。新鍵匯入走 import-new
+# （官方 CH 底稿 → scripts/terminology.py 術語引擎 → 人工簽核）。
+# 等價證明見 scripts/test_terminology_equivalence.py（凍結 gate 2）。
+# ============================================================
 
 
 def _validate_print_media_info(key: str, value: str) -> str | None:
@@ -765,251 +742,16 @@ def cmd_sync_cn():
 
 
 def cmd_sync_ch():
-    """同步 CH 翻譯檔：REF CN → OpenCC s2twp → MOD CH .json"""
+    """（已凍結）CH 不再從 REF 再生。"""
     print("=" * 60)
-    print("同步 CH 翻譯檔（REF CN → OpenCC s2twp → MOD CH .json）")
+    print("CH 已凍結（2026-07-31）——sync-ch 不再執行任何寫入")
     print("=" * 60)
-
-    updated = 0
-    skipped = 0
-    unchanged = 0
-    all_issues: list[str] = []
-
-    overrides = _load_overrides()
-    ov_by_file = _group_overrides(overrides)
-    used_ov: set[str] = set()
-    stale_warnings: list[str] = []
-    applied_total = 0
-    dropped_total = 0
-
-    # Process .txt translation files (legacy format)
-    for ref_file in sorted(REF_CN.glob("*.txt")):
-        if not ref_file.is_file():
-            continue
-
-        filename = ref_file.name
-
-        if filename in EXCLUDE_GENERATE:
-            print(f"  ⏭️ 跳過: {filename} (未版控且無消費端，不生成)")
-            skipped += 1
-            continue
-
-        if filename in MANUAL_MAINTAINED:
-            print(f"  ⏭️ 跳過: {filename} (人工維護檔，不從 REF 同步)")
-            skipped += 1
-            continue
-
-        # Skip files that stay as .txt (credits.txt etc.)
-        if filename in PZ_SKIP_FILES:
-            ref_content = ref_file.read_text(encoding="utf-8-sig")
-            ch_content = convert_s2twp(ref_content)
-            ch_path = MOD_CH / filename
-            if ch_path.exists():
-                old_content = ch_path.read_text(encoding="utf-8-sig")
-                if old_content == ch_content:
-                    unchanged += 1
-                    continue
-            ch_path.parent.mkdir(parents=True, exist_ok=True)
-            ch_path.write_text(ch_content, encoding="utf-8", newline="\n")
-            print(f"  ✅ 轉換: {filename} (保留 .txt)")
-            updated += 1
-            continue
-
-        json_name = txt_to_json_filename(filename)
-        ch_path = MOD_CH / json_name
-
-        ref_data = read_translation(ref_file)
-
-        is_print_media = json_name == "Print_Media.json"
-        ch_data: OrderedDict[str, str] = OrderedDict()
-        for key, value in ref_data.items():
-            if is_print_media and key.endswith("_info"):
-                ch_data[key] = convert_print_media_value(value)
-            else:
-                ch_data[key] = convert_s2twp(value)
-
-        # 機轉之後、自訂鍵合併之前套用人工覆寫
-        applied_total += _apply_overrides(
-            json_name, ref_data, ch_data, ov_by_file.get(json_name, {}), used_ov, stale_warnings
-        )
-
-        # 保留 MOD 中有但 REF 中沒有的自訂 keys
-        if ch_path.exists():
-            old_data = read_translation(ch_path)
-            extra_keys = OrderedDict(
-                (k, v) for k, v in old_data.items() if k not in ch_data
-            )
-            if extra_keys:
-                if json_name == "Print_Media.json":
-                    for k in list(extra_keys):
-                        err = _validate_print_media_info(k, extra_keys[k])
-                        if err:
-                            print(f"  ⚠️  移除截斷的自訂 key: {k} ({err})")
-                            del extra_keys[k]
-                ch_data.update(extra_keys)
-        else:
-            old_data = None
-
-        # deny-list：合併自訂鍵之後才移除，否則舊檔會把死鍵當自訂鍵補回
-        dropped_total += _apply_drops(
-            json_name, ch_data, ov_by_file.get(json_name, {}), used_ov
-        )
-
-        if old_data is not None:
-            if old_data == ch_data:
-                unchanged += 1
-                continue
-            added = len(set(ch_data) - set(old_data))
-            removed = len(set(old_data) - set(ch_data))
-            print(f"  📝 更新: {json_name} (+{added}/-{removed} keys)")
-        else:
-            ch_path.parent.mkdir(parents=True, exist_ok=True)
-            print(f"  ➕ 新增: {json_name} ({len(ch_data)} keys)")
-
-        write_translation_json(ch_data, ch_path)
-        updated += 1
-
-        ch_text = "\n".join(ch_data.values())
-        issues = check_suspicious(ch_text, json_name)
-        all_issues.extend(issues)
-
-    # Process .json translation files (new format)
-    for ref_file in sorted(REF_CN.glob("*.json")):
-        if not ref_file.is_file():
-            continue
-
-        json_name = ref_file.name
-        ch_path = MOD_CH / json_name
-
-        ref_data = read_translation(ref_file)
-
-        is_print_media = json_name == "Print_Media.json"
-        ch_data: OrderedDict[str, str] = OrderedDict()
-        for key, value in ref_data.items():
-            if is_print_media and key.endswith("_info"):
-                ch_data[key] = convert_print_media_value(value)
-            else:
-                ch_data[key] = convert_s2twp(value)
-
-        # 機轉之後、自訂鍵合併之前套用人工覆寫
-        applied_total += _apply_overrides(
-            json_name, ref_data, ch_data, ov_by_file.get(json_name, {}), used_ov, stale_warnings
-        )
-
-        # 保留 MOD 中有但 REF 中沒有的自訂 keys
-        if ch_path.exists():
-            old_data = read_translation(ch_path)
-            extra_keys = OrderedDict(
-                (k, v) for k, v in old_data.items() if k not in ch_data
-            )
-            if extra_keys:
-                if json_name == "Print_Media.json":
-                    for k in list(extra_keys):
-                        err = _validate_print_media_info(k, extra_keys[k])
-                        if err:
-                            print(f"  ⚠️  移除截斷的自訂 key: {k} ({err})")
-                            del extra_keys[k]
-                ch_data.update(extra_keys)
-        else:
-            old_data = None
-
-        # deny-list：合併自訂鍵之後才移除，否則舊檔會把死鍵當自訂鍵補回
-        dropped_total += _apply_drops(
-            json_name, ch_data, ov_by_file.get(json_name, {}), used_ov
-        )
-
-        if old_data is not None:
-            if old_data == ch_data:
-                unchanged += 1
-                continue
-            added = len(set(ch_data) - set(old_data))
-            removed = len(set(old_data) - set(ch_data))
-            print(f"  📝 更新: {json_name} (+{added}/-{removed} keys)")
-        else:
-            ch_path.parent.mkdir(parents=True, exist_ok=True)
-            print(f"  ➕ 新增: {json_name} ({len(ch_data)} keys)")
-
-        write_translation_json(ch_data, ch_path)
-        updated += 1
-
-        ch_text = "\n".join(ch_data.values())
-        issues = check_suspicious(ch_text, json_name)
-        all_issues.extend(issues)
-
-    # Process city directories (legacy format)
-    for city_dir in sorted(d for d in REF_CN.iterdir() if d.is_dir()):
-        title_path = city_dir / "title.txt"
-        desc_path = city_dir / "description.txt"
-        if not title_path.exists() or not desc_path.exists():
-            continue
-
-        json_name = f"{city_dir.name}.json"
-        ch_path = MOD_CH / json_name
-
-        # Skip if already handled by .json glob above
-        if ch_path.exists() and any(
-            ref_f.name == json_name for ref_f in REF_CN.glob("*.json")
-        ):
-            continue
-
-        ref_data = parse_city_directory(city_dir)
-        ch_data: OrderedDict[str, str] = OrderedDict()
-        for key, value in ref_data.items():
-            ch_data[key] = convert_s2twp(value)
-
-        applied_total += _apply_overrides(
-            json_name, ref_data, ch_data, ov_by_file.get(json_name, {}), used_ov, stale_warnings
-        )
-
-        if ch_path.exists():
-            old_data = read_translation(ch_path)
-            if old_data == ch_data:
-                unchanged += 1
-                continue
-            print(f"  📝 更新: {json_name}")
-        else:
-            print(f"  ➕ 新增: {json_name}")
-
-        write_translation_json(ch_data, ch_path)
-        updated += 1
-
-    print(f"\n完成：{updated} 個 CH 檔案已更新，{skipped} 個已跳過，{unchanged} 個無變化")
-    n_drop = sum(1 for e in overrides.values() if e["drop"])
-    print(
-        f"人工覆寫：套用 {applied_total} / {len(overrides) - n_drop} 筆 ch_overrides"
-        f"；deny-list 移除死鍵 {dropped_total} / {n_drop} 筆"
-    )
-
-    unused_ov = sorted(set(overrides) - used_ov)
-    if unused_ov:
-        print(f"\n⚠️ {len(unused_ov)} 筆 override 未命中（鍵已從 REF 消失或檔名不符），請清理：")
-        for k in unused_ov:
-            print(f"  {k}")
-    if stale_warnings:
-        print(f"\n⚠️ {len(stale_warnings)} 筆 override 的 REF 原文已變更，請重審後更新 ref hash：")
-        for w in stale_warnings:
-            print(w)
-
-    if all_issues:
-        print(f"\n⚠️ 發現 {len(all_issues)} 處可能需要人工檢查：")
-        for issue in all_issues[:50]:
-            print(issue)
-        if len(all_issues) > 50:
-            print(f"  ... 還有 {len(all_issues) - 50} 處")
-
-
-# ============================================================
-# 跨專案字典一致性檢查（fix-check 附掛）
-# ------------------------------------------------------------
-# 兩專案的 opencc_fixes.json 依 skill 進化協議應人工同步（新規則兩邊加）。
-# 此檢查自動比對，抓出「無註記的分岔」。允許的差異：
-#   - identity 規則（pattern == replacement，保護性文件規則，如 關係→關係）
-#   - note 含「分岔」或「勿移植」的已裁決語境分岔（如 ^幹$、外掛；裁決記錄
-#     見 pz-zhtw-polish skill 的 rules.md 移植警示表）
-# ============================================================
-SIBLING_FIXES_JSON = (
-    PROJECT_ROOT.parent / "MinidoracatModLangFor42" / "sources" / "opencc_fixes.json"
-)
+    print("CH 成品（MOD/.../Translate/CH）即人工真相，維護流程：")
+    print("  1. en-snapshot / en-diff  追蹤官方 EN 變動，產生維護佇列")
+    print("  2. import-new             官方 CH 底稿＋術語引擎產出新鍵提案（人工簽核後手動入庫）")
+    print("  3. ch-lint                術語巡檢（select/lint 詞提示）")
+    print("  4. fix-check              既有結構/疊字/空格檢查照常")
+    print("歷史 ch_overrides.json 已封存（值皆已實體化進 CH 檔）。")
 
 
 def check_dict_sync() -> list[str]:
@@ -1360,10 +1102,8 @@ def cmd_sync_lua():
 
 
 def cmd_sync_all():
-    """執行全部同步"""
+    """執行全部同步（CH 已凍結，不在此列）"""
     cmd_sync_cn()
-    print()
-    cmd_sync_ch()
     print()
     cmd_sync_lua()
     print()
@@ -2033,6 +1773,178 @@ def cmd_gen_dynamic_name_map(pz_path: Path | None = None):
 # ============================================================
 # 入口
 # ============================================================
+# ============================================================
+# 凍結後維護：官方 EN 快照 / en-diff / ch-lint / import-new
+# ------------------------------------------------------------
+# 凍結後「只看 CH git diff」不夠：官方同鍵改英文內容時 CH 完全不可見。
+# 維護迴路 = en-snapshot 立基準 → 官方更新後 en-diff 出佇列 →
+# 人工修 CH（新鍵可用 import-new 產提案）→ en-snapshot 更新基準。
+# ============================================================
+EN_SNAPSHOT_JSON = Path(__file__).resolve().parent / "en_snapshot.json"
+IMPORT_PROPOSALS_JSON = Path(__file__).resolve().parent / "import_proposals.json"
+
+
+def _vanilla_translate(pz_path: Path | None, lang: str) -> dict[str, str]:
+    """讀 vanilla 安裝目錄的翻譯語料，回傳 {檔名|鍵: 值}。"""
+    root = (pz_path or VANILLA_PZ_DEFAULT) / "media" / "lua" / "shared" / "Translate" / lang
+    if not root.exists():
+        print(f"❌ 找不到 vanilla {lang} 目錄：{root}")
+        sys.exit(1)
+    out: dict[str, str] = {}
+    for f in sorted(root.glob("*.json")):
+        if f.name == "language.json":
+            continue
+        try:
+            data = json.loads(f.read_text(encoding="utf-8-sig"))
+        except (OSError, json.JSONDecodeError) as exc:
+            print(f"❌ vanilla {lang}/{f.name} 解析失敗：{exc}（fail-closed，不產出殘缺結果）")
+            sys.exit(1)
+        for k, v in data.items():
+            if isinstance(v, str):
+                out[f"{f.name}|{k}"] = v
+    return out
+
+
+def _mod_ch_values() -> dict[str, str]:
+    out: dict[str, str] = {}
+    for f in sorted(MOD_CH.glob("*.json")):
+        try:
+            data = json.loads(f.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        for k, v in data.items():
+            if isinstance(v, str):
+                out[f"{f.name}|{k}"] = v
+    return out
+
+
+def cmd_en_snapshot(pz_path: Path | None = None):
+    """保存官方 EN 全鍵快照（存完整值，en-diff 才能顯示改了什麼）。"""
+    import datetime
+
+    en = _vanilla_translate(pz_path, "EN")
+    payload = {
+        "_meta": {
+            "generated_at": datetime.date.today().isoformat(),
+            "keys": len(en),
+            "note": "官方 EN 快照，en-diff 的比對基準。維護佇列處理完後重跑本命令更新基準。",
+        },
+        "values": en,
+    }
+    EN_SNAPSHOT_JSON.write_bytes(
+        (json.dumps(payload, ensure_ascii=False, indent=1) + "\n").encode("utf-8")
+    )
+    print(f"✅ EN 快照已保存：{len(en)} 鍵 → {EN_SNAPSHOT_JSON.name}")
+
+
+def cmd_en_diff(pz_path: Path | None = None):
+    """官方 EN 現況 vs 快照 → 新增/改值/刪除 維護佇列。"""
+    if not EN_SNAPSHOT_JSON.exists():
+        print("❌ 尚無 EN 快照，先跑 en-snapshot")
+        sys.exit(1)
+    snap = json.loads(EN_SNAPSHOT_JSON.read_text(encoding="utf-8"))["values"]
+    live = _vanilla_translate(pz_path, "EN")
+    ch = _mod_ch_values()
+
+    added = sorted(k for k in live if k not in snap)
+    removed = sorted(k for k in snap if k not in live)
+    changed = sorted(k for k in live if k in snap and live[k] != snap[k])
+    print(f"官方 EN：快照 {len(snap)} 鍵 → 現況 {len(live)} 鍵")
+    print(f"  新增 {len(added)} / 改值 {len(changed)} / 刪除 {len(removed)}")
+    queue_path = Path(__file__).resolve().parent / "en_diff_queue.json"
+    if not (added or removed or changed):
+        print("✅ 無變動，CH 無需維護")
+        if queue_path.exists():
+            queue_path.unlink()
+            print(f"已清除過期的 {queue_path.name}")
+        return
+    for k in added[:20]:
+        mark = "（CH 已有）" if k in ch else "（CH 缺，待翻）"
+        print(f"  ＋ {k} {mark}: {live[k][:60]!r}")
+    for k in changed[:20]:
+        print(f"  ～ {k}:")
+        print(f"      舊 EN: {snap[k][:70]!r}")
+        print(f"      新 EN: {live[k][:70]!r}")
+        print(f"      現行 CH: {ch.get(k, '(缺)')[:70]!r}")
+    for k in removed[:20]:
+        print(f"  － {k}（CH 仍出貨: {'是' if k in ch else '否'}）")
+    if len(added) + len(changed) + len(removed) > 60:
+        print("  …（僅顯示前 20 筆/類）")
+    queue = {
+        "added": {k: {"en": live[k], "ch_exists": k in ch} for k in added},
+        "changed": {k: {"en_old": snap[k], "en_new": live[k], "ch": ch.get(k)} for k in changed},
+        "removed": {k: {"ch_still_shipped": k in ch} for k in removed},
+    }
+    out = queue_path
+    out.write_bytes((json.dumps(queue, ensure_ascii=False, indent=1) + "\n").encode("utf-8"))
+    print(f"維護佇列已寫入 {out.name}；處理完後跑 en-snapshot 更新基準")
+
+
+def cmd_ch_lint():
+    """術語引擎巡檢 CH 語料（select/lint 詞提示，不改檔）。"""
+    import terminology as _T
+
+    try:
+        eng = _T.load()
+    except (OSError, ValueError) as exc:
+        print(f"❌ terminology.json 載入失敗：{exc}")
+        sys.exit(1)
+    from collections import Counter
+
+    counts: Counter[str] = Counter()
+    samples: dict[str, str] = {}
+    for key, v in _mod_ch_values().items():
+        for issue in eng.scan(v):
+            counts[issue.rule] += 1
+            samples.setdefault(issue.rule, f"{key}: …{issue.excerpt}…")
+    if not counts:
+        print("✅ 無 select/lint 詞命中")
+        return
+    print(f"術語巡檢（提示性，共 {sum(counts.values())} 處 / {len(counts)} 規則）：")
+    for rule, n in counts.most_common():
+        print(f"  {rule} ×{n}   例 {samples[rule][:80]}")
+
+
+def cmd_import_new(pz_path: Path | None = None):
+    """官方有、我方 CH 缺的鍵 → 術語引擎產出提案（人工簽核，不直接入庫）。"""
+    import terminology as _T
+
+    eng = _T.load()
+    en = _vanilla_translate(pz_path, "EN")
+    och = _vanilla_translate(pz_path, "CH")
+    ch = _mod_ch_values()
+    # 刻意不出貨的鍵（裁定紀錄）：官方繁中譯者署名經 fallback 原樣顯示，
+    # 我方署名走 Credits.json 自有鍵，不得覆蓋官方譯者名單。
+    IMPORT_EXCLUDE = {"Credits_Translator.json|Translator"}
+    missing = sorted(k for k in en if k not in ch and k not in IMPORT_EXCLUDE)
+    if not missing:
+        print("✅ 官方 EN 鍵已全數涵蓋（含刻意排除清單），無新鍵")
+        if IMPORT_PROPOSALS_JSON.exists():
+            IMPORT_PROPOSALS_JSON.unlink()
+            print(f"已清除過期的 {IMPORT_PROPOSALS_JSON.name}")
+        return
+    proposals: dict[str, dict] = {}
+    for k in missing:
+        base = och.get(k)
+        if base is None:
+            proposals[k] = {"en": en[k], "proposal": None, "note": "官方 CH 亦無此鍵，需全人工翻譯"}
+            continue
+        text, issues = eng.convert(base, key=k)
+        proposals[k] = {
+            "en": en[k],
+            "official_ch": base,
+            "proposal": text,
+            "flags": [f"{i.kind}:{i.rule}" for i in issues],
+        }
+    IMPORT_PROPOSALS_JSON.write_bytes(
+        (json.dumps(proposals, ensure_ascii=False, indent=1) + "\n").encode("utf-8")
+    )
+    n_flag = sum(1 for p in proposals.values() if p.get("flags"))
+    print(f"新鍵 {len(missing)} 筆 → 提案已寫入 {IMPORT_PROPOSALS_JSON.name}（{n_flag} 筆帶語境待選旗標）")
+    print("人工逐筆簽核後，直接寫入 MOD CH 檔（CH 檔即真相）。")
+
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="PZ 翻譯同步工具",
@@ -2041,7 +1953,7 @@ def main():
 使用範例：
   uv run scripts/sync_translations.py compare     # 查看差異
   uv run scripts/sync_translations.py sync-cn      # 只同步 CN
-  uv run scripts/sync_translations.py sync-ch      # 只同步 CH
+  uv run scripts/sync_translations.py sync-ch      # （已凍結）顯示 CH 維護流程說明
   uv run scripts/sync_translations.py sync-lua     # 只同步 Lua
   uv run scripts/sync_translations.py sync-all     # 全部同步
   uv run scripts/sync_translations.py fix-check    # 檢查轉換錯誤
@@ -2062,6 +1974,10 @@ def main():
             "sync-lua",
             "sync-all",
             "fix-check",
+            "en-snapshot",
+            "en-diff",
+            "ch-lint",
+            "import-new",
             "gen-vehicle-map",
             "gen-radio-map",
             "gen-dynamic-name-map",
@@ -2077,7 +1993,7 @@ def main():
     )
     args = parser.parse_args()
 
-    if args.command not in {"gen-vehicle-map", "gen-radio-map", "gen-dynamic-name-map", "gen-media-map"}:
+    if args.command not in {"gen-vehicle-map", "gen-radio-map", "gen-dynamic-name-map", "gen-media-map", "en-snapshot", "en-diff", "ch-lint", "import-new", "sync-ch"}:
         if not REF_CN.exists():
             print(f"❌ 參考目錄不存在：{REF_CN}")
             sys.exit(1)
@@ -2098,6 +2014,14 @@ def main():
             cmd_sync_all()
         case "fix-check":
             cmd_fix_check()
+        case "en-snapshot":
+            cmd_en_snapshot(args.pz_path)
+        case "en-diff":
+            cmd_en_diff(args.pz_path)
+        case "ch-lint":
+            cmd_ch_lint()
+        case "import-new":
+            cmd_import_new(args.pz_path)
         case "gen-vehicle-map":
             cmd_gen_vehicle_map(args.pz_path)
         case "gen-radio-map":

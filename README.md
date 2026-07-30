@@ -107,7 +107,11 @@ MinidoracatLangFor42/
 
 ## 翻譯流程
 
-### 簡繁轉換
+### 簡繁轉換（歷史；2026-07-31 起 CH 已凍結）
+
+CH 成品現為人工真相，不再由 OpenCC 再生：全域術語規則見 `scripts/terminology.json`
+（`terminology.py` 引擎），新鍵匯入走 `en-diff`／`import-new`（官方繁中底稿＋術語引擎）。
+以下為凍結前的產生方式紀錄：
 
 1. 使用 **OpenCC** `s2twp`（簡體 → 繁體台灣用語）進行初步轉換
 2. **人工後處理**以下常見錯誤：

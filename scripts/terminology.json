@@ -1,0 +1,2365 @@
+{
+ "_meta": {
+  "note": "術語真相表：取代 OpenCC s2twp 隱式詞庫（凍結 gate 1 產物）。charfix→replace 由 terminology.py 引擎執行；select 禁自動改；淘汰規則見 _dropped。分類流程：diff 實測 250 詞對→roundtrip 過濾→7 批對抗驗證（Grep 全語料找反例）＋13 詞 327 命中稽核。",
+  "generated": "2026-07-31",
+  "sources": [
+   "opencc_contribution.json (s2twp diff 實測)",
+   "TWPhrases 語料命中",
+   "碎片親詞復原"
+  ]
+ },
+ "charfix": {
+  "爲": "為",
+  "裏": "裡",
+  "啓": "啟",
+  "衆": "眾",
+  "羣": "群",
+  "麪": "麵",
+  "喫": "吃",
+  "牀": "床",
+  "祕": "秘",
+  "纔": "才",
+  "污": "汙",
+  "峯": "峰",
+  "脣": "唇",
+  "癡": "痴",
+  "鉢": "缽",
+  "僞": "偽",
+  "蔘": "參",
+  "竈": "灶",
+  "嫺": "嫻",
+  "皁": "皂",
+  "踊": "踴",
+  "鍼": "針",
+  "着": "著"
+ },
+ "rules": [
+  {
+   "pair": "消息→訊息",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "消息"
+   },
+   "note": "新聞消息/壞消息；訊息通知"
+  },
+  {
+   "pair": "添加→新增",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "添加"
+   },
+   "note": "添加物質（堆肥/調味）；UI 新增"
+  },
+  {
+   "pair": "信息→資訊",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "信息"
+   },
+   "note": "information=資訊／message=訊息 雙義；發送信息 類語境曾實證誤傷（codex）"
+  },
+  {
+   "pair": "設置→設定",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "設置"
+   },
+   "note": "設置路障（物理架設）；選項設定"
+  },
+  {
+   "pair": "文件→檔案",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "文件"
+   },
+   "note": "紙本文件；電腦檔案"
+  },
+  {
+   "pair": "數據→資料",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![多半少])數據(?!機)"
+   },
+   "note": "跨詞界誤傷：多數/半數/少數＋據說/據報/據點 會被切出「數據」——新聞式廣播文本「大多數據說已撤離」→「大多資料說」直接壞句，PZ 軍方廣播正是這種文體。另 台灣詞「數據機」(modem) 若出現會變「資料機」。語料目前無此組合，屬未爆彈",
+   "replace": "資料",
+   "tests": {
+    "apply": [
+     "數據顯示",
+     "收集數據"
+    ],
+    "skip": [
+     "大多數據說已經撤離",
+     "半數據點失守",
+     "數據機"
+    ]
+   }
+  },
+  {
+   "pair": "聲明→宣告",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "聲明"
+   },
+   "note": "新聞聲明；程式宣告"
+  },
+  {
+   "pair": "查看→檢視",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![調檢審偵搜])查看"
+   },
+   "note": "跨詞界誤傷：調查＋看來/看守、檢查＋看看 會被切出「查看」——「警方調查看來沒進展」→「調檢視來」、「檢查看看引擎」→「檢檢視看」。語料 14 筆殘留全是單純 view 義（查看更多詳細資訊等）可安全套用，但廣播劇情文本有上述組合風險。另注",
+   "replace": "檢視",
+   "tests": {
+    "apply": [
+     "查看角色狀態",
+     "查看燃油量",
+     "可在翻譯選項中查看"
+    ],
+    "skip": [
+     "警方調查看來毫無進展",
+     "打開引擎蓋檢查看看"
+    ]
+   }
+  },
+  {
+   "pair": "窗口→視窗",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![從爬破臨絡務售進])(?<!爬出)(?<!跳出)(?<!翻出)(?<!逃出)(?<!望出)窗口(?![外邊沿臺框戶])"
+   },
+   "note": "視窗在台灣專指 UI 視窗；窗口另有兩個必炸義：(1) 實體窗——大陸敘事文常寫「從窗口望出去/爬窗口」，PZ 破窗題材＋廣播劇必然出現，應轉「窗戶」；(2) 台灣用法「聯絡窗口/業務窗口」＝聯絡人，轉「聯絡視窗」全毀。語料 47 筆恰好都",
+   "replace": "視窗",
+   "tests": {
+    "apply": [
+     "彈出窗口",
+     "關閉窗口"
+    ],
+    "skip": [
+     "殭屍爬進窗口",
+     "他從窗口望出去",
+     "本案聯絡窗口",
+     "跳出窗口逃生"
+    ]
+   }
+  },
+  {
+   "pair": "項目→專案",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "項目"
+   },
+   "note": "清單項目；工程專案"
+  },
+  {
+   "pair": "高級→高階",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "高級"
+   },
+   "note": "品質語境高級（高級訂製/餐廳）；tier 高階"
+  },
+  {
+   "pair": "調試→除錯",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![空烹協步])調試(?!器)"
+   },
+   "note": "debug 義轉除錯正確且語料 41 筆全數安全替換；但跨詞界有 空調＋試運轉、烹調＋試做 的切字風險——「商場空調試運轉」→「空除錯運轉」。語料現有大量 空調/烹調（Print_Text 有『配備全套空調』、Recorded_Media ",
+   "replace": "除錯",
+   "tests": {
+    "apply": [
+     "調試模式"
+    ],
+    "skip": [
+     "空調試運轉正常",
+     "烹調試做新菜",
+     "調試器（由專屬規則轉偵錯程式）"
+    ]
+   }
+  },
+  {
+   "pair": "連接→連線",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "連接"
+   },
+   "note": "物理連接；網路連線"
+  },
+  {
+   "pair": "意大利→義大利",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "意大利"
+   },
+   "note": "純專有名詞轉寫，三字串無可信的跨詞界切法（任意/生意/願意＋大利 皆不成詞），義大利麵/意大利面等衍生詞轉後皆正確。語料 38 筆全數替換無殘留無損害。",
+   "replace": "義大利"
+  },
+  {
+   "pair": "保存→儲存",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "保存"
+   },
+   "note": "食物保存；資料儲存"
+  },
+  {
+   "pair": "塑料→塑膠",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "塑料"
+   },
+   "note": "塑料單義（plastic），台灣一律稱塑膠。跨詞界僅雕塑＋料想 這種極度造作的組合（語料雖有《人人雕塑》節目名，但「雕塑料」不成句）。33 筆全數替換無損害。",
+   "replace": "塑膠"
+  },
+  {
+   "pair": "界面→介面",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![世境邊交眼])界面"
+   },
+   "note": "跨詞界重大風險：世界＋面臨/面前/面貌 會被切出「界面」——末日題材廣播「全世界面臨危機」→「全世介面臨」。語料「世界」出現極多（491 次的 世界/電視 統計主力），目前雖無「世界面X」組合、也未驗出「世介面」損害，但這是 PZ 文體最典",
+   "replace": "介面",
+   "tests": {
+    "apply": [
+     "用戶界面",
+     "界面設置"
+    ],
+    "skip": [
+     "全世界面臨末日",
+     "在全世界面前"
+    ]
+   }
+  },
+  {
+   "pair": "支持→支援",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "支持"
+   },
+   "note": "表態支持；物資支援"
+  },
+  {
+   "pair": "刷新→重新整理",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "刷新"
+   },
+   "note": "刷新紀錄；UI 重新整理"
+  },
+  {
+   "pair": "默認→預設",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![沉幽])默認(?![了著])"
+   },
+   "note": "預設只對 default 義正確；默認另有動詞義「默許/默然承認」——廣播劇「她默認了他的指控」→「她預設了他的指控」壞句。語料 28 筆全在 UI/Sandbox 的 default 語境（RadioData/Recorded_Media",
+   "replace": "預設",
+   "tests": {
+    "apply": [
+     "默認值",
+     "默認設置",
+     "恢復默認"
+    ],
+    "skip": [
+     "她默認了這項指控",
+     "他保持沉默認罪"
+    ]
+   }
+  },
+  {
+   "pair": "插件→外掛",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "插件"
+   },
+   "note": "專案裁定：Workshop item=物品／mod=模組／作弊=外掛（suspicious_patterns 既有巡檢）"
+  },
+  {
+   "pair": "性能→效能",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "性能"
+   },
+   "note": "汽車性能；系統效能"
+  },
+  {
+   "pair": "視頻→影片",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![檢電監注收凝巡])視頻"
+   },
+   "note": "現有 guard (?<!檢)視頻 不足。X視＋頻Y 的切字類還有：電視＋頻道（PZ 廣播系統核心詞彙，語料電視出現極多，「電視頻道」→「電影片道」）、收視＋頻率、監視＋頻道。目前語料唯一殘留就是「檢視頻道指令碼」證明此類切字真實存在，只是",
+   "replace": "影片",
+   "tests": {
+    "apply": [
+     "觀看視頻",
+     "視頻教程"
+    ],
+    "skip": [
+     "檢視頻道指令碼",
+     "切換電視頻道",
+     "收視頻率下滑"
+    ]
+   }
+  },
+  {
+   "pair": "聯繫→聯絡",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<!之間的)(?<!之間有)(?<!密切的)(?<!緊密的)聯繫"
+   },
+   "note": "contact 義轉聯絡正確；但聯繫另有抽象「關聯/連結」義且為台灣合法用法——「這幾起失蹤案之間有聯繫」→「之間有聯絡」語意從『有關聯』變成『有通訊往來』，懸疑廣播劇正是高風險文體。語料 25 筆未驗出損害（無 之間的聯絡/密切聯絡），但",
+   "replace": "聯絡",
+   "tests": {
+    "apply": [
+     "聯繫我們",
+     "保持聯繫",
+     "聯繫方式"
+    ],
+    "skip": [
+     "兩起案件之間有聯繫",
+     "與外界失去密切的聯繫"
+    ]
+   }
+  },
+  {
+   "pair": "屏幕→螢幕",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "屏幕"
+   },
+   "note": "屏幕單義（screen），台灣一律稱螢幕。跨詞界需 X屏＋幕Y（銀屏＋幕後之類）皆極度造作且大陸文本本身罕用。22 筆全數替換無殘留無損害。",
+   "replace": "螢幕"
+  },
+  {
+   "pair": "社區→社群",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "社區"
+   },
+   "note": "住宅社區；玩家社群"
+  },
+  {
+   "pair": "錄像→錄影",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![記紀目登附])錄像"
+   },
+   "note": "錄像帶/錄像機/看錄像 轉 錄影 皆正確；跨詞界風險在 記錄/紀錄/目錄/登錄＋像是/像素——PZ 藏匿點筆記與註記地圖正是「這段記錄像是日記」的文體，轉後成「記錄影是」。機率低但 guard 零成本且無誤擋案例。",
+   "replace": "錄影",
+   "tests": {
+    "apply": [
+     "錄像帶",
+     "監控錄像"
+    ],
+    "skip": [
+     "這段記錄像是有人動過",
+     "名冊的目錄像被撕掉一頁"
+    ]
+   }
+  },
+  {
+   "pair": "設備→裝置",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "設備"
+   },
+   "note": "規則前提錯誤：設備本身就是台灣標準用語（工廠設備、醫療設備、消防設備），僅電腦周邊 device 語境才該轉裝置。殘留樣本 RadioData「電視臺的設備配置」若套用變「裝置配置」反而劣化——20 筆已替換者恐已有同類劣化，需人工回查。另有跨詞界風險：假設＋備用/建設＋備用（「假設備用電源失效」→"
+  },
+  {
+   "pair": "通信→通訊",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "通信(?![件徒仰心任箱譽奉紙])"
+   },
+   "note": "語料 20 筆全為電信語境（通訊中斷、聯邦通訊委員會），已安全轉換。但跨詞界會撞：普通+信件、普通+信徒、溝通+信任、卡通+信件——「普通信件」會變「普通訊件」。PZ 有宗教廣播與書信題材，此類組合完全可能出現。另「通信」書信往返義（與筆友",
+   "replace": "通訊",
+   "tests": {
+    "apply": [
+     "通信中斷",
+     "通信兵",
+     "無線電通信"
+    ],
+    "skip": [
+     "一封普通信件",
+     "教會裡的普通信徒",
+     "缺乏溝通信任"
+    ]
+   }
+  },
+  {
+   "pair": "奶酪→乳酪",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "奶酪"
+   },
+   "note": "語料 20 筆全為食物語境（乳酪三明治、切達乳酪）。簡體源語料中 avocado 一律寫「牛油果」，「酪梨」拼法只存在於轉換後文本，故「奶+酪梨」相鄰在源文不可能出現；簡體語料裡「奶酪」恆指 cheese。唯一保留條件：本規則僅適用於 CN",
+   "replace": "乳酪"
+  },
+  {
+   "pair": "激光→雷射",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "激光"
+   },
+   "note": "語料 19 筆（雷射瞄準器、雷射槍戰館、可卡因雷射等科幻廣播劇）全數正確。跨詞界寄生需要「刺激+光」「偏激+光」相鄰且成句，自然中文幾乎不出現；「激光」在簡體語料中語意單一。",
+   "replace": "雷射"
+  },
+  {
+   "pair": "搜索→搜尋",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "搜索(?![令票隊])"
+   },
+   "note": "語料 19 筆（覓食技能、搜尋模式、搜捕行動廣播）轉換皆可接受。但台灣法律/軍警固定詞「搜索票」「搜索令」「搜索隊」不可轉成「搜尋票/搜尋令/搜尋隊」——搜索是台灣現行法定用語（刑事訴訟法），PZ 警匪/緝兇廣播劇（語料已有「差點就抓住兇手",
+   "replace": "搜尋",
+   "tests": {
+    "apply": [
+     "搜索範圍",
+     "搜索引擎",
+     "搜索物資"
+    ],
+    "skip": [
+     "法官簽發搜索票",
+     "警方持搜索令上門",
+     "山難搜索隊"
+    ]
+   }
+  },
+  {
+   "pair": "腳本→指令碼",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "腳本"
+   },
+   "note": "三重風險疊加：(1) 跨詞界——手腳+本來、山腳+本來、拳腳+本領、陣腳+本，語料已有「亂了陣腳」且有拳擊/武打廣播內容（泰坦疾風拳），「他手腳本來就慢」會變「他手指令碼來就慢」；(2) 多義——廣播/電影語境的腳本=劇本（screenplay），轉成指令碼即毀損，語料的「我們會寫些劇本」證明此題材"
+  },
+  {
+   "pair": "程序→程式",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "程序"
+   },
+   "note": "法律程序；電腦程式"
+  },
+  {
+   "pair": "字符→字元",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "字符(?![串合號咒])"
+   },
+   "note": "已轉換的 12 筆（字元限制、非 Ascii 字元）全對，語料目前無誤傷。但語料充滿「名字」「符合」「符號」（地圖符號、神祕符號、不符合美國價值觀×12），跨詞界組合「名字+符合」「數字+符號」在敘事文本高度可能：「如果名字符合條件」會變「",
+   "replace": "字元",
+   "tests": {
+    "apply": [
+     "非法字符",
+     "字符限制: %1"
+    ],
+    "skip": [
+     "這個名字符合條件",
+     "牆上神祕的數字符號",
+     "字符串"
+    ]
+   }
+  },
+  {
+   "pair": "遠程→遠端",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "遠程"
+   },
+   "note": "武器遠程；IT 遠端"
+  },
+  {
+   "pair": "的士→計程車",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<=[打搭坐截叫乘輛部])的士|的士(?=[司站費])"
+   },
+   "note": "現行 guard 的士(?!高) 嚴重不足：語料 8 筆殘留「全部」是「的+士兵」（勇敢的士兵、內戰時期的士兵鬼魂、扣動扳機的士兵…）。「的」是中文最高頻字，的+士X（士兵/士氣/士官/士紳/士卒）是開放結構，負向列舉必有漏網。改用白名單正",
+   "replace": "計程車",
+   "tests": {
+    "apply": [
+     "打的士",
+     "的士司機",
+     "一輛的士"
+    ],
+    "skip": [
+     "我們勇敢的士兵在二戰中使用",
+     "沒有足夠的士兵或槍支",
+     "低落的士氣",
+     "的士高"
+    ]
+   }
+  },
+  {
+   "pair": "重命名→重新命名",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![鄭慎注側尊])重命名"
+   },
+   "note": "11 筆 UI 轉換（重新命名存檔/地圖/區域）全對。但跨詞界「鄭重/慎重/注重+命名」會產生「鄭重新命名」：命名典禮、新聞播報類廣播文本可能出現「將這艘船鄭重命名為…」。guard 是固定寬度 lookbehind，成本極低，值得加。",
+   "replace": "重新命名",
+   "tests": {
+    "apply": [
+     "重命名存檔",
+     "重命名地圖"
+    ],
+    "skip": [
+     "將這艘軍艦鄭重命名為自由號",
+     "為孩子慎重命名",
+     "很注重命名規範"
+    ]
+   }
+  },
+  {
+   "pair": "端口→埠",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![前雲])端口(?![令徑袋])"
+   },
+   "note": "10 筆伺服器設定（伺服器埠、埠轉發）全對。但語料題材已含駭客與終端機（吸血鬼駭客 RPG、保全終端機、CeroSec 終端機），90 年代簡體電腦文本慣用「口令」指密碼，「輸入終端口令」= 終端+口令 會被吃成「輸入終埠令」；另「末端+口；前端+口袋 跨詞界",
+   "replace": "埠",
+   "tests": {
+    "apply": [
+     "伺服器端口",
+     "端口轉發"
+    ],
+    "skip": [
+     "前端口袋",
+     "輸入終端口令"
+    ]
+   }
+  },
+  {
+   "pair": "點擊→點選",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<!差)點擊(?![中打出倒退斃潰破殺傷沉敗落穿])"
+   },
+   "note": "殘留 27 筆全為 UI click（點擊右鍵、點擊此按鈕），轉換無害。但語料同時存在大量「差點」（差點就抓住兇手）與「擊中/擊退/擊倒/擊斃」（棒球轉播「米利根擊中了」、拳擊「擊倒了克勞馥」、戰鬥廣播）。跨詞界組合機率高：差點+擊中（子彈",
+   "replace": "點選",
+   "tests": {
+    "apply": [
+     "點擊右鍵",
+     "點擊此按鈕",
+     "雙點擊"
+    ],
+    "skip": [
+     "子彈差點擊中他",
+     "我們在據點擊退了一波殭屍",
+     "瞄準弱點擊打",
+     "米利根差點擊出安打"
+    ]
+   }
+  },
+  {
+   "pair": "出租車→計程車",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "出租車(?![輛位庫])"
+   },
+   "note": "10 筆轉換正確。但語料有整個分類廣告/租賃文類（Print_Media/Print_Text：小屋出租、出租公寓、物業出租 no.891），此文類出現「出租+車輛」「出租+車庫」「出租+車位」極其自然——「本店出租車輛」會變「本店計程車輛",
+   "replace": "計程車",
+   "tests": {
+    "apply": [
+     "出租車司機",
+     "叫了輛出租車"
+    ],
+    "skip": [
+     "本店出租車輛",
+     "出租車庫 (西點)",
+     "出租車位每月40美元"
+    ]
+   }
+  },
+  {
+   "pair": "自行車→腳踏車",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "自行車"
+   },
+   "note": "10 筆（腳踏車93款式專賣、書名《騎腳踏車穿越肯塔基》、照片、廣播）全正確。自行車是強結合詞；跨詞界需「自行+車輛」相鄰（如「請自行車輛保養」）這種倒裝病句才成立，自然中文會寫「車輛請自行保養」。衍生詞「自行車行→腳踏車行」「自行車手→腳",
+   "replace": "腳踏車"
+  },
+  {
+   "pair": "對象→物件",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "對象"
+   },
+   "note": "殘留 4 筆全是台灣本就正確且不可轉的「對象」：惡作劇的對象、相親節目「對象的臉是不是早就看夠了」、暗戀對象、神祕軍事試驗的對象。「對象」在台灣是完全合法的詞（目標/交往對象），只有電腦義 object（全域物件、物件詳情、執行時物件轉儲）該轉物件。敘事文本中「對象」出現率遠高於電腦義，且無任何字面"
+  },
+  {
+   "pair": "內存→記憶體",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "內存(?![在放有著活於糧貨款量檔])"
+   },
+   "note": "現行 guard (?<!區) 只擋得住語料那一筆「隔離區內存在傳染病」，但 X內+存Y 是開放結構：體內存在病毒、屋內存放物資、城內存糧告急、倉庫內存貨——末日題材的囤積/庫存語境高發（語料已有大量物資、租屋、庫存文本）。前置字列舉不完，",
+   "replace": "記憶體",
+   "tests": {
+    "apply": [
+     "運行內存",
+     "內存不足",
+     "視頻內存"
+    ],
+    "skip": [
+     "隔離區內存在傳染病",
+     "屋內存放大量物資",
+     "城內存糧告急",
+     "遊戲內存檔"
+    ]
+   }
+  },
+  {
+   "pair": "字體→字型",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "字體(?![現系裁驗態能溫質重力育檢面操])"
+   },
+   "note": "語料現無殘留，但跨詞界 X字+體Y 風險真實：語料已實證「屍體現在」「天體現象」這類 體+現 相鄰模式，廣播劇/書介文字出現「名字體現」「文字體裁」「數字體系」時會被切成 名「字體」現→名字型現。",
+   "replace": "字型",
+   "tests": {
+    "apply": [
+     "字體大小",
+     "調整介面字體"
+    ],
+    "skip": [
+     "這個名字體現了他的勇氣",
+     "這篇散文的文字體裁特殊"
+    ]
+   }
+  },
+  {
+   "pair": "激活→啟用",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![刺應])激活"
+   },
+   "note": "語料已有「多麼刺激的一晚」等廣告詞，RadioData 廣告語境出現「刺激活動」時會被切成 刺「激活」動→刺啟用動；醫療廣播的「應激活性/應激活躍」同理。",
+   "replace": "啟用",
+   "tests": {
+    "apply": [
+     "激活此功能",
+     "激活作弊選單"
+    ],
+    "skip": [
+     "想找刺激活動嗎？",
+     "應激活性升高"
+    ]
+   }
+  },
+  {
+   "pair": "交互→互動",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<!外)交互(?!作用|詰問|蹲跳)"
+   },
+   "note": "語料有《戰爭與外交》書名，新聞/劇情文字出現「外交互動」會被切成 外「交互」動→外互動動；且「交互作用」「交互詰問」「交互蹲跳」是台灣本有詞（藥物交互作用、法庭劇、健身內容皆 PZ 題材），不應換成互動。",
+   "replace": "互動",
+   "tests": {
+    "apply": [
+     "與物品交互",
+     "交互介面"
+    ],
+    "skip": [
+     "兩國外交互動頻繁",
+     "藥物交互作用"
+    ]
+   }
+  },
+  {
+   "pair": "屏蔽→遮蔽",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "屏蔽"
+   },
+   "note": "無殘留；X屏+蔽Y 跨界組合（開屏蔽、螢屏蔽）不成詞，PZ 題材的信號屏蔽→信號遮蔽語意正確。僅聊天封鎖義的屏蔽換遮蔽略生硬，但語料無此語境且不算損壞。",
+   "replace": "遮蔽"
+  },
+  {
+   "pair": "高端→高階",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "高端"
+   },
+   "note": "無殘留；語料無「端口」故 更高+端口 跨界不可能，提高端莊等組合不成句。台灣「高階」可延伸至產品/裝備；僅「高端餐廳→高階餐廳」類廣告詞略不自然（台灣慣用高檔/高級），屬風格瑕疵非損壞，可接受。",
+   "replace": "高階"
+  },
+  {
+   "pair": "菜單→選單",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "菜單"
+   },
+   "note": "餐廳菜單；UI 選單"
+  },
+  {
+   "pair": "禁用→停用",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![封嚴查違])禁用(?!戶)"
+   },
+   "note": "CH 實際仍有 33 處殘留（規則檔宣稱 residual 0 不實），全為 disable 義換停用正確；但 PZ 告示/求生指南可出現「嚴禁用火/嚴禁用電」（嚴禁+用火→嚴停用火），體育廣播的「禁用藥物」（違禁品義）換停用藥物會反轉語意；guard：封禁+用戶／嚴禁+用火 跨詞界",
+   "replace": "停用",
+   "tests": {
+    "apply": [
+     "禁用重生",
+     "已禁用此功能"
+    ],
+    "skip": [
+     "設置被封禁用戶默認角色",
+     "室內嚴禁用火"
+    ]
+   }
+  },
+  {
+   "pair": "幾率→機率",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "幾率"
+   },
+   "note": "幾率是無歧義的大陸詞，台灣一律作機率；X幾+率Y 跨界（所剩無幾率先…）中文必以標點分隔，實務上不可能相鄰成串。找不到反例。",
+   "replace": "機率"
+  },
+  {
+   "pair": "圖標→圖示",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![地試企意插構藍])(?<!地\\s)圖標(?![記籤示注註題明準語靶])"
+   },
+   "note": "現行 guard (?<!地)圖標(?!記|籤) 擋住了語料全部 5 處（地圖標籤/地圖標記/小地圖標記），今日安全；但 lookahead 只排 記|籤 太窄：「試圖標示」「插圖標題」「構圖標準」「藍圖標示」都會被誤換成 試圖示示/插圖示",
+   "replace": "圖示",
+   "tests": {
+    "apply": [
+     "點擊物品圖標",
+     "顯示狀態圖標"
+    ],
+    "skip": [
+     "試圖標示出安全區",
+     "插圖標題",
+     "地圖標記/地圖標籤"
+    ]
+   }
+  },
+  {
+   "pair": "運行→執行",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "運行"
+   },
+   "note": "語料實錘反例：Recorded_Media 1009「神的靈運行在水面上」（創世記 1:2 引文，運行=移動運轉義），盲換成「神的靈執行在水面上」是災難。語料另有列車炸彈劇、次軌道飛行、天體題材，「列車運行」「天體運行」屬台灣正確用法不應換。tech 義（程式/mod 運行）與 narrative "
+  },
+  {
+   "pair": "代碼→程式碼",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "代碼"
+   },
+   "note": "程式 code=程式碼；驗證碼/Auth 代碼≠程式碼（codex 實證）"
+  },
+  {
+   "pair": "發送→傳送",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "發送"
+   },
+   "note": "UI 傳送可；發送信鴿/發送信號彈 物理語境誤傷（codex 實證）"
+  },
+  {
+   "pair": "音頻→音訊",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![聲噪雜錄收])音頻(?![率道譜段寬])"
+   },
+   "note": "無殘留，但本語料是 radio 重載語料：頻道/頻率共 157 處、RadioData 獨佔 97。X音+頻Y 跨界（聲音頻率、錄音頻道、噪音頻譜、收音頻道）一旦出現即被切成 聲「音頻」率→聲音訊率、錄「音頻」道→錄音訊道，在 PZ 題材幾",
+   "replace": "音訊",
+   "tests": {
+    "apply": [
+     "音頻檔案",
+     "音頻設定"
+    ],
+    "skip": [
+     "聲音頻率異常",
+     "切換錄音頻道",
+     "噪音頻譜"
+    ]
+   }
+  },
+  {
+   "pair": "變量→變數",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<!改)變量"
+   },
+   "note": "語料中零出現，但跨詞界「改變+量X」在 PZ 題材可信：Recorded_Media 有科普/教育類讀物，「速度的改變量」（物理量）與「改變量測單位」（設定類文本）都會被打成「改變數」。應變量→應變數反而是台灣統計正確用語，不必擋。",
+   "replace": "變數",
+   "tests": {
+    "apply": [
+     "除錯變量 ",
+     "應變量 "
+    ],
+    "skip": [
+     "速度的改變量",
+     "改變量測單位"
+    ]
+   }
+  },
+  {
+   "pair": "文檔→文件",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![中英日韓法德西俄原全內論譯條圖])文檔"
+   },
+   "note": "語料中零出現，但「X文+檔案」跨詞界誤傷在翻譯 MOD 生態極可信：「找不到中文檔案」「原文檔案損毀」會被打成「中文件案」。以常見『文』結尾詞做 lookbehind 即可。",
+   "replace": "文件",
+   "tests": {
+    "apply": [
+     "參閱官方文檔 "
+    ],
+    "skip": [
+     "找不到中文檔案",
+     "原文檔案已損毀"
+    ]
+   }
+  },
+  {
+   "pair": "相冊→相簿",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "相冊"
+   },
+   "note": "誤傷需「X相+冊Y」連寫（真相/首相+冊子/冊封），在 1993 肯塔基題材的 PZ 語料構造不出自然句；相冊本身無多義。找不到反例。",
+   "replace": "相簿"
+  },
+  {
+   "pair": "實時→即時",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![真現其確誠老據屬事踏樸切務忠結果核落密堅充平厚紮])實時"
+   },
+   "note": "語料內有活反例：IG_UI.json:6961「真實時間」（IGUI_RunningDebug_RealTime），盲替換會變「真即時間」。語料充滿 真實/確實/其實/現實 等『實』結尾高頻詞，任何後接『時』字詞（時間/時常/時刻）都會誤傷",
+   "replace": "即時",
+   "tests": {
+    "apply": [
+     "夜間新聞實時播報 "
+    ],
+    "skip": [
+     "真實時間",
+     "落實時間管理"
+    ]
+   }
+  },
+  {
+   "pair": "公元→西元",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![人老阿外相])公元"
+   },
+   "note": "語料 8 處全為 Recorded_Media 的「公元前」紀年（西元前正確），現況安全；但語料已有「老公」（RadioData.json:533「我想要新老公!」等 3 處）與廣播劇對白體，「老公元旦回來」「主人公元氣十足」型的『X公+元",
+   "replace": "西元",
+   "tests": {
+    "apply": [
+     "公元前52年被羅馬人征服 "
+    ],
+    "skip": [
+     "老公元旦那天回來",
+     "主人公元氣十足"
+    ]
+   }
+  },
+  {
+   "pair": "顯存→視訊記憶體",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![明凸突])顯存"
+   },
+   "note": "已套用的 4 處（UI.json:133 等顯示設定）正確，語料目前無「明顯存在」；但「明顯存在/凸顯存貨」是中文極高頻搭配，新聞廣播體「威脅明顯存在」一旦入料，盲替換會插入五字變「明視訊記憶體在」，屬災難級且替換目標特別長。三字 look",
+   "replace": "視訊記憶體",
+   "tests": {
+    "apply": [
+     "顯存不足 "
+    ],
+    "skip": [
+     "威脅明顯存在",
+     "報表凸顯存貨問題"
+    ]
+   }
+  },
+  {
+   "pair": "分辨率→解析度",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "分辨率"
+   },
+   "note": "語料中零出現。誤傷需「分辨+率先/率性」連寫（如「無法分辨率先開槍的是誰」），中文通常會改寫為「分辨誰率先…」，構造勉強；分辨率作顯示術語無多義。找不到可信反例。",
+   "replace": "解析度"
+  },
+  {
+   "pair": "調用→呼叫",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![強空協色語腔單格音曲筆步聲低微])調用"
+   },
+   "note": "已套用的 3 處（UI.json:1097-1099 Workshop API「呼叫失敗」）正確，但語料實際存在大量『調』結尾詞：空調（ItemName/ContextMenu/Moveables/Print_Text 多處物品名）、步調（",
+   "replace": "呼叫",
+   "tests": {
+    "apply": [
+     "DownloadItem() 調用失敗 "
+    ],
+    "skip": [
+     "他一再強調用火安全",
+     "夏季空調用電量大增"
+    ]
+   }
+  },
+  {
+   "pair": "芯片→晶片",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "芯片"
+   },
+   "note": "語料的『芯』全為 濾芯（ItemName/Recipes 20+ 處）、燈芯、燭芯（歌詞「燭芯燃盡」），誤傷需後接「片刻」等『片』起頭詞（「燭芯片刻燃盡」），構造勉強；1990s 廣播談電腦 chip 時轉晶片正確。找不到可信反例。",
+   "replace": "晶片"
+  },
+  {
+   "pair": "概率→機率",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "概率"
+   },
+   "note": "機率在語料已大量正確套用（Sandbox/Tooltip/RadioData 數十處）。最壞情況「大概率」→「大機率」仍可讀非破壞（台灣偏好高機率但不算錯）；「大概+率先」雙重連寫構造極勉強。找不到反例。",
+   "replace": "機率"
+  },
+  {
+   "pair": "布爾→布林",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "布爾(?=值|型|運算|邏輯|代數)"
+   },
+   "note": "16 個殘留全為人名地名音譯（特恩布爾/金布爾/布爾喬亞/梅布爾/布爾戈斯…），且盲替換已造成既成損傷：RadioData.json:274「伊斯坦布林」（Istanbul 應為伊斯坦堡）、9617「塔布林·傑拉丁」（同劇情句 9316 仍",
+   "replace": "布林",
+   "tests": {
+    "apply": [
+     "布爾值 ",
+     "氣候布爾值 "
+    ],
+    "skip": [
+     "特恩布爾",
+     "布爾喬亞冰淇淋",
+     "伊斯坦布爾"
+    ]
+   }
+  },
+  {
+   "pair": "集成→整合",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![聚收採召匯齊募蒐])集成(?!電路)"
+   },
+   "note": "語料充滿「聚集」（RadioData 8+ 處）與「成群結隊」（3 處），「殭屍聚集成群」是 PZ 典型句式，一旦入料盲替換成「聚整合群」災難級；同型還有 收集成堆/採集成功率/召集成員/匯集成河。另 lookahead 擋「集成電路」：台",
+   "replace": "整合",
+   "tests": {
+    "apply": [
+     "該系統集成了多種功能 "
+    ],
+    "skip": [
+     "殭屍聚集成群",
+     "採集成功率提高",
+     "集成電路"
+    ]
+   }
+  },
+  {
+   "pair": "鏈接→連結",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![鎖鐵項掛吊])鏈接"
+   },
+   "note": "現有兩處（UI.json ModLink「模組鏈接」、IG_UI.json IGUI_Animal_TroughLinkedTo「鏈接到區域」）替換皆正確，但 PZ 語料充滿鏈類物品（鎖鏈、鏈條、項鏈/項鍊，見 ItemName.json ",
+   "replace": "連結",
+   "tests": {
+    "apply": [
+     "模組鏈接 ",
+     "鏈接到區域 "
+    ],
+    "skip": [
+     "把鎖鏈接到欄杆上",
+     "這條項鏈接著一個十字架"
+    ]
+   }
+  },
+  {
+   "pair": "拷貝→複製",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![份部捲卷的影])拷貝"
+   },
+   "note": "現存兩處為動詞/按鈕（CN UI.json:1222「输入拷贝配置文件的名称」、:1224 按鈕「拷贝」），換成複製正確。但「拷貝」另有名詞義『副本/電影拷貝(film print)』，PZ 的 Recorded_Media/RadioDa",
+   "replace": "複製",
+   "tests": {
+    "apply": [
+     "拷貝配置文件 ",
+     "點選拷貝按鈕 "
+    ],
+    "skip": [
+     "電影拷貝在片庫遺失 →",
+     "把磁帶做一份拷貝 →"
+    ]
+   }
+  },
+  {
+   "pair": "兼容→相容",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "兼容(?![並并])"
+   },
+   "note": "軟體語境（不兼容→不相容，CN UI.json:1591、1890、1929）全對，但成語「兼容並蓄/兼容並包」中的兼容不可換——PZ 有上百個書名（IGUI_BookTitle_*）與廣播講座/社論文本，出現此成語題材上可能，盲換成「相容",
+   "replace": "相容",
+   "tests": {
+    "apply": [
+     "與早期版本的存檔不兼容 ",
+     "已不再兼容 "
+    ],
+    "skip": [
+     "《兼容並蓄》某某著 →",
+     "兼容並包的辦學方針 →"
+    ]
+   }
+  },
+  {
+   "pair": "控件→控制元件",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "控件"
+   },
+   "note": "僅兩處實例（CN SurvivalGuide.json:233、269，指右上角時間加速 UI 控件），換成「控制元件」是標準台灣軟體用語且語境吻合。「控件」為純軟體術語，找不到 X控＋件 的跨詞界組合（遙控器不作遙控件、操縱件不寫操控件）",
+   "replace": "控制元件"
+  },
+  {
+   "pair": "硬件→硬體",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "硬件"
+   },
+   "note": "兩處實例（CN UI.json:173、748「你的硬件不支持…」）皆為電腦硬體義，唯一詞義。跨詞界需要「…硬＋件…」無標點直連（如「質地很硬件件精良」），中文行文必有逗號隔開，PZ 題材找不到反例；五金行在簡體也不叫硬件店。",
+   "replace": "硬體"
+  },
+  {
+   "pair": "沙特阿拉伯→沙烏地阿拉伯",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "沙特阿拉伯"
+   },
+   "note": "五字專有名詞全稱比對（CN IG_UI.json:5288 IGUI_Photo_SaudiArabia），不可能是其他詞的子串，音譯正規化方向正確且已在 Print_Text.json:19 正確落地。注意規則不涵蓋單獨「沙特」二字簡稱（",
+   "replace": "沙烏地阿拉伯"
+  },
+  {
+   "pair": "調度→排程",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "調度"
+   },
+   "note": "鐵路/人力調度；IT 排程"
+  },
+  {
+   "pair": "字節→位元組",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![赤數文名漢])字節(?![目日省慶氣節奏])"
+   },
+   "note": "二字短規則跨詞界風險高。語料新聞語域濃厚（RadioData 總統/財經播報）且 節目 145 處、數字 常見：「財政赤字節節攀升」（赤字+節節）、「數字節目」（數字+節目）、「名字節奏感」（名字+節奏）都會被攔腰斬成「位元組」。既有唯一落",
+   "replace": "位元組",
+   "tests": {
+    "apply": [
+     "也就是…100萬個字節嗎? "
+    ],
+    "skip": [
+     "財政赤字節節攀升 → 會變「財政赤位元組節攀升」",
+     "這數字節目表排得真滿 → 會變「數位元組目表」"
+    ]
+   }
+  },
+  {
+   "pair": "網關→閘道器",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![電漁蛛])網關(?![閉停掉門卡])"
+   },
+   "note": "二字短規則跨詞界地雷：諾克斯電網是 PZ 核心劇情（DynamicRadio.json:4-6「電網受損」「供電中斷」），斷電是核心機制，「電網關閉/電網關停」極可能出現於未來對版文本 → 盲換得「電閘道器閉」攔腰斬。既有唯一落點 UPnP",
+   "replace": "閘道器",
+   "tests": {
+    "apply": [
+     "啟用 UPnP 網關, 並自動配置埠轉發規則 "
+    ],
+    "skip": [
+     "諾克斯電網關閉後全區供電中斷 → 會變「諾克斯電閘道器閉」"
+    ]
+   }
+  },
+  {
+   "pair": "截屏→截圖",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "截屏(?![障風幕蔽])"
+   },
+   "note": "跨詞界風險：X截+屏Y 相鄰（攔截/阻截/半截 + 屏障/屏風/屏蔽）。語料已有「屏障」，PZ 軍事封鎖廣播出現「攔截屏障」完全合理。加後接字排除即可安全。",
+   "replace": "截圖",
+   "tests": {
+    "apply": [
+     "按下F12即可截屏 ",
+     "使用截屏功能記錄畫面 "
+    ],
+    "skip": [
+     "軍方在橋頭設置攔截屏障",
+     "搬走那半截屏風"
+    ]
+   }
+  },
+  {
+   "pair": "批量→批次",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "批量(?![產身刑])"
+   },
+   "note": "跨詞界風險：X批+量Y 相鄰（大批/分批/成批 + 量產/量身）。語料「大批」有 7+ 處，廣播經濟新聞出現「大批量產」很合理。另注意「批量購買」（bulk 義）換成「批次購買」略不道地但可理解，不構成錯誤。",
+   "replace": "批次",
+   "tests": {
+    "apply": [
+     "批量處理物品 ",
+     "批量製作繃帶 "
+    ],
+    "skip": [
+     "工廠大批量產軍用罐頭",
+     "分批量身訂做"
+    ]
+   }
+  },
+  {
+   "pair": "映射→對映",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![反放上倒播投])映射"
+   },
+   "note": "跨詞界風險：X映+射Y 相鄰（反映/放映/上映/播映 + 射擊/射程/射出）。語料 Recorded_Media 已有「反映」、RadioData 有「放映」，緊急廣播「民眾反映射擊事件」極為合理。另附註：台灣慣用語 mapping 多作「",
+   "replace": "對映",
+   "tests": {
+    "apply": [
+     "按鍵映射設定 ",
+     "記憶體映射 "
+    ],
+    "skip": [
+     "居民反映射擊聲擾民",
+     "電影放映射出的光束"
+    ]
+   }
+  },
+  {
+   "pair": "查找→查詢",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "查找"
+   },
+   "note": "雙重問題故降級人工選：(1) 跨詞界誤傷機率高——調查/檢查/搜查 + 找出/找到 是中文最常見接續之一，語料 88 處相關動詞；(2) 語義多義——簡體「查找」對應英文 Find 時台灣慣用「尋找/搜尋」，只有 database lookup 義才是「查詢」，機械換成「查詢」在 Find 語境是換"
+  },
+  {
+   "pair": "算法→演算法",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![演計運估換推心珠])算法"
+   },
+   "note": "src_residual=1 即為鐵證：殘留樣本就是已轉換的「演算法」，規則非冪等，重複執行必產生「演演算法」。另有 X算+法 切分風險（計算法/換算法/估算法），料理書「熱量計算法」在 PZ 書名題材合理。負向後顧斷言同時解決冪等與切分兩",
+   "replace": "演算法",
+   "tests": {
+    "apply": [
+     "隨機化算法 ",
+     "壓縮算法 "
+    ],
+    "skip": [
+     "對殭屍分佈應用隨機化演算法",
+     "卡路里計算法"
+    ]
+   }
+  },
+  {
+   "pair": "黑客→駭客",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![天抹漆烏月])黑客"
+   },
+   "note": "跨詞界風險真實存在：X黑+客Y 相鄰（天黑/漆黑/抹黑 + 客人/客廳/客戶）。語料同時實存「天黑」「漆黑」「客人」且 Recorded_Media 充滿敘事文本，「天黑客人散去」句式在小說/廣播劇完全合理。負向後顧斷言排除即可。另注意電影",
+   "replace": "駭客",
+   "tests": {
+    "apply": [
+     "電腦黑客入侵銀行系統 ",
+     "黑客攻擊了伺服器 "
+    ],
+    "skip": [
+     "直到天黑客人才陸續散去",
+     "夜色漆黑客廳裡沒有燈"
+    ]
+   }
+  },
+  {
+   "pair": "塞浦路斯→塞普勒斯",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "塞浦路斯"
+   },
+   "note": "四字專有名詞音譯，序列高度特異：「浦路」組合不會由其他詞相鄰巧合構成，也無其他地名/人名包含此子串。PZ 題材（新聞廣播提及國名）只會整詞出現。目標「塞普勒斯」為台灣標準譯名。",
+   "replace": "塞普勒斯"
+  },
+  {
+   "pair": "冰棍→冰棒",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "冰棍"
+   },
+   "note": "食品名，無多義。跨詞界檢查：X冰+棍Y（碎冰+棍子、溜冰+棍）相鄰在自然中文裡幾乎不成句（需「的」連接），且即使極端巧合「碎冰棍子」被換成「碎冰棒子」，棍/棒同義仍可讀，無破壞性。冰球桿寫作「冰球棍」不含連續「冰棍」子串。目標「冰棒」為台灣",
+   "replace": "冰棒"
+  },
+  {
+   "pair": "發佈→發布",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "發佈"
+   },
+   "note": "驗證裁定：發佈→釋出 有害已淘汰；台灣標準寫法為發布，全語境安全。軟體 release 語境要用釋出時逐鍵人工選",
+   "replace": "發布"
+  },
+  {
+   "pair": "全局→全域",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "全局"
+   },
+   "note": "s2twp 產物全域性已淘汰；台灣用全域",
+   "replace": "全域"
+  },
+  {
+   "pair": "調試器→偵錯程式",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "調試器"
+   },
+   "replace": "偵錯程式",
+   "note": "語料既有 12 筆偵錯程式；基礎規則已排除 器 防撞 span"
+  },
+  {
+   "pair": "字符串→字串",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "字符串"
+   },
+   "replace": "字串",
+   "note": "基礎 字符→字元 的 guard 排除了串，需專屬規則"
+  },
+  {
+   "pair": "程序員→程式設計師",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "程序員"
+   },
+   "replace": "程式設計師",
+   "note": "基礎 程序→程式 為 select，需專屬 replace"
+  },
+  {
+   "pair": "文件名→檔名",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "文件名"
+   },
+   "replace": "檔名",
+   "note": "基礎 文件→檔案 為 select，需專屬 replace"
+  },
+  {
+   "pair": "方便麵→泡麵",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "方便麵"
+   },
+   "replace": "泡麵",
+   "note": "charfix 麪→麵 之後的形；台灣慣稱泡麵"
+  },
+  {
+   "pair": "服務器→伺服器",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "服務器"
+   },
+   "replace": "伺服器",
+   "note": "diff 對齊碎片化漏抓，等價測試前補回；服務器單義，台灣一律伺服器"
+  },
+  {
+   "pair": "用戶→使用者",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<!使)用戶(?![端名])"
+   },
+   "replace": "使用者",
+   "note": "用戶端=台灣標準 client 不轉；使用+戶外 跨詞界",
+   "tests": {
+    "apply": [
+     "封禁用戶",
+     "用戶介面"
+    ],
+    "skip": [
+     "請使用戶外烤爐",
+     "Steam 用戶端",
+     "用戶名稱（由專屬規則轉使用者名稱）"
+    ]
+   }
+  },
+  {
+   "pair": "列表→清單",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "列表"
+   },
+   "replace": "清單",
+   "note": "安全"
+  },
+  {
+   "pair": "僵屍→殭屍",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "僵屍"
+   },
+   "replace": "殭屍",
+   "note": "僵屍恆為 zombie；僵硬/僵局不含屍字"
+  },
+  {
+   "pair": "幸存→倖存",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "幸存"
+   },
+   "replace": "倖存",
+   "note": "幸存恆為 survive 義"
+  },
+  {
+   "pair": "自定義→自訂",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "自定義"
+   },
+   "replace": "自訂",
+   "note": "安全"
+  },
+  {
+   "pair": "當前→目前",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![敵難禍])當前"
+   },
+   "replace": "目前",
+   "note": "大敵當前 類成語保留",
+   "tests": {
+    "apply": [
+     "當前時間",
+     "當前版本"
+    ],
+    "skip": [
+     "大敵當前"
+    ]
+   }
+  },
+  {
+   "pair": "教程→教學",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "教程"
+   },
+   "replace": "教學",
+   "note": "安全"
+  },
+  {
+   "pair": "網絡→網路",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "網絡"
+   },
+   "replace": "網路",
+   "note": "安全"
+  },
+  {
+   "pair": "優先級→優先順序",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "優先級"
+   },
+   "replace": "優先順序",
+   "note": "安全"
+  },
+  {
+   "pair": "光標→游標",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![激閃])光標(?!靶)"
+   },
+   "replace": "游標",
+   "note": "安全；激光+標靶 跨詞界（官方 CH 實存，曾致 collision crash）",
+   "tests": {
+    "apply": [
+     "移動光標到目標"
+    ],
+    "skip": [
+     "激光標靶"
+    ]
+   }
+  },
+  {
+   "pair": "登錄→登入",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "登錄"
+   },
+   "replace": "登入",
+   "note": "遊戲語境 login 義主導"
+  },
+  {
+   "pair": "密鑰→金鑰",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "密鑰"
+   },
+   "replace": "金鑰",
+   "note": "安全"
+  },
+  {
+   "pair": "硬盤→硬碟",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "硬盤"
+   },
+   "replace": "硬碟",
+   "note": "安全"
+  },
+  {
+   "pair": "軟盤→軟碟",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "軟盤"
+   },
+   "replace": "軟碟",
+   "note": "安全"
+  },
+  {
+   "pair": "軟件→軟體",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "軟件"
+   },
+   "replace": "軟體",
+   "note": "安全"
+  },
+  {
+   "pair": "剪貼板→剪貼簿",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "剪貼板"
+   },
+   "replace": "剪貼簿",
+   "note": "安全"
+  },
+  {
+   "pair": "單擊→點選",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "單擊"
+   },
+   "replace": "點選",
+   "note": "對齊語料主流點選"
+  },
+  {
+   "pair": "通過→透過",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "通過"
+   },
+   "note": "考試/投票/法案通過 vs 經由透過，語境敏感；官方 CH 輸入已自帶正確選字"
+  },
+  {
+   "pair": "組件→元件",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "組件"
+   },
+   "note": "電子元件 vs 家具組件（吧台組件），語境敏感"
+  },
+  {
+   "pair": "創建→建立",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "創建"
+   },
+   "replace": "建立",
+   "note": "安全"
+  },
+  {
+   "pair": "加載→載入",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "加載"
+   },
+   "replace": "載入",
+   "note": "安全"
+  },
+  {
+   "pair": "光盤→光碟",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "光盤"
+   },
+   "replace": "光碟",
+   "note": "安全"
+  },
+  {
+   "pair": "隊列→佇列",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "隊列"
+   },
+   "replace": "佇列",
+   "note": "安全"
+  },
+  {
+   "pair": "弗吉尼亞→維吉尼亞",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "弗吉尼亞"
+   },
+   "replace": "維吉尼亞",
+   "note": "台灣地名慣例"
+  },
+  {
+   "pair": "新西蘭→紐西蘭",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "新西蘭"
+   },
+   "replace": "紐西蘭",
+   "note": "台灣地名慣例"
+  },
+  {
+   "pair": "俄克拉荷馬→奧克拉荷馬",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "俄克拉荷馬"
+   },
+   "replace": "奧克拉荷馬",
+   "note": "台灣地名慣例"
+  },
+  {
+   "pair": "馬薩諸塞→麻薩諸塞",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "馬薩諸塞"
+   },
+   "replace": "麻薩諸塞",
+   "note": "台灣地名慣例"
+  },
+  {
+   "pair": "佐治亞→喬治亞",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "佐治亞"
+   },
+   "replace": "喬治亞",
+   "note": "台灣地名慣例"
+  },
+  {
+   "pair": "尼日利亞→奈及利亞",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "尼日利亞"
+   },
+   "replace": "奈及利亞",
+   "note": "台灣地名慣例"
+  },
+  {
+   "pair": "卡羅來納→卡羅萊納",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "卡羅來納"
+   },
+   "replace": "卡羅萊納",
+   "note": "台灣地名慣例"
+  },
+  {
+   "pair": "信號→訊號",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "信號"
+   },
+   "replace": "訊號",
+   "note": "安全"
+  },
+  {
+   "pair": "磁盤→磁碟",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "磁盤"
+   },
+   "replace": "磁碟",
+   "note": "安全"
+  },
+  {
+   "pair": "納米→奈米",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "納米"
+   },
+   "replace": "奈米",
+   "note": "台灣標準"
+  },
+  {
+   "pair": "計算機→電腦",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "計算機"
+   },
+   "note": "台灣的計算機=calculator（太陽能計算機）；大陸的計算機=電腦，須逐鍵判（codex 實證）"
+  },
+  {
+   "pair": "內置→內建",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "內置"
+   },
+   "replace": "內建",
+   "note": "安全"
+  },
+  {
+   "pair": "複印→影印",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "複印"
+   },
+   "replace": "影印",
+   "note": "安全"
+  },
+  {
+   "pair": "顯像管→映像管",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "顯像管"
+   },
+   "replace": "映像管",
+   "note": "台灣標準（舊管線的映象管為劣譯）"
+  },
+  {
+   "pair": "對話框→對話方塊",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "對話框"
+   },
+   "replace": "對話方塊",
+   "note": "對齊語料"
+  },
+  {
+   "pair": "文字處理器→文書處理器",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "文字處理器"
+   },
+   "replace": "文書處理器",
+   "note": "台灣標準"
+  },
+  {
+   "pair": "局域網→區域網路",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "局域網"
+   },
+   "replace": "區域網路",
+   "note": "台灣標準"
+  },
+  {
+   "pair": "便攜式→可攜式",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "便攜式"
+   },
+   "replace": "可攜式",
+   "note": "台灣標準（舊管線行動式為翻譯腔）"
+  },
+  {
+   "pair": "首席執行官→執行長",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "首席執行官"
+   },
+   "replace": "執行長",
+   "note": "台灣標準"
+  },
+  {
+   "pair": "索馬里→索馬利亞",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "索馬里"
+   },
+   "replace": "索馬利亞",
+   "note": "台灣地名（Somalia）"
+  },
+  {
+   "pair": "馬爾代夫→馬爾地夫",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "馬爾代夫"
+   },
+   "replace": "馬爾地夫",
+   "note": "台灣地名"
+  },
+  {
+   "pair": "哥斯達黎加→哥斯大黎加",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "哥斯達黎加"
+   },
+   "replace": "哥斯大黎加",
+   "note": "台灣地名"
+  },
+  {
+   "pair": "坦桑尼亞→坦尚尼亞",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "坦桑尼亞"
+   },
+   "replace": "坦尚尼亞",
+   "note": "台灣地名"
+  },
+  {
+   "pair": "威斯康星→威斯康辛",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "威斯康星"
+   },
+   "replace": "威斯康辛",
+   "note": "台灣地名"
+  },
+  {
+   "pair": "康涅狄格→康乃狄克",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "康涅狄格"
+   },
+   "replace": "康乃狄克",
+   "note": "台灣地名"
+  },
+  {
+   "pair": "蘇里南→蘇利南",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "蘇里南"
+   },
+   "replace": "蘇利南",
+   "note": "台灣地名"
+  },
+  {
+   "pair": "貝寧→貝南",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "貝寧"
+   },
+   "replace": "貝南",
+   "note": "台灣地名"
+  },
+  {
+   "pair": "存盤→存檔",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<!庫)存盤"
+   },
+   "replace": "存檔",
+   "note": "庫存盤點 反例護欄",
+   "tests": {
+    "apply": [
+     "遊戲存盤點"
+    ],
+    "skip": [
+     "只有庫存盤點"
+    ]
+   }
+  },
+  {
+   "pair": "拖動→拖曳",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "拖動(?!物)"
+   },
+   "replace": "拖曳",
+   "note": "既有字典護欄移植：拖|動物 跨詞界",
+   "tests": {
+    "apply": [
+     "點擊並拖動以創建"
+    ],
+    "skip": [
+     "拖動物屍體"
+    ]
+   }
+  },
+  {
+   "pair": "掃描儀→掃描器",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "掃描儀"
+   },
+   "replace": "掃描器",
+   "note": "台灣標準"
+  },
+  {
+   "pair": "泄→洩",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "泄(?!殖)"
+   },
+   "replace": "洩",
+   "tests": {
+    "apply": [
+     "泄漏機密",
+     "泄氣"
+    ],
+    "skip": [
+     "鳥類的泄殖腔"
+    ]
+   },
+   "note": "泄殖腔為生物學標準用字（codex 實證）；其餘語境洩為台灣標準"
+  },
+  {
+   "pair": "用戶名→使用者名稱",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "用戶名"
+   },
+   "replace": "使用者名稱",
+   "note": "與基礎規則以 (?!名) 分工防撞 span"
+  },
+  {
+   "pair": "傳感→感測",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "傳感"
+   },
+   "replace": "感測",
+   "note": "傳感器→感測器；傳感單義技術語素"
+  },
+  {
+   "pair": "鼠標→滑鼠",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "鼠標"
+   },
+   "replace": "滑鼠",
+   "note": "安全"
+  },
+  {
+   "pair": "伊利諾伊→伊利諾",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "伊利諾伊"
+   },
+   "replace": "伊利諾",
+   "note": "台灣地名"
+  },
+  {
+   "pair": "在線→線上",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![存站])在線"
+   },
+   "replace": "線上",
+   "note": "存在+線索／站在+線上 跨詞界",
+   "tests": {
+    "apply": [
+     "用戶在線",
+     "在線玩家"
+    ],
+    "skip": [
+     "案情存在線索"
+    ]
+   }
+  },
+  {
+   "pair": "打開→開啟",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "打開"
+   },
+   "note": "語料慣例開啟；物理/口語打開亦合法（打開罐頭），逐鍵選"
+  },
+  {
+   "pair": "質量→品質",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "質量"
+   },
+   "note": "品質(quality) vs 質量(mass)；PZ 科普廣播可能出現物理義，逐鍵選"
+  },
+  {
+   "pair": "粘貼→貼上",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "粘貼"
+   },
+   "replace": "貼上",
+   "note": "paste；物理貼牆紙亦通"
+  },
+  {
+   "pair": "互聯網→網際網路",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "互聯網"
+   },
+   "replace": "網際網路",
+   "note": "台灣標準"
+  },
+  {
+   "pair": "肯尼亞→肯亞",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "肯尼亞"
+   },
+   "replace": "肯亞",
+   "note": "台灣地名"
+  },
+  {
+   "pair": "集群→叢集",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "集群"
+   },
+   "replace": "叢集",
+   "note": "台灣標準"
+  },
+  {
+   "pair": "指針→指標",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "(?<![時錶鐘秒分])指針"
+   },
+   "replace": "指標",
+   "note": "滑鼠/抽象 pointer=指標；時鐘錶指針保留",
+   "tests": {
+    "apply": [
+     "滑鼠指針所指向的點"
+    ],
+    "skip": [
+     "手錶指針停了",
+     "時鐘的分針時針"
+    ]
+   }
+  },
+  {
+   "pair": "視圖→檢視",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "視圖"
+   },
+   "note": "UI view=檢視（語料慣例）；3D 視圖錐/資料庫視圖 另議"
+  }
+ ],
+ "_dropped": {
+  "發佈→釋出": "規則本身有害，且已在生產語料造成實際損害：RadioData.json:5279「新聞釋出會」（應為記者會/新聞發布會）、:717「政府仍未釋出官方聲明」、:770/892 等十餘筆「總統釋出宣告」（應為發布/發表）、UI.json:1071「釋出物品至 Steam 創意工坊」（publish 應為",
+  "集成竈→整合灶": "台灣無整合灶一詞；語料 0 命中；廚房爐具逐鍵處理",
+  "循環→迴圈": "專案裁定音樂/槍機/輪替語境用循環；PZ 無程式迴圈語境",
+  "全局→全域性": "台灣用全域（非全域性）",
+  "格什溫→蓋希文": "語料統一格什溫（蓋希文 0 命中），改動反致不一致",
+  "局部→區域性": "台灣用局部",
+  "鏡像→映象": "台灣用鏡像",
+  "綁定→繫結": "專案 UI 全用綁定",
+  "前綴→字首": "語料全用前綴（字首 0 命中）",
+  "掛斷→結束通話": "掛斷自然",
+  "默認羣→預設群": "複合對（詞對＋異體字黏連）：charfix 先行或基礎詞對已為 select，獨立規則無效或有害",
+  "聲明爲→宣告為": "複合對（詞對＋異體字黏連）：charfix 先行或基礎詞對已為 select，獨立規則無效或有害",
+  "裏爲→裡為": "黏連複合對：charfix 或基礎詞對已涵蓋，獨立規則無效",
+  "爲啓→為啟": "黏連複合對：charfix 或基礎詞對已涵蓋，獨立規則無效",
+  "爲默認→為預設": "黏連複合對：charfix 或基礎詞對已涵蓋，獨立規則無效",
+  "方便麪→泡麵": "黏連複合對：charfix 或基礎詞對已涵蓋，獨立規則無效",
+  "羣衆→群眾": "黏連複合對：charfix 或基礎詞對已涵蓋，獨立規則無效",
+  "爲調試→為除錯": "黏連複合對：charfix 或基礎詞對已涵蓋，獨立規則無效",
+  "查看數據→檢視資料": "黏連複合對：charfix 或基礎詞對已涵蓋，獨立規則無效",
+  "查看腳本→檢視指令碼": "黏連複合對：charfix 或基礎詞對已涵蓋，獨立規則無效",
+  "數據文件→資料檔案": "黏連複合對：charfix 或基礎詞對已涵蓋，獨立規則無效",
+  "腳本循環→指令碼迴圈": "黏連複合對：charfix 或基礎詞對已涵蓋，獨立規則無效",
+  "裏羣→裡群": "黏連複合對：charfix 或基礎詞對已涵蓋，獨立規則無效",
+  "裏裏裏→裡裡裡": "黏連複合對：charfix 或基礎詞對已涵蓋，獨立規則無效",
+  "裏 , 爲→裡 , 為": "黏連複合對：charfix 或基礎詞對已涵蓋，獨立規則無效",
+  "腳本調試→指令碼除錯": "黏連複合對：charfix 或基礎詞對已涵蓋，獨立規則無效",
+  "默認端口→預設埠": "黏連複合對：charfix 或基礎詞對已涵蓋，獨立規則無效"
+ },
+ "_equivalence_adjudication": {
+  "發佈→釋出": "drop：規則本身有害，且已在生產語料造成實際損害：RadioData.json:5279「新聞釋出會」（應為記者會/新聞發布會）、:717「政府仍未釋出官方聲明」、:7",
+  "集成竈→整合灶": "drop：台灣無整合灶一詞；語料 0 命中；廚房爐具逐鍵處理",
+  "循環→迴圈": "drop：專案裁定音樂/槍機/輪替語境用循環；PZ 無程式迴圈語境",
+  "全局→全域性": "drop：台灣用全域（非全域性）",
+  "格什溫→蓋希文": "drop：語料統一格什溫（蓋希文 0 命中），改動反致不一致",
+  "局部→區域性": "drop：台灣用局部",
+  "鏡像→映象": "drop：台灣用鏡像",
+  "綁定→繫結": "drop：專案 UI 全用綁定",
+  "前綴→字首": "drop：語料全用前綴（字首 0 命中）",
+  "掛斷→結束通話": "drop：掛斷自然",
+  "發布→釋出": "drop：舊管線把發佈轉成釋出屬有害行為，新管線轉為發布",
+  "全域→全域性": "drop：舊管線的全域性為劣譯，新管線轉為全域",
+  "點選→點擊": "兩可；語料混用，新管線統一點選",
+  "參數→引數": "新保留參數（台灣通用）；引數僅命令列語境，語料 2 筆屬該語境不動",
+  "擴展→擴充套件": "新正確；擴充套件僅軟體 extension，舊管線曾產生部分割槽域級的切詞災難",
+  "分區→分割槽": "新正確（分區為台灣用語）；舊管線曾把 部分+區域 切成 部分割槽域（已修出貨）",
+  "重裝→重灌": "新正確；重灌是重灌作業系統俚語，reload 裝填必為重裝",
+  "圖像→影像": "兩可；語料混用（圖像金字塔/16-bit圖像 合法），新保留官方選字",
+  "停用→禁用": "新統一停用（規則設計）",
+  "高階→高端": "樣本層級混疊；高端出行 為刊物標題，新舊皆保留高端，屬 select 高級 家族殘影",
+  "重載→過載": "新正確；舊管線把 reload 轉成過載＝1.12.0 修復的 ReloadLua bug 根因",
+  "調製→調變": "新正確；調製（調配）恆非 modulation，舊管線調變為錯譯",
+  "優化→最佳化": "兩可；新保留優化（現代台灣通用）",
+  "道格拉斯→道葛拉斯": "新保留道格拉斯（台灣慣用）",
+  "佩加納→佩迦納": "兩可；書名音譯",
+  "阿拉莫→阿拉摩": "兩可；新保留阿拉莫（台灣慣用）",
+  "安全→保安": "新正確；舊管線計算機安全→電腦保安為劣譯",
+  "封禁→封停": "新正確；舊管線缺跨詞界護欄把封禁+用戶切成封停",
+  "製→變": "新正確；調製（調配食材/石膏）恆非 modulation",
+  "禁→停": "新正確；封禁+用戶 跨詞界，舊管線誤轉封停",
+  "優→最佳": "兩可；新保留優化",
+  "圖→影": "兩可；圖像/影像混用，新保留官方選字",
+  "參→引": "新保留參數（台灣通用）；命令列語境引數為語料既有例外",
+  "裝→灌": "新正確；重裝彈匣/重裝時間恆為裝填，重灌為舊管線劣譯",
+  "可攜→行動": "新採台灣標準可攜式；行動式為舊管線翻譯腔",
+  "莫→摩": "兩可；阿拉莫台灣慣用",
+  "格→葛": "新保留道格拉斯（台灣慣用）",
+  "像→象": "新正確；映像管為台灣標準，映象管為舊管線劣譯",
+  "區→割槽": "新正確；分區為台灣用語，舊管線曾產出部分割槽域災難",
+  "展→充套件": "新正確；擴充套件僅軟體 extension 語境",
+  "經→性經": "全域/全域性 家族碎形；新規則產全域為台灣標準",
+  "光→性光": "同上",
+  "模→性模": "同上",
+  "聊→性聊": "同上",
+  "文→性文": "同上",
+  "域→域性": "同上",
+  "實例→例項": "新保留實例（台灣現代通用）；例項為 MS 舊譯",
+  "網路地→網地": "新規則產完整「區域網路」；舊管線為簡寫區域網"
+ }
+}

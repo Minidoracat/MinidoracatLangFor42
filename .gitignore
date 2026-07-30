@@ -35,3 +35,8 @@ temp/
 .omc/
 .codex/
 .agents/
+
+# 凍結後維護的工作檔（可重生，不入版控；en_snapshot.json 是基準須入版控）
+scripts/en_diff_queue.json
+scripts/import_proposals.json
+scripts/equivalence_unadjudicated.json
