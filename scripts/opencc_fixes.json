@@ -874,7 +874,11 @@
         "田",
         "歐斯",
         "子一"
-      ]
+      ],
+      "skip_files": [
+        "SurvivorNames.json"
+      ],
+      "skip_files_note": "SurvivorNames 全為人名音譯（布里格斯 Briggs／克里夫蘭 Cleveland／海因里希 Heinrich），「里」恆為正解、「裡」恆為誤；6003 筆人名採用官方繁中後會產生 62 筆固定誤報，噪音會讓人習慣性忽略這道提示。整檔豁免優於把數十個字元塞進 before/after_exclude（那會全域削弱其他檔案的檢查力）。"
     }
   ]
 }

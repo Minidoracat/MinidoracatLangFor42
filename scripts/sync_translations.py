@@ -134,6 +134,11 @@ def _load_fixes() -> tuple[list[tuple[re.Pattern, str, str]], list[dict]]:
             "description": sp["description"],
             "after_exclude": sp.get("after_exclude", []),
             "before_exclude": sp.get("before_exclude", []),
+            # 整檔豁免：某些檔案的語料性質使該字元恆為正解，逐字排除清單會被撐爆
+            # 且反過來削弱其他檔案的檢查力（實例：SurvivorNames 全為人名音譯，
+            # 「里」在 布里格斯／克里夫蘭／海因里希 中永遠正確，「裡」永遠是錯的）。
+            # 刻意不納入跨專案字典一致性比對——檔名本就因專案而異。
+            "skip_files": sp.get("skip_files", []),
         })
 
     return post_fixes, suspicious
@@ -353,6 +358,8 @@ def check_suspicious(text: str, filename: str) -> list[str]:
     issues: list[str] = []
     for i, line in enumerate(text.splitlines(), 1):
         for sp in SUSPICIOUS_PATTERNS:
+            if filename in sp["skip_files"]:
+                continue
             char = sp["char"]
             desc = sp["description"]
             after_ex = sp["after_exclude"]

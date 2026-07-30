@@ -640,7 +640,7 @@
     "Sandbox_GeneratorSpawning": "发电机生成",
     "Sandbox_GeneratorLootNew": "发电机",
     "Sandbox_GeneratorSpawning_tooltip": "增加/减少发电机在地图上生成的机会.",
-    "Sandbox_GeneratorSpawning_option1": "极度稀少 (不推荐)",
+    "Sandbox_GeneratorSpawning_option1": "无 (不推荐)",
     "Sandbox_GeneratorSpawning_option2": "稀少",
     "Sandbox_GeneratorSpawning_option3": "偶尔",
     "Sandbox_GeneratorSpawning_option4": "经常",
