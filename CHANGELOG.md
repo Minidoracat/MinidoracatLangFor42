@@ -4,6 +4,34 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.0-1.12.0] - 2026-07-31
+
+### Added
+
+- **SurvivorNames 6,003 個官方繁中人名採用**：此檔 6,008 鍵過去與官方 EN 逐字相同——本 MOD 實際上把官方既有的中文名蓋回英文（NPC 名、殭屍屍體名牌、建角隨機名）。整批採官方繁中；CN 側官方本身未翻（全英文），以 t2s 由繁中轉出。官方未翻的 5 筆（`Bender`/`JC` 等）維持英文。
+- **官方音譯選字修正 18 個名字／22 鍵**：官方選字不作姓氏的硬錯（`Pham 範→范`、`Chau 紂→周`、`Phan 幡→潘`、`Do 督→杜`、`Tran/Chan 辰→陳`、`Le 勒→黎`、`Vo/Vu→武`、`Dang 唐→鄧`、`Ly 賴→李`）與官方自身前後不一致（`Yang/Duong 陽→楊`、`Ng 黃→吳`、`Lam 蘭→林`、`Li 利→李`、`Yu 悠→余` 僅姓氏）。鍵定位、非值取代——`黃` 家族（Huynh/Hoang/Hwang/Huang）零誤傷。
+- **三方比對稽核**（官方 EN＝裁判、官方 CH＝對照、我方 CH＝受審）：21,383 筆分歧按風險分帶，core 高風險 1,695 鍵**全量**＋med/flav/lo 抽樣 660 鍵逐筆判讀，每筆 ours_wrong 經獨立對抗複核（推翻誤報 6 筆）。判讀防錨定：第一輪隱藏官方 CH，避免錨定在官方自身的錯譯上。
+- **術語真相表與引擎**（`scripts/terminology.json`＋`terminology.py`）：以顯式規則取代 OpenCC s2twp 隱式詞庫——charfix 23 條異體字、replace 129 條（regex 護欄必附正反例，載入時端對端 selftest：pattern 命中＋`convert()` 實跑＋collision 偵測）、select 32 條語境敏感詞禁自動改（通過/透過、高級/高階、性能/效能、打開/開啟、質量/品質、計算機/電腦…）。淘汰規則記 `_dropped`（發佈→釋出、循環→迴圈、壁紙→桌布、鏡像→映象等 s2twp 有害行為），等價裁定記 `_equivalence_adjudication`。經 codex 獨立 review 12 findings 全數修復（`激光標靶` 撞規則 collision、`太陽能計算機`、`泄殖腔`、`發送一隻信鴿` 等 guard 誤傷實證）。
+- **outcome-equivalence 等價證明**（`scripts/test_terminology_equivalence.py`）：新術語管線 vs 舊 OpenCC 管線對 REF 全語料 47,677 值逐值比對，1,016 個差異桶全數裁定 PASS。insert/delete opcode 合併成桶（只收 replace 曾漏 432 值假 PASS）、REF 語料下限 gate、ClassC 一簡對多繁收窄至 ≤2 字核心。
+- **凍結後維護迴路**：`en-snapshot`（官方 EN 47,251 鍵基準快照，入版控）、`en-diff`（官方更新後產維護佇列——只看 git diff 會漏掉官方改英文原文）、`import-new`（官方 CH 底稿＋術語引擎產新鍵提案，人工簽核入檔；`Credits_Translator` 列刻意排除：官方譯者署名經 fallback 顯示不覆蓋）、`ch-lint`（select/lint 詞巡檢）。
+- **`suspicious_patterns` 支援 `skip_files` 整檔豁免**：SurvivorNames 全為人名音譯，「里」恆為正解——62 筆固定誤報歸零。
+
+### Changed
+
+- **CH 凍結**：CH 成品即人工真相，不再由 REF 全量再生——`sync-ch` 墓碑化（顯示維護流程說明，不寫入）、`sync-all`＝CN＋Lua＋fix-check、OpenCC 自本體管線移除（PEP 723 依賴清空）。`ch_overrides.json` 封存為歷史紀錄（值已全數實體化進 CH 檔）。修 CH 一律直接改 MOD CH 檔。CN 管線不變（sync-cn＋cn_overrides 照舊）。
+
+### Fixed
+
+- **三方稽核確認錯誤 114 鍵＋姊妹鍵擴展（CH 約 259 鍵、CN 73 鍵）**：
+  - 語意錯譯：`Full Top 頭頂→全上身`、`Ear Top 耳罩→上耳部`、`RESUME 返回→繼續遊戲`、`Clean Burn 清潔傷口→清理燒傷`、`Old Stove 壁爐→舊式火爐`、`Chalk Board 粉筆板→黑板`、`Wanted Notices 懸賞令→通緝令`、`invisible 無敵→隱形`（管理員會誤解指令）、引爆／啟用時間區分、喉縮 (擴散)→(改良縮口)（兩款皆縮小散布，原標註為事實錯誤）、緊身褲→長褲（EN=Pants）等
+  - 壞文本：車名後綴重複 **15 鍵跨三車系**（`(東南油漆) (東南油漆)`）、AntiCheat 機翻碎句 20 鍵、`塊石堆步→快石堆步`（同音誤植，含 CN）、逐字空格與標點空格殘留（含 StarterCondition 家族、大型伺服器警告整段）
+  - Stash 藏寶圖：空值出貨 22 鍵（官方 CH 有內容我們空白）、`Vicky 維科→薇琪`、`June 桑德拉→茱恩`、`catfish restaurant 酒吧→鯰魚餐廳`、`barricade 架設路障→加固防禦`
+  - 名著引文：魯濱遜漂流記對仗、婚誓 `forsaking all others`、Amazing Grace `now I'm found 現在堅定→今被尋回`
+  - 台灣用語家族：文胸→胸罩 17、曲奇→餅乾 7、創可貼→OK繃 6、西葫蘆→櫛瓜 7、半身裙→裙子 4、易拉罐 6、懸掛→懸吊 3、僵毀→殭毀 3、格子鬆餅、美式鬆餅、彈珠台、棧板、雪梨、全身鏡
+- **舊管線 s2twp 盲轉產物 92 鍵**（術語分類過程的語料稽核挖出，逐筆判讀修復）：`宣告→聲明` 29（新聞/官方 statement）、`釋出→發布` 21（新聞發布會→記者會；釋出僅軟體 release 義）、`社群→社區` 20（住宅/地理）、`效能→性能` 9（汽車）、`高階→高級` 5、`連線→連接` 4（物理）、`繫結→綁定` 4、`區域性→局部`／`全域性→全域` 各 3、`支援→支持` 2 等；以及切詞災難 `河流部分割槽域氾濫`→`部分區域`。
+- **needs_human 15 筆全數以遊戲資料實證結案**（tile 定義／藏寶圖腳本座標／媒體 UUID 序列前後文）：修 9 鍵（`斯皮福大牆紙→大型斯皮福牆飾`、`井噴銷售→清倉特賣標牌`、`粗製書架→粗製木層架`、`木製紀念樁→木製墓標`、`None 禁用→無`、LVMap16 兒子遇害讀法等）；6 筆查證後確認原譯正確維持。
+- **補譯與其他**：未翻譯 16＋1 鍵（`Accept`、雜誌名 `GameZ/Merc!/Sixteen`、SCBA）、人名 `拉託亞→拉托亞` 5 鍵、`SurvivalGuide_WindowTitle` 逐字空格。
+
 ## [42.20.0-1.11.0] - 2026-07-30
 
 ### Added
