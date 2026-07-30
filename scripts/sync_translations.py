@@ -142,15 +142,21 @@ def _load_fixes() -> tuple[list[tuple[re.Pattern, str, str]], list[dict]]:
 POST_FIXES, SUSPICIOUS_PATTERNS = _load_fixes()
 
 # ============================================================
-# CH 人工覆寫層（ch_overrides.json）
+# 人工覆寫層（ch_overrides.json / cn_overrides.json）
 # ------------------------------------------------------------
-# sync-ch 機轉全量再生後套用的人工真相檔。schema：
+# sync-ch / sync-cn 機轉全量再生後套用的人工真相檔。schema：
 #   {"<檔名>|<鍵>": "<人工值>"}                        （簡式，無過時偵測）
 #   {"<檔名>|<鍵>": {"value": "<人工值>", "ref": "<登記時 REF 原文 hash>"}}
-# ref = _ref_hash(REF CN 原文)；sync-ch 發現 REF 原文已變更時提醒重審，
-# 鍵已從 REF 消失時提醒清理。缺檔即報錯（防止誤跑 sync-ch 洗掉人工潤飾）。
+#   {"<檔名>|<鍵>": {"drop": true, "note": "<理由>"}}   （deny-list：不得輸出此鍵）
+# ref = _ref_hash(REF 原文)；發現 REF 原文已變更時提醒重審，
+# 鍵已從 REF 消失時提醒清理。缺檔即報錯（防止誤跑同步洗掉人工潤飾）。
+#
+# drop 的用途：REF（As1 42.0）仍有、但官方 42.20 已移除／改鍵名的死鍵。
+# 不用「官方 EN 有無」當自動閘門——實測 REF 有 1320 鍵官方 EN 沒有，其中 1286
+# 鍵仍在出貨（Recipes.json 一檔 512），自動閘會誤刪；死鍵須逐案登記。
 # ============================================================
 OVERRIDES_JSON = Path(__file__).resolve().parent / "ch_overrides.json"
+CN_OVERRIDES_JSON = Path(__file__).resolve().parent / "cn_overrides.json"
 
 # 不得生成的 REF 檔：
 # - streets.txt：CN/CH 皆未版控也無消費端（街道翻譯走 maps/Riverside, KY/streets.xml）。
@@ -173,16 +179,17 @@ def _ref_hash(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()[:16]
 
 
-def _load_overrides() -> dict[str, dict]:
-    """載入 ch_overrides.json；缺檔或格式錯誤即終止，不自動建骨架。"""
-    if not OVERRIDES_JSON.exists():
-        print(f"❌ 人工覆寫檔不存在：{OVERRIDES_JSON}", file=sys.stderr)
-        print("  sync-ch 需要 ch_overrides.json 才能保留人工潤飾，請先建立（勿用空猜測值）。", file=sys.stderr)
+def _load_overrides(path: Path = OVERRIDES_JSON) -> dict[str, dict]:
+    """載入人工覆寫檔；缺檔或格式錯誤即終止，不自動建骨架。"""
+    name = path.name
+    if not path.exists():
+        print(f"❌ 人工覆寫檔不存在：{path}", file=sys.stderr)
+        print(f"  同步需要 {name} 才能保留人工潤飾，請先建立（勿用空猜測值）。", file=sys.stderr)
         sys.exit(1)
     try:
-        data = json.loads(OVERRIDES_JSON.read_text(encoding="utf-8"))
+        data = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
-        print(f"❌ ch_overrides.json 讀取失敗：{exc}", file=sys.stderr)
+        print(f"❌ {name} 讀取失敗：{exc}", file=sys.stderr)
         sys.exit(1)
 
     overrides: dict[str, dict] = {}
@@ -190,14 +197,20 @@ def _load_overrides() -> dict[str, dict]:
         if ov_key.startswith("_"):
             continue  # _comment 等說明欄位
         if "|" not in ov_key:
-            print(f"❌ ch_overrides.json 鍵格式錯誤（應為 <檔名>|<鍵>）：{ov_key}", file=sys.stderr)
+            print(f"❌ {name} 鍵格式錯誤（應為 <檔名>|<鍵>）：{ov_key}", file=sys.stderr)
             sys.exit(1)
         if isinstance(ent, str):
-            overrides[ov_key] = {"value": ent, "ref": None}
+            overrides[ov_key] = {"value": ent, "ref": None, "drop": False}
+        elif isinstance(ent, dict) and ent.get("drop") is True:
+            overrides[ov_key] = {"value": None, "ref": ent.get("ref"), "drop": True}
         elif isinstance(ent, dict) and isinstance(ent.get("value"), str):
-            overrides[ov_key] = {"value": ent["value"], "ref": ent.get("ref")}
+            overrides[ov_key] = {
+                "value": ent["value"],
+                "ref": ent.get("ref"),
+                "drop": False,
+            }
         else:
-            print(f"❌ ch_overrides.json 條目格式錯誤：{ov_key} = {ent!r}", file=sys.stderr)
+            print(f"❌ {name} 條目格式錯誤：{ov_key} = {ent!r}", file=sys.stderr)
             sys.exit(1)
     return overrides
 
@@ -222,6 +235,8 @@ def _apply_overrides(
     """機轉結果套用人工覆寫（僅 REF 衍生鍵；MOD 自訂鍵不經此層）。"""
     applied = 0
     for key, ent in ov_for_file.items():
+        if ent["drop"]:
+            continue  # deny-list 由 _apply_drops 處理
         if key not in ch_data:
             continue  # 鍵不在本次機轉輸出 → 留給收尾的未命中報告
         ch_data[key] = ent["value"]
@@ -234,6 +249,27 @@ def _apply_overrides(
                     f"  {json_name}|{key}: REF 原文已變更（登記 {ent['ref']} ≠ 現值 {cur}），請重審此 override"
                 )
     return applied
+
+
+def _apply_drops(
+    json_name: str,
+    data: "OrderedDict[str, str]",
+    ov_for_file: dict[str, dict],
+    used_ov: set[str],
+) -> int:
+    """移除 deny-list 登記的死鍵（官方已移除／改鍵名，REF 仍殘留）。
+
+    須在「保留 MOD 自訂鍵」的合併**之後**呼叫，否則被移除的鍵會被舊檔內容
+    當成自訂鍵補回來。
+    """
+    dropped = 0
+    for key, ent in ov_for_file.items():
+        if not ent["drop"] or key not in data:
+            continue
+        del data[key]
+        used_ov.add(f"{json_name}|{key}")
+        dropped += 1
+    return dropped
 
 
 def sha256(path: Path) -> str:
@@ -557,6 +593,13 @@ def cmd_sync_cn():
 
     updated = 0
 
+    overrides = _load_overrides(CN_OVERRIDES_JSON)
+    ov_by_file = _group_overrides(overrides)
+    used_ov: set[str] = set()
+    stale_warnings: list[str] = []
+    applied_total = 0
+    dropped_total = 0
+
     # Process .txt translation files (legacy format)
     for ref_file in sorted(REF_CN.glob("*.txt")):
         if not ref_file.is_file():
@@ -580,12 +623,19 @@ def cmd_sync_cn():
         mod_file = MOD_CN / json_name
 
         ref_data = read_translation(ref_file)
+        out_data = OrderedDict(ref_data)
+
+        # REF 之後、自訂鍵合併之前套用人工覆寫（僅 REF 衍生鍵）
+        applied_total += _apply_overrides(
+            json_name, ref_data, out_data, ov_by_file.get(json_name, {}), used_ov, stale_warnings
+        )
 
         # 保留 MOD 中有但 REF 中沒有的自訂 keys
+        mod_data = None
         if mod_file.exists():
             mod_data = read_translation(mod_file)
             extra_keys = OrderedDict(
-                (k, v) for k, v in mod_data.items() if k not in ref_data
+                (k, v) for k, v in mod_data.items() if k not in out_data
             )
             if extra_keys:
                 if json_name == "Print_Media.json":
@@ -594,21 +644,24 @@ def cmd_sync_cn():
                         if err:
                             print(f"  ⚠️  移除截斷的自訂 key: {k} ({err})")
                             del extra_keys[k]
-                merged = OrderedDict(ref_data)
-                merged.update(extra_keys)
-                ref_data = merged
+                out_data.update(extra_keys)
+
+        # deny-list：合併自訂鍵之後才移除，否則舊檔會把死鍵當自訂鍵補回
+        dropped_total += _apply_drops(
+            json_name, out_data, ov_by_file.get(json_name, {}), used_ov
+        )
 
         # Compare with existing
-        if mod_file.exists():
-            if mod_data == ref_data:
+        if mod_data is not None:
+            if mod_data == out_data:
                 continue
-            added = len(set(ref_data) - set(mod_data))
-            removed = len(set(mod_data) - set(ref_data))
-            print(f"  📝 更新: {filename} → {json_name} ({len(ref_data)} keys, +{added}/-{removed})")
+            added = len(set(out_data) - set(mod_data))
+            removed = len(set(mod_data) - set(out_data))
+            print(f"  📝 更新: {filename} → {json_name} ({len(out_data)} keys, +{added}/-{removed})")
         else:
-            print(f"  ➕ 新增: {filename} → {json_name} ({len(ref_data)} keys)")
+            print(f"  ➕ 新增: {filename} → {json_name} ({len(out_data)} keys)")
 
-        write_translation_json(ref_data, mod_file)
+        write_translation_json(out_data, mod_file)
         updated += 1
 
     # Process .json translation files (new format)
@@ -620,12 +673,19 @@ def cmd_sync_cn():
         mod_file = MOD_CN / json_name
 
         ref_data = read_translation(ref_file)
+        out_data = OrderedDict(ref_data)
+
+        # REF 之後、自訂鍵合併之前套用人工覆寫（僅 REF 衍生鍵）
+        applied_total += _apply_overrides(
+            json_name, ref_data, out_data, ov_by_file.get(json_name, {}), used_ov, stale_warnings
+        )
 
         # 保留 MOD 中有但 REF 中沒有的自訂 keys
+        mod_data = None
         if mod_file.exists():
             mod_data = read_translation(mod_file)
             extra_keys = OrderedDict(
-                (k, v) for k, v in mod_data.items() if k not in ref_data
+                (k, v) for k, v in mod_data.items() if k not in out_data
             )
             if extra_keys:
                 if json_name == "Print_Media.json":
@@ -634,23 +694,24 @@ def cmd_sync_cn():
                         if err:
                             print(f"  ⚠️  移除截斷的自訂 key: {k} ({err})")
                             del extra_keys[k]
-                merged = OrderedDict(ref_data)
-                merged.update(extra_keys)
-                ref_data = merged
-        else:
-            mod_data = None
+                out_data.update(extra_keys)
+
+        # deny-list：合併自訂鍵之後才移除
+        dropped_total += _apply_drops(
+            json_name, out_data, ov_by_file.get(json_name, {}), used_ov
+        )
 
         # Compare with existing
         if mod_data is not None:
-            if mod_data == ref_data:
+            if mod_data == out_data:
                 continue
-            added = len(set(ref_data) - set(mod_data))
-            removed = len(set(mod_data) - set(ref_data))
-            print(f"  📝 更新: {json_name} ({len(ref_data)} keys, +{added}/-{removed})")
+            added = len(set(out_data) - set(mod_data))
+            removed = len(set(mod_data) - set(out_data))
+            print(f"  📝 更新: {json_name} ({len(out_data)} keys, +{added}/-{removed})")
         else:
-            print(f"  ➕ 新增: {json_name} ({len(ref_data)} keys)")
+            print(f"  ➕ 新增: {json_name} ({len(out_data)} keys)")
 
-        write_translation_json(ref_data, mod_file)
+        write_translation_json(out_data, mod_file)
         updated += 1
 
     # Process city directories (legacy format)
@@ -680,6 +741,21 @@ def cmd_sync_cn():
         print("  ℹ️ 沒有需要同步的檔案")
     print(f"\n完成：{updated} 個檔案已同步")
 
+    n_drop = sum(1 for e in overrides.values() if e["drop"])
+    print(
+        f"人工覆寫：套用 {applied_total} / {len(overrides) - n_drop} 筆 cn_overrides"
+        f"；deny-list 移除死鍵 {dropped_total} / {n_drop} 筆"
+    )
+    unused_ov = sorted(set(overrides) - used_ov)
+    if unused_ov:
+        print(f"\n⚠️ {len(unused_ov)} 筆 override 未命中（鍵已從 REF 消失或檔名不符），請清理：")
+        for k in unused_ov:
+            print(f"  {k}")
+    if stale_warnings:
+        print(f"\n⚠️ {len(stale_warnings)} 筆 override 的 REF 原文已變更，請重審後更新 ref hash：")
+        for w in stale_warnings:
+            print(w)
+
 
 def cmd_sync_ch():
     """同步 CH 翻譯檔：REF CN → OpenCC s2twp → MOD CH .json"""
@@ -697,6 +773,7 @@ def cmd_sync_ch():
     used_ov: set[str] = set()
     stale_warnings: list[str] = []
     applied_total = 0
+    dropped_total = 0
 
     # Process .txt translation files (legacy format)
     for ref_file in sorted(REF_CN.glob("*.txt")):
@@ -766,6 +843,11 @@ def cmd_sync_ch():
         else:
             old_data = None
 
+        # deny-list：合併自訂鍵之後才移除，否則舊檔會把死鍵當自訂鍵補回
+        dropped_total += _apply_drops(
+            json_name, ch_data, ov_by_file.get(json_name, {}), used_ov
+        )
+
         if old_data is not None:
             if old_data == ch_data:
                 unchanged += 1
@@ -824,6 +906,11 @@ def cmd_sync_ch():
         else:
             old_data = None
 
+        # deny-list：合併自訂鍵之後才移除，否則舊檔會把死鍵當自訂鍵補回
+        dropped_total += _apply_drops(
+            json_name, ch_data, ov_by_file.get(json_name, {}), used_ov
+        )
+
         if old_data is not None:
             if old_data == ch_data:
                 unchanged += 1
@@ -880,7 +967,11 @@ def cmd_sync_ch():
         updated += 1
 
     print(f"\n完成：{updated} 個 CH 檔案已更新，{skipped} 個已跳過，{unchanged} 個無變化")
-    print(f"人工覆寫：套用 {applied_total} / {len(overrides)} 筆 ch_overrides")
+    n_drop = sum(1 for e in overrides.values() if e["drop"])
+    print(
+        f"人工覆寫：套用 {applied_total} / {len(overrides) - n_drop} 筆 ch_overrides"
+        f"；deny-list 移除死鍵 {dropped_total} / {n_drop} 筆"
+    )
 
     unused_ov = sorted(set(overrides) - used_ov)
     if unused_ov:
@@ -994,10 +1085,23 @@ def check_dict_sync() -> list[str]:
 # 片段重複偵測：潤色時「擴寫既有短譯」很容易把新增片段貼兩次
 # （2026-07-29 於 42.20 盤查抓到 14 筆，最早可追到 commit 698c262 的全量潤色，
 #  例如「顯示」擴寫成「顯示與效能」時寫成「顯示與效能與效能」）。
+#
+# 2026-07-30：這組 pattern 最小片段是 2 字，且跳過 RadioData 等檔、只掃 60 字內，
+# 因此完全漏掉**單字**疊字（白白糖／負負八／木木吉他／大大風）與**帶分隔符**的
+# 變體（「256x256 像素 像素」）——共 88 鍵在庫裡活過兩個 release。
+# 已補：帶分隔符樣式進本組；單字疊字改走 check_dup_single()（需人工複核，見該函式）。
 _DUPE_PATTERNS = [
     re.compile(r"([一-鿿]{2,6})\1$"),      # 尾端整段重複
     re.compile(r"([一-鿿]{3,8})\1"),       # 句中長片段重複
-    re.compile(r"\b([A-Za-z]{3,}(?: [A-Za-z]+){0,2}) \1\b"),  # 英文詞組重複
+    # 中間夾單一標點/空白的片段重複（實例：`256x256 像素 像素`）。
+    # ⚠️ 分隔符刻意限定「單一字元」，不可放寬成 [,、\s]+：放寬後會跨過「逗號+空格」
+    # 而掃進中文常見的頂真句（`找到它們, 它們也會…`／`低耐力, 低耐力恢復`／
+    # `完全顯示, 顯示為…`），2026-07-30 實測產生 13 筆誤報、零真錯。
+    re.compile(r"([一-鿿]{2,8})[,、\s]\1"),
+    # 英文／拉丁詞組重複。分隔用 \s+ 而非單一空格：`LSU␠␠LSU`（雙空格）曾因此漏檢
+    # （2026-07-30 於 Base.Football_Jersey_Blue 手動抓到）。{3,} 是為了排除 `XX XX`
+    # 這類佔位樣板（官方 EN 亦如此，屬正常）。
+    re.compile(r"\b([A-Za-z]{3,}(?:\s+[A-Za-z]+){0,2})\s+\1\b"),
 ]
 
 # 逐字重複屬正常表達的檔案（歌詞、廣播、報刊、人名等）不掃
@@ -1006,6 +1110,30 @@ _DUPE_SKIP_FILES = {
     "Print_Text.json", "SurvivorNames.json",
 }
 _DUPE_MAX_LEN = 60  # 只掃短字串；長敘述重複詞多為正常修辭
+
+# 已對照官方 EN 查證為正常表達的命中（登記制；勿用來塞真錯）。
+# 留著永久 ⚠️ 會讓人開始忽略這道檢查，故逐案登記並註明理由。
+_DUPE_ALLOWLIST = {
+    "Sandbox.json|Sandbox_MetaKnowledge_tooltip":
+        '並列選項「完整顯示、顯示為 "???"」；EN: fully shown, shown as "???" or fully hidden',
+}
+
+# 單字／雙字疊段：中文大量正常疊用（可可粉／謝謝／娛樂娛樂／使用使用者清單），
+# 無法硬性失敗。以「對側語言同鍵是否也疊」當過濾器後仍有噪音（對側是英文原文、
+# 或譯文已改寫），故本檢查只輸出待人工複核清單，不計入 fix-check 的成敗。
+#
+# 為何 2 字疊段放這裡而不是 _DUPE_PATTERNS：把句中 pattern 從 {3,8} 放寬到 {2,8}
+# 實測新增 10 筆命中、真錯 0 筆（使用使用者清單 ×5、娛樂娛樂 ×2、啊啊啊啊 ×2、
+# 自定义定义颜色 — EN 為 "Custom Defined Colors"，皆合法），2026-07-30。
+_DUPE_SINGLE = re.compile(r"([一-鿿])\1")
+_DUPE_PAIR = re.compile(r"([一-鿿]{2})\1")
+_DUPE_SINGLE_MAX_LEN = 40
+
+# 逐字空格排版：`白 糖` 這種字間有縫的值。As1 原有的（Print_Media 傳單、城鎮
+# description 等有排版理由者）對側也帶空格，屬正常；只有「對側無空格」才是
+# 我們重譯時帶進來的產物（698c262 造成 1220 筆，2026-07-30 已剝除）。
+# 它還會遮蔽疊字偵測（`彈 匣 退 出 退 出` 掃不到），所以必須守住不再回來。
+_SPACED_CJK = re.compile(r"(?:[一-鿿] ){3,}[一-鿿]")
 
 
 def check_duplicated_fragments() -> list[str]:
@@ -1022,8 +1150,62 @@ def check_duplicated_fragments() -> list[str]:
             for key, value in data.items():
                 if not isinstance(value, str) or len(value) > _DUPE_MAX_LEN:
                     continue
+                if f"{path.name}|{key}" in _DUPE_ALLOWLIST:
+                    continue
                 if any(p.search(value) for p in _DUPE_PATTERNS):
                     issues.append(f"  [{lang}] {path.name} | {key}: {value!r}")
+    return issues
+
+
+def check_dup_single() -> list[str]:
+    """單字／雙字疊段待複核清單（CH/CN 互為對側過濾）。僅提示，不代表錯誤。"""
+    notes: list[str] = []
+    for lang, mod_dir, other_dir in (("CH", MOD_CH, MOD_CN), ("CN", MOD_CN, MOD_CH)):
+        for path in sorted(mod_dir.glob("*.json")):
+            try:
+                data = read_translation(path)
+                other = read_translation(other_dir / path.name)
+            except Exception:  # noqa: BLE001
+                continue
+            for key, value in data.items():
+                if not isinstance(value, str) or len(value) > _DUPE_SINGLE_MAX_LEN:
+                    continue
+                peer = other.get(key)
+                for pat, label in ((_DUPE_PAIR, "雙字"), (_DUPE_SINGLE, "單字")):
+                    m = pat.search(value)
+                    if not m:
+                        continue
+                    # 對側同鍵也疊 → 原文如此，屬正常表達
+                    if isinstance(peer, str) and pat.search(peer):
+                        break
+                    notes.append(
+                        f"  [{lang}] {path.name} | {key}: {value!r} ← {label}疊「{m.group(1)}」"
+                    )
+                    break
+    return notes
+
+
+def check_cjk_spacing() -> list[str]:
+    """逐字空格排版檢查：只報「對側語言同鍵沒有空格」者（= 我們帶進來的）。
+
+    As1 原有的排版（傳單、城鎮 description）對側也帶空格，不報。
+    這類值會遮蔽疊字偵測，屬硬性錯誤。
+    """
+    issues: list[str] = []
+    for lang, mod_dir, other_dir in (("CH", MOD_CH, MOD_CN), ("CN", MOD_CN, MOD_CH)):
+        for path in sorted(mod_dir.glob("*.json")):
+            try:
+                data = read_translation(path)
+                other = read_translation(other_dir / path.name)
+            except Exception:  # noqa: BLE001
+                continue
+            for key, value in data.items():
+                if not isinstance(value, str) or not _SPACED_CJK.search(value):
+                    continue
+                peer = other.get(key)
+                if isinstance(peer, str) and _SPACED_CJK.search(peer):
+                    continue
+                issues.append(f"  [{lang}] {path.name} | {key}: {value[:56]!r}")
     return issues
 
 
@@ -1091,6 +1273,30 @@ def cmd_fix_check():
             print(issue)
     else:
         print("✅ 未發現片段重複")
+
+    # 逐字空格排版（硬性；會遮蔽疊字偵測）
+    print("\n" + "=" * 60)
+    print("逐字空格排版檢查（CH + CN，對側語言同鍵無空格者）")
+    print("=" * 60)
+    spaced = check_cjk_spacing()
+    if spaced:
+        print(f"⚠️ 發現 {len(spaced)} 處逐字空格排版（重譯產物；會遮蔽疊字偵測，應剝除）：")
+        for issue in spaced:
+            print(issue)
+    else:
+        print("✅ 未發現逐字空格排版")
+
+    # 單字／雙字疊段（僅提示；中文大量正常疊用，須人工複核）
+    print("\n" + "=" * 60)
+    print("單字／雙字疊段待複核（CH + CN，對側語言同鍵未疊者）")
+    print("=" * 60)
+    singles = check_dup_single()
+    if singles:
+        print(f"ℹ️ {len(singles)} 處單字疊字待人工複核（正常疊字如 可可粉／謝謝／咩咩叫 屬誤報）：")
+        for note in singles:
+            print(note)
+    else:
+        print("✅ 無待複核項")
 
     # 跨專案字典一致性（模組包 repo 不存在時跳過）
     print("\n" + "=" * 60)

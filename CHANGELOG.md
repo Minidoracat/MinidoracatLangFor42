@@ -4,6 +4,35 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.0-1.11.0] - 2026-07-30
+
+### Added
+
+- **`scripts/cn_overrides.json` CN 人工覆寫層**：比照 `ch_overrides.json`，讓 CN 的人工修正在 `sync-cn` 全量再生後保留（schema `{"檔名|鍵": {"value", "ref"}}`，`ref` 供 REF 原文變動時提醒重審）。在此之前 CN 沒有真相層，任何手改都會被 REF 打回，這是 CN 長期累積錯誤而修不掉的結構原因。
+- **deny-list 機制**（兩個覆寫層共用 `{"drop": true}`）：登記官方 42.20 已移除／改鍵名的死鍵，防止 `sync` 從凍結在 As1 42.0 的 REF 把它們復活。目前登記 34 筆（`UI_CraftCat_*` → 官方改為 `IGUI_CraftCategory_*`）。**刻意不用「官方 EN 有無」當自動閘門**——實測 REF 有 1320 鍵官方 EN 沒有，其中 1286 鍵仍在正常出貨（`Recipes.json` 一檔 512），自動閘會誤刪。
+- **`fix-check` 兩道新檢查**：
+  - 逐字空格排版（硬性）：只報「對側語言同鍵無空格」者，故 As1 原有的排版（傳單、城鎮描述）不誤報。這類值會遮蔽疊字偵測，必須守住。
+  - 單字／雙字疊段待複核（提示性）：以對側語言交叉過濾，不計成敗——中文正常疊字太多（可可粉／謝謝／咩咩叫），硬擋會逼人關掉檢查。
+- **`scripts/test_dupe_patterns.py` 回歸測試**（17 案例）：把片段重複偵測的三類歷史漏檢與兩個「刻意不放寬」的決定鎖住。
+
+### Changed
+
+- **`sync-cn` / `sync-all` 從不可執行修為冪等**：先前跑下去會動 23 檔／2400 行，把 CN 打回 As1 42.0。現在乾淨 tree 上跑為 0 diff——**有 diff 即代表有人改了譯文卻沒登記 override**。
+- **字典護欄**（`opencc_fixes.json`）：`圖標→圖示` 加 lookbehind 防吃掉「地圖+標記/標籤」（原會把 `小地圖標記` 寫成 `小地圖示記`）、`里面→裡面` 防吃掉人名「阿里+面前」、`拖動→拖曳` 採用模組包既有的 `(?!\s*物)` 護欄。新增 `許可權→權限`（s2twp 把 `权限` 轉成微軟術語，語料 10 處全為管理員權限語境）。邊界誤傷用 regex 修；語義歧義（`沒通過`/`透過`、餐廳`菜單`/UI`選單`）一律走 override，不疊脆弱前綴護欄。
+
+### Fixed
+
+- **疊字誤植 126 鍵**（CH 88＋38、CN 12＋14 等，可追到 `698c262` 全量潤色）：`白白糖`→`白糖`、`負負八`→`負八`（24 鍵）、`木木吉他`、`丙烷丙烷噴燈`、`為瓦斯噴槍為瓦斯噴槍補充燃料`、`256x256 像素 像素` 等。同一次 commit 造成的損壞有單字、多字、帶分隔符三種形態，只跑一種 pattern 會漏另外兩種。
+- **逐字空格排版 1291 筆**（`白 糖` 這種字間有縫的顯示，同樣來自 `698c262`）：只剝「對側語言無空格」者，As1 原有的 305 筆不動；保留 `<SIZE:medium>`、`%1`、`\n` 等標記周圍的空白。此問題還會**遮蔽疊字偵測**（`彈 匣 退 出 退 出` 掃不到），剝除後又浮出 16 筆疊字與漏譯（`與與玩家 N 一起一起`、`中型中型手柄`、`9mm 彈匣退出退出`、CN `攻击距离距离`）。
+- **CN 對版官方 42.20（約 430 鍵）**：`db1109f` 的 42.20 對版只做了 CH，CN 從未對版。病徵有三類——舊版資料（`美国 60 号公路` vs 官方 `KY-79` 共 8 處、`Spiffos_Floor` 官方已改名 `Green Diagonal Tiles`、售屋傳單 `2 房 2 衛 1840 平方英尺` vs 官方 `1 房 1 衛 810`）、**多行序列整體錯位一格**（葉慈《The Second Coming》全詩、佛經段落、歌詞、球賽轉播、廣播對話，每行被放到相鄰的鍵上）、零星誤譯（`hitting 305` 打擊率譯成「击出了305」、`Ten-four` 譯成「0-4」、`June 1993` 譯成「5月刊」、`Siberian` 譯成「希伯来」、`Buzz` 人名譯成「嗡嗡声」）。全部逐筆對照官方 EN 判定。
+- **CN 未翻譯英文 28 筆**：含 `UI_prof_Tailor` = `Tailor`（角色創建的職業名）、`UI_credits_Design1` = `The Team`，以及大量 `*rooster crows*` 類音效標記。
+- **placeholder 不一致 4 筆**（顯示異常風險）：`Tooltip_food_Slice` CH 的 `%1` 被重複成 `%1%1`、CN 完全漏掉；`IGUI_CraftingUI_KnownRecipes` CN 多出遊戲不提供的 `%2`；`Tooltip_Vehicle_WashWaterRequired2` CN 把 `%1` 寫死成字面「1」；`UI_coopscreen_delete_world_prompt` CN 漏掉 `%2`。修後 CH/CN/EN 全語料 placeholder 集合 0 不一致。
+- **過時的 joypad 按鍵提示**：`IGUI_Tutorial1_Shotgun1bJoypad`／`GUI_Tutorial1_Shotgun4Joypad` 的 CN 仍用 `<JOYPAD:BButton>`，官方已改為 `ClimbThrough`＋`Interact`——手把玩家會看到錯的按鍵。
+- **伺服器選項說明缺值**：`UI_ServerOption_MapRemotePlayerVisibility_tooltip` 官方有 4 個值，CN 只列 3 個且把 `3` 標成「显示所有人」，會誤導伺服器管理員。
+- **公司名被誤譯**：`General Arcade`→「通用游戏厅」、`The Tea Division`→「茶水部门」改回原文，與同表的 `Vertex Break`、`Formosa Interactive` 一致（該表 46 筆中，42 筆職務類別翻譯、4 筆外部公司名保留原文）。
+- **CH 誤譯 2 處**：`Print_Text_HouseforSale895_info` 的 garage 譯成「房屋」（應為車庫）；`RadioData` 5 個鍵的「…展現遠見卓識和奉獻精神」是上一句的內容且漏掉 exemplary career（此處 CN 反而正確）。
+- **`許可權`／`權限` 用詞不統一**（10 處 vs 13 處）：全部統一為 `權限`。
+
 ## [42.20.0-1.10.1] - 2026-07-30
 
 ### Fixed

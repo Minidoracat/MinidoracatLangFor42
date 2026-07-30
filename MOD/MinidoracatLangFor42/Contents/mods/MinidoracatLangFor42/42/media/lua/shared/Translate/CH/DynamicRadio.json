@@ -35,7 +35,7 @@
     "AEBS_weather_storm_C": "雷暴",
     "AEBS_weather_tropical_C": "熱帶風暴",
     "AEBS_weather_blizzard_C": "暴風雪",
-    "AEBS_weather_warning": "惡劣天氣警報. %s即將到來. 預 計 %s 天 後 抵 達…",
+    "AEBS_weather_warning": "惡劣天氣警報. %s即將到來. 預計 %s 天後抵達…",
     "AEBS_KpH": "公里/小時",
     "AEBS_MpH": "英里/小時",
     "AEBS_rand_pre_0": "異常的",

@@ -326,8 +326,9 @@
       "description": "「裡面」的「裡」被保留為「里」",
       "rules": [
         {
-          "pattern": "里面",
-          "replacement": "裡面"
+          "pattern": "(?<!阿)里面",
+          "replacement": "裡面",
+          "note": "lookbehind 防人名「阿里」+「面前」跨詞誤傷（2026-07-30 實證：RM_ce901b6c 阿里面前→阿裡面前）"
         },
         {
           "pattern": "這里",
@@ -454,9 +455,9 @@
           "note": "動物量詞個案（RM 台詞）"
         },
         {
-          "pattern": "圖(\\s*)標",
+          "pattern": "(?<!地)(?<!地\\s)圖(\\s*)標",
           "replacement": "圖\\1示",
-          "note": "icon=圖示（37 處）"
+          "note": "icon=圖示（37 處）。lookbehind 防「地圖+標記/標籤」跨詞誤傷（2026-07-30 實證：小地圖標記→小地圖示記 會直接出貨，另 2 處靠 override 蓋著）；含 CJK 空格版"
         },
         {
           "pattern": "窗(\\s*)口",
@@ -556,7 +557,7 @@
         {
           "pattern": "菜(\\s*)單",
           "replacement": "選\\1單",
-          "note": "UI menu=選單。⚠️ 2026-07-19 全量掃描 33 處全 UI 語境；未來如出現餐飲菜單語境（RM 烹飪節目）需改窄化前綴版（codex 警示）"
+          "note": "UI menu=選單。⚠️ 2026-07-19 全量掃描 33 處全 UI 語境。2026-07-30 已出現餐飲語境（Base.MenuCard 菜單卡、Whirled_Wide_Menu 披薩旋風寬菜單）；此為語義而非邊界問題，regex 無法辨識，故由 ch_overrides 逐鍵定譯，勿再加脆弱前綴護欄"
         },
         {
           "pattern": "列(\\s*)表",
@@ -571,7 +572,7 @@
         {
           "pattern": "通(\\s*)過(?!\\s*[測考審檢])",
           "replacement": "透\\1過",
-          "note": "via/through=透過（42 處全掃無測驗語境）；lookahead 防「通過測驗」"
+          "note": "via/through=透過（42 處全掃無測驗語境）；lookahead 防「通過測驗」。2026-07-30：「沒通過/SAT通過」（考試及格）與「車輛通過/平民通過」（穿越）為語義歧義而非邊界問題，regex 無法辨識，已由 ch_overrides 逐鍵定譯，勿加脆弱前綴護欄"
         },
         {
           "pattern": "單(\\s*)擊",
@@ -641,12 +642,17 @@
         {
           "pattern": "數據包",
           "replacement": "封包",
-          "note": "network packet；語料 封包2/數據包0"
+          "note": "network packet；語料 封包2/數據包0。**分岔**：模組包經覆核不收此規則（s2twp 已把 数据包／數據包 一律轉為「資料包」，該包 post_fix 永不命中，network packet 改走 ch_overrides 逐案處理）；勿移植"
         },
         {
-          "pattern": "拖(\\s*)動",
+          "pattern": "拖(\\s*)動(?!\\s*物)",
           "replacement": "拖\\1曳",
-          "note": "drag；台灣 UI 標準用語；含空格版"
+          "note": "drag；台灣 UI 標準用語；含空格版。負向前瞻擋「拖|動物」跨詞界誤傷（拖动物尸体→拖曳物屍體），代價是漏轉「拖動物品」（語料 0 筆，漏轉優於轉錯）。2026-07-30 自模組包同步此護欄"
+        },
+        {
+          "pattern": "許可權",
+          "replacement": "權限",
+          "note": "permission=權限。s2twp 把 权限 轉成微軟術語「許可權」；PZ 語料 10 處全為管理員權限／存取等級語境（語料 權限13/許可權10 不一致），無授權書「許可權」語境（2026-07-30 全量掃描）"
         }
       ]
     }
