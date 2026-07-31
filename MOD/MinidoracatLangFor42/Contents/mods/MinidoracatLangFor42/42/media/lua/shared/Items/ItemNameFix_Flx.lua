@@ -12,11 +12,15 @@
 --   * 藏寶圖：Stash.java:46 於載入時 Translator.getText("Stash_AnnotedMap") 解析、
 --     StashSystem.doStashItem:153 setName() 寫死——伺服器生成的藏寶圖固化
 --     「Annotated Map」（全部 125 個 stash 共用此單一鍵）。
+--   * 建築鑰匙：ItemPickerJava.keyNamerBuilding（:2362-2367）以生成端語言組
+--     「<物品名> - <IGUI_*Key 場所名>」後 setName()——伺服器生成的門鑰匙固化
+--     「Key - Army Surplus Store」整串英文（car key 由 VehicleKey_Flx 專責）。
 --
 -- 本檔只在 client / single player 端作為顯示名稱遷移層：
 --   1. 反查表：fullType → vanilla EN DisplayName（gen-item-name-map 產生）
 --   2. 名稱恰等於該物品的英文原名          → setName(本地語言 DisplayName)
 --   3. 名稱恰等於「英文原名 .. " (Wild)"」 → setName(DisplayName .. " (野生)")
+--   4. 名稱恰為「英文原名 - <已知場所英文名>」→ 譯名 - getText(IGUI_*Key)
 --   僅精確匹配英文建構形才動手，玩家自訂名、演化食譜名、媒體名、動物名不受影響。
 --
 -- 已知限制：演化食譜（湯/沙拉等）由 Java 以句式組名，伺服器端產生時同樣是英文，
@@ -38,6 +42,170 @@ ItemNameFixFlx = ItemNameFixFlx or {}
 ItemNameFixFlx = ItemNameFixFlx or {}
 ItemNameFixFlx.WILD_EN = "Wild"
 ItemNameFixFlx.ANNOTATED_EN = "Annotated Map"
+-- keyNamerBuilding 場所後綴：EN 場所名 → IGUI_*Key（重複 EN 值保留第一個 key）
+ItemNameFixFlx.KEY_SUFFIX = {
+    ["%1 Key"] = "IGUI_CarKey",
+    ["?"] = "IGUI_SecretBaseKey",
+    ["Aesthetician"] = "IGUI_aestheticKey",
+    ["Army"] = "IGUI_ArmyKey",
+    ["Army Hangar"] = "IGUI_armyhangerKey",
+    ["Army Surplus Store"] = "IGUI_SurvivalistKey",
+    ["Art Store"] = "IGUI_artstoreKey",
+    ["Bakery"] = "IGUI_bakeryKey",
+    ["Bank"] = "IGUI_BankKey",
+    ["Bar"] = "IGUI_BarKey",
+    ["Barbecue Store"] = "IGUI_barbecuestoreKey",
+    ["Barn"] = "IGUI_RanchKey",
+    ["Baseball Diamond"] = "IGUI_BaseballFanKey",
+    ["Baseball Store"] = "IGUI_baseballstoreKey",
+    ["Bat Factory"] = "IGUI_batfactoryKey",
+    ["Battery Factory"] = "IGUI_batteryfactoryKey",
+    ["Beach House"] = "IGUI_BeachKey",
+    ["Beer Garden"] = "IGUI_beergardenKey",
+    ["Ben's Cabin"] = "IGUI_BensCabinKey",
+    ["Bookstore"] = "IGUI_bookstoreKey",
+    ["Bowling Alley"] = "IGUI_BowlingKey",
+    ["Boxing Ring"] = "IGUI_BoxingKey",
+    ["Brewery"] = "IGUI_breweryKey",
+    ["Burger Restaurant"] = "IGUI_burgerKey",
+    ["Butcher"] = "IGUI_butcherKey",
+    ["Cabin"] = "IGUI_DeepForestKey",
+    ["Cabinet Factory"] = "IGUI_cabinetfactoryKey",
+    ["Cafe"] = "IGUI_cafeKey",
+    ["Cafeteria"] = "IGUI_cafeteriaKey",
+    ["Camera Store"] = "IGUI_camerastoreKey",
+    ["Camping"] = "IGUI_campingKey",
+    ["Car Repair Shop"] = "IGUI_CarRepairKey",
+    ["Chinese Restaurant"] = "IGUI_chineseKey",
+    ["Church"] = "IGUI_WeddingKey",
+    ["Clinic"] = "IGUI_DoctorKey",
+    ["Clothing Store"] = "IGUI_clothingstoreKey",
+    ["Coalfield"] = "IGUI_CowboyKey",
+    ["Coffee Shop"] = "IGUI_CoffeeshopKey",
+    ["Compound"] = "IGUI_CultistsKey",
+    ["Construction Site"] = "IGUI_ConstructionSiteKey",
+    ["Convenience store"] = "IGUI_conveniencestoreKey",
+    ["Corner Store"] = "IGUI_cornerstoreKey",
+    ["Country Club"] = "IGUI_CountryClubKey",
+    ["Crossroads Mall"] = "IGUI_CrossRoadsMallKey",
+    ["Dentist"] = "IGUI_DentistKey",
+    ["Department Store"] = "IGUI_departmentstoreKey",
+    ["Diner"] = "IGUI_DinnerKey",
+    ["Distillery"] = "IGUI_whiskeybottlingKey",
+    ["Dog Food Factory"] = "IGUI_dogfoodfactoryKey",
+    ["Donut Shop"] = "IGUI_donut_Key",
+    ["Electronics Store"] = "IGUI_electronicsstoreKey",
+    ["Factory"] = "IGUI_FactoryKey",
+    ["Farm"] = "IGUI_FarmKey",
+    ["Farming Store"] = "IGUI_FarmingStoreKey",
+    ["Festival Grounds"] = "IGUI_MusicFestKey",
+    ["Fire Station"] = "IGUI_FireDeptKey",
+    ["First Baptist Chapel"] = "IGUI_FirstBaptistChapelKey",
+    ["Fish 'N' Chips Restaurant"] = "IGUI_fishchipskitchenKey",
+    ["Food Market"] = "IGUI_VariousFoodMarketKey",
+    ["Fossoil"] = "IGUI_FossoilKey",
+    ["Fry Factory"] = "IGUI_potatostorageKey",
+    ["Fry Shipping"] = "IGUI_FryshippingKey",
+    ["Furniture Store"] = "IGUI_furniturestoreKey",
+    ["Gallery"] = "IGUI_GalleryKey",
+    ["Garden Store"] = "IGUI_gardenstoreKey",
+    ["Gas Station"] = "IGUI_gasstoreKey",
+    ["Gas-2-Go"] = "IGUI_Gas2GoKey",
+    ["General Store"] = "IGUI_generalstoreKey",
+    ["Gentleman's Club"] = "IGUI_stripclubKey",
+    ["Get Building Key"] = "IGUI_DebugContext_GetBuildingKey",
+    ["Get Key"] = "IGUI_SpawnVehicle_GetKey",
+    ["Gift Store"] = "IGUI_giftstoreKey",
+    ["GigaMart"] = "IGUI_GigamartKey",
+    ["Golf Course"] = "IGUI_GolfKey",
+    ["Greene's"] = "IGUI_GreenesKey",
+    ["Grocery"] = "IGUI_groceryKey",
+    ["Gun Store"] = "IGUI_gunstoreKey",
+    ["Gym"] = "IGUI_gymKey",
+    ["H. Smith Attorney"] = "IGUI_HSmithAttorneyKey",
+    ["Hodgetts Farm"] = "IGUI_BinkysFarmKey",
+    ["Holy Grace Church"] = "IGUI_HolyGraceChurchKey",
+    ["Hospital"] = "IGUI_hospitalroomKey",
+    ["Hotel"] = "IGUI_FancyHotelKey",
+    ["Houseware Store"] = "IGUI_housewarestoreKey",
+    ["Ice Cream Shop"] = "IGUI_icecreamKey",
+    ["Italian Restaurant"] = "IGUI_italianKey",
+    ["Jamieton Army Surplus"] = "IGUI_JamietonArmySurplusKey",
+    ["Jay's Chicken"] = "IGUI_jayschicken_Key",
+    ["Jay's Kitchen"] = "IGUI_JaysKey",
+    ["Jewelry Store"] = "IGUI_jewelrystoreKey",
+    ["Key"] = "IGUI_AnimDebugMonitor_Key",
+    ["Kitchenwares Store"] = "IGUI_kitchenwaresKey",
+    ["Knife Factory"] = "IGUI_knifefactoryKey",
+    ["Knife Store"] = "IGUI_knifestoreKey",
+    ["Knox Bank"] = "IGUI_KnoxBankKey",
+    ["Laboratory"] = "IGUI_laboratoryKey",
+    ["Laser Tag"] = "IGUI_LaserTagKey",
+    ["Leatherwear Store"] = "IGUI_leatherclothesstoreKey",
+    ["Library"] = "IGUI_libraryKey",
+    ["Lingerie Store"] = "IGUI_lingeriestoreKey",
+    ["Liquor Store"] = "IGUI_liquorstoreKey",
+    ["Map Factory"] = "IGUI_mapfactoryKey",
+    ["Map key"] = "IGUI_Map_Key",
+    ["Mass-Genfac Co."] = "IGUI_MassGenfacCoKey",
+    ["McCoy's Lumber"] = "IGUI_McCoysKey",
+    ["Metal Shop"] = "IGUI_metalshopKey",
+    ["Mexican Restaurant"] = "IGUI_mexicankitchenKey",
+    ["Motel"] = "IGUI_motelroomKey",
+    ["Movie Rental Outlet"] = "IGUI_movierentalKey",
+    ["Movie Theatre"] = "IGUI_theatreKey",
+    ["Music Store"] = "IGUI_musicstoreKey",
+    ["Newspaper"] = "IGUI_newspaperKey",
+    ["Nightclub"] = "IGUI_NightclubKey",
+    ["Nolan's Used Cars"] = "IGUI_NolansUsedCarsKey",
+    ["Nursing Home"] = "IGUI_NursingHomeKey",
+    ["Office"] = "IGUI_OfficesKey",
+    ["Optometrist"] = "IGUI_optometristKey",
+    ["Paint Shop"] = "IGUI_paintershopKey",
+    ["Pawnshop"] = "IGUI_pawnshopKey",
+    ["Pharmacy"] = "IGUI_PharmacistKey",
+    ["Pile o' Crepe"] = "IGUI_PileOCrepeKey",
+    ["Pizza Restaurant"] = "IGUI_pizzakitchenKey",
+    ["Pizza Whirled"] = "IGUI_PizzaWhirledKey",
+    ["Police Station"] = "IGUI_PoliceKey",
+    ["Pony Roam-O"] = "IGUI_PonyKey",
+    ["Post Office"] = "IGUI_postKey",
+    ["Prison"] = "IGUI_PrisonKey",
+    ["Produce Warehouse"] = "IGUI_producestorageKey",
+    ["Radio Factory"] = "IGUI_radiofactoryKey",
+    ["Residence"] = "IGUI_ResidentialKey",
+    ["Restaurant"] = "IGUI_RestaurantKey",
+    ["School"] = "IGUI_SchoolKey",
+    ["Seafood Restaurant"] = "IGUI_seafoodkitchenKey",
+    ["Seahorse Coffee"] = "IGUI_SeaHorseKey",
+    ["Sewing Store"] = "IGUI_sewingstoreKey",
+    ["Shed"] = "IGUI_shedKey",
+    ["Shoe Store"] = "IGUI_shoestoreKey",
+    ["Shooting Range"] = "IGUI_shootingrangeKey",
+    ["Smokey's"] = "IGUI_SmokeysKey",
+    ["Soda Truck"] = "IGUI_sodatruckKey",
+    ["Spa"] = "IGUI_SpaKey",
+    ["Spiffo's"] = "IGUI_SpiffoKey",
+    ["Sporting Good Store"] = "IGUI_sportstoreKey",
+    ["State Police Station"] = "IGUI_PoliceStateKey",
+    ["Storage Unit"] = "IGUI_storageunitKey",
+    ["Sunstar Motel"] = "IGUI_SunstarMotelKey",
+    ["Sushi Restaurant"] = "IGUI_sushiKey",
+    ["Swimming Pool"] = "IGUI_SwimmingPoolKey",
+    ["Tennis Court"] = "IGUI_TennisKey",
+    ["The Rusty Rifle"] = "IGUI_RustyRifleKey",
+    ["Thunder Gas"] = "IGUI_ThunderGasKey",
+    ["Tool Store"] = "IGUI_toolstoreKey",
+    ["Toy Store"] = "IGUI_toystoreKey",
+    ["Trailer Park Trailer"] = "IGUI_TrailerParkKey",
+    ["U-Store It"] = "IGUI_UStoreItKey",
+    ["Waites Motel"] = "IGUI_WaitesMotelKey",
+    ["Wallet Shop"] = "IGUI_walletshopKey",
+    ["Warehouse"] = "IGUI_warehouseKey",
+    ["West Maple Country Club"] = "IGUI_WestMapleCountryClubKey",
+    ["Wire Factory"] = "IGUI_wirefactoryKey",
+    ["Zippee Market"] = "IGUI_zippeestoreKey",
+}
 ItemNameFixFlx.EN_NAME = {
     ["Base.3030Box"] = "Box of .30-30 Rounds",
     ["Base.3030Bullets"] = ".30-30 Round",
@@ -4959,6 +5127,16 @@ local function fixItemName(item)
         item:setName(displayName)
     elseif name == (enName .. WILD_SUFFIX_EN) then
         item:setName(displayName .. " (" .. getText("UI_foraging_WildFood") .. ")")
+    else
+        -- 建築鑰匙 keyNamerBuilding（ItemPickerJava:2362-2367）：
+        -- "<EN 物品名> - <EN 場所名>"，場所名恰為某 IGUI_*Key 的 EN 值才重建
+        local prefix = enName .. " - "
+        if name:sub(1, #prefix) == prefix then
+            local suffixKey = ItemNameFixFlx.KEY_SUFFIX and ItemNameFixFlx.KEY_SUFFIX[name:sub(#prefix + 1)]
+            if suffixKey then
+                item:setName(displayName .. " - " .. getText(suffixKey))
+            end
+        end
     end
 end
 

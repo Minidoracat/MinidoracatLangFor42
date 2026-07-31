@@ -1255,12 +1255,21 @@ def cmd_gen_item_name_map(pz_path: Path | None = None):
     if not annotated_en:
         print("❌ vanilla EN Stash.json 缺 Stash_AnnotedMap（藏寶圖名），中止")
         sys.exit(1)
+    ig_file = en_file.parent / "IG_UI.json"
+    ig_data = read_translation(ig_file) if ig_file.exists() else {}
+    key_suffixes: dict[str, str] = {}
+    for k in sorted(ig_data):
+        if re.fullmatch(r"IGUI_\w*Key", k) and ig_data[k] and ig_data[k] not in key_suffixes:
+            key_suffixes[ig_data[k]] = k   # EN 場所名 → IGUI key（重複值保留第一個）
+    if not key_suffixes:
+        print("❌ vanilla EN IG_UI.json 找不到 IGUI_*Key 場所鍵，中止")
+        sys.exit(1)
 
     entries = OrderedDict(
         (key, value) for key, value in en_data.items()
         if value and "." in key  # fullType 形如 Base.Bacon
     )
-    print(f"讀取到 {len(entries)} 個 fullType 條目；Wild 字尾 EN = {wild_en!r}；藏寶圖 EN = {annotated_en!r}")
+    print(f"讀取到 {len(entries)} 個 fullType 條目；Wild 字尾 EN = {wild_en!r}；藏寶圖 EN = {annotated_en!r}；場所鍵 {len(key_suffixes)} 條")
 
     lines = [ITEM_GEN_BLOCK_START]
     lines.append("-- 由 scripts/sync_translations.py gen-item-name-map 自動產生，請勿手動編輯")
@@ -1268,6 +1277,11 @@ def cmd_gen_item_name_map(pz_path: Path | None = None):
     lines.append("ItemNameFixFlx = ItemNameFixFlx or {}")
     lines.append(f'ItemNameFixFlx.WILD_EN = "{_lua_string(wild_en)}"')
     lines.append(f'ItemNameFixFlx.ANNOTATED_EN = "{_lua_string(annotated_en)}"')
+    lines.append("-- keyNamerBuilding 場所後綴：EN 場所名 → IGUI_*Key（重複 EN 值保留第一個 key）")
+    lines.append("ItemNameFixFlx.KEY_SUFFIX = {")
+    for en_value, igui_key in sorted(key_suffixes.items()):
+        lines.append(f'    ["{_lua_string(en_value)}"] = "{_lua_string(igui_key)}",')
+    lines.append("}")
     lines.append("ItemNameFixFlx.EN_NAME = {")
     for full_type, en_value in sorted(entries.items()):
         lines.append(f'    ["{_lua_string(full_type)}"] = "{_lua_string(en_value)}",')
