@@ -4,6 +4,17 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.0-1.13.0] - 2026-07-31
+
+### Added
+
+- **`ItemNameFix_Flx.lua` 固化英文名修復（登記簿 A20）**：修復 MP 伺服器環境下物品名稱被以英文寫死的官方機制問題（玩家回報「培根煮前中文、煮後英文」）。根因：`InventoryItem.name` 是「建立當下語言」的欄位且跨機器同步，dedicated server（英文環境）重建／同步物品時客戶端收到固化英文名；狀態字（陳腐、已烹飪）即時翻譯，故呈「Bacon (陳腐, 已烹飪)」混血。涵蓋三種病徵：
+  - 食物經伺服器烹飪後名稱固化英文（`Bacon` → 培根）
+  - 採集物 `forageSystem` 主動組名（`Poppies (Wild)` → 罌粟 (野生)）
+  - 藏寶圖 `StashSystem` 寫死名稱（`Annotated Map` → 有註記的地圖，125 個 stash 共用單一鍵）
+  修補採精確匹配英文建構形才動手——玩家自訂名、演化食譜句式名、媒體名、動物名天然不受影響，零誤傷。已知限制：演化食譜（湯／沙拉）句式名刻意不處理，需另案設計。
+- **`gen-item-name-map` 產生器指令**：自 vanilla EN/ItemName.json 產生 4,889 條 `fullType→英文原名` 反查表（比照 `gen-vehicle-map` 模式，PZ 更新後重跑一次即可，fail-closed）。
+
 ## [42.20.0-1.12.0] - 2026-07-31
 
 ### Added
