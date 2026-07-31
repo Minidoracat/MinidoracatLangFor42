@@ -4,6 +4,12 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.0-1.13.1] - 2026-07-31
+
+### Fixed
+
+- **建築門鑰匙固化英文名**（`Key - Army Surplus Store`、`Key - Police Station` 等整串英文）：`ItemPickerJava.keyNamerBuilding` 以生成端語言組名後寫死——1.13.0 的 A20 修補只涵蓋食物／採集物／藏寶圖，本版補上這個與車鑰匙（A1）孿生的缺口。`gen-item-name-map` 新增 161 條「EN 場所名 → `IGUI_*Key`」反查表，名稱恰為「EN 物品名 - 已知場所名」才重建為「譯名 - 場所譯名」；車鑰匙後綴為車名不在表中，與既有 `VehicleKey_Flx` 零衝突。已在物品欄／鑰匙圈裡的鑰匙會自動修復，無需重拿。
+
 ## [42.20.0-1.13.0] - 2026-07-31
 
 ### Added
