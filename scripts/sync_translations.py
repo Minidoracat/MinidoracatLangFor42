@@ -20,6 +20,7 @@ PZ 翻譯同步工具
   ch-lint         - 術語引擎巡檢 CH 語料（select/lint 詞提示）
   import-new      - 官方 CH 底稿＋術語引擎產出新鍵提案（人工簽核用）
   gen-vehicle-map - 從 vanilla EN IG_UI.json 生成 VehicleKey_Flx 反查表
+  gen-item-name-map - 從 vanilla EN ItemName.json 生成 ItemNameFix_Flx 反查表
   gen-radio-map   - 從 vanilla/MOD RadioData.json 生成 RadioData_Flx 英文→RD key 反查表
   gen-media-map   - 從 vanilla recorded_media.lua + EN Recorded_Media.json 生成 RecordedMediaName_Flx 反查表
 """
@@ -1211,6 +1212,91 @@ def cmd_gen_vehicle_map(pz_path: Path | None = None):
 
 
 # ============================================================
+# gen-item-name-map：從 vanilla EN/ItemName.json 生成
+#   fullType → 英文 DisplayName 反查表（ItemNameFix_Flx）
+# ------------------------------------------------------------
+# 目的：修復食物/採集物名稱被以英文持久化的問題。
+#   InventoryItem.name 是「建立當下語言」的欄位且會跨機器同步
+#   （save 僅在 name != originalName 時寫入、load 先重置為本機名），
+#   dedicated server 以英文重建物品時 client 便收到固化英文名；
+#   採集另有 forageSystem.lua:2270 setName(displayName .. " (Wild)")。
+#   ItemNameFix_Flx.lua 用此表辨識「恰為英文建構形」的名稱並以
+#   玩家端語言重建（精確匹配才動手，不碰自訂名/演化食譜名）。
+# ============================================================
+ITEM_NAME_FIX_LUA_PATH = MOD_BASE / "lua" / "shared" / "Items" / "ItemNameFix_Flx.lua"
+ITEM_GEN_BLOCK_START = "-- <AUTO-GEN:ITEM_NAME_MAP START>"
+ITEM_GEN_BLOCK_END = "-- <AUTO-GEN:ITEM_NAME_MAP END>"
+
+
+def cmd_gen_item_name_map(pz_path: Path | None = None):
+    """從 vanilla EN ItemName.json 生成 fullType → 英文 DisplayName 反查表"""
+    pz_path = pz_path or VANILLA_PZ_DEFAULT
+    en_file = pz_path / "media" / "lua" / "shared" / "Translate" / "EN" / "ItemName.json"
+    ui_file = pz_path / "media" / "lua" / "shared" / "Translate" / "EN" / "UI.json"
+
+    print("=" * 60)
+    print("生成物品英文名反查表（ItemNameFix_Flx）")
+    print("=" * 60)
+    print(f"Vanilla EN 來源：{en_file}")
+
+    for required in (en_file, ui_file):
+        if not required.exists():
+            print(f"❌ 找不到 vanilla 檔案：{required}")
+            sys.exit(1)
+
+    en_data = read_translation(en_file)
+    ui_data = read_translation(ui_file)
+    wild_en = ui_data.get("UI_foraging_WildFood")
+    if not wild_en:
+        print("❌ vanilla EN UI.json 缺 UI_foraging_WildFood（採集字尾），中止")
+        sys.exit(1)
+    stash_file = en_file.parent / "Stash.json"
+    annotated_en = read_translation(stash_file).get("Stash_AnnotedMap") if stash_file.exists() else None
+    if not annotated_en:
+        print("❌ vanilla EN Stash.json 缺 Stash_AnnotedMap（藏寶圖名），中止")
+        sys.exit(1)
+
+    entries = OrderedDict(
+        (key, value) for key, value in en_data.items()
+        if value and "." in key  # fullType 形如 Base.Bacon
+    )
+    print(f"讀取到 {len(entries)} 個 fullType 條目；Wild 字尾 EN = {wild_en!r}；藏寶圖 EN = {annotated_en!r}")
+
+    lines = [ITEM_GEN_BLOCK_START]
+    lines.append("-- 由 scripts/sync_translations.py gen-item-name-map 自動產生，請勿手動編輯")
+    lines.append(f"-- 來源：vanilla EN/ItemName.json（共 {len(entries)} 條）＋ EN UI_foraging_WildFood")
+    lines.append("ItemNameFixFlx = ItemNameFixFlx or {}")
+    lines.append(f'ItemNameFixFlx.WILD_EN = "{_lua_string(wild_en)}"')
+    lines.append(f'ItemNameFixFlx.ANNOTATED_EN = "{_lua_string(annotated_en)}"')
+    lines.append("ItemNameFixFlx.EN_NAME = {")
+    for full_type, en_value in sorted(entries.items()):
+        lines.append(f'    ["{_lua_string(full_type)}"] = "{_lua_string(en_value)}",')
+    lines.append("}")
+    lines.append(ITEM_GEN_BLOCK_END)
+    generated_block = "\n".join(lines)
+
+    if not ITEM_NAME_FIX_LUA_PATH.exists():
+        print(f"❌ 找不到目標 Lua 檔：{ITEM_NAME_FIX_LUA_PATH}")
+        sys.exit(1)
+
+    original = ITEM_NAME_FIX_LUA_PATH.read_text(encoding="utf-8-sig")
+    pattern = re.compile(
+        re.escape(ITEM_GEN_BLOCK_START) + r".*?" + re.escape(ITEM_GEN_BLOCK_END),
+        re.DOTALL,
+    )
+    if not pattern.search(original):
+        print(f"❌ {ITEM_NAME_FIX_LUA_PATH.name} 內找不到 AUTO-GEN 標記區塊")
+        sys.exit(1)
+
+    updated = pattern.sub(lambda _m: generated_block, original)
+    if updated != original:
+        ITEM_NAME_FIX_LUA_PATH.write_text(updated, encoding="utf-8", newline="\n")
+        print(f"✅ 已更新 {ITEM_NAME_FIX_LUA_PATH.relative_to(PROJECT_ROOT)}")
+    else:
+        print(f"ℹ️  內容未變動：{ITEM_NAME_FIX_LUA_PATH.relative_to(PROJECT_ROOT)}")
+
+
+# ============================================================
 # gen-media-map：從 vanilla recorded_media.lua + EN Recorded_Media.json
 #   生成英文媒體物品名 → {RM key, media guid} 反查表
 # ------------------------------------------------------------
@@ -1979,6 +2065,7 @@ def main():
             "ch-lint",
             "import-new",
             "gen-vehicle-map",
+            "gen-item-name-map",
             "gen-radio-map",
             "gen-dynamic-name-map",
             "gen-media-map",
@@ -1993,7 +2080,7 @@ def main():
     )
     args = parser.parse_args()
 
-    if args.command not in {"gen-vehicle-map", "gen-radio-map", "gen-dynamic-name-map", "gen-media-map", "en-snapshot", "en-diff", "ch-lint", "import-new", "sync-ch"}:
+    if args.command not in {"gen-vehicle-map", "gen-item-name-map", "gen-radio-map", "gen-dynamic-name-map", "gen-media-map", "en-snapshot", "en-diff", "ch-lint", "import-new", "sync-ch"}:
         if not REF_CN.exists():
             print(f"❌ 參考目錄不存在：{REF_CN}")
             sys.exit(1)
@@ -2024,6 +2111,8 @@ def main():
             cmd_import_new(args.pz_path)
         case "gen-vehicle-map":
             cmd_gen_vehicle_map(args.pz_path)
+        case "gen-item-name-map":
+            cmd_gen_item_name_map(args.pz_path)
         case "gen-radio-map":
             cmd_gen_radio_map(args.pz_path)
         case "gen-dynamic-name-map":
