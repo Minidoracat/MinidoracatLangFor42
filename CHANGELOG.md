@@ -4,6 +4,25 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.0-1.14.0] - 2026-08-03
+
+### Added
+
+- **crafting entity 右鍵／建造選單名稱 5 鍵**（簡中玩家回報右鍵咖啡機英文）：官方 xuiSkin 腳本把工作站顯示名寫死英文字面、未掛翻譯鍵（硬編碼），但腳本解析期會「去空白查 Recipes 表」——CH/CN `Recipes.json` 補 `Toaster`（烤麵包機）、`CoffeeMachine`（咖啡機）、`Loom`（織布機）、`KeyDuplicator`（鑰匙複製機）、`WoodTablewithDrawer`（帶抽屜木桌）即修，零 Lua。全 238 個 entity DisplayName 掃描完畢：可達缺鍵僅此 5；`uiEnabled=false` 無渲染路徑的 5 個與未掛載 WIP／測試批次刻意不加（詳見登記簿 A22，含升版 SOP 與量化基準）。
+- **配方雜誌名稱 7 鍵**（玩家回報角色面板 4 個 base 開頭英文）：官方 `literature.txt` 用 MetaRecipe 小寫 id 當 `LearnedRecipes`，官方**全語言**均無對應鍵、UI 原樣印 id。補 `base:kitchentools`／`base:assemble_shoulder_armor`／`base:makebulletprooflimbarmor`／`base:makemagazinearmor`，並由 review 挖出同路徑的**汽修雜誌 I/II/III** 三鍵（`Basic/Intermediate/Advanced Mechanics`＝基本／中階／高階汽車維修，官方 EN/CH/CN 三邊皆缺）。`LearnedRecipes` 全 395 條至此無缺鍵。
+- **拆解選單名稱 8 鍵**（玩家回報拆解門窗部分英文）：Moveables 顯示名官方連 EN 都未建鍵、所有語言裸奔。CH/CN `Moveables.json` 補 `Generic_Doorframe`（木門框）、`Generic_Windowframe`（木窗框）、`Generic_Wall`（木牆）、`Generic_Fence`（木圍欄）、`Generic_Moveable_object`（木製構件）、`Log_Gate`（寬原木門，對齊既有 `WideLogGate`）、`Metal_Wall_Frame`（金屬牆框架）、`White_Window_Door`（白色玻璃門）。
+
+### Fixed
+
+- **CN `Assemble_*` 十鍵上游誤譯**：EN 動詞是 Assemble（組裝）非 Forge（鍛造），As1 全譯「锻造」且與 `Forge_*` 系撞名（同畫面兩配方同名）。依「上游 CN 錯誤照修」政策經 `scripts/cn_overrides.json` 修正為「组装」（含 ref hash 登記）；CH 側自始正確。
+
+### Notes
+
+- 玩家回報六項全數查證：右鍵**砧板**非缺鍵（我方與官方 CN 自始有鍵；xuiSkin 譯名於啟動解析期固化，切換語言需完整重啟遊戲才生效）；建造選單 **Dark Wooden Door Frame** 屬第三方「Neat Building」(3536052310) 自身 CN/CH 翻譯檔漏翻該 3 鍵；藥品描述 **`<LINE>`** 屬第三方「EHR」把僅 richText 面板支援的換行標記用在純文字物品欄 tooltip；均不代改，供回覆玩家。
+- 使用者面板「顯示安全屋區域」與關閉鈕**重疊跑版**查證為第三方「BetterSafehouse」(3634569678) 的 bug：其防重疊邏輯以欄位名（無 `cancel`）與按鈕文字（僅比對 fechar/close/ok）尋找關閉鈕，任何非英／葡語言必失敗——與本 MOD 無關（官方中文亦重現），修法（candidates 補 `self.cancel`）已提供供回報原作者。
+- 硬編碼登記簿新增 **A22**（xuiSkin entity 層 DisplayName 查表繞路——機制、量化基準 238/207/31、`en-diff` 盲區警示、`Translator.debugRecipeNames()` 升版 SOP）與 **C12**（component 層 40 筆英文字面現況不可達之觀察項，含預研修法與升版觸發條件）。
+- 本批經三獨立 review lane（code-reviewer／critic／codex review-plus）全數 findings 修畢後 APPROVE；`sync-cn` 位元組級冪等實證兩次。
+
 ## [42.20.0-1.13.3] - 2026-08-02
 
 ### Changed
