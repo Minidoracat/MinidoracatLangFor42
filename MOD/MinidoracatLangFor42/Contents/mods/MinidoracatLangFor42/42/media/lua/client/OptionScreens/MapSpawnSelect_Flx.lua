@@ -1,112 +1,42 @@
-require "ISUI/ISScrollingListBox"
+-- MapSpawnSelect_Flx.lua
+-- 出生點選擇畫面的中文地圖底圖
+--
+-- 官方英文底圖在 media/maps/Muldraugh, KY/spawnSelectImagePyramid.zip，
+-- 中文版只能放 media/maps/Riverside, KY/ —— Muldraugh 目錄承載全世界的
+-- lotheader/lotpack，MOD 建同名目錄會讓 IsoMetaGrid 只看到空殼（見 AGENTS.md
+-- ANTI-PATTERNS），所以不能靠 VFS 同路徑覆蓋換圖。
+--
+-- 官方 fillList() 的迴圈是「最後一個有底圖的城鎮贏」（only one is supported），
+-- 順序由 MapGroups 決定、不保證，因此在這裡攔截 setImagePyramid 換掉檔名。
+-- 只包裝 setImagePyramid（官方全碼僅 fillList:516 一處呼叫），不複製 fillList，
+-- 官方日後改清單／過濾／排序邏輯都會自動跟進（1.10.0 曾因整份複製漏抄
+-- only_for_game_mode，導致 7 個沙盒限定城鎮出現在非沙盒模式的清單）。
+--
+-- 必須用 info.spawnSelectImagePyramid 的絕對路徑：Lua 會把原始參數存進
+-- pyramidFileName，之後查圖片尺寸時不會再做一次 VFS 解析。
+--
+-- 這是條件式替換：只在官方決定使用 image pyramid 時換掉參數。固定出生點、
+-- 安全屋等 synthetic region 沒有 map.info，官方走 initMapData fallback、
+-- 不會呼叫此 setter，維持原版行為（不可強加底圖，那些 region 沒有 zoom 值）。
+-- log 一律 ASCII：PZ 的 print() 不支援 UTF-8，中文只留在註解（見 CatLangVersion_Flx）。
+
+require "OptionScreens/MapSpawnSelect"
 
 local TAG = "[CatLangFor42]"
 
-function MapSpawnSelect:_fillList()
-	self.listbox:clear()
-	WORLD_MAP = nil
-	self.mapPanel:clear()
-	local spawnSelectImagePyramid = nil
+local _orig_setImagePyramid = MapSpawnSelectImage.setImagePyramid
 
-	self.sortedList = {};
-	self.notSortedList = {};
+function MapSpawnSelectImage:setImagePyramid(fileName)
+    local info = getMapInfo("Riverside, KY")
+    local chinesePyramid = info and info.spawnSelectImagePyramid
 
-	local regions = self:getSpawnRegions()
-	if not regions then return end
-	for _,v in ipairs(regions) do
-		local info = getMapInfo(v.name)
-		if info then
-			if not info.only_for_game_mode or GameMode.get(ResourceLocation.of(getCore():getGameMode())) == info.only_for_game_mode then
-				local item = {};
-				item.name = info.title or "NO TITLE";
-				item.region = v;
-				item.dir = v.name;
-				item.desc = info.description or "NO DESCRIPTION";
-				if info.spawnSelectImagePyramid then
-					spawnSelectImagePyramid = info.spawnSelectImagePyramid -- only one is supported
-				end
-				item.zoomX = info.zoomX
-				item.zoomY = info.zoomY
-				item.zoomS = info.zoomS
-				item.demoVideo = info.demoVideo
-				self:checkSorted(item);
-			end
-		else
-			local item = {}
-			item.name = v.name;
-			item.region = v;
-			item.dir = "";
-			item.desc = "";
-			item.worldimage = nil;
-			self:checkSorted(item);
-		end
-	end
+    if chinesePyramid then
+        if fileName ~= chinesePyramid then
+            print(TAG .. " [SpawnSelect] loaded Chinese map pyramid: " .. chinesePyramid)
+        end
+        return _orig_setImagePyramid(self, chinesePyramid)
+    end
 
-	if #self.listbox.items > 1 then
-		local item = {}
-		item.name = getText("UI_mapspawn_random");
-		item.region = nil;
-		item.dir = "";
-		item.desc = "";
-		item.worldimage = nil;
-		table.insert(self.notSortedList, item);
-	end
-
-	-- Force override: use our Chinese map image pyramid from MOD directory
-	-- The loop above may have picked up the vanilla Muldraugh .zip (English),
-	-- so we ALWAYS override with our Chinese Riverside .zip
-	local riversideInfo = getMapInfo("Riverside, KY")
-	if riversideInfo and riversideInfo.dir then
-		local chinesePyramid = riversideInfo.dir .. "/spawnSelectImagePyramid.zip"
-		print(TAG .. " Chinese map pyramid: " .. chinesePyramid)
-		spawnSelectImagePyramid = chinesePyramid
-	else
-		print(TAG .. " WARNING: Could not find Riverside, KY map info for Chinese pyramid")
-	end
-
-	if spawnSelectImagePyramid then
-		self.mapPanel:setImagePyramid(spawnSelectImagePyramid)
-	else
-		print(TAG .. " WARNING: No image pyramid, falling back to initMapData")
-		for _,v in ipairs(regions) do
-			local info = getMapInfo(v.name)
-			if info then
-				self.mapPanel:initMapData('media/maps/'..v.name) -- FIXME: order of multiple maps matters
-				for _,dir in ipairs(info.lots) do
-					self.mapPanel:initMapData('media/maps/'..dir) -- FIXME: order of multiple maps matters
-				end
-			end
-		end
-	end
-
-	-- list has been sorted with MapsOrder
-	for i,v in ipairs(self.sortedList) do
-		self.listbox:addItem(v.name, v);
-	end
-
-	for i,v in ipairs(self.notSortedList) do
-		self.listbox:addItem(v.name, v);
-	end
-
-	self:hideOrShowSaveName()
-	self:recalculateMapSize()
-
-	if self.textEntry ~= nil and self.textEntry:getInternalText() == "" then
-		local sdf = SimpleDateFormat.new("yyyy-MM-dd_HH-mm-ss", Locale.ENGLISH);
-		self.textEntry:setText(sdf:format(Calendar.getInstance():getTime()));
-	end
-
-	self.mapPanel.shownInitialLocation = false
-end
-
--- Apply override if CatLangFor42 is active
-local modId = "CatLangFor42"
-local mods = getActivatedMods()
-if mods:contains(modId) or mods:contains("\\" .. modId) then
-	print(TAG .. " MapSpawnSelect override activated (Chinese map image pyramid)")
-	MapSpawnSelect.fillList = MapSpawnSelect._fillList;
-else
-	print(TAG .. " WARNING: MapSpawnSelect override NOT activated. Mod ID not found.")
-	-- Fallback: apply anyway since this file only loads when MOD is active
-	MapSpawnSelect.fillList = MapSpawnSelect._fillList;
+    print(TAG .. " [SpawnSelect] WARNING: Chinese map pyramid not found, using original: " .. tostring(fileName))
+    return _orig_setImagePyramid(self, fileName)
 end
