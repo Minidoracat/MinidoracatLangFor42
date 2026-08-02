@@ -4,6 +4,21 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.0-1.13.3] - 2026-08-02
+
+### Changed
+
+- **`MapSpawnSelect_Flx.lua` 改為包裝 `setImagePyramid()`，不再整份複製官方 `fillList()`**（112 行 → 42 行，玩家端行為不變）：原做法是把官方 `MapSpawnSelect:fillList()` 整份抄過來、只在結尾多加一段強制指定中文地圖底圖，代價是官方每次改動該函式都得人工跟版——1.10.0 就因此漏抄官方新增的 `only_for_game_mode` 過濾條件，讓 7 個沙盒限定城鎮出現在非沙盒模式的出生城鎮清單。改為包裝 `MapSpawnSelectImage:setImagePyramid()`（官方 42.20 全碼僅 `fillList` 一處呼叫），在轉交原函式前把參數換成 `getMapInfo("Riverside, KY").spawnSelectImagePyramid` 的絕對路徑，清單／過濾／排序邏輯完全交還官方，日後官方改動會自動跟進。
+  - **為何仍需 Lua 介入**：官方英文底圖在 `maps/Muldraugh, KY/`，而該目錄承載全世界的 `.lotheader`／`.lotpack`；`ZomboidFileSystem.searchFolders()` 對路徑含 `media/maps/` 的**目錄本身**也會登記進 `activeFileMap`（空目錄亦然），MOD 一旦建立同名目錄就會遮蔽官方地圖資料。中文底圖因此只能放不含世界資料的 `Riverside, KY/`，再由 Lua 指定。
+  - **屬條件式替換**：僅在官方決定使用 image pyramid 時換參數。固定伺服器出生點、安全屋等 synthetic region 沒有 `map.info`，官方走 `initMapData()` fallback、不會呼叫此 setter，維持原版行為。
+  - 一併移除原檔死碼：`getActivatedMods()` 模組 ID 檢查的兩個分支執行的是同一件事。
+  - log 訊息改為純 ASCII（PZ 的 `print()` 不支援 UTF-8 中文，會顯示為 `?`）。
+
+### Notes
+
+- 本次未新增或修改任何譯文，也未觸及出生座標邏輯——出生座標一律由官方 `CharacterCreationProfession.lua` 從各城鎮 `spawnpoints.lua` 取得，本 MOD 不介入（`maps/Riverside, KY/` 禁止放 `spawnpoints.lua` 的規則不變）。
+- 玩家回報「啟用本 MOD 後角色出生在室外」經查證為 1.10.1 之前誤留的 `spawnpoints.lua`（B41 舊座標）所致，該檔已於 42.20.0-1.10.1（2026-07-30）移除，1.13.x 均不受影響；本次重構與該問題無關。
+
 ## [42.20.0-1.13.2] - 2026-08-02
 
 ### Fixed
