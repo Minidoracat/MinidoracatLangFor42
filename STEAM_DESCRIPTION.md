@@ -33,7 +33,8 @@
 [hr][/hr]
 
 [h2]💬 問題回報 & 交流[/h2]
-如果遇到任何問題或有翻譯建議，歡迎加入 Discord 回報！
+如果遇到任何問題或有翻譯建議，歡迎透過以下管道回報：
+[url=https://github.com/Minidoracat/MinidoracatLangFor42/issues]🐛 GitHub Issues 回報問題（可附截圖，請一併附上啟用的模組清單與遊戲語言，最容易定位問題）[/url]
 [url=https://discord.gg/Gur2V67]👉 點此加入 Discord 伺服器[/url]
 
 [hr][/hr]
