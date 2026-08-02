@@ -4,6 +4,14 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.0-1.13.2] - 2026-08-02
+
+### Fixed
+
+- **世界容器（垃圾桶、木箱等）內的名稱修復實際從未生效**（玩家回報 MP 垃圾桶內車鑰匙整串英文）：`OnContainerUpdate` 事件在 42.20 的全部 51 個觸發點皆不帶 `ItemContainer` 參數，1.13.0 起 `ItemNameFix_Flx`（登記簿 A20）的容器掛勾 guard 恆為 false、整段死碼——食物／採集物／藏寶圖／建築鑰匙的世界容器修復從未執行過。本版改採 `DynamicItemName_Flx` 等四檔已驗證的「掃當前開啟物品欄／戰利品面板」寫法（`OnContainerUpdate` 無參數＋`OnRefreshInventoryWindowContainers`＋`EveryOneMinute` 兜底），並為車鑰匙（`VehicleKey_Flx`，A1）補上原本就缺的世界容器路徑。MP 機制上限不變：server 端資料永遠是生成端語言（client 改名不回傳、不外洩給其他玩家），顯示層「重建→再修」為常態。
+- **超速罰單（`Base.SpeedingTicket`）名稱修復漏收**：`nameAfterDescriptor` 動態命名物品中唯一不在 A3（`DynamicItemName_Flx`）反查表的型別，已補進 generator 與 type set（`gen-dynamic-name-map` 重生，EN_ITEM_NAMES 45→46）。
+- 登記簿 `BrushTool_Flx` 條目原與 `ItemNameFix_Flx` 重複編號 A20，改為 A21（本 CHANGELOG 歷史條目指標同步更新）。
+
 ## [42.20.0-1.13.1] - 2026-07-31
 
 ### Fixed
