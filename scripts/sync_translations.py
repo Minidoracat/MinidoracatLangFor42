@@ -1663,6 +1663,8 @@ DYN_EN_NAME_FULLTYPES = [
     "Base.Necklace_DogTag_Male",
     "Base.Passport",
     "Base.PressID",
+    # 超速罰單（vanilla SpawnItems.lua nameAfterDescriptor，非 generation/*.java）
+    "Base.SpeedingTicket",
     # 魚（Fishing.onCreateFish / Fish.lua 動態大小命名）
     "Base.AligatorGar",
     "Base.BlackCrappie",

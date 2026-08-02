@@ -27,7 +27,7 @@ DynamicItemNameFlx = DynamicItemNameFlx or {}
 
 -- <AUTO-GEN:DYNAMIC_NAME_MAP START>
 -- 由 scripts/sync_translations.py gen-dynamic-name-map 自動產生，請勿手動編輯
--- 來源：vanilla EN/IG_UI.json、ItemName.json、Print_Media.json（EN_ITEM_NAMES 45、PLACE 900、NEWSPAPER_TITLE 25、PETNAME 229、LETTER 24、BUSINESS 63、JOB 116）
+-- 來源：vanilla EN/IG_UI.json、ItemName.json、Print_Media.json（EN_ITEM_NAMES 46、PLACE 900、NEWSPAPER_TITLE 25、PETNAME 229、LETTER 24、BUSINESS 63、JOB 116）
 DynamicItemNameFlx = DynamicItemNameFlx or {}
 DynamicItemNameFlx.MAPS = {
     EN_ITEM_NAMES = {
@@ -69,6 +69,7 @@ DynamicItemNameFlx.MAPS = {
         ["Base.ScratchTicket_Winner"] = "Scratch Ticket",
         ["Base.SmallmouthBass"] = "Smallmouth Bass",
         ["Base.SnowGlobe"] = "Snow Globe",
+        ["Base.SpeedingTicket"] = "Speeding Ticket",
         ["Base.SpottedBass"] = "Spotted Bass",
         ["Base.StockCertificate"] = "Stock Certificate",
         ["Base.StripedBass"] = "Striped Bass",
@@ -1491,6 +1492,7 @@ local NAMED_DESCRIPTOR_TYPE_SET = {
     ["Base.Necklace_DogTag_Male"] = true,
     ["Base.Passport"] = true,
     ["Base.PressID"] = true,
+    ["Base.SpeedingTicket"] = true,
 }
 
 local BUSINESS_CARD_TYPE_SET = {

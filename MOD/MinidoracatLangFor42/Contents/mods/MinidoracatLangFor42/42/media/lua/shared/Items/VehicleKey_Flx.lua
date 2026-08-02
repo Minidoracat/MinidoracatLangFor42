@@ -324,8 +324,49 @@ local function onFillContainer(_roomName, _containerType, container)
 end
 Events.OnFillContainer.Add(onFillContainer)
 
+-- 世界容器（垃圾桶、木箱等）修復——MP 下容器內容從 server 位元組重建後，
+-- client 端修過的名稱會被 server 端固化英文名蓋回（setName 純本機、不同步，
+-- 見 HARDCODE_REGISTRY A1/A20）。OnContainerUpdate 事件不帶 ItemContainer
+-- 參數（42.20 全部 51 個觸發點：45 無參數、6 個傳 Food/IsoGridSquare 等
+-- 物件），故改掃「當前開啟的物品欄/戰利品面板」，與 DynamicItemName
+-- 等四檔同一 idiom。
+local function fixInventoryPage(page)
+    local pane = page and page.inventoryPane
+    fixContainer(pane and pane.inventory)
+end
+
+local containerPathLogged = false
+
+local function fixOpenInventoryPages()
+    if not getPlayerInventory or not getPlayerLoot then return end
+
+    if not containerPathLogged then
+        containerPathLogged = true
+        print(TAG .. " [VehicleKey] Open-page repair path active")
+    end
+    for playerIndex = 0, 3 do
+        if getSpecificPlayer(playerIndex) then
+            fixInventoryPage(getPlayerInventory(playerIndex))
+            fixInventoryPage(getPlayerLoot(playerIndex))
+        end
+    end
+end
+
+local function onContainerUpdate()
+    if not shouldRunClientRepair() then return end
+    fixOpenInventoryPages()
+end
+Events.OnContainerUpdate.Add(onContainerUpdate)
+
+local function onRefreshInventoryWindowContainers(_page, state)
+    if state ~= "end" or not shouldRunClientRepair() then return end
+    fixOpenInventoryPages()
+end
+Events.OnRefreshInventoryWindowContainers.Add(onRefreshInventoryWindowContainers)
+
 local function onEveryOneMinute()
     if not shouldRunClientRepair() then return end
     fixPlayerKeys(getPrimaryPlayer())
+    fixOpenInventoryPages()
 end
 Events.EveryOneMinute.Add(onEveryOneMinute)
