@@ -1234,5 +1234,13 @@
     "Workshop_Sign": "工坊招牌",
     "Yellow_Lamp": "黃色檯燈",
     "Yellow_Striped_Carpet": "黃色條紋地毯",
-    "Zippee_Display_Counter": "齊皮展示櫃檯"
+    "Zippee_Display_Counter": "齊皮展示櫃檯",
+    "Generic_Doorframe": "木門框",
+    "Generic_Windowframe": "木窗框",
+    "Generic_Wall": "木牆",
+    "Generic_Fence": "木圍欄",
+    "Generic_Moveable_object": "木製構件",
+    "Log_Gate": "寬原木門",
+    "Metal_Wall_Frame": "金屬牆框架",
+    "White_Window_Door": "白色玻璃門"
 }

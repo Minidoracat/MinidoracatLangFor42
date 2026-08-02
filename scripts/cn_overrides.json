@@ -32311,5 +32311,55 @@
         "value": "[img=music] 曾经迷失, 今被寻回. [img=music]",
         "ref": "69a3a8fb5d0b2f13",
         "note": "needs_human 裁定：遊戲資料實證（tile 定義/藏寶圖腳本/媒體序列前後文），2026-07-31"
+    },
+    "Recipes.json|Assemble_Articulated_Shin_Armor": {
+        "value": "组装金属胫甲 (铰接)",
+        "ref": "c92cbd8313cdb047",
+        "note": "上游誤譯：EN 動詞是 Assemble（組裝）非 Forge（鍛造），與 Forge_* 系撞名；CH 同鍵本來就是組裝（2026-08-02 review 抓出）"
+    },
+    "Recipes.json|Assemble_Articulated_Thigh_Armor": {
+        "value": "组装金属腿甲 (铰接)",
+        "ref": "e5c2267f5456e36a",
+        "note": "上游誤譯：EN 動詞是 Assemble（組裝）非 Forge（鍛造），與 Forge_* 系撞名；CH 同鍵本來就是組裝（2026-08-02 review 抓出）"
+    },
+    "Recipes.json|Assemble_FullMetal_Forearm_Armor": {
+        "value": "组装金属前臂甲 (封闭)",
+        "ref": "74acf6459ff73a93",
+        "note": "上游誤譯：EN 動詞是 Assemble（組裝）非 Forge（鍛造），與 Forge_* 系撞名；CH 同鍵本來就是組裝（2026-08-02 review 抓出）"
+    },
+    "Recipes.json|Assemble_Simple_Shoulder_Armor": {
+        "value": "组装金属肩甲",
+        "ref": "61d429bdb4138dbf",
+        "note": "上游誤譯：EN 動詞是 Assemble（組裝）非 Forge（鍛造），與 Forge_* 系撞名；CH 同鍵本來就是組裝（2026-08-02 review 抓出）"
+    },
+    "Recipes.json|Assemble_Thigh_Armor": {
+        "value": "组装金属腿甲",
+        "ref": "b12482694454d240",
+        "note": "上游誤譯：EN 動詞是 Assemble（組裝）非 Forge（鍛造），與 Forge_* 系撞名；CH 同鍵本來就是組裝（2026-08-02 review 抓出）"
+    },
+    "Recipes.json|Assemble_Shin_Armor": {
+        "value": "组装金属胫甲",
+        "ref": "50fe51dbf514056a",
+        "note": "上游誤譯：EN 動詞是 Assemble（組裝）非 Forge（鍛造），與 Forge_* 系撞名；CH 同鍵本來就是組裝（2026-08-02 review 抓出）"
+    },
+    "Recipes.json|Assemble_Shoulder_Armor": {
+        "value": "组装金属肩甲 (铰接)",
+        "ref": "aaa522f42aea9d2a",
+        "note": "上游誤譯：EN 動詞是 Assemble（組裝）非 Forge（鍛造），與 Forge_* 系撞名；CH 同鍵本來就是組裝（2026-08-02 review 抓出）"
+    },
+    "Recipes.json|Assemble_Shoulder_Armor_Left": {
+        "value": "组装金属肩甲 (铰接, 左)",
+        "ref": "29c81c0f7c5a79cc",
+        "note": "上游誤譯：EN 動詞是 Assemble（組裝）非 Forge（鍛造），與 Forge_* 系撞名；CH 同鍵本來就是組裝（2026-08-02 review 抓出）"
+    },
+    "Recipes.json|Assemble_Shoulder_Armor_Right": {
+        "value": "组装金属肩甲 (铰接, 右)",
+        "ref": "b09e1b31c51b47b3",
+        "note": "上游誤譯：EN 動詞是 Assemble（組裝）非 Forge（鍛造），與 Forge_* 系撞名；CH 同鍵本來就是組裝（2026-08-02 review 抓出）"
+    },
+    "Recipes.json|Assemble_Forearm_Armor": {
+        "value": "组装金属前臂甲 (条板)",
+        "ref": "10661857a330ee6d",
+        "note": "上游誤譯：EN 動詞是 Assemble（組裝）非 Forge（鍛造），與 Forge_* 系撞名；CH 同鍵本來就是組裝（2026-08-02 review 抓出）"
     }
 }

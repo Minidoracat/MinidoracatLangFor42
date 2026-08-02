@@ -3208,5 +3208,17 @@
     "Recipe_MakeMilkFromPowderBottle": "沖泡瓶裝奶粉",
     "Recipe_SpinThreadFromWool": "用羊毛紡線",
     "Recipe_SpinYarnFromWool": "用羊毛紡毛線",
-    "Heat reatBlacksmithAnvil": "熱處理鐵匠砧"
+    "Heat reatBlacksmithAnvil": "熱處理鐵匠砧",
+    "Toaster": "烤麵包機",
+    "CoffeeMachine": "咖啡機",
+    "Loom": "織布機",
+    "KeyDuplicator": "鑰匙複製機",
+    "WoodTablewithDrawer": "帶抽屜木桌",
+    "base:kitchentools": "鍛造廚房工具",
+    "base:assemble_shoulder_armor": "組裝金屬肩甲 (鉸接)",
+    "base:makebulletprooflimbarmor": "製作防彈四肢護甲",
+    "base:makemagazinearmor": "製作雜誌盔甲",
+    "Basic Mechanics": "基本汽車維修",
+    "Intermediate Mechanics": "中階汽車維修",
+    "Advanced Mechanics": "高階汽車維修"
 }

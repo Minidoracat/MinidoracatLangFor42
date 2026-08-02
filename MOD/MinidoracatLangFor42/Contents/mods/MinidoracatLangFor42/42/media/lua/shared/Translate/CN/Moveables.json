@@ -1234,5 +1234,13 @@
     "Workshop_Sign": "工坊标牌",
     "Yellow_Lamp": "黄色台灯",
     "Yellow_Striped_Carpet": "黄色条纹地毯",
-    "Zippee_Display_Counter": "兹裴展示柜台"
+    "Zippee_Display_Counter": "兹裴展示柜台",
+    "Generic_Doorframe": "木门框",
+    "Generic_Windowframe": "木窗框",
+    "Generic_Wall": "木墙",
+    "Generic_Fence": "木围栏",
+    "Generic_Moveable_object": "木制构件",
+    "Log_Gate": "宽原木门",
+    "Metal_Wall_Frame": "金属墙框架",
+    "White_Window_Door": "白色玻璃门"
 }
