@@ -4,6 +4,23 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.0-1.14.1] - 2026-08-03
+
+### Added
+
+- **右鍵休息／睡覺子選單父項名稱 5 鍵**（玩家追蹤回報砧板英文的真根因）：可坐/可睡物件的右鍵子選單父項標籤走 `bed.getTileName()` → Moveables 表查詢，miss 原樣顯示英文。全掃 793 個 bed tile 後補齊全部 5 個缺鍵：`Chopping_Block`（砧板）、`Stump`（樹樁）、`Lean_To_Shelter`（斜頂庇護所）、`Tarp_Shelter`（油布庇護所）、`Playground_Swingset`（遊樂場鞦韆）——後三個玩家未回報、同病一次補。官方 EN 同樣缺鍵（英文玩家看到的也是內部組合名），不依賴官方修復。
+
+### Fixed
+
+- **技能面板 tooltip 描述顯示原始鍵**（玩家回報 `IGUI_perks_技能_Description`，官方 bug、所有非英文語言中招）：官方 `ISSkillProgressBar` 用**譯名**拼描述鍵，但官方全語系的描述鍵一律以 EN 顯示名為鍵，只有英文環境能命中——中文的描述譯文其實一直都在，只是查不到。新增 `SkillDescription_Flx.lua`（登記簿 A23）包裝 `updateTooltip`，把 miss 的原始鍵原地替換回既有譯文；零翻譯資料變更，官方日後修正拼鍵後自動失效退場。
+
+### Notes
+
+- **更正 1.14.0 的錯誤結論**：當時 Notes 寫「右鍵砧板非缺鍵、屬玩家環境問題」——玩家後續截圖證實其所見英文出在**休息子選單父項**（上述 Moveables 缺鍵路徑），本版已修；砧板 entity 右鍵選項本身（1.14.0 的查證範圍）確實正常。向回報玩家致意。
+- 同源掃描的 `Small_Stump`（erosion 殘根 tile）僅有 CustomName、無 bed/scrap 屬性、名稱無渲染路徑，刻意不補鍵（登記於 HARDCODE_REGISTRY A22 尾註）。
+- 玩家回報的「使用者面板顯示安全屋區域與關閉鈕重疊」查證為第三方「BetterSafehouse」(3634569678) 的關閉鈕偵測 bug（欄位名清單缺 `cancel`、文字比對僅認 fechar/close/ok），任何非英/葡語言皆重現、與本 MOD 無關；修法已提供供回報原作者。
+- 藥品描述 `<LINE>` 追蹤更正：實際來源為**模組翻譯包**（MinidoracatModLangFor42）收錄的上游譯文用錯換行標記，已於模組包側修正（114 鍵 `<LINE>`→`<br>`），無需安裝 EHR 也可能看到、1.14.0 Notes 歸因 EHR 有誤。
+
 ## [42.20.0-1.14.0] - 2026-08-03
 
 ### Added
