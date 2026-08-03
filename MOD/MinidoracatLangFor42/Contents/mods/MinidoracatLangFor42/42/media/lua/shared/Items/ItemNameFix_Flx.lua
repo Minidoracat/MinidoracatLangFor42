@@ -5132,9 +5132,32 @@ end
 local function fixItemName(item)
     if not item then return end
 
+    -- **全域自訂名守衛：玩家改過名的物品一律不碰。**
+    -- 本檔所有分支都是「精確比對英文建構形」，玩家若把物品改名成剛好等於某個 EN 原名
+    -- （"Bacon"）、EN 野採形（"Poppies (Wild)"）、EN 鑰匙形（"Key - Army Surplus Store"）
+    -- 或 "Annotated Map"，就會被誤判為待遷移而覆寫掉玩家資料。
+    -- 此閘正確且不會擋掉目標：`setName` 不動 customName 旗標（InventoryItem.java:2481-2487，
+    -- 與 :3253 setCustomName 兩者獨立），我們要修的三個生成端——forageSystem.lua:2270、
+    -- ItemPickerJava.keyNamerBuilding、IsoGameCharacter.createKeyRing——**都只呼叫 setName**；
+    -- 唯有玩家改名走 setCustomName(true)（ISInventoryPaneContextMenu.lua:2731/2753）。
+    -- 原第四分支（A25 鑰匙圈）已自帶此閘，2026-08-04 上提為全域——先前其餘分支是靠
+    -- 「早退判準恰好用 this.name」與「Food 狀態前綴恰好讓比對 miss」意外擋住，那兩個
+    -- 意外都隨本次死碼修復消失了。
+    if item:isCustomName() then return end
+
+    -- rawName ＝ InventoryItem.name 欄位原值（getDisplayName 的實作就是 `return this.name`，
+    -- InventoryItem.java:3204-3206；全繼承鏈只有 Moveable.java:77 覆寫）。這是「被生成端
+    -- 語言烘死的字串」——是**比對與取代的目標**，不是譯名來源。
+    --
+    -- 比對基準一律用 rawName，不可用 getName()：後者在 Bloody/Broken/Worn/blunt/dull/
+    -- empty/activated 任一成立時把名稱包成 IGUI_ClothingNaming「%2 (%1)」
+    -- （InventoryItem.java:2440-2478），Food 另有 新鮮/陳腐/腐爛/生 前綴
+    -- （Food.java:1371-1408），getMechanicType()>0 還會再包一層。任何裝飾都讓精確比對失效。
+    local rawName = item:getDisplayName()
+
     -- 藏寶圖：名稱固化為 EN「Annotated Map」（與 fullType 的物品名無關，先於反查表判斷）
     local annotatedEn = ItemNameFixFlx.ANNOTATED_EN
-    if annotatedEn and annotatedEn ~= "" and item:getName() == annotatedEn then
+    if annotatedEn and annotatedEn ~= "" and rawName == annotatedEn then
         local localized = getText("Stash_AnnotedMap")
         if localized ~= annotatedEn then
             item:setName(localized)
@@ -5145,22 +5168,31 @@ local function fixItemName(item)
     local enName = ItemNameFixFlx.EN_NAME[item:getFullType()]
     if not enName then return end
 
-    local displayName = item:getDisplayName()
-    if displayName == enName then return end  -- 客戶端語言即英文，無需遷移
+    -- localName ＝ script item 的 displayName（Item.java:493-495，值於 :3053 由
+    -- Translator.getItemNameFromFullType 在腳本載入期以**本進程**語言在地化）。
+    -- 這才是當前語言譯名，是唯一正確的寫入來源；同 MOD 另五檔（VehicleKey_Flx:211、
+    -- SpawnItems_Flx:36、DynamicItemName_Flx:1618 等）用的都是這個 idiom。
+    local scriptItem = item:getScriptItem()
+    local localName = scriptItem and scriptItem:getDisplayName()
+    if not localName or localName == "" then return end
 
-    local name = item:getName()
-    if name == enName then
-        item:setName(displayName)
-    elseif name == (enName .. WILD_SUFFIX_EN) then
-        item:setName(displayName .. " (" .. getText("UI_foraging_WildFood") .. ")")
+    -- 客戶端語言即英文（或此物品無譯文）——無可遷移的目標，早退。
+    -- 判準用 localName 而非 rawName：rawName == enName 正是「中文客戶端被烘成英文」
+    -- 的主場景，用它早退會把本檔要修的目標情境全部攔掉。
+    if localName == enName then return end
+
+    if rawName == enName then
+        item:setName(localName)
+    elseif rawName == (enName .. WILD_SUFFIX_EN) then
+        item:setName(localName .. " (" .. getText("UI_foraging_WildFood") .. ")")
     else
         -- 建築鑰匙 keyNamerBuilding（ItemPickerJava:2362-2367）：
         -- "<EN 物品名> - <EN 場所名>"，場所名恰為某 IGUI_*Key 的 EN 值才重建
         local prefix = enName .. " - "
-        if name:sub(1, #prefix) == prefix then
-            local suffixKey = ItemNameFixFlx.KEY_SUFFIX and ItemNameFixFlx.KEY_SUFFIX[name:sub(#prefix + 1)]
+        if rawName:sub(1, #prefix) == prefix then
+            local suffixKey = ItemNameFixFlx.KEY_SUFFIX and ItemNameFixFlx.KEY_SUFFIX[rawName:sub(#prefix + 1)]
             if suffixKey then
-                item:setName(displayName .. " - " .. getText(suffixKey))
+                item:setName(localName .. " - " .. getText(suffixKey))
                 return
             end
         end
@@ -5175,21 +5207,27 @@ local function fixItemName(item)
         --   (b) EN 後綴（generator 從 vanilla EN 原文產）與當前語言後綴
         --       （哨兵格式化取得）皆非空且相異——EN 環境自動 no-op
         --   (c) 名稱確實以 EN 後綴結尾且前段非空
-        --   (d) 非玩家自訂名（setName 不設 customName，故官方生成的鑰匙圈不會被跳過；
-        --       玩家手動改名走 setCustomName(true)，會被此閘擋下）
-        -- 來源用 displayName（＝this.name 原始值）而非 name：getName 會加上
-        -- Bloody/Broken 等裝飾前綴，若寫回會把裝飾烤進 this.name 並逐次疊加。
+        --   (d) 非玩家自訂名——2026-08-04 上提為函式頂端的全域守衛，本分支不再自帶
+        -- **本分支刻意沿用 rawName（＝this.name），不可改用 localName**：鑰匙圈的名稱
+        -- 是「<forename> <surname>'s Key Ring」，人名只存在於 this.name 裡；script item
+        -- 的 displayName 只是一般物品名（`Base.KeyRing` 譯作「鑰匙環」），沒有人名。
+        -- 這是四個分支中唯一以 this.name 為正確來源者——因為基底是人名（不需翻譯），
+        -- 只有後綴要換。也不可用 getName()：它會加上 Bloody/Broken 等裝飾前綴，寫回會
+        -- 把裝飾烤進 this.name 並逐次疊加。
         -- 「%1 %2」整段當單位接上目標後綴，結果與官方 getText 格式化逐字相同。
-        if KEYRING_SUFFIX_EN and not item:isCustomName()
-            and #displayName > #KEYRING_SUFFIX_EN
-            and displayName:sub(-#KEYRING_SUFFIX_EN) == KEYRING_SUFFIX_EN then
+        if KEYRING_SUFFIX_EN
+            and #rawName > #KEYRING_SUFFIX_EN
+            and rawName:sub(-#KEYRING_SUFFIX_EN) == KEYRING_SUFFIX_EN then
             local suffixLocal = keyRingSuffixLocal()
             if suffixLocal and suffixLocal ~= KEYRING_SUFFIX_EN then
-                item:setName(displayName:sub(1, #displayName - #KEYRING_SUFFIX_EN) .. suffixLocal)
+                item:setName(rawName:sub(1, #rawName - #KEYRING_SUFFIX_EN) .. suffixLocal)
             end
         end
     end
 end
+
+-- 匯出供離線測試呼叫（同 DynamicItemName_Flx.lua:1956 慣例）；遊戲內不使用。
+ItemNameFixFlx.fixItemName = fixItemName
 
 --- 掃描容器（含子容器）內所有物品並修復。
 --- @param container ItemContainer
