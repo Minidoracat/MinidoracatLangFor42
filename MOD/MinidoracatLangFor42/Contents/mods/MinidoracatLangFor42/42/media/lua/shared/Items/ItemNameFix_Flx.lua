@@ -42,6 +42,7 @@ ItemNameFixFlx = ItemNameFixFlx or {}
 ItemNameFixFlx = ItemNameFixFlx or {}
 ItemNameFixFlx.WILD_EN = "Wild"
 ItemNameFixFlx.ANNOTATED_EN = "Annotated Map"
+ItemNameFixFlx.KEYRING_EN_SUFFIX = "'s Key Ring"
 -- keyNamerBuilding 場所後綴：EN 場所名 → IGUI_*Key（重複 EN 值保留第一個 key）
 ItemNameFixFlx.KEY_SUFFIX = {
     ["%1 Key"] = "IGUI_CarKey",
@@ -5101,6 +5102,31 @@ ItemNameFixFlx.EN_NAME = {
 
 local WILD_SUFFIX_EN = " (" .. ItemNameFixFlx.WILD_EN .. ")"
 
+-- 鑰匙圈（A25）：IGUI_KeyRingName 的 EN 為 "%1 %2's Key Ring"，字面後綴＝"'s Key Ring"，
+-- 由 generator 從 vanilla EN JSON 原文直接產出（見下方 KEYRING_EN_SUFFIX）。
+--
+-- **當前語言後綴不可自行解析格式字串**：Translator.tryFillMapFromFile 在載入期會把
+-- %N 改寫成 %N$s（Translator.java 錨點 `replaceAll("%%(\\d+)", "%$1\\$s")`），
+-- getText("IGUI_KeyRingName") 拿到的是 "%1$s %2$s的鑰匙圈"，與檔案原文形態不同。
+-- 故改用哨兵字元讓官方自己格式化再取尾巴，免疫任何格式規格改寫。
+-- 全程 plain 字串運算（無 Lua pattern 語義），推導不出即 nil、第四分支整段跳過。
+local KEYRING_SENTINEL = "\1\2"
+
+local function keyRingSuffixLocal()
+    local formatted = getText("IGUI_KeyRingName", KEYRING_SENTINEL, KEYRING_SENTINEL)
+    if type(formatted) ~= "string" then return nil end
+    local head = KEYRING_SENTINEL .. " " .. KEYRING_SENTINEL
+    if formatted:sub(1, #head) ~= head then return nil end
+    local suffix = formatted:sub(#head + 1)
+    if suffix == "" then return nil end
+    return suffix
+end
+
+local KEYRING_SUFFIX_EN = ItemNameFixFlx.KEYRING_EN_SUFFIX
+if type(KEYRING_SUFFIX_EN) ~= "string" or KEYRING_SUFFIX_EN == "" then
+    KEYRING_SUFFIX_EN = nil
+end
+
 --- 單一物品的名稱遷移：只碰「精確等於英文建構形」的名稱。
 --- @param item InventoryItem
 local function fixItemName(item)
@@ -5135,6 +5161,31 @@ local function fixItemName(item)
             local suffixKey = ItemNameFixFlx.KEY_SUFFIX and ItemNameFixFlx.KEY_SUFFIX[name:sub(#prefix + 1)]
             if suffixKey then
                 item:setName(displayName .. " - " .. getText(suffixKey))
+                return
+            end
+        end
+
+        -- 鑰匙圈（A25）：IsoGameCharacter.createKeyRing 以生成端語言
+        -- getText("IGUI_KeyRingName", forename, surname) 後 setName()；MP 由伺服器
+        -- 在 OnNewGame 觸發（CreatePlayerPacket → SpawnItems.lua），故固化英文。
+        -- 名稱形如「<forename> <surname>'s Key Ring」，僅在下列全部成立時重建：
+        --   (a) fullType 命中 vanilla 反查表——**此閘不收斂到鑰匙圈**，4,889 個
+        --       vanilla 物品都過得了；真正的收斂閘是 (c)。實測反查表中無任何
+        --       物品名以 EN 後綴結尾，故誤傷面為零；放寬 (c) 前務必重掃。
+        --   (b) EN 後綴（generator 從 vanilla EN 原文產）與當前語言後綴
+        --       （哨兵格式化取得）皆非空且相異——EN 環境自動 no-op
+        --   (c) 名稱確實以 EN 後綴結尾且前段非空
+        --   (d) 非玩家自訂名（setName 不設 customName，故官方生成的鑰匙圈不會被跳過；
+        --       玩家手動改名走 setCustomName(true)，會被此閘擋下）
+        -- 來源用 displayName（＝this.name 原始值）而非 name：getName 會加上
+        -- Bloody/Broken 等裝飾前綴，若寫回會把裝飾烤進 this.name 並逐次疊加。
+        -- 「%1 %2」整段當單位接上目標後綴，結果與官方 getText 格式化逐字相同。
+        if KEYRING_SUFFIX_EN and not item:isCustomName()
+            and #displayName > #KEYRING_SUFFIX_EN
+            and displayName:sub(-#KEYRING_SUFFIX_EN) == KEYRING_SUFFIX_EN then
+            local suffixLocal = keyRingSuffixLocal()
+            if suffixLocal and suffixLocal ~= KEYRING_SUFFIX_EN then
+                item:setName(displayName:sub(1, #displayName - #KEYRING_SUFFIX_EN) .. suffixLocal)
             end
         end
     end

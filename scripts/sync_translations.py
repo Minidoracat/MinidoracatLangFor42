@@ -1264,6 +1264,15 @@ def cmd_gen_item_name_map(pz_path: Path | None = None):
     if not key_suffixes:
         print("❌ vanilla EN IG_UI.json 找不到 IGUI_*Key 場所鍵，中止")
         sys.exit(1)
+    # 鑰匙圈（A25）：IsoGameCharacter.createKeyRing 以生成端語言 getText 後 setName，
+    # MP 由伺服器觸發故固化英文。這裡直接產出「EN 字面後綴」而非格式字串——
+    # Lua 端不可自行解析格式：Translator.tryFillMapFromFile 在載入期會把 %N 改寫成
+    # %N$s，getText 拿到的已是 "%1$s %2$s's Key Ring"，與檔案原文形態不同。
+    keyring_en = ig_data.get("IGUI_KeyRingName", "")
+    keyring_suffix = keyring_en[len("%1 %2"):] if keyring_en.startswith("%1 %2") else ""
+    if not keyring_suffix:
+        print(f"❌ vanilla EN IG_UI.json 的 IGUI_KeyRingName 缺失或格式改變（{keyring_en!r}），中止")
+        sys.exit(1)
 
     entries = OrderedDict(
         (key, value) for key, value in en_data.items()
@@ -1277,6 +1286,7 @@ def cmd_gen_item_name_map(pz_path: Path | None = None):
     lines.append("ItemNameFixFlx = ItemNameFixFlx or {}")
     lines.append(f'ItemNameFixFlx.WILD_EN = "{_lua_string(wild_en)}"')
     lines.append(f'ItemNameFixFlx.ANNOTATED_EN = "{_lua_string(annotated_en)}"')
+    lines.append(f'ItemNameFixFlx.KEYRING_EN_SUFFIX = "{_lua_string(keyring_suffix)}"')
     lines.append("-- keyNamerBuilding 場所後綴：EN 場所名 → IGUI_*Key（重複 EN 值保留第一個 key）")
     lines.append("ItemNameFixFlx.KEY_SUFFIX = {")
     for en_value, igui_key in sorted(key_suffixes.items()):

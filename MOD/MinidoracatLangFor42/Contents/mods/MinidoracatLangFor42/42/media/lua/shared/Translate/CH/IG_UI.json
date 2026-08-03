@@ -7513,5 +7513,6 @@
     "IGUI_CatLangBrush_AddByArea": "區域新增",
     "IGUI_CatLangBrush_RemoveByArea": "區域移除",
     "IGUI_CatLangBrush_Close": "關閉",
-    "IGUI_CatLangBrush_Tiles": "圖塊"
+    "IGUI_CatLangBrush_Tiles": "圖塊",
+    "IGUI_PlayerStats_Role": "角色:"
 }
