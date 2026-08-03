@@ -1242,5 +1242,10 @@
     "Generic_Moveable_object": "木製構件",
     "Log_Gate": "寬原木門",
     "Metal_Wall_Frame": "金屬牆框架",
-    "White_Window_Door": "白色玻璃門"
+    "White_Window_Door": "白色玻璃門",
+    "Chopping_Block": "砧板",
+    "Stump": "樹樁",
+    "Lean_To_Shelter": "斜頂庇護所",
+    "Tarp_Shelter": "油布庇護所",
+    "Playground_Swingset": "遊樂場鞦韆"
 }
