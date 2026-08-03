@@ -5138,8 +5138,19 @@ local function fixItemName(item)
     -- 或 "Annotated Map"，就會被誤判為待遷移而覆寫掉玩家資料。
     -- 此閘正確且不會擋掉目標：`setName` 不動 customName 旗標（InventoryItem.java:2481-2487，
     -- 與 :3253 setCustomName 兩者獨立），我們要修的三個生成端——forageSystem.lua:2270、
-    -- ItemPickerJava.keyNamerBuilding、IsoGameCharacter.createKeyRing——**都只呼叫 setName**；
-    -- 唯有玩家改名走 setCustomName(true)（ISInventoryPaneContextMenu.lua:2731/2753）。
+    -- ItemPickerJava.keyNamerBuilding、IsoGameCharacter.createKeyRing——**都只呼叫 setName**，
+    -- 不受此閘影響。玩家改名路徑為 ISInventoryPaneContextMenu.lua:2731/2753。
+    --
+    -- **但 setCustomName(true) 不等於「只有玩家改名」**（2026-08-04 review 更正）：vanilla
+    -- 另有 8 處 Java 對「遊戲自己生成的名字」設此旗標——CraftRecipeData:1485、
+    -- InventoryItem:602、IsoDeadBody:680、ItemCodeOnCreate:66、RecipeCodeOnCooked:18、
+    -- RecipeCodeOnCreate:199/210、EvolvedRecipe:494。它們產出的多為複合句式
+    -- （"Bowl of %1"／"Dead %1"／"%1 (%2)"），不等於任何裸 EN 物品名，本來就匹配不到本檔
+    -- 四個分支；**唯一例外是 `Base.PastaBowl`**——RecipeCodeOnCreate:192-196 把含 "Pasta"
+    -- 的輸入正規化成 "Pasta" 後套 Tooltip_food_Bowl，產出 "Bowl of Pasta"，恰等於
+    -- EN_NAME 值（本檔 :3533）。**此例刻意不撈**：為它拿掉守衛的代價是玩家自行改名成某個
+    -- EN 原名的物品會被覆寫（已實測會發生），保護玩家存檔資料優先於多修一個食物名。
+    -- 升版若想涵蓋它，必須另尋不犧牲自訂名保護的判別方式，勿直接移除本守衛。
     -- 原第四分支（A25 鑰匙圈）已自帶此閘，2026-08-04 上提為全域——先前其餘分支是靠
     -- 「早退判準恰好用 this.name」與「Food 狀態前綴恰好讓比對 miss」意外擋住，那兩個
     -- 意外都隨本次死碼修復消失了。
