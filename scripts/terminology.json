@@ -2281,6 +2281,92 @@
     "value": "視圖"
    },
    "note": "UI view=檢視（語料慣例）；3D 視圖錐/資料庫視圖 另議"
+  },
+  {
+   "pair": "保險槓→保險桿",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "保險槓"
+   },
+   "note": "台灣車輛標準用字。槓為簡中「杠」的錯誤轉換，同 效能型→性能型 屬機轉錯誤而非用字偏好。與槓桿/槓鈴/反斜槓無重疊（該「槓」在詞首或屬他詞）",
+   "replace": "保險桿"
+  },
+  {
+   "pair": "防撞槓→防撞桿",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "防撞槓"
+   },
+   "note": "同 保險槓→保險桿",
+   "replace": "防撞桿"
+  },
+  {
+   "pair": "護槓→護桿",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "護槓"
+   },
+   "note": "同 保險槓→保險桿；避免出現「保險桿護槓」的半改狀態",
+   "replace": "護桿"
+  },
+  {
+   "pair": "寶馬→BMW",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "寶馬"
+   },
+   "note": "台灣一律稱 BMW；寶馬為中國市場名。注意取代後若緊接拉丁/數字需補空格（寶馬E30→BMW E30）",
+   "replace": "BMW"
+  },
+  {
+   "pair": "沃爾沃→Volvo",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "沃爾沃"
+   },
+   "note": "台灣一律用原文 Volvo；沃爾沃為中國市場名",
+   "replace": "Volvo"
+  },
+  {
+   "pair": "路虎→Land Rover",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "路虎"
+   },
+   "note": "台灣一律用原文 Land Rover；路虎為中國市場名",
+   "replace": "Land Rover"
+  },
+  {
+   "pair": "大眾→福斯",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "大眾"
+   },
+   "note": "僅車廠 Volkswagen 適用（台灣稱福斯）。「大眾」另有公眾之意——本體語料 22 處皆為此義（如「自1973年開始服務大眾」），模組包亦有「大眾基因工廠」，故禁自動取代"
+  },
+  {
+   "pair": "甲殼蟲→金龜車",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "甲殼蟲"
+   },
+   "note": "僅 VW Beetle 車型適用（台灣稱金龜車）。「甲殼蟲」另指昆蟲，且 Beatle Bass 指樂團The Beatles（模組包曾誤譯為甲殼蟲貝斯），故禁自動取代"
   }
  ],
  "_dropped": {
