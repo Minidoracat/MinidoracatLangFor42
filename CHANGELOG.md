@@ -4,6 +4,21 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.0-1.14.3] - 2026-08-04
+
+### Fixed
+
+- **車窗物品名去歧義：`Base.{Front,Rear}Window{1,2,3}` 由「車前窗／車後窗」改為「前側車窗／後側車窗」**（CH 六鍵；CN 維持官方「车前窗／车后窗」不動）。原譯與官方繁中的「前車窗／後車窗」都有誤讀風險：「車前窗」字面是車子前方的窗，與擋風玻璃概念重疊；「後車窗」在台灣車廠手冊（如 KIA zh_TW）常用來指後擋玻璃。
+
+  遊戲資料實證這是**側窗**而非擋風玻璃——`media/scripts/generated/vehicles/template_window_nodoor.txt` 的 `part WindowFrontLeft { area = SeatFrontLeft, itemType = Base.FrontWindow }`，且 `media/scripts/generated/items/normal.txt` 的 `item FrontWindow1 { Icon = SideWindow }`（Windshield 用的是 `CarWindshield`）。改用「前側車窗／後側車窗」後與同畫面的「擋風玻璃／後擋風玻璃」零歧義，並符合交通部公路局隔熱紙法規「前側窗／後側窗」與「前擋／後擋」的分類。
+
+  槽位名（`IGUI_VehiclePartWindowFrontLeft`「左前窗」等六鍵）維持不動：歧義只存在於單獨出現的物品名，槽位顯示在技工面板車輛示意圖上、位置本身即語境，且被多個載具 MOD 的複合詞（左前車窗裝甲／防護）引用，變更波及面大而收益小。
+
+### Notes
+
+- 模組包 MinidoracatModLangFor42 於 `42.19.0-1.8.0` 同批對齊：`CraftVanillaVehicle{Front,Rear}Window*` 12 個配方名一併改為「製作前側車窗／後側車窗 (…)」，兩包術語統一。兩包需一起更新才不會出現「配方名與產出物品名對不上」。
+- 裁決經 Claude 與 codex 雙邊獨立審查；codex 以本機遊戲 script 佐證側窗判定，並指出官方「前車窗」僅解決前半歧義。
+
 ## [42.20.0-1.14.2] - 2026-08-04
 
 ### Fixed
