@@ -2367,6 +2367,37 @@
     "value": "甲殼蟲"
    },
    "note": "僅 VW Beetle 車型適用（台灣稱金龜車）。「甲殼蟲」另指昆蟲，且 Beatle Bass 指樂團The Beatles（模組包曾誤譯為甲殼蟲貝斯），故禁自動取代"
+  },
+  {
+   "pair": "發動機→引擎",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "regex",
+    "value": "發動機(?!車)"
+   },
+   "note": "台灣一律稱引擎；發動機為陸用語。本體語料 引擎 92:發動機 0，模組包 267:18，兩包慣例一致。lookahead 避開「發動機車」＝發動＋機車（機車在台灣指摩托車），否則會壞成「引擎車」",
+   "replace": "引擎",
+   "tests": {
+    "apply": [
+     "發動機蓋",
+     "修不好發動機"
+    ],
+    "skip": [
+     "發動機車引擎"
+    ]
+   }
+  },
+  {
+   "pair": "夠不到→搆不到",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "夠不到"
+   },
+   "note": "「夠」為足夠之意；伸手觸及的正字是「搆」（教育部辭典收「搆不著」）。夠不到係簡中「够」一字兼義的沿用",
+   "replace": "搆不到"
   }
  ],
  "_dropped": {
