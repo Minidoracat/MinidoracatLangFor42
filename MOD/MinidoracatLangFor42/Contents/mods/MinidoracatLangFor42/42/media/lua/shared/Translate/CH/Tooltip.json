@@ -1,5 +1,4 @@
 {
-    "Tooltip_Recipe_OpenMacAndCheese": "獲取用於製作通心粉和乳酪的通心粉和乳酪粉.",
     "Tooltip_food_Bowl": "一碗%1",
     "Tooltip_food_Slice": "%1 切片",
     "Tooltip_food_Uncooked": "未烹飪",
@@ -502,7 +501,6 @@
     "Tooltip_item_PiercedIronBlock": "用於高階工具鍛造.",
     "Tooltip_item_Quicklime": "可與水混合, 調製成灰泥.",
     "Tooltip_item_RailroadTrack": "必須先切成片.",
-    "Tooltip_item_RailroadTrackPiece": "可以熔化成鐵.",
     "Tooltip_item_String": "",
     "Tooltip_item_FlintNodule": "用於打製石器，也可以敲碎成鋒利的燧石片。",
     "Tooltip_item_CeramicCrucibleWithGlass": "與陶瓷片模具或玻璃吹管一起使用, 製作玻璃物品.",

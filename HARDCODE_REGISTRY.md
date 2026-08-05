@@ -37,11 +37,13 @@ uv run scripts/decompile.py verify {新版本}
 另：`Translator.getTextInternal` 的前綴路由 42.19→42.20 一字未改（整份 `Translator.java` 只有 4 處反編譯層差異），**仍無泛用 fallback 表**，C 表偽 key 的結論全部維持。~~載入期 `%` 正規化（`Translator.java:251`）亦逐字未變，既有 `%1%`、`%.1f %%` 寫法在 42.20 行為一致。~~
 **⚠️ 42.20.1 推翻（2026-08-05）**：`Translator` 大改——移除無參數 `getText` overload，所有呼叫一律跑 `String.formatted()`；載入期改為 `formatFixer`（只認 `%%`｜`%1`–`%9`，其餘原樣保留）。裸 `%`（含 `%1%`、`10%` 這類舊寫法）一律 `UnknownFormatConversionException` 黑畫面；printf token 全數淘汰。現行規則見 `AGENTS.md`「Translator placeholder / 百分比規則（PZ 42.20.1+）」，防護見 `sync_translations.py` 的 `sanitize_format_tokens`／`check_format_tokens`。
 
+**42.20.2 對版結論（2026-08-06，全表 delta 驗證）**：本次 hotfix Java 僅 10 檔變更（Translator/Core/GitVersion/MainScreenState/IngameState/GameServer/RenderThread/LightingThread/GameLoadingState/Http2Stream.kt），media/scripts 零變更、media/lua 僅 9 檔變更。要點：(1) `Translator.reportMissingArgumentsFromPastAbuse` 新增捕捉 `IllegalFormatException`——非 DEV 下自動把裸 % 逸出重試、再失敗回傳原文，**裸 % 不再黑畫面**（降為 console warning＋可能顯示原文；我方 sanitizer／fix-check 守門照舊，理由改為品質而非防 crash）；`formatFixer` 與前綴路由逐字未變，**C 表全數維持**。(2) `GameLoadingState` quick tips 改存 key、顯示時 `getText`；`%%` 從此正確渲染為 `%`。我方 CH/CN 原多出 21 個官方已刪的舊 joke 鍵（joke7–27，會進 1/13 輪播池）——**2026-08-06 經使用者裁定已刪除**，quick_tip 鍵數兩語言均收斂為 65 = 官方 EN。(3) 官方 EN 補完格式遷移 109 鍵（%s/%i/%.1f→%N、%→%%），零增刪鍵；我方 CH/CN 早已對齊零改動。(4) `check_debug_menu_coverage.py` 重跑＝基準（168/167/未涵蓋 1='servertest'）；9 個變更 Lua 中 `ISAnimalContextMenu`（A16/B17 錨點全在）、`ISVehicleMenu`（A16 錨點在、B14 :597 仍為 --[[--]] 死碼）確認無新硬編碼。(5) 五個 gen-* 重跑：vehicle/item-name/dynamic-name/media 四表冪等；**gen-radio-map 曾因 EN RadioData 4 筆 `%`→`%%` 產生錯誤 raw 形表鍵，已完整修正**（`_build_radio_en_to_key`：表鍵用執行期形 `%%`→`%` 對上 A7 的 `line:getText()`、未譯判定維持 raw 比對、值含 `%N` 或正規化碰撞出不同譯文一律 fail-closed 中止；`RadioData_Flx.getTranslations` 快取同步轉執行期形——`patchLine` 的 `setText` 直寫不經 formatted()，raw `%%` 會字面上屏；回歸測試 `scripts/test_radio_map_tokens.py` 6 案）。經 Claude/codex 雙 lane review-plus 收斂（codex 抓到 raw/runtime 混比與 setText raw 寫回兩缺陷）。(6) media/scripts 零變更，A22 量化基準（238/207/31、LearnedRecipes 395 缺 0）與 A23 的 EN_NAME 表（IGUI_perks 鍵未動）免重掃。(7) **死鍵大掃除（2026-08-06，使用者核准執行）**：對 CH/CN 各 2746 個 EN 沒有的多餘鍵做全量分類＋6-agent 對抗式動態組鍵查證後，刪除 333 個確認死鍵＋21 個舊 joke tips（每語言 354 鍵，9 檔）；268 個 REF CN 仍殘留者已入 `cn_overrides.json` deny-list（drop）防 sync-cn 復活，sync-cn 重跑 0 檔變更證實冪等。162 個「EN 沒有但動態組鍵仍可達」的活鍵（`IGUI_MapOption_*`、`IGUI_VehicleName*Burnt/Smashed`、Moveables `Generic_*` tiledefinition 組鍵、`Moodles_Dead_desc_lvl1`、我方 Flx 自有鍵）**刻意保留，升版清鍵前必讀** `scripts/dead_keys_audit_42.20.2.json`（keep_alive 清單）。判死方法論見記憶檔與該 JSON；`IGUI_CraftingWindow_<tag>` 類判死須過 `requiresSpecificWorkstation` 閘門。
+
 ---
 
 ## A. 已修補（現行 `_Flx.lua`，PZ 更新後逐條對版）
 
-最後驗證版本：**42.20.0**（全部，2026-07-29）
+最後驗證版本：**42.20.0**（全部，2026-07-29）；**42.20.2 delta 驗證通過**（2026-08-06，見 §0 對版結論——變更檔未觸及任何 A 表錨點，五個 gen-* 查表冪等）
 
 | # | 修補檔（`MOD_ROOT/media/lua/`） | 官方硬編碼來源（錨點） | 症狀 |
 |---|---|---|---|
@@ -123,7 +125,7 @@ uv run scripts/decompile.py verify {新版本}
 
 ## C. 修不到／不修（持續觀察，官方修復後移出）
 
-最後驗證版本：**42.20.0**（全部，2026-07-29）
+最後驗證版本：**42.20.0**（全部，2026-07-29）；**42.20.2 delta 驗證通過**（2026-08-06，`formatFixer` 與 `getTextInternal` 前綴路由逐字未變、仍無泛用 fallback，全數維持）
 
 > **42.20 對版結論：C1~C8 沒有任何一條可移到 D 表。** 核心問題的答案是否定的——`Translator.getTextInternal` 的前綴清單與 42.19 完全相同、**仍無泛用 fallback 表**，無前綴偽 key 依然永遠 miss 回傳原文；vanilla EN 翻譯 JSON 全域 grep 也查不到這些字串的任何 key，官方一個都沒改成正規鍵。C2、C5 標「實作變更」但**變的是 gate 不是字串**：42.20 把 `Core.debug || isUnstableScriptNameSpam()` 從內層 if 上移併進外層 `uiShowContextMenuReportOptions`（四種真值組合逐一驗過，可見性完全等價），`String.format` 格式一字未改。**我方 A16 在 `DebugContextMenu_Flx.lua` 的五條 pattern（TileReport / RoomReportxyz / CoordinatesReportxyz / Nolootdistroforin / Nolootdistrofor）在 42.20 仍逐字吻合，不需對版。**
 

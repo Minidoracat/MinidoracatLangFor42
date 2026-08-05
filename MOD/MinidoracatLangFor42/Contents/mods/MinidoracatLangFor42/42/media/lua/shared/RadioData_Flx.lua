@@ -8998,7 +8998,9 @@ local function loadRadioTranslations(languageKey)
     while line do
         local key, rawValue = line:match('^%s*"([^"]+)"%s*:%s*"(.*)"%s*,?%s*$')
         if key and rawValue then
-            translations[key] = decodeJsonString(rawValue)
+            -- setText 直寫 RadioLine、不經 getText formatted()，故快取須存執行期形（%% → %），
+            -- 否則 JSON 含 %% 的譯文會把字面雙百分號顯示在字幕上
+            translations[key] = (decodeJsonString(rawValue):gsub("%%%%", "%%"))
         end
         line = reader:readLine()
     end

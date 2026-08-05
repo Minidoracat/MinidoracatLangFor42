@@ -6952,24 +6952,24 @@
         "ref": "7dec5d0ec7db3266"
     },
     "Recipes.json|Example_Fluid_Add_A": {
-        "value": "流体新增范例 A",
-        "note": "CN 對版官方 42.20：As1 CN 原譯與 EN 錯位／不符，改由已對齊 EN 的 CH 推導（t2s + 台灣用語反向在地化）",
-        "ref": "1f3ec90631a12c36"
+        "drop": true,
+        "ref": "1f3ec90631a12c36",
+        "note": "42.20.2 死鍵稽核（2026-08-06）：B42 unstable 測試配方已從出貨 scripts 移除，原 value 覆寫作廢改 drop"
     },
     "Recipes.json|Example_Fluid_Add_D": {
-        "value": "流体新增范例 D",
-        "note": "CN 對版官方 42.20：As1 CN 原譯與 EN 錯位／不符，改由已對齊 EN 的 CH 推導（t2s + 台灣用語反向在地化）",
-        "ref": "207ae3623fd1c50b"
+        "drop": true,
+        "ref": "207ae3623fd1c50b",
+        "note": "42.20.2 死鍵稽核（2026-08-06）：B42 unstable 測試配方已從出貨 scripts 移除，原 value 覆寫作廢改 drop"
     },
     "Recipes.json|Example_Fluid_Add_E": {
-        "value": "流体新增范例 E",
-        "note": "CN 對版官方 42.20：As1 CN 原譯與 EN 錯位／不符，改由已對齊 EN 的 CH 推導（t2s + 台灣用語反向在地化）",
-        "ref": "a4242f2cf9cb1864"
+        "drop": true,
+        "ref": "a4242f2cf9cb1864",
+        "note": "42.20.2 死鍵稽核（2026-08-06）：B42 unstable 測試配方已從出貨 scripts 移除，原 value 覆寫作廢改 drop"
     },
     "Recipes.json|Example_Fluid_Add_F": {
-        "value": "流体新增范例 F",
-        "note": "CN 對版官方 42.20：As1 CN 原譯與 EN 錯位／不符，改由已對齊 EN 的 CH 推導（t2s + 台灣用語反向在地化）",
-        "ref": "79d702fbc06ec0ab"
+        "drop": true,
+        "ref": "79d702fbc06ec0ab",
+        "note": "42.20.2 死鍵稽核（2026-08-06）：B42 unstable 測試配方已從出貨 scripts 移除，原 value 覆寫作廢改 drop"
     },
     "Recipes.json|OpenCannedPineapple": {
         "value": "开启凤梨罐头",
@@ -32361,5 +32361,1077 @@
         "value": "组装金属前臂甲 (条板)",
         "ref": "10661857a330ee6d",
         "note": "上游誤譯：EN 動詞是 Assemble（組裝）非 Forge（鍛造），與 Forge_* 系撞名；CH 同鍵本來就是組裝（2026-08-02 review 抓出）"
+    },
+    "ContextMenu.json|ContextMenu_BlueVintageLamp": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ContextMenu.json|ContextMenu_CoffeeMachine": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ContextMenu.json|ContextMenu_GlobeLamp": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ContextMenu.json|ContextMenu_Toaster": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "IG_UI.json|IGUI_BookTitle_NetUSHowtheInternetWillRevolutionizeDemocracy": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "IG_UI.json|IGUI_CraftingWindow_FuelCharcoal": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "IG_UI.json|IGUI_CraftingWindow_RightClickOnly": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "IG_UI.json|IGUI_MapOption_MapLabels": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "IG_UI.json|IGUI_Phote_aParty": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "IG_UI.json|IGUI_Photo_Co_workers": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "IG_UI.json|IGUI_Photo_Trick_or_Treaters": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "IG_UI.json|IGUI_RagdollDebug_ForceHitReactionLocation": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "IG_UI.json|IGUI_perks_Barricades": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|Base.BottleFilterA": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|Base.BottleFilterB": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|Base.BottleFilterC": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|Base.CoffeeMachine": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|Base.CrudeWoodenTongsSoaked": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|Base.ElectronicSchematic": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|Base.LiquorLicense": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|Base.MedicalSchematic": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|Base.MetalweldingSchematic": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|Base.RailroadTrackPiece": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|Base.SpadeHead2": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|Base.StickNailSpiked": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|camping.CampfireKit": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|camping.CampingTent": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|camping.CampingTentKit": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|camping.Flint": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|camping.SteelAndFlint": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|camping.SteelKnuckle": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|camping.Stone": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.BaconBits": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.BaconRashers": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.BloomingBroccoli": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.BroccoliBagSeed": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.BroccoliSeed": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.Cabbage": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.CabbageBagSeed": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.CabbageSeed": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.CarrotBagSeed": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.CarrotSeed": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.GardeningSprayCigarettes": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.GardeningSprayEmpty": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.GardeningSprayFull": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.GardeningSprayMilk": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.HandShovel": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.MayonnaiseEmpty": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.MayonnaiseWaterFull": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.Milk": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.Potato": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.PotatoBagSeed": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.PotatoSeed": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.RedRadish": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.RedRadishBagSeed": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.RedRadishSeed": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.RemouladeEmpty": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.RemouladeFull": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.RemouladeHalf": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.RemouladeWaterFull": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.Salad": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.StrewberrieBagSeed": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.StrewberrieSeed": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.Tomato": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.TomatoBagSeed": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.TomatoSeed": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.WateredCan": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "ItemName.json|farming.WateredCanFull": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_BrandenburgDetentionCenter": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_BrightValleyTrailerPark": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_CampArthur": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_CampCamus": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_CampFitzgerald": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_CardinalPlaza": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_ChapelmountDowns": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_Coalfield": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_CrossroadsMall": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_DarkWallowLake": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_DeerheadLake": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_DixieTrailerPark": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_DoeValleyLake": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_FossoilField": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_GrandOhioMall": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_HavishamHotel": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_IroquoisPark": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_IrvingtonSpeedway": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_KentuckyStatePrison": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_KnoxBoundaryCamp": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_LouisvilleBruiserFactory": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_LouisvilleExpoCenter": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_LouisvilleGeneralHospital": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_LouisvilleInternationalAirport": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_LouisvilleStateUniversity": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_LouisvilleTrainStation": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_McCoysLogging": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_MeadshireEstate": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_OtterPond": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_PSDelilah": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_PondviewShoppingCenter": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_PonyRoamO": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_ScenicGroveTrailerPark": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_StMichaelsCathedral": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_StPeregrinHospital": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_SunderlandHillsSanatorium": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_Trainyard": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_WadsworthLake": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "MapLabel.json|MapLabel_WestMapleCountryClub": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Moodles.json|Moodles_Bleed_desc_lvl1": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Moodles.json|Moodles_Bleed_desc_lvl2": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Moodles.json|Moodles_Bleed_desc_lvl3": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Moodles.json|Moodles_Bleed_desc_lvl4": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Moodles.json|Moodles_CantSprint_Desc": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Moodles.json|Moodles_Hasacold_desc_lvl1": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Moodles.json|Moodles_Hasacold_desc_lvl2": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Moodles.json|Moodles_Hasacold_desc_lvl3": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Moodles.json|Moodles_Hasacold_desc_lvl4": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|AllowDestroyedItem_TEST": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|BoilWaterSteam": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|CastSteelIngotFromSteelFragments": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|ChurnCowButter": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|ChurnSheepButter": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Churn_Cow_Butter": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Churn_Sheep_Butter": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|DRAINABLE_TEST_1": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|DRAINABLE_TEST_2": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|DRILL_TEST": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|DbgAppleToLog": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|DbgMashingTest": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|DbgMetaTestRecipe": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|DbgNewFurnaceFuelTest": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|DbgNewFurnaceTest": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|DecraftSpiffoJuice": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|ExampleFull": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Example_Flags": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|ExtractWorkableIronFromLargeItem": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|ExtractWorkableIronFromMediumItem": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|ExtractWorkableIronFromSmallItem": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|FORGE_TEST": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|FireApple": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|GenerateWaterPoof": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|ISNOTWORN_TEST": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|ISWORN_TEST": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|LATHE_TEST": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|MILL_TEST": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Make_Coke": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Make_Steel_Fragments_From_Steel_Chunk": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Make_Steel_Fragments_From_Steel_Piece": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Make_Wood_Charcoal": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|ONCREATE_TEST": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|ONCREATE_TEST2": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|PetrolToElectric": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|QUERN_TEST": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|ROT_FREEZE_TEST_1": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|ROT_FREEZE_TEST_ALLOW_FROZEN": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|ROT_FREEZE_TEST_ALLOW_ROTTEN": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Barley_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Basil_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Bell_Pepper_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Black_Sage_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Broadleaf_Plantain_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Broccoli_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Cabbage_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Carrot_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Cauliflower_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Chamomile_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Chives_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Cilantro_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Comfrey_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Common_Mallow_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Corn_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Cucumber_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Dismantle_Two-way_Radio": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Empty_Baking_Tray": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Flax_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_ForgeHandAxeHead": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Garlic_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Get_6_Muffins": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Green_Pea_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Habanero_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Hemp_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Hops_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Jalapeno_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Kale_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Lavender_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Leek_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Lemongrass_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Lettuce_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Make_223_Bullets_Mold": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Make_308_Bullets_Mold": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Make_9mm_Bullets_Mold": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Make_Four-Log_Stack": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Make_Pancake": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Make_Shotgun_Shells_Mold": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Make_Suture_Needle_Holder": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Make_Three-Log_Stack": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Make_Two-Log_Stack": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Marigold_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Mint_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Onion_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Open_Box_of_.223_Ammo": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Open_Box_of_.308_Ammo": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Open_Box_of_.38_Special_Bullets": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Open_Box_of_.44_Magnum_Bullets": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Open_Box_of_.45_Auto_Bullets": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Open_Box_of_.556_Ammo": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Open_Canned_Corned_Beef": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Open_Canned_Fruit_Beverage": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Oregano_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Parsley_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Place_.223_Ammo_in_Box": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Place_.308_Ammo_in_Box": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Place_.38_Speciam_Bullets_in_Box": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Place_.44_Magnum_Bullets_in_Box": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Place_.45_Auto_Bullets_in_Box": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Place_.556_Ammo_in_Box": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Poppy_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Potato_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Prepare_Beverage2": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Prepare_Beverage_in_Cup": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Prepare_Beverage_in_Tumbler": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Pumpkin_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Radish_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Rose_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Rosemary_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Rye_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Sage_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Saw_Logs2": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Soybean_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Spinach_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Strawberry_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Sugar_Beet_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Sunflower_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Sweet_Potato_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Thyme_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Tobacco_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Tomato_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Turnip_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Watermelon_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Wheat_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Wild_Garlic_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Recipe_Zucchini_Growing_Season": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|RemoveGem": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|SAW_TEST": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|SLAB_TEST": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|SMELT_TEST": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|SawStick": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Simple_TEST": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|SpiffoJuiceCanning": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|SteamToElectric": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Test_Item_Uses_1": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|Test_Item_Uses_2": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|ThermalFuel_Log": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|ThermalFuel_Plank": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Recipes.json|WoodTablewithDrawer(Poor)": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Sandbox.json|Sandbox_RagdollEnableDismemberment_tooltip": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Sandbox.json|Sandbox_RagdollPhysicHitReactionFrequency_tooltip": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Sandbox.json|Sandbox_RagdollPhysicHitReactionStrength_tooltip": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Tooltip.json|Tooltip_Recipe_OpenMacAndCheese": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "Tooltip.json|Tooltip_item_RailroadTrackPiece": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "UI.json|IGUI_Fish_Window_Tab_Guide": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "UI.json|IGUI_Fish_Window_Tab_Info": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "UI.json|IGUI_Fish_Window_Title": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "UI.json|MapLabels": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "UI.json|UI_Map_HighlightStreet": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "UI.json|UI_Map_MapLabels": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "UI.json|UI_Map_OutlineStreets": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "UI.json|UI_Map_ShowStreetNames": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
+    },
+    "UI.json|UI_Multiplayer_ServerList": {
+        "drop": true,
+        "note": "42.20.2 死鍵稽核（2026-08-06）：官方已移除/改鍵，REF 殘留，防 sync-cn 復活"
     }
 }

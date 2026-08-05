@@ -10,10 +10,10 @@ PZ 翻譯同步工具
 
 命令：
   compare         - 比對差異（預設）
-  sync-cn         - 同步 CN 翻譯檔（REF CN → MOD CN）
+  sync-cn         - （已凍結）顯示 CN 維護流程說明
   sync-ch         - （已凍結）顯示 CH 維護流程說明，不做任何寫入
   sync-lua        - 同步 Lua 腳本
-  sync-all        - 執行全部同步（CN + Lua + fix-check；CH 已凍結）
+  sync-all        - 執行全部同步（Lua + fix-check；CH/CN 已凍結）
   fix-check       - 檢查轉換常見錯誤（凍結語料照常適用）
   en-snapshot     - 保存官方 EN 全鍵快照（凍結後維護的基準）
   en-diff         - 官方 EN 新舊 diff → 新增/改值/刪除 維護佇列
@@ -54,7 +54,6 @@ from scripts.pz_translate import (
     parse_recorded_media,
     read_translation,
     txt_to_json_filename,
-    write_translation_json,
 )
 
 REF_BASE = PROJECT_ROOT / "translation-reference" / "B42Trans_CN_As1" / "42.0" / "media"
@@ -150,22 +149,18 @@ def _load_fixes() -> tuple[list[tuple[re.Pattern, str, str]], list[dict]]:
 POST_FIXES, SUSPICIOUS_PATTERNS = _load_fixes()
 
 # ============================================================
-# 人工覆寫層（cn_overrides.json；ch_overrides.json 已封存）
+# 人工覆寫層（皆已封存：ch_overrides.json 2026-07-31、cn_overrides.json 2026-08-06）
 # ------------------------------------------------------------
-# sync-cn 機轉全量再生後套用的人工真相檔（CH 凍結後僅 CN 側使用；
-# ch_overrides.json 為歷史紀錄，管線不再讀取）。schema：
-#   {"<檔名>|<鍵>": "<人工值>"}                        （簡式，無過時偵測）
+# CN 凍結（sync-cn 墓碑化）後，兩檔皆為歷史紀錄，管線不再讀取；
+# 值均已實體化進 CH/CN 成品檔，直接編輯成品即 durable。
+# 封存 schema（供讀檔考古）：
+#   {"<檔名>|<鍵>": "<人工值>"}                        （簡式）
 #   {"<檔名>|<鍵>": {"value": "<人工值>", "ref": "<登記時 REF 原文 hash>"}}
-#   {"<檔名>|<鍵>": {"drop": true, "note": "<理由>"}}   （deny-list：不得輸出此鍵）
-# ref = _ref_hash(REF 原文)；發現 REF 原文已變更時提醒重審，
-# 鍵已從 REF 消失時提醒清理。缺檔即報錯（防止誤跑同步洗掉人工潤飾）。
-#
-# drop 的用途：REF（As1 42.0）仍有、但官方 42.20 已移除／改鍵名的死鍵。
-# 不用「官方 EN 有無」當自動閘門——實測 REF 有 1320 鍵官方 EN 沒有，其中 1286
-# 鍵仍在出貨（Recipes.json 一檔 512），自動閘會誤刪；死鍵須逐案登記。
+#   {"<檔名>|<鍵>": {"drop": true, "note": "<理由>"}}   （deny-list：死鍵不得輸出）
+# drop 的歷史用途：REF（As1 42.0）仍有、但官方 42.20 已移除／改鍵名的死鍵
+# （42.20.2 稽核 306 筆）。不用「官方 EN 有無」當自動閘門——實測 REF 有 1320 鍵
+# 官方 EN 沒有，其中 1286 鍵仍在出貨（Recipes.json 一檔 512），自動閘會誤刪。
 # ============================================================
-OVERRIDES_JSON = Path(__file__).resolve().parent / "ch_overrides.json"
-CN_OVERRIDES_JSON = Path(__file__).resolve().parent / "cn_overrides.json"
 
 # 不得生成的 REF 檔：
 # - streets.txt：CN/CH 皆未版控也無消費端（街道翻譯走 maps/Riverside, KY/streets.xml）。
@@ -181,104 +176,6 @@ EXCLUDE_GENERATE = {"streets.txt", "language.txt"}
 # 名單已於 2026-07-29 遷入 Credits.json 的 credits_CatLangFor42_group / _names
 # 兩個自有鍵，由 CreditsScreen_Flx.lua 包裝 doCreditsText 接回；.txt 本體已刪除。
 MANUAL_MAINTAINED = {"credits.txt"}
-
-
-def _ref_hash(value: str) -> str:
-    """REF 原文的短 hash，登記於 override 條目供過時偵測。"""
-    return hashlib.sha256(value.encode("utf-8")).hexdigest()[:16]
-
-
-def _load_overrides(path: Path = OVERRIDES_JSON) -> dict[str, dict]:
-    """載入人工覆寫檔；缺檔或格式錯誤即終止，不自動建骨架。"""
-    name = path.name
-    if not path.exists():
-        print(f"❌ 人工覆寫檔不存在：{path}", file=sys.stderr)
-        print(f"  同步需要 {name} 才能保留人工潤飾，請先建立（勿用空猜測值）。", file=sys.stderr)
-        sys.exit(1)
-    try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        print(f"❌ {name} 讀取失敗：{exc}", file=sys.stderr)
-        sys.exit(1)
-
-    overrides: dict[str, dict] = {}
-    for ov_key, ent in data.items():
-        if ov_key.startswith("_"):
-            continue  # _comment 等說明欄位
-        if "|" not in ov_key:
-            print(f"❌ {name} 鍵格式錯誤（應為 <檔名>|<鍵>）：{ov_key}", file=sys.stderr)
-            sys.exit(1)
-        if isinstance(ent, str):
-            overrides[ov_key] = {"value": ent, "ref": None, "drop": False}
-        elif isinstance(ent, dict) and ent.get("drop") is True:
-            overrides[ov_key] = {"value": None, "ref": ent.get("ref"), "drop": True}
-        elif isinstance(ent, dict) and isinstance(ent.get("value"), str):
-            overrides[ov_key] = {
-                "value": ent["value"],
-                "ref": ent.get("ref"),
-                "drop": False,
-            }
-        else:
-            print(f"❌ {name} 條目格式錯誤：{ov_key} = {ent!r}", file=sys.stderr)
-            sys.exit(1)
-    return overrides
-
-
-def _group_overrides(overrides: dict[str, dict]) -> dict[str, dict[str, dict]]:
-    """{"檔名|鍵": ent} → {"檔名": {"鍵": ent}}"""
-    by_file: dict[str, dict[str, dict]] = {}
-    for ov_key, ent in overrides.items():
-        fname, _, key = ov_key.partition("|")
-        by_file.setdefault(fname, {})[key] = ent
-    return by_file
-
-
-def _apply_overrides(
-    json_name: str,
-    ref_data: "OrderedDict[str, str]",
-    ch_data: "OrderedDict[str, str]",
-    ov_for_file: dict[str, dict],
-    used_ov: set[str],
-    stale_warnings: list[str],
-) -> int:
-    """機轉結果套用人工覆寫（僅 REF 衍生鍵；MOD 自訂鍵不經此層）。"""
-    applied = 0
-    for key, ent in ov_for_file.items():
-        if ent["drop"]:
-            continue  # deny-list 由 _apply_drops 處理
-        if key not in ch_data:
-            continue  # 鍵不在本次機轉輸出 → 留給收尾的未命中報告
-        ch_data[key] = ent["value"]
-        used_ov.add(f"{json_name}|{key}")
-        applied += 1
-        if ent["ref"]:
-            cur = _ref_hash(ref_data.get(key, ""))
-            if cur != ent["ref"]:
-                stale_warnings.append(
-                    f"  {json_name}|{key}: REF 原文已變更（登記 {ent['ref']} ≠ 現值 {cur}），請重審此 override"
-                )
-    return applied
-
-
-def _apply_drops(
-    json_name: str,
-    data: "OrderedDict[str, str]",
-    ov_for_file: dict[str, dict],
-    used_ov: set[str],
-) -> int:
-    """移除 deny-list 登記的死鍵（官方已移除／改鍵名，REF 仍殘留）。
-
-    須在「保留 MOD 自訂鍵」的合併**之後**呼叫，否則被移除的鍵會被舊檔內容
-    當成自訂鍵補回來。
-    """
-    dropped = 0
-    for key, ent in ov_for_file.items():
-        if not ent["drop"] or key not in data:
-            continue
-        del data[key]
-        used_ov.add(f"{json_name}|{key}")
-        dropped += 1
-    return dropped
 
 
 def sha256(path: Path) -> str:
@@ -571,207 +468,16 @@ def cmd_compare():
 # 同步功能
 # ============================================================
 def cmd_sync_cn():
-    """同步 CN 翻譯檔：REF CN → MOD CN（解析後輸出 JSON）"""
+    """（已凍結）CN 不再從 REF 再生。"""
     print("=" * 60)
-    print("同步 CN 翻譯檔（REF CN → MOD CN .json）")
+    print("CN 已凍結（2026-08-06）——sync-cn 不再執行任何寫入")
     print("=" * 60)
-
-    updated = 0
-
-    overrides = _load_overrides(CN_OVERRIDES_JSON)
-    ov_by_file = _group_overrides(overrides)
-    used_ov: set[str] = set()
-    stale_warnings: list[str] = []
-    applied_total = 0
-    dropped_total = 0
-    fmt_errors: list[str] = []
-
-    def _sanitize_or_skip(json_name: str, out_data: OrderedDict[str, str]) -> bool:
-        """套 sanitizer；有無法等價轉換者則回報並要求跳過整檔（fail-closed）。"""
-        file_errors: list[str] = []
-        for k in out_data:
-            try:
-                out_data[k] = sanitize_format_tokens(out_data[k], f"{json_name}|{k}")
-            except ValueError as exc:
-                file_errors.append(f"  ❌ {exc}")
-        if file_errors:
-            fmt_errors.extend(file_errors)
-            print(f"  ⛔ 跳過寫出 {json_name}（{len(file_errors)} 筆無法安全轉換，請入 cn_overrides）：")
-            for e in file_errors:
-                print(e)
-            return False
-        return True
-
-    # Process .txt translation files (legacy format)
-    for ref_file in sorted(REF_CN.glob("*.txt")):
-        if not ref_file.is_file():
-            continue
-        filename = ref_file.name
-
-        if filename in EXCLUDE_GENERATE or filename in MANUAL_MAINTAINED:
-            continue
-
-        if filename in PZ_SKIP_FILES:
-            # language.txt — copy as-is
-            mod_file = MOD_CN / filename
-            if not mod_file.exists() or sha256(ref_file) != sha256(mod_file):
-                mod_file.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(ref_file, mod_file)
-                print(f"  ✅ 複製: {filename}")
-                updated += 1
-            continue
-
-        json_name = txt_to_json_filename(filename)
-        mod_file = MOD_CN / json_name
-
-        ref_data = read_translation(ref_file)
-        out_data = OrderedDict(ref_data)
-
-        # REF 之後、自訂鍵合併之前套用人工覆寫（僅 REF 衍生鍵）
-        applied_total += _apply_overrides(
-            json_name, ref_data, out_data, ov_by_file.get(json_name, {}), used_ov, stale_warnings
-        )
-
-        # 保留 MOD 中有但 REF 中沒有的自訂 keys
-        mod_data = None
-        if mod_file.exists():
-            mod_data = read_translation(mod_file)
-            extra_keys = OrderedDict(
-                (k, v) for k, v in mod_data.items() if k not in out_data
-            )
-            if extra_keys:
-                if json_name == "Print_Media.json":
-                    for k in list(extra_keys):
-                        err = _validate_print_media_info(k, extra_keys[k])
-                        if err:
-                            print(f"  ⚠️  移除截斷的自訂 key: {k} ({err})")
-                            del extra_keys[k]
-                out_data.update(extra_keys)
-
-        # deny-list：合併自訂鍵之後才移除，否則舊檔會把死鍵當自訂鍵補回
-        dropped_total += _apply_drops(
-            json_name, out_data, ov_by_file.get(json_name, {}), used_ov
-        )
-
-        # 42.20.1 formatted() 相容：上游 REF 仍是裸 %，寫出前統一整理
-        if not _sanitize_or_skip(json_name, out_data):
-            continue
-
-        # Compare with existing
-        if mod_data is not None:
-            if mod_data == out_data:
-                continue
-            added = len(set(out_data) - set(mod_data))
-            removed = len(set(mod_data) - set(out_data))
-            print(f"  📝 更新: {filename} → {json_name} ({len(out_data)} keys, +{added}/-{removed})")
-        else:
-            print(f"  ➕ 新增: {filename} → {json_name} ({len(out_data)} keys)")
-
-        write_translation_json(out_data, mod_file)
-        updated += 1
-
-    # Process .json translation files (new format)
-    for ref_file in sorted(REF_CN.glob("*.json")):
-        if not ref_file.is_file():
-            continue
-        filename = ref_file.name
-        json_name = filename
-        mod_file = MOD_CN / json_name
-
-        ref_data = read_translation(ref_file)
-        out_data = OrderedDict(ref_data)
-
-        # REF 之後、自訂鍵合併之前套用人工覆寫（僅 REF 衍生鍵）
-        applied_total += _apply_overrides(
-            json_name, ref_data, out_data, ov_by_file.get(json_name, {}), used_ov, stale_warnings
-        )
-
-        # 保留 MOD 中有但 REF 中沒有的自訂 keys
-        mod_data = None
-        if mod_file.exists():
-            mod_data = read_translation(mod_file)
-            extra_keys = OrderedDict(
-                (k, v) for k, v in mod_data.items() if k not in out_data
-            )
-            if extra_keys:
-                if json_name == "Print_Media.json":
-                    for k in list(extra_keys):
-                        err = _validate_print_media_info(k, extra_keys[k])
-                        if err:
-                            print(f"  ⚠️  移除截斷的自訂 key: {k} ({err})")
-                            del extra_keys[k]
-                out_data.update(extra_keys)
-
-        # deny-list：合併自訂鍵之後才移除
-        dropped_total += _apply_drops(
-            json_name, out_data, ov_by_file.get(json_name, {}), used_ov
-        )
-
-        # 42.20.1 formatted() 相容：上游 REF 仍是裸 %，寫出前統一整理
-        if not _sanitize_or_skip(json_name, out_data):
-            continue
-
-        # Compare with existing
-        if mod_data is not None:
-            if mod_data == out_data:
-                continue
-            added = len(set(out_data) - set(mod_data))
-            removed = len(set(mod_data) - set(out_data))
-            print(f"  📝 更新: {json_name} ({len(out_data)} keys, +{added}/-{removed})")
-        else:
-            print(f"  ➕ 新增: {json_name} ({len(out_data)} keys)")
-
-        write_translation_json(out_data, mod_file)
-        updated += 1
-
-    # Process city directories (legacy format)
-    # 刻意不套 sanitize_format_tokens：city title/description 由
-    # Translator.readMapTranslation 以 getOrDefault 原樣取值，不經 formatted()，
-    # 裸 % 在此安全；逸出反而會讓畫面顯示出多餘的 %。
-    for city_dir in sorted(d for d in REF_CN.iterdir() if d.is_dir()):
-        title_path = city_dir / "title.txt"
-        desc_path = city_dir / "description.txt"
-        if not title_path.exists() or not desc_path.exists():
-            continue
-
-        json_name = f"{city_dir.name}.json"
-        mod_file = MOD_CN / json_name
-
-        ref_data = parse_city_directory(city_dir)
-
-        if mod_file.exists():
-            mod_data = read_translation(mod_file)
-            if ref_data == mod_data:
-                continue
-            print(f"  📝 更新: {city_dir.name}/ → {json_name}")
-        else:
-            print(f"  ➕ 新增: {city_dir.name}/ → {json_name}")
-
-        write_translation_json(ref_data, mod_file)
-        updated += 1
-
-    if updated == 0:
-        print("  ℹ️ 沒有需要同步的檔案")
-    print(f"\n完成：{updated} 個檔案已同步")
-
-    n_drop = sum(1 for e in overrides.values() if e["drop"])
-    print(
-        f"人工覆寫：套用 {applied_total} / {len(overrides) - n_drop} 筆 cn_overrides"
-        f"；deny-list 移除死鍵 {dropped_total} / {n_drop} 筆"
-    )
-    unused_ov = sorted(set(overrides) - used_ov)
-    if unused_ov:
-        print(f"\n⚠️ {len(unused_ov)} 筆 override 未命中（鍵已從 REF 消失或檔名不符），請清理：")
-        for k in unused_ov:
-            print(f"  {k}")
-    if stale_warnings:
-        print(f"\n⚠️ {len(stale_warnings)} 筆 override 的 REF 原文已變更，請重審後更新 ref hash：")
-        for w in stale_warnings:
-            print(w)
-
-    if fmt_errors:
-        print(f"\n❌ {len(fmt_errors)} 筆翻譯值無法安全轉換為 formatted() 形式，對應檔案未寫出，以失敗狀態結束")
-        sys.exit(1)
+    print("CN 成品（MOD/.../Translate/CN）即人工真相，直接編輯即 durable。")
+    print("As1 上游改為僅供參考：REF 更新後逐筆審查異動，要採用的改動手動入庫")
+    print("（compare 可對照 REF/MOD 鍵覆蓋；新鍵照舊走 en-snapshot / en-diff 追官方 EN）。")
+    print("歷史 cn_overrides.json 已封存（值皆已實體化進 CN 檔；")
+    print("含 42.20.2 死鍵稽核 deny-list 306 筆——sync-cn 既凍結，死鍵不會再復活）。")
+    print("fix-check 守門照常，任何 CN 手改後都要跑。")
 
 
 def cmd_sync_ch():
@@ -1240,9 +946,7 @@ def cmd_sync_lua():
 
 
 def cmd_sync_all():
-    """執行全部同步（CH 已凍結，不在此列）"""
-    cmd_sync_cn()
-    print()
+    """執行全部同步（CH/CN 已凍結，不在此列）"""
     cmd_sync_lua()
     print()
     cmd_fix_check()
@@ -1590,6 +1294,61 @@ RADIO_GEN_BLOCK_START = "-- <AUTO-GEN:RADIO_TEXT_MAP START>"
 RADIO_GEN_BLOCK_END = "-- <AUTO-GEN:RADIO_TEXT_MAP END>"
 
 
+RADIO_POSITIONAL_TOKEN = re.compile(r"%[1-9]")
+
+
+def _build_radio_en_to_key(
+    en_data: dict[str, str], ch_data: dict[str, str], cn_data: dict[str, str]
+) -> tuple["OrderedDict[str, str]", dict[str, str], dict[str, list[str]], set[str]]:
+    """建立 runtime-EN → RD key 反查表。
+
+    表鍵一律用執行期形（%% → %）：42.20.1+ getText 一律 formatted()，server 烘進
+    RadioLine.text 的是 formatted 後文字，raw JSON 形（42.20.2 現有 4 筆 %%）永遠 miss。
+    未譯判定用 raw 值比對（CH/CN 與 EN JSON 同形即未譯，不得混用 runtime 形）。
+    fail-closed：值含 %1–%9（反查表僅支援靜態文本），或不同 raw EN 正規化成同一
+    runtime 鍵且譯文不同（無法安全 first-wins），一律 ValueError 中止。
+    """
+    en_to_key: OrderedDict[str, str] = OrderedDict()
+    duplicate_values: dict[str, list[str]] = {}
+    ambiguous_duplicates: set[str] = set()
+    first_key_by_en: dict[str, str] = {}
+    translations_by_en: dict[str, set[tuple[str, str]]] = {}
+    raw_by_runtime: dict[str, str] = {}
+    first_pair_by_runtime: dict[str, tuple[str, str]] = {}
+
+    for key, raw_en in en_data.items():
+        if not raw_en or raw_en == "~":
+            continue
+        ch_value = ch_data[key]
+        cn_value = cn_data[key]
+        for label, value in (("EN", raw_en), ("CH", ch_value), ("CN", cn_value)):
+            if RADIO_POSITIONAL_TOKEN.search(value):
+                raise ValueError(f"{key} 的 {label} 值含 %N 佔位符，RadioData 靜態反查不支援：{value!r}")
+        runtime_en = raw_en.replace("%%", "%")
+        translations_by_en.setdefault(runtime_en, set()).add((ch_value, cn_value))
+        if runtime_en in first_key_by_en:
+            if (
+                raw_by_runtime[runtime_en] != raw_en
+                and (ch_value, cn_value) != first_pair_by_runtime[runtime_en]
+            ):
+                raise ValueError(
+                    f"正規化碰撞且譯文不同：{raw_by_runtime[runtime_en]!r} 與 {raw_en!r}"
+                    f"（{key}）皆對應 runtime 鍵 {runtime_en!r}"
+                )
+            duplicate_values.setdefault(runtime_en, [first_key_by_en[runtime_en]]).append(key)
+            if len(translations_by_en[runtime_en]) > 1:
+                ambiguous_duplicates.add(runtime_en)
+            continue
+
+        first_key_by_en[runtime_en] = key
+        raw_by_runtime[runtime_en] = raw_en
+        first_pair_by_runtime[runtime_en] = (ch_value, cn_value)
+        if ch_value != raw_en or cn_value != raw_en:
+            en_to_key[runtime_en] = key
+
+    return en_to_key, first_key_by_en, duplicate_values, ambiguous_duplicates
+
+
 def cmd_gen_radio_map(pz_path: Path | None = None):
     """從 vanilla/MOD RadioData.json 生成 live radio/TV 英文→RD key 反查表"""
     pz_path = pz_path or VANILLA_PZ_DEFAULT
@@ -1623,27 +1382,13 @@ def cmd_gen_radio_map(pz_path: Path | None = None):
             print(f"  - {key}")
         sys.exit(1)
 
-    en_to_key: OrderedDict[str, str] = OrderedDict()
-    duplicate_values: dict[str, list[str]] = {}
-    ambiguous_duplicates: set[str] = set()
-
-    first_key_by_en: dict[str, str] = {}
-    translations_by_en: dict[str, set[tuple[str, str]]] = {}
-    for key, en_value in en_data.items():
-        if not en_value or en_value == "~":
-            continue
-        ch_value = ch_data[key]
-        cn_value = cn_data[key]
-        translations_by_en.setdefault(en_value, set()).add((ch_value, cn_value))
-        if en_value in first_key_by_en:
-            duplicate_values.setdefault(en_value, [first_key_by_en[en_value]]).append(key)
-            if len(translations_by_en[en_value]) > 1:
-                ambiguous_duplicates.add(en_value)
-            continue
-
-        first_key_by_en[en_value] = key
-        if ch_value != en_value or cn_value != en_value:
-            en_to_key[en_value] = key
+    try:
+        en_to_key, first_key_by_en, duplicate_values, ambiguous_duplicates = _build_radio_en_to_key(
+            en_data, ch_data, cn_data
+        )
+    except ValueError as exc:
+        print(f"❌ RadioData 反查表生成中止：{exc}")
+        sys.exit(1)
 
     print(f"讀取到 {len(en_data)} 個 RD_* 條目")
     print(f"去重後英文原文：{len(first_key_by_en)} 條")
@@ -2201,7 +1946,7 @@ def main():
         epilog="""
 使用範例：
   uv run scripts/sync_translations.py compare     # 查看差異
-  uv run scripts/sync_translations.py sync-cn      # 只同步 CN
+  uv run scripts/sync_translations.py sync-cn      # （已凍結）顯示 CN 維護流程說明
   uv run scripts/sync_translations.py sync-ch      # （已凍結）顯示 CH 維護流程說明
   uv run scripts/sync_translations.py sync-lua     # 只同步 Lua
   uv run scripts/sync_translations.py sync-all     # 全部同步
