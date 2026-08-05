@@ -584,6 +584,23 @@ def cmd_sync_cn():
     stale_warnings: list[str] = []
     applied_total = 0
     dropped_total = 0
+    fmt_errors: list[str] = []
+
+    def _sanitize_or_skip(json_name: str, out_data: OrderedDict[str, str]) -> bool:
+        """套 sanitizer；有無法等價轉換者則回報並要求跳過整檔（fail-closed）。"""
+        file_errors: list[str] = []
+        for k in out_data:
+            try:
+                out_data[k] = sanitize_format_tokens(out_data[k], f"{json_name}|{k}")
+            except ValueError as exc:
+                file_errors.append(f"  ❌ {exc}")
+        if file_errors:
+            fmt_errors.extend(file_errors)
+            print(f"  ⛔ 跳過寫出 {json_name}（{len(file_errors)} 筆無法安全轉換，請入 cn_overrides）：")
+            for e in file_errors:
+                print(e)
+            return False
+        return True
 
     # Process .txt translation files (legacy format)
     for ref_file in sorted(REF_CN.glob("*.txt")):
@@ -636,6 +653,10 @@ def cmd_sync_cn():
             json_name, out_data, ov_by_file.get(json_name, {}), used_ov
         )
 
+        # 42.20.1 formatted() 相容：上游 REF 仍是裸 %，寫出前統一整理
+        if not _sanitize_or_skip(json_name, out_data):
+            continue
+
         # Compare with existing
         if mod_data is not None:
             if mod_data == out_data:
@@ -686,6 +707,10 @@ def cmd_sync_cn():
             json_name, out_data, ov_by_file.get(json_name, {}), used_ov
         )
 
+        # 42.20.1 formatted() 相容：上游 REF 仍是裸 %，寫出前統一整理
+        if not _sanitize_or_skip(json_name, out_data):
+            continue
+
         # Compare with existing
         if mod_data is not None:
             if mod_data == out_data:
@@ -700,6 +725,9 @@ def cmd_sync_cn():
         updated += 1
 
     # Process city directories (legacy format)
+    # 刻意不套 sanitize_format_tokens：city title/description 由
+    # Translator.readMapTranslation 以 getOrDefault 原樣取值，不經 formatted()，
+    # 裸 % 在此安全；逸出反而會讓畫面顯示出多餘的 %。
     for city_dir in sorted(d for d in REF_CN.iterdir() if d.is_dir()):
         title_path = city_dir / "title.txt"
         desc_path = city_dir / "description.txt"
@@ -740,6 +768,10 @@ def cmd_sync_cn():
         print(f"\n⚠️ {len(stale_warnings)} 筆 override 的 REF 原文已變更，請重審後更新 ref hash：")
         for w in stale_warnings:
             print(w)
+
+    if fmt_errors:
+        print(f"\n❌ {len(fmt_errors)} 筆翻譯值無法安全轉換為 formatted() 形式，對應檔案未寫出，以失敗狀態結束")
+        sys.exit(1)
 
 
 def cmd_sync_ch():
@@ -959,6 +991,93 @@ def check_cjk_spacing() -> list[str]:
     return issues
 
 
+# ============================================================
+# 42.20.1 起 Translator 對所有 getText 結果強制跑 String.formatted()：
+# 字面 % 必須寫成 %%，printf 式（%s/%d/%i/%.1f）官方已全改為 %1-%9 編號佔位。
+# 裸 % 會拋 UnknownFormatConversionException（未被捕捉）→ 主選單黑畫面。
+# ============================================================
+_FORMAT_SAFE = re.compile(r"%%|%[1-9]")
+# 單趟由左至右消耗：%% 與 %1-%9 優先於 printf，%%s 才不會被誤判成 printf
+_FORMAT_TOKEN = re.compile(r"%%|%[1-9]|%(?:\.\d+)?[sdif]|%")
+
+
+def sanitize_format_tokens(value: str, warn_key: str = "") -> str:
+    """把翻譯值整理成 42.20.1 formatted() 安全形式（冪等）。
+
+    1. printf 式佔位依出現順序轉編號 %1-%9
+    2. 其餘孤立 % 一律逸出為 %%（%% 與 %1-%9 保留不動）
+
+    無法「等價」轉換者（printf 與編號混用、printf 超過 9 個、%02d 之類變體）
+    一律 raise ValueError fail-closed——逸出成字面會讓引數從畫面上消失，
+    這種語義破壞不可以靜默寫回檔案，須入 cn_overrides 人工處理。
+    """
+    if "%" not in value:
+        return value
+    tokens = _FORMAT_TOKEN.findall(value)
+    printf_count = sum(1 for t in tokens if len(t) > 2 or (len(t) == 2 and t[1] in "sdif"))
+    if printf_count:
+        if any(len(t) == 2 and t[1].isdigit() for t in tokens):
+            raise ValueError(f"{warn_key}: 同時含編號與 printf 佔位，無法等價轉換，請人工處理")
+        if printf_count > 9:
+            raise ValueError(f"{warn_key}: printf 佔位超過 9 個（%10 起無效），請人工處理")
+    counter = [0]
+
+    def _tok(m: re.Match) -> str:
+        t = m.group(0)
+        if t == "%%" or (len(t) == 2 and t[1].isdigit()):
+            return t
+        if len(t) > 1:  # printf 佔位
+            counter[0] += 1
+            return f"%{counter[0]}"
+        # 孤立 %：帶修飾符的 printf 變體（%02d、%-5s、%.2x）無歧義是格式模板，
+        # 逸出會吃掉引數 → fail-closed；裸 %字母（%b、%off）視為散文照常逸出
+        follow = m.string[m.end() : m.end() + 6]
+        if re.match(r"(?:[-+#,0]\d*(?:\.\d+)?|\.\d+)[a-zA-Z]", follow or ""):
+            raise ValueError(f"{warn_key}: 疑似 printf 變體 %{follow[:4]}…，無法等價轉換，請人工處理")
+        return "%%"
+
+    return _FORMAT_TOKEN.sub(_tok, value)
+
+
+def _format_token_issues(value: str) -> list[str]:
+    """單一翻譯值的危險 % 序列清單（check_format_tokens 的純函式核心）。"""
+    issues: list[str] = []
+    if re.search(r"%[1-9]\$", value):
+        issues.append("%N$（Java 編號式，formatFixer 會疊成 %N$s$s）")
+    if re.search(r"%[1-9](?=\d|\.\d)", value):
+        issues.append("%N 後緊接數字（formatFixer 只認 %1-%9，殘位變字面）")
+    residue = _FORMAT_SAFE.sub("", value)
+    issues += [f"%{m.group(1) or '<行尾>'}" for m in re.finditer(r"%(.)?", residue, re.S)]
+    return issues
+
+
+def check_format_tokens() -> list[str]:
+    """掃出 formatted() 會炸或吃不掉的 % 序列（CH + CN）。
+
+    移除安全 token（%% 與 %1-%9）後殘留的任何 % 都是問題：
+    行尾孤立 %、'% '、%CJK 會直接 crash；%s/%d 類會被吞參數顯示原文。
+    """
+    issues: list[str] = []
+    for lang, mod_dir in (("CH", MOD_CH), ("CN", MOD_CN)):
+        for path in sorted(mod_dir.glob("*.json")):
+            try:
+                data = read_translation(path)
+            except Exception as exc:  # noqa: BLE001
+                issues.append(f"  [{lang}] {path.name}: 無法解析（{exc}）")
+                continue
+            # city 檔（僅 title/description 兩鍵）走 readMapTranslation 原樣取值，
+            # 不經 formatted()，裸 % 安全——與 cmd_sync_cn 的 city 豁免對稱
+            if data and set(data) <= {"title", "description"}:
+                continue
+            for key, value in data.items():
+                if not isinstance(value, str) or "%" not in value:
+                    continue
+                bad = _format_token_issues(value)
+                if bad:
+                    issues.append(f"  [{lang}] {path.name} | {key}: {' '.join(bad)} ← {value[:48]!r}")
+    return issues
+
+
 def cmd_fix_check():
     """檢查 OpenCC 轉換常見錯誤"""
     print("=" * 60)
@@ -1012,6 +1131,20 @@ def cmd_fix_check():
     else:
         print("\n✅ 未發現可疑的轉換錯誤")
 
+    # % 格式 token（42.20.1 formatted() 硬性；裸 % 會黑畫面 crash）
+    print("\n" + "=" * 60)
+    print("% 格式 token 檢查（CH + CN，42.20.1 Translator.formatted() 相容性）")
+    print("=" * 60)
+    fmt_issues = check_format_tokens()
+    if fmt_issues:
+        print(f"❌ 發現 {len(fmt_issues)} 處危險 % 序列（裸 % 會使遊戲主選單 crash）：")
+        for issue in fmt_issues:
+            print(issue)
+    else:
+        print("✅ 所有 % 序列皆為 formatted() 安全形式")
+    # 唯一 crash 級守門：其餘檢查屬外觀類照舊只列印，這類必須讓執行失敗
+    format_gate_failed = bool(fmt_issues)
+
     # 片段重複（潤色擴寫時貼兩次）
     print("\n" + "=" * 60)
     print("譯文片段重複檢查（CH + CN）")
@@ -1062,6 +1195,10 @@ def cmd_fix_check():
                 print(issue)
         else:
             print("✅ 兩專案字典一致（已註記的語境分岔除外）")
+
+    if format_gate_failed:
+        print("\n❌ % 格式 token 檢查未通過（會使遊戲黑畫面），以失敗狀態結束")
+        sys.exit(1)
 
 
 _ = (
