@@ -4,6 +4,25 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.1-1.15.0] - 2026-08-05
+
+### Fixed
+
+- **修復 PZ 42.20.1 更新後主選單黑畫面（無法進入遊戲）**。42.20.1 的 `Translator` 移除無參數 `getText` overload，所有翻譯值一律經 Java `String.formatted()`，而載入期 `formatFixer` 只認 `%%` 與 `%1`–`%9`——本 MOD 沿用的舊式裸 `%`（如 `UI_BloodDecals1` 的 `10%`）拋出未被捕捉的 `UnknownFormatConversionException`，炸掉主選單建構（`MainOptions.lua:889`、sandbox tooltip 同型）。官方全語系翻譯檔已於 42.20.1 同步改為 `%%` 逸出、printf 式（`%s`/`%d`/`%i`/`%.1f`）全轉 `%1`–`%9` 編號佔位。
+- **CH/CN 共 184 筆翻譯值依官方新規則遷移**（24 檔）：字面 `%` 一律 `%%`、printf 佔位依出現順序轉編號。逐鍵與官方 42.20.1 EN 佔位 token 交叉驗證一致；全語料 9.9 萬鍵以工具從舊值重推零偏差；真機啟動驗證主選單無任何格式化例外。
+
+### Changed
+
+- **同步管線防復發**：`sync_translations.py` 新增 `sanitize_format_tokens()`（冪等），`sync-cn` 寫出前自動整理上游 As1 仍在使用的舊式裸 %；無法等價轉換者（printf 與編號混用、超過 9 個、`%02d` 類變體）fail-closed 拒寫並以失敗狀態結束，須入 `cn_overrides.json` 人工處理。
+- **fix-check 新增「% 格式 token 檢查」**：唯一 crash 級守門（發現危險 % 序列以 exit 1 失敗），涵蓋 `%N$`（Java 編號式）與 `%N` 後緊接數字（`%10` 實為 `%1$s`＋字面 0）等 formatFixer 邊角；city 檔（title/description 走 `readMapTranslation` 原樣取值、不經 formatted()）與 sync 對稱豁免。新增 `scripts/test_format_tokens.py` 回歸測試（sanitizer 16 案例＋checker 8 案例）。
+- **文件同步改版**：AGENTS.md「Translator placeholder / 百分比規則」整段改寫為 42.20.1 統一規則——舊的「含 %N 不可寫 %%」兩套機制判斷已失效，照舊維護會重新引入 crash；HARDCODE_REGISTRY.md 的「42.20 % 正規化行為一致」結論標註推翻，A25 錨點補 42.20.1 對應。
+
+### Notes
+
+- **versionMin 提升至 42.20.1**：`%%` 逸出值在 42.20.0 的無參數 getText 路徑會原樣顯示雙百分號，新版翻譯檔不向下相容舊版遊戲。
+- 經 Claude（code-reviewer agent）與 codex（review-plus）雙邊獨立審查；codex 以 JDK 實測 184 筆遷移值全數通過，並促成 fail-closed 設計與 `%10`／`%N$` 漏檢補強。
+- 模組包 MinidoracatModLangFor42 存在同型問題（掃出 2,728 筆危險值），將另行發版修復；未更新前開啟含模組包的存檔仍可能觸發同類 crash，兩包需一起更新。
+
 ## [42.20.0-1.14.3] - 2026-08-04
 
 ### Fixed
