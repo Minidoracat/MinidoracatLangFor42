@@ -4,6 +4,54 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.2-1.15.1] - 2026-08-06
+
+### Changed
+
+- **42.20.2 對版確認：與官方 hotfix 完全相容，零缺鍵**。官方本次在 `Translator` 加入 `IllegalFormatException` 安全網（裸 `%` 不再黑畫面，降為 console warning）、讀取畫面 quick tips 改存翻譯鍵並於顯示時翻譯（`%%` 從此正確渲染為 `%`）、EN 剩餘 109 鍵完成格式遷移（`%s`/`%i`/`%.1f`→`%N`、`%`→`%%`）——零增刪鍵，本 MOD 已於 1.15.0 提前對齊，逐鍵驗證零改動。硬編碼修補全表 delta 驗證通過：`check_debug_menu_coverage` 與基準吻合（168/167）、42.20.2 變更的 9 個 vanilla Lua 檔錨點全在、五個 gen-* 查表冪等（詳 `HARDCODE_REGISTRY.md` §0 對版結論）。
+- **死鍵大掃除：CH/CN 各移除 354 鍵**。對 2,746 個官方 EN 已無的多餘鍵做全量分類與動態組鍵存活查證（6 agent 對抗式查證＋抽樣複核 34 鍵零推翻）後，刪除 333 個確認死鍵（B41 `Recipe_*` 底線形 201、B41 已滅模組物品名 55、舊地圖標籤 39、`Moodles_Bleed`/`UI_Map_*` 等改鍵遺留）與 21 個官方已刪的舊版 joke tips（quick tips 對齊官方 65 鍵）。162 個「EN 沒有但遊戲動態組鍵仍查得到」的活鍵（大地圖 `IGUI_MapOption_*`、燒毀/砸毀車 `IGUI_VehicleName*`、Moveables tile 組鍵、`Moodles_Dead_desc_lvl1` 等）查證後保留。稽核紀錄與 keep_alive 清單入庫 `scripts/dead_keys_audit_42.20.2.json`，升版清鍵前必讀。
+- **`gen-radio-map`（收音機/電視字幕反查表）對版與契約補強**：表鍵改用 `formatted()` 後的執行期形（`%%`→`%`），修正 42.20.2 EN 四筆 `%%` 廣告台詞在 A7 修補中永遠 miss 的隱患；生成器 raw/runtime 分離（未譯判定用 raw 值）、值含 `%N` 或正規化碰撞出不同譯文時 fail-closed 中止；`RadioData_Flx` 譯文快取同步轉執行期形（`setText` 直寫不經 `formatted()`）。新增 `scripts/test_radio_map_tokens.py` 回歸測試（6 案）。
+- **sync-cn 凍結為墓碑（CN 側維護模式與 CH 對齊）**：As1 上游改為僅供參考、REF 更新後逐筆審查再手動入庫；`cn_overrides.json` 封存（值皆已實體化進 CN 檔，含本次死鍵 deny-list 306 筆）；修 CN＝直接改 MOD CN 檔即 durable，改後必跑 `fix-check`。`sync-all`＝Lua＋fix-check。
+
+### Notes
+
+- **versionMin 維持 42.20.1**；1.15.0 與 42.20.2 完全相容（官方安全網屬向下寬容），本版為對版維護與清理版，無 crash 級修復。
+- 經 Claude 與 codex 雙邊 review-plus 獨立審查；codex 抓到 gen-radio-map raw/runtime 混比與 `setText` raw 寫回兩缺陷，均已修正並補測試。
+- 另補錄兩批 2026-07-31 已隨先前版本出貨、依「發版時總整理」規則於本版寫入 CHANGELOG 的變更（見下）；同期另有術語增補 commits（7ad4037 車輛「桿」正字與四車廠名、312f5a6 發動機→引擎、夠不到→搆不到）。
+
+<!-- 批次一：CH 凍結與術語引擎（2026-07-31） -->
+
+### Added
+
+- **術語真相表與引擎**（`scripts/terminology.json`＋`terminology.py`）：以顯式規則取代 OpenCC s2twp 隱式詞庫——charfix 24 條異體字、replace 約 122 條（regex 護欄必附正反例測試，載入時強制 selftest）、select 25 條（語境敏感禁自動改：通過/透過、高級/高階、性能/效能、社區/社群、連接/連線、保存/儲存…）。淘汰規則記 `_dropped`（發佈→釋出、循環→迴圈、壁紙→桌布、鏡像→映象等 s2twp 有害行為）。
+- **outcome-equivalence 等價證明**（`scripts/test_terminology_equivalence.py`）：新術語管線 vs 舊 OpenCC 管線對 REF 全語料 47,677 值逐值比對，817 個差異桶全數裁定（select 設計預期／已裁定改進／淘汰／逐字空格變體／一簡對多繁 ClassC），**PASS**。
+- **CH 凍結與新維護迴路**：`sync-ch` 墓碑化（CH 檔即人工真相，不再由 REF 全量再生）、OpenCC 自本體管線移除；新增 `en-snapshot`（官方 EN 47,251 鍵基準快照，入版控）、`en-diff`（官方更新後產維護佇列——只看 git diff 會漏掉官方改英文原文）、`import-new`（官方 CH 底稿＋術語引擎產新鍵提案，人工簽核入檔）、`ch-lint`（select/lint 詞巡檢）。`ch_overrides.json` 封存為歷史紀錄。CN 管線不變。
+
+### Fixed
+
+- **舊管線 s2twp 盲轉產物 91 鍵**（分類過程的語料稽核挖出，全部逐筆判讀＋對照修復）：`宣告→聲明` 29（新聞/官方 statement 語境：總統聲明、免責聲明、聯合聲明）、`釋出→發布` 21（新聞發布會→記者會、發布聲明；釋出僅軟體 release 義）、`社群→社區` 20（住宅/地理社區：以革倫社區大學、社區地圖）、`效能→性能` 9（汽車制動性能）、`高階→高級` 5（高級訂製）、`連線→連接` 4（物理連接）、`繫結→綁定` 4、`區域性→局部` 3、`全域性→全域` 3、`支援→支持` 2（政治表態）、`專案→項目`、`儲存→保存`、`廚房/工業裝置→設備` 2。
+- **切詞災難**：`河流部分割槽域氾濫`→`部分區域`（舊管線把「部分＋區域」切成「部分割槽域」）。
+
+<!-- 批次二：SurvivorNames 與三方稽核（2026-07-31） -->
+
+### Added
+
+- **SurvivorNames 6,003 個官方繁中人名採用**：此檔 6,008 鍵過去與官方 EN 逐字相同——本 MOD 實際上把官方既有的中文名蓋回英文（NPC 名、殭屍屍體名牌、建角隨機名）。整批採官方繁中進 `ch_overrides`；CN 側官方本身未翻（全英文），以 OpenCC t2s 由繁中轉出。官方未翻的 5 筆（`Bender`/`JC` 等）維持英文。
+- **官方音譯選字修正 18 個名字／22 鍵**：官方選字不作姓氏的硬錯（`Pham 範→范`、`Chau 紂→周`、`Phan 幡→潘`、`Do 督→杜`、`Tran/Chan 辰→陳`、`Le 勒→黎`、`Vo/Vu→武`、`Dang 唐→鄧`、`Ly 賴→李`）與官方自身前後不一致（`Yang/Duong 陽→楊`、`Ng 黃→吳`、`Lam 蘭→林`、`Li 利→李`、`Yu 悠→余`僅姓氏）。鍵定位、非值取代——`黃` 家族（Huynh/Hoang/Hwang/Huang）零誤傷。
+- **三方比對稽核**（官方 EN＝裁判、官方 CH＝對照、我方 CH＝受審）：21,383 筆分歧按風險分帶，core 高風險 1,695 鍵**全量**＋med/flav/lo 抽樣 660 鍵逐筆判讀，每筆 ours_wrong 經獨立對抗複核（推翻誤報 6 筆）。判讀防錨定：第一輪隱藏官方 CH，避免錨定在官方自身的錯譯上。
+- **`suspicious_patterns` 支援 `skip_files` 整檔豁免**：SurvivorNames 全為人名音譯，「里」恆為正解——62 筆固定誤報歸零，避免噪音讓人習慣性忽略提示。
+
+### Fixed
+
+- **稽核確認錯誤 114 鍵＋姊妹鍵擴展（CH 約 259 鍵、CN 73 鍵）**：
+  - 語意錯譯：`Full Top 頭頂→全上身`、`Ear Top 耳罩→上耳部`、`RESUME 返回→繼續遊戲`、`Clean Burn 清潔傷口→清理燒傷`、`Old Stove 壁爐→舊式火爐`、`Chalk Board 粉筆板→黑板`、`Wanted Notices 懸賞令→通緝令`、`invisible 無敵→隱形`（管理員會誤解指令）、引爆／啟用時間區分、喉縮 (擴散)→(改良縮口)（兩款皆縮小散布，原標註為事實錯誤）、雪松矮書櫃、緊身褲→長褲（EN=Pants）等
+  - 壞文本：車名後綴重複 **15 鍵跨三車系**（`(東南油漆) (東南油漆)`）、AntiCheat 機翻碎句 20 鍵（`禁用的防作弊保護. 類型 N.`→`停用類型 N 的反作弊保護.`）、`塊石堆步→快石堆步`（同音誤植，含姊妹鍵與 CN）、逐字空格與標點空格殘留（含 StarterCondition 家族、大型伺服器警告整段）
+  - Stash 藏寶圖：空值出貨 22 鍵（官方 CH 有內容我們空白）、人名劇情錯譯（`Vicky 維科→薇琪`、`June 桑德拉→茱恩`、`catfish restaurant 酒吧→鯰魚餐廳`、`barricade 架設路障→加固防禦`）
+  - 名著引文：魯濱遜漂流記對仗補正、婚誓 `forsaking all others`、Amazing Grace `now I'm found 現在堅定→今被尋回`
+  - 台灣用語家族：文胸→胸罩 17、曲奇→餅乾 7、創可貼→OK繃 6、西葫蘆→櫛瓜 7、半身裙→裙子 4、易拉罐→空汽水罐/易開罐 6、懸掛→懸吊 3、僵毀→殭毀 3、華夫餅→格子鬆餅、薄煎餅→美式鬆餅、彈球機→彈珠台、托盤→棧板、悉尼→雪梨、高身鏡→全身鏡
+- **needs_human 15 筆全數以遊戲資料實證結案**（tile 定義／藏寶圖腳本座標／媒體 UUID 序列前後文）：修 9 鍵（`斯皮福大牆紙→大型斯皮福牆飾`（4 格寬牆面吉祥物）、`井噴銷售→清倉特賣標牌`（通用促銷招牌集）、`粗製書架→粗製木層架`（落地式）、`木製紀念樁→木製墓標`（墓園 tileset）、`None 禁用→無`、LVMap16 兒子遇害讀法等）；6 筆查證後確認我方原譯正確維持（easier way out＝逃生路線、Dog Goblin 的狗吠、Don Beverage 自報姓名等）。
+- **補譯與其他**：未翻譯 16＋1 鍵（`Accept`、雜誌名 `GameZ/Merc!/Sixteen`、SCBA）、人名 `拉託亞→拉托亞` 5 鍵、`SurvivalGuide_WindowTitle` 逐字空格。
+
 ## [42.20.1-1.15.0] - 2026-08-05
 
 ### Fixed
