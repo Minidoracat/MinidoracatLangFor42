@@ -623,6 +623,18 @@ _DUPE_SINGLE_MAX_LEN = 40
 # 它還會遮蔽疊字偵測（`彈 匣 退 出 退 出` 掃不到），所以必須守住不再回來。
 _SPACED_CJK = re.compile(r"(?:[一-鿿] ){3,}[一-鿿]")
 
+# <br> 切段後「相鄰段全等」＝整句被貼兩次。獨立於 _DUPE_PATTERNS：重複單元可以
+# 超過片段 regex 的 8 字上限，分隔又是整段 `. <br>`（多字元），兩條 pattern 同時
+# 失效——2026-08-06 Tooltip_craft_wallLogDesc「製作簡單但耗費資源」×2 因此漏檢。
+# 段落全等比對不會誤報頂真句／修辭，故不受 _DUPE_MAX_LEN 限制。
+_BR_SPLIT = re.compile(r"<br\s*/?>", re.IGNORECASE)
+
+
+def _has_br_segment_dup(value: str) -> bool:
+    """<br> 切段後相鄰兩段（去除首尾空白與句點）全等即視為誤植。"""
+    segs = [s.strip(" .") for s in _BR_SPLIT.split(value)]
+    return any(a and a == b for a, b in zip(segs, segs[1:]))
+
 
 def check_duplicated_fragments() -> list[str]:
     """找出譯文中疑似「片段被貼兩次」的值（CH + CN）。"""
@@ -636,9 +648,14 @@ def check_duplicated_fragments() -> list[str]:
             except Exception:  # noqa: BLE001
                 continue
             for key, value in data.items():
-                if not isinstance(value, str) or len(value) > _DUPE_MAX_LEN:
+                if not isinstance(value, str):
                     continue
                 if f"{path.name}|{key}" in _DUPE_ALLOWLIST:
+                    continue
+                if _has_br_segment_dup(value):
+                    issues.append(f"  [{lang}] {path.name} | {key}: {value!r}")
+                    continue
+                if len(value) > _DUPE_MAX_LEN:
                     continue
                 if any(p.search(value) for p in _DUPE_PATTERNS):
                     issues.append(f"  [{lang}] {path.name} | {key}: {value!r}")
