@@ -4,6 +4,22 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.2-1.15.2] - 2026-08-06
+
+### Fixed
+
+- **採納玩家建議（水煮麵包）：鐵砧 tooltip 術語對齊**。`Tooltip_item_BlacksmithAnvil`「簡單或高階鍛造爐」→「**簡易**或高階鍛造爐」——與建造選單工作站定譯一致（`Recipes.json` `Forge`＝簡易鍛造爐；CN 同步 `简单→简易`，官方 CN 上游自身即不一致，照修）。句尾「單獨使用無用」（CN 直借翻譯腔）改「無法單獨使用」，`Tooltip_item_StoneAnvil`（石砧）同款句尾一併對齊。玩家引用的「用來建造鐵匠鐵砧」為官方本體 CH 的循環錯譯，本 MOD 自 .txt 時代即已修正；建造機制查證：簡易/高階鍛造爐建材各需鐵砧 ×1，EN 敘述與機制相符。
+- **查證順帶挖出三處 Tooltip 缺陷**：CH `Tooltip_craft_wallLogDesc`（原木牆）「製作簡單但耗費資源」整句重複兩次（刪）；CN 同鍵整句漏翻（補）；CN `Tooltip_item_LargeBellows`（大風箱）「需要建造高级锻造炉或熔炉」依賴方向講反（改「建造高级锻造炉或熔炉所需」，對齊 EN "Needed to build…" 與 CH 既有正確譯法）。
+
+### Added
+
+- **疊句偵測補強 `_has_br_segment_dup()`**：`<br>` 切段後相鄰段全等即判「整句貼兩次」。wallLogDesc 這類錯誤過去全數漏檢——重複單元 9 字超出片段 regex 的 8 字上限、分隔又是多字元 `. <br>`，兩條 pattern 同時失效。新檢查不受 `_DUPE_MAX_LEN` 60 字閘門限制（段落全等無修辭誤報，全庫掃描 0 誤報）、respect allowlist/skip-file，接進 `check_duplicated_fragments` 隨 `fix-check` 把關。`test_dupe_patterns.py` 新增 BR_CASES 四案＋走 `check_duplicated_fragments()` 真入口的整合案例（>60 字命中／skip-file／allowlist 三契約）。
+
+### Notes
+
+- **versionMin 維持 42.20.1**；純翻譯品質與工具鏈修訂版。
+- 經 Claude 與 codex 雙邊 review-plus 獨立審查（皆 COMMENT 無 blocking）；codex 指出的整合測試缺口已補。
+
 ## [42.20.2-1.15.1] - 2026-08-06
 
 ### Changed
