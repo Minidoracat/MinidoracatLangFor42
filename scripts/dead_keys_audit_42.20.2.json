@@ -1,4 +1,17 @@
 {
+ "_meta": {
+ "_note": "⚠️ 本檔是【已完成清理的紀錄】，不是待辦清單。各檔 delete 陣列已於 commit 4e9ce58（42.20.2 對版，清理 354 鍵）套用完畢——2026-08-09 覆核：333 個 delete 候選在我方 CH/CN 檔案中已 0 個存在。keep_alive 是當時判定為動態組鍵而【保留】者，勿刪。",
+ "verified": "2026-08-09",
+ "applied_in": "4e9ce58",
+ "later_batches": [
+  {
+   "date": "2026-08-09",
+   "keys": 85,
+   "detail": "SurvivalGuide.json 83 鍵（B41 的 SurvivalGuide_*_entrieN* 體例；B42 改用 SurvivalGuideEntry.registerBase 產生的 SurvivalGuide_{id}_title/_description，96 個 entry。舊體例在 Java 全樹只命中 Jackson 函式庫、PZ 自身零引用。刪後 CH/CN 各 229 鍵＝官方 EN 鍵數，B42 必要 192 鍵＋19 個 _description_joypad 變體 100% 覆蓋、孤兒歸零）＋ Recipes.json 的 MetalDoor(Poor)/(Shoddy) 2 鍵（官方 EN/CH 皆無、media/ 全樹零引用；活鍵 MetalDoorFrame*/MetalWall* 本來就正確）"
+  }
+ ],
+ "method": "存活判定須跑多路徑，勿只掃 Lua：①Lua 全樹字面 ②反編譯 Java 全樹字面 ③scripts/**/*.txt 全語料字面 ④item X→ItemName/Tooltip_item_/ContextMenu_ ⑤craftRecipe X 與 entity X→Recipes/Tooltip_Recipe_（⚠️ entity 名這條漏過一次：CharcoalBurningPit 是死鍵、Charcoal_Pit 才是活鍵）⑥Tags=→IGUI_CraftingWindow_ ⑦Java enum（MoodleType 等，大小寫敏感：Bleeding≠Bleed、HasACold≠Hasacold）⑧sandbox 選項名 ⑨maps/**/worldmap*.xml 的 MapLabel_（全庫僅 14 個活鍵）⑩我方 MOD 自有 _Flx.lua（曾差點誤刪自家在用的 IGUI_Fish_Window_*）⑪官方 EN 是否仍持有"
+},
  "Recipes.json": {
   "delete": [
    "AllowDestroyedItem_TEST",
