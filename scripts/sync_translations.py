@@ -690,6 +690,65 @@ def check_dup_single() -> list[str]:
     return notes
 
 
+def richtext_eaten(value: str) -> int:
+    """回傳這個值會被 RichText 吞掉的正文字元數。
+
+    錨點：`ISUI/RichTextLayout.lua` 的 tokenizer（我方 `ISRichTextPanel_Flx.lua` 同邏輯）——
+    以空白切 token，token 內同時含 `<` 與 `>` 時整段走 `processCommand`，
+    **`<` 之前的正文永遠不會進 `self.lines`**（無字元級 fallback）。
+    故 `健康面板.<LINE>` 會讓「健康面板.」整段消失，寫成 `健康面板. <LINE>` 才安全。
+
+    2026-08-09 新增：逐字空格清理曾把 `板 .<LINE>`（只吃 1 字）變成 `板.<LINE>`（吃整句），
+    24 個鍵共 975 字元從畫面上消失，而當時的 fix-check 全綠——本檢查即為補上該盲點。
+    """
+    left, cur, drop, guard = value, 0, 0, 0
+    while True:
+        guard += 1
+        if guard > 20000:  # 病態輸入保險，不該發生
+            return drop
+        idx = left.find(" ", max(cur, 0))
+        if idx < 0:
+            break  # 收尾分支（RichTextLayout.lua:343）會渲染剩餘文字，不算損失
+        cur = idx + 1
+        token = left[:cur]
+        if "<" in token and ">" in token:
+            cur = token.index(">") + 2
+            token = left[: cur - 1]
+        left = left[cur - 1 :]
+        cur = 1
+        if "<" in token and ">" in token:
+            drop += len(token[: token.index("<")].strip())
+    return drop
+
+
+# 走 RichText 渲染的檔案（其餘如 RadioData/DynamicRadio 的 <bzzt> 是字面狀聲詞，非標籤）
+_RICHTEXT_FILES = {"UI.json", "IG_UI.json", "Tooltip.json", "Challenge.json",
+                   "GameSound.json", "SurvivalGuide.json", "Print_Media.json"}
+
+
+def check_richtext_eaten() -> list[str]:
+    """找出正文緊貼 `<TAG>` 而會被 RichText 吞字的值（只報官方 EN 也有的活鍵）。"""
+    issues: list[str] = []
+    for lang, mod_dir in (("CH", MOD_CH), ("CN", MOD_CN)):
+        for path in sorted(mod_dir.glob("*.json")):
+            if path.name not in _RICHTEXT_FILES:
+                continue
+            try:
+                data = read_translation(path)
+            except Exception:  # noqa: BLE001
+                continue
+            official_en = _vanilla_lang_optional("EN").get(path.name, {})
+            for key, value in data.items():
+                if not isinstance(value, str) or "<" not in value:
+                    continue
+                if official_en and key not in official_en:
+                    continue  # 官方 EN 無此鍵＝死鍵，不報
+                n = richtext_eaten(value)
+                if n > 0:
+                    issues.append(f"  [{lang}] {path.name} | {key}: 會吞掉 {n} 字 — {value[:48]!r}")
+    return issues
+
+
 def _vanilla_lang_optional(lang: str) -> dict[str, dict[str, str]]:
     """讀 vanilla 同語系翻譯，回傳 {檔名: {鍵: 值}}；讀不到回空 dict（不中止）。
 
@@ -930,6 +989,18 @@ def cmd_fix_check():
             print(issue)
     else:
         print("✅ 未發現逐字空格排版")
+
+    # RichText 吞字（硬性；正文緊貼 <TAG> 會讓整段從畫面消失）
+    print("\n" + "=" * 60)
+    print("RichText 吞字檢查（CH + CN，正文緊貼 <TAG> 者）")
+    print("=" * 60)
+    eaten_issues = check_richtext_eaten()
+    if eaten_issues:
+        print(f"⚠️ 發現 {len(eaten_issues)} 處會被 processCommand 吞掉正文（標籤前需補空白）：")
+        for issue in eaten_issues:
+            print(issue)
+    else:
+        print("✅ 未發現 RichText 吞字")
 
     # 單字／雙字疊段（僅提示；中文大量正常疊用，須人工複核）
     print("\n" + "=" * 60)
