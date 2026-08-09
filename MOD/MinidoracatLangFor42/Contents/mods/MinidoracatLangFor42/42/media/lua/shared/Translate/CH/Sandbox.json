@@ -320,6 +320,8 @@
     "Sandbox_FoodLootNew": "易腐爛食物",
     "Sandbox_FoodLootNew_tooltip": "所有會腐爛變質的食物.",
     "Sandbox_SkillBookLoot": "技能書",
+    "Sandbox_SkillBookLootNew": "技能書",
+    "Sandbox_RecipeResourceLootNew": "配方資料",
     "Sandbox_SkillBookLoot_tooltip": "提供經驗倍率的書.",
     "Sandbox_RecipeResourceLoot": "配方資料",
     "Sandbox_RecipeResourceLoot_tooltip": "可讓角色學會配方的物品。",
