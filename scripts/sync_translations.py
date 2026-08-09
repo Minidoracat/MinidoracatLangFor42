@@ -690,13 +690,44 @@ def check_dup_single() -> list[str]:
     return notes
 
 
-def check_cjk_spacing() -> list[str]:
-    """逐字空格排版檢查：只報「對側語言同鍵沒有空格」者（= 我們帶進來的）。
+def _vanilla_lang_optional(lang: str) -> dict[str, dict[str, str]]:
+    """讀 vanilla 同語系翻譯，回傳 {檔名: {鍵: 值}}；讀不到回空 dict（不中止）。
 
-    As1 原有的排版（傳單、城鎮 description）對側也帶空格，不報。
+    與 `_vanilla_translate` 的差別：本函式供 fix-check 使用，未安裝遊戲的機器
+    仍要能跑，故不 sys.exit。
+    """
+    root = VANILLA_PZ_DEFAULT / "media" / "lua" / "shared" / "Translate" / lang
+    if not root.is_dir():
+        return {}
+    out: dict[str, dict[str, str]] = {}
+    for f in root.glob("*.json"):
+        if f.name == "language.json":
+            continue
+        try:
+            data = json.loads(f.read_text(encoding="utf-8-sig"))
+        except Exception:  # noqa: BLE001
+            continue
+        if isinstance(data, dict):
+            out[f.name] = data
+    return out
+
+
+def check_cjk_spacing() -> list[str]:
+    """逐字空格排版檢查。
+
+    判準以「官方**同語系**同鍵」為基準：官方乾淨而我方有空格 = 我方倒退。
+
+    2026-08-09 修正：原判準用「對側語言（CH↔CN）同鍵有無空格」，前提是
+    「As1 原有排版兩語系都會帶空格」。實測推翻——官方 CH `UI_worldscreen_SavefileVersion`
+    是乾淨的、官方 CN 帶空格，我方 CH 抄了 CN 的排版，舊判準因「對側也有空格」
+    而放行，漏掉 83 筆真倒退。傳單／城鎮 description 這類官方自己就帶排版者，
+    官方同語系同樣有空格，仍會正確放行。
+
+    vanilla 目錄不存在時（未安裝遊戲）退回舊的對側判準，避免整個 fix-check 失效。
     這類值會遮蔽疊字偵測，屬硬性錯誤。
     """
     issues: list[str] = []
+    vanilla = {lang: _vanilla_lang_optional(lang) for lang in ("CH", "CN")}
     for lang, mod_dir, other_dir in (("CH", MOD_CH, MOD_CN), ("CN", MOD_CN, MOD_CH)):
         for path in sorted(mod_dir.glob("*.json")):
             try:
@@ -704,12 +735,20 @@ def check_cjk_spacing() -> list[str]:
                 other = read_translation(other_dir / path.name)
             except Exception:  # noqa: BLE001
                 continue
+            official = vanilla[lang].get(path.name, {})
             for key, value in data.items():
                 if not isinstance(value, str) or not _SPACED_CJK.search(value):
                     continue
-                peer = other.get(key)
-                if isinstance(peer, str) and _SPACED_CJK.search(peer):
-                    continue
+                ref = official.get(key)
+                if isinstance(ref, str):
+                    # 有官方同語系可比：官方也帶空格 = 繼承，放行
+                    if _SPACED_CJK.search(ref):
+                        continue
+                else:
+                    # 無官方可比（我方自有鍵／未安裝遊戲）→ 退回對側判準
+                    peer = other.get(key)
+                    if isinstance(peer, str) and _SPACED_CJK.search(peer):
+                        continue
                 issues.append(f"  [{lang}] {path.name} | {key}: {value[:56]!r}")
     return issues
 
@@ -882,7 +921,7 @@ def cmd_fix_check():
 
     # 逐字空格排版（硬性；會遮蔽疊字偵測）
     print("\n" + "=" * 60)
-    print("逐字空格排版檢查（CH + CN，對側語言同鍵無空格者）")
+    print("逐字空格排版檢查（CH + CN，官方同語系同鍵乾淨者＝我方倒退）")
     print("=" * 60)
     spaced = check_cjk_spacing()
     if spaced:
