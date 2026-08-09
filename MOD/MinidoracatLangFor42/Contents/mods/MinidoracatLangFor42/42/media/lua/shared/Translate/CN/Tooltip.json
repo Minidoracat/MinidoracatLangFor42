@@ -354,7 +354,7 @@
     "Tooltip_CantCraftSecondLitLantern": "已经有点亮的灯笼了.",
     "Tooltip_outoffuel": "没油了",
     "Tooltip_craft_pressToRotate": "在建造时按 \"%1\" 键旋转",
-    "Tooltip_removeBurntVehicle": " 使 用 焊 工 面 罩 和 丙 烷 喷 灯 来 拆 解 汽 车 残 骸 , 并 获 得 金 属 材 料 . <LINE> 更 高 的 焊 接 技 能 将 回 收 更 多 的 材 料 .",
+    "Tooltip_removeBurntVehicle": "使用焊工面罩和丙烷喷灯来拆解汽车残骸, 并获得金属材料. <LINE> 更高的焊接技能将回收更多的材料.",
     "Tooltip_lightFireNoStick": "需要树枝或木棒来点燃.",
     "Tooltip_lightFireNoFuel": "需要已有燃料才能点火.",
     "Tooltip_lightFireNoEndurance": "需要未耗尽.",
