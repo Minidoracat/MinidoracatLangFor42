@@ -33,9 +33,12 @@ function MapLabelEdit.applyChanges(mapInstance)
     end
 
     if #indicesToRemove > 0 then
-        table.sort(indicesToRemove, function(a, b) return a > b end)
-        for _, index in ipairs(indicesToRemove) do
-            symAPI:removeSymbolByIndex(index)
+        -- indicesToRemove 由升冪迴圈收集、本身已是排序狀態；再對它排序（降冪）正是 Kahlua
+        -- 遞迴 quicksort 的最壞輸入——已排序＋數百筆即 coroutine 堆疊溢位（MAX_STACK_SIZE
+        -- 3000，Coroutine.java:16；Cleaner 0.1.1 正式服實際炸過）。要「由大到小刪除」
+        -- 反向走訪即可，完全不需要排序。
+        for j = #indicesToRemove, 1, -1 do
+            symAPI:removeSymbolByIndex(indicesToRemove[j])
         end
     end
 end
