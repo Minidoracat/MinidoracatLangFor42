@@ -2398,6 +2398,52 @@
    },
    "note": "「夠」為足夠之意；伸手觸及的正字是「搆」（教育部辭典收「搆不著」）。夠不到係簡中「够」一字兼義的沿用",
    "replace": "搆不到"
+  },
+  {
+   "pair": "大米→白米",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "大米"
+   },
+   "replace": "白米",
+   "note": "台灣生米稱白米/米；大米為陸用語。2026-08-09 蒸煮鍋家族統一時曾主動把「米」改成「大米」（往陸用語走），故設閘門。官方 CH 本身有 4 筆大米（OpenCC 轉換殘留），不採信"
+  },
+  {
+   "pair": "黃油→奶油",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "黃油"
+   },
+   "replace": "奶油",
+   "note": "台灣 butter=奶油；黃油為陸用語。CH 全庫奶油 40 筆 vs 黃油 6 筆，方向明確"
+  },
+  {
+   "pair": "蒜蓉→蒜末",
+   "status": "approved",
+   "mode": "replace",
+   "match": {
+    "type": "literal",
+    "value": "蒜蓉"
+   },
+   "replace": "蒜末",
+   "note": "台灣 minced garlic=蒜末；蒜蓉為陸用語（蒜香奶油一類詞組另行選詞）"
+  },
+  {
+   "pair": "梁→樑",
+   "status": "approved",
+   "mode": "select",
+   "match": {
+    "type": "literal",
+    "value": "梁"
+   },
+   "cases": {
+    "SurvivorSurname_Leung": "梁"
+   },
+   "note": "結構樑（橋樑／軟化樑／棟樑）繁中作樑；但梁亦是姓氏（SurvivorSurname_Leung 已裁定保留原字），故禁自動替換"
   }
  ],
  "_dropped": {
