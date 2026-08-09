@@ -1648,6 +1648,8 @@
     "MetalCrate(Shoddy)": "金屬板條箱 (基礎)",
     "MetalCrate": "金屬板條箱 (精工)",
     "MetalDoorFrame(Good)": "金屬門框 (精工)",
+    "MetalDoor(Poor)": "金屬門 (進階)",
+    "MetalDoor(Shoddy)": "金屬門 (基礎)",
     "MetalDoorFrame(Poor)": "金屬門框 (基礎)",
     "MetalFeedingTrough": "長金屬飼料槽",
     "MetalFence(Good)": "金屬圍欄 (精工)",
