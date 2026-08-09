@@ -4,7 +4,29 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
-## [42.20.2-1.16.0] - 2026-08-09
+## [42.20.2-1.17.0] - 2026-08-09
+
+### Added
+
+- **擺放物顯示名補齊 115 鍵（CH/CN）**。玩家回報右鍵雙耳罐的子選單標題是英文 `Closed Amphora`。查證為**上游缺口而非我方漏譯**：擺放物名由 tile 的 `GroupName + " " + CustomName` 組成（`crafted_04_32` 即 `Closed` + `Amphora`），經 `Translator.getMoveableDisplayName`（`Translator.java:642`，空白→底線、連字號→底線、去單引號）查 `Moveables.json`，查不到就原樣回傳英文——而**官方 `EN/Moveables.json` 本身就沒有這些鍵**，官方繁中亦無，不裝本 MOD 的中文玩家同樣看得到英文。官方法文組早已自行補 `Closed_Amphora`／`Open_Amphora`，證明「只在自己語言檔補鍵」這條路可行。
+  - **枚舉方法**：以嚴格 tdef v1 結構化解析掃全部 7 個 `media/*.tiles`（parse 到最後一個 byte 對齊，非 ASCII 平掃），得 **1320 個顯示名**；與官方 `.tiles.txt` companion 逐 `tile { }` 解析**雙向零差異**交叉驗證。比對後 123 個在官方 EN／官方 CH／我方三邊皆無鍵。（登記簿 A27 當時記的「真實組合 1043 個」偏低，本次已於稽核檔 method ⑬ 寫入完整枚舉法與格式規格。）
+  - **譯名來源**：32 個作物／香草沿用 `Farming.json`；6 個無線電／電腦 `*_CustomName` 由 tile 的 `CustomItem` 指認實體後沿用同物件既有鍵；三張海報、鐵砧四件、原始鍛造爐、石磨、石塚沿用既有鍵；其餘依既有命名慣例組合（沙堆／礦石大小／教堂窗戶／三角旗串等）。`Closed_Amphora`／`Open_Amphora` → 加蓋雙耳罐／開蓋雙耳罐（與選單「開啟蓋子」呼應）。
+  - **補完後**：CH/CN 各 1370 鍵、鍵序完全一致，官方 EN 1180 鍵 100% 覆蓋，tile 顯示名扣除刻意不補後**零未覆蓋**。
+
+### Fixed
+
+- **同物件兩個名字 5 組**（雙邊 review 抓出，逐條比對官方 EN 原文後修正）：`Cooking_Pit`／`Simple_Cooking_Pit` 蓋的時候叫「火坑 (石磚)／(石塊)」（`Recipes.CookingPit` = `Fire Pit (Stone Blocks)`）右鍵卻叫「烹飪坑」；`Pottery_Table` 與製作視窗的「陶藝工作臺」（`Recipes.PotteryBench`）對不上，且全 tile 集無獨立 Pottery Bench，確認同物；`Huge_Metal_Trough` 帶 `container=trough` 卻譯「巨型金屬槽」，丟失既有「飼料槽」語意；`Barricade_Military_Barrier` 與既有「空置軍用路障」無法區分（tile 對照：`Empty` 版帶 `IsMoveAble`、`Barricade` 版是 `solidtrans` 實心）；四個藝廊鍵 CH 譯「美術館」而 CN 譯「畫廊」，CH 既有 `Gallery_Bed`／`Gallery_Toilet` 都用「畫廊」。
+- **四台發電機在世界上叫顏色、進背包叫品牌**。tile 的 `CustomItem` 直指 `Base.Generator{,_Old,_Yellow,_Blue}`，已對齊 `ItemName.json` 的「發電機 (極電製造／老式／昂科牌／廉科牌)」，與同批無線電的品牌對齊策略一致。
+- **同批內部用詞不一 3 組**：`StoneTwigs` 用「樹枝」但其組成是 Twigs（同批 `Twigs` = 小樹枝）；`Small_LimestoneBoulder`／`Small_FlintBoulder` 用「石灰岩／燧石岩」但相鄰的 `Limestone` = 石灰石；`Medium[n]_Boulder` 譯「中型巨石」語意自相矛盾，改用 `巨石 (大)`／`巨石 (中)`。
+- **CN `Empty_Military_Barrier`「空军事路障」→「空置军用路障」**（既有鍵，與新增的「设障军用路障」用詞統一）。
+
+### Notes
+
+- **刻意不補 8 鍵**（已登記於 `scripts/dead_keys_audit_42.20.2.json` 的 `Moveables.json._deliberately_not_added`，升版時勿誤判為缺漏）：`CustomName`（單一鍵橫跨 6 個不相干 tileset，給任何具體名都會誤標其中多數）、`bleh`、`location_entertainment_gallery_02_{3,11,18,30}_x`、`appliances_com_01_38_x`——皆為 TIS 未填好 `CustomName` 或外露資源識別字所產生的壞字串，補譯等於替上游資料 bug 化妝；`Small_Stump` 依 A22 尾註維持不補（名稱無渲染路徑，移除選項走已譯的 `ContextMenu_Remove_Stump`）。
+- **登記簿 A27 第 7 鍵改判**：`US_ARMY_COMM._Ham_CustomName` 原記「刻意不補」，本版改為【補】。該 tile 的 `CustomItem = Base.HamRadio2` 唯一指認同一台實體無線電，沿用 `US_ARMY_COMM_Ham_Radio`（美國陸軍業餘無線電臺）既有譯文是**把物件正確命名**而非替 bug 化妝，bug 本身仍完整留在鍵名裡（登記簿與稽核檔都以鍵名追蹤）；且同批另 5 個同類鍵已補，漏這 1 個會造成同一 bug 類內部不一致。A27 同時寫入原則的適用邊界：**能由 `CustomItem` 或同義既有鍵唯一指認出實體物件者補，指認不到實體的純壞字串仍不補**。
+- **稽核檔 `_meta.method` 新增第 ⑬ 條存活路徑**（tile `GroupName+CustomName` → Moveables 鍵）。我方 `Moveables.json` 有 190 個官方 EN 沒有的鍵（138 個可由 tile 名直接對上，另 52 個來自 `getMannequinScriptName` 等其他路徑），沒有這條記載，未來死鍵掃描會把它們整批誤判為死鍵——`MetalDoor` 誤刪事件（見 A28）就是同一類漏判。`keep_alive` 10 → 125。
+- **雙邊 review**：Claude 端 `code-reviewer` 出 12 條（5 MEDIUM 全採，2 條經查證後不採並附理由）；codex 端 `review-plus` 在收尾前被中斷，但中途訊息指出**本批與登記簿 A27「刻意不補」決定衝突**——這是單邊 review 不會發現的，回溯掃描後另找到第二處（A22 的 `Small_Stump`），兩處都已依裁定處理。
+- **`versionMin` 維持 42.20.1**；純翻譯鍵新增，零機制變更、未新增任何 Lua 修補檔。
 
 ### Fixed
 
