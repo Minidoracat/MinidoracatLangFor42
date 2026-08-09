@@ -4,6 +4,44 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.2-1.16.0] - 2026-08-09
+
+### Fixed
+
+- **玩家回報 8 項全數處理（本輪起點）**。逐項查證來源是本體或本 MOD：製作視窗需求列外露原鍵 `IGUI_CraftingWindow_StandingDrillPress`（**官方 EN 自己缺鍵**，英文玩家同樣看得到，但可由我方補鍵繞過）；配方名與產出物名對不上（見下）；「解包」「制動器」「輪胎 (高階) 類型」等陸港用語與簡中語序；技能「焊接」應為「金工」（見 Notes）。
+- **配方名↔產出物名全量對齊，391 鍵**。玩家反應「做出來的東西跟配方寫的不同」。以 969 個 craftRecipe 逐一比對輸出物，並展開 `itemMapper` 的靜態映射（等號左值＋`default` 右值都會成為玩家可見名稱）。CN 側首次納入同批稽核，抓到 `制作垃圾袋无肩文胸` 實際產出裙子、`用带锯切割轮胎` 實際產出鋸片等內容錯位。
+- **動態拼鍵三輪全量稽核，補 124 鍵**。官方多處以 `getText("PREFIX" .. 變數)` 組鍵，變數值域一旦超出鍵表就直接外露原鍵。
+  - **Lua 側**：掃 1395 個 .lua 得 66 個前綴／232 個呼叫點，逐一枚舉 token 值域後補 39 鍵。含 `UI_optionscreen_gamepad_JoypadAxis1d_name_*` ×4（**無 gate，控制器綁定畫面直接外露原鍵**）、`IGUI_AnimalUI_Info_*` ×13、`IGUI_Gametime_*` ×3 等。
+  - **Java 側**：以平衡括號解析 12997 個 .java，得 1025 個呼叫點／27 個入口方法（基準 regex 只命中 6.4%），補 11 鍵。最高嚴重度是 `Fluid_Container_FuelPump`——`ContainerName = Fuel Pump` 經 `removeWhitespace()` 成 `FuelPump`，**單人可達、零 gate**，加油站抽油時視窗標題直接顯示原鍵。
+  - **`IGUI_Key_` 補 74 鍵**：不採信稽核報告的 token 清單（實查有誤），改自 `Keyboard.KEY_*` 常數過 `KeyCodes.toGlfwKey` 的實際轉換規則確定性枚舉，得穩定 token 83 個。另 47 個會被 `glfwGetKeyName` 依鍵盤配置改寫的 token 一律不補。
+- **RichText 吞字回歸，76 鍵**。`RichTextLayout` 的 tokenizer 對同時含 `<` 與 `>` 的 token 會整段丟給 `processCommand`，**`<` 之前的正文永遠不會進 `self.lines`**。逐字空格清理把「健 康 面 板 .`<LINE>`」變成「健康面板.`<LINE>`」後，吞掉的字從 1 個變成整句——24 鍵共 975 字。以獨立 Python 複刻 tokenizer 量化後修正，並連同既有同型 52 鍵一併處理。
+- **逐字空格排版倒退 110 筆**。判準原本比對「對側語言」，但官方 CH 乾淨、官方 CN 帶空格時，我方 CH 抄了 CN 的排版就會被放行。改以**官方同語系同鍵**為判準後重掃，區分出 341 筆繼承自官方與 83 筆我方倒退，並補回 35 個遺失的 `<SIZE:small>` 標記。
+- **同名撞名 4 對＋配方↔擺放物異名 6 組**。`Base.WaterPot{,Forged}{Pasta,Rice}` 與 `{Pasta,Rice}Pot{,Forged}` 在 CH 四對全部同名（Forged 那兩對官方 CH 亦撞），改用既有的 `(水, 原料)` 軸區分。另六件物品在建造選單與擺放物名兩處叫法不同（EN 兩處字串相同），統一為攪乳桶／亞麻除籽梳／麻梳／單寧鞣製桶／木十字架／軟化樑。
+- **官方 `Translator.getMoveableDisplayName` 的去句點失效，補 6 鍵**。`replace("\\.", "")` 是 `String.replace(CharSequence,CharSequence)`，`"\\."` 就是字面兩字元 `\.`，名稱裡永無反斜線故**永不命中**，句點原封留在查表鍵裡。官方翻譯檔只建了去句點版本，執行期查的卻是帶句點版本 → 顯示英文原名（`Dr. Oids Poster`、`Premium Tech. Walkie Talkie` 等）。補帶句點版本並保留原鍵。
+- **陸港用語與正字**：CH 大米→白米 ×9、黃油→奶油 ×3、蒜蓉黃油→蒜香奶油、梁→樑 ×5（結構樑；姓氏「梁」不動）、`IGUI_CraftingWindow_Loom` 織機→織布機（與同 EN 值的 `_Weaving` 統一）。CN 側補齊無線電家族的內部矛盾（同一支美國陸軍設備，無線電叫「美国陆军」對講機卻叫「军用」）。
+- **改到死鍵上的修正**：`CharcoalBurningPit` 在 `media/` 除翻譯檔外零引用，活鍵是 entity 名 `Charcoal_Pit`（經 `Literature.java` 顯示於配方書 tooltip）。CN 側原本改在死鍵上，已移到活鍵。
+- **`Press` 缺鍵**：`ES_Hand_Press` 的元件顯示名去空格後仍是 `Press`，`Recipes.json` 無此鍵 → 工作站元件分頁顯示英文。已補。
+
+### Added
+
+- **兩道 `fix-check` 守門檢查**：RichText 吞字偵測（以複刻的 tokenizer 計算每個值會被吞掉的正文字元數）、實體工作站名稱涵蓋率。前者補上時 `fix-check` 原本是全綠的，等於這類回歸過去完全無人把關。
+- **兩組可鑑別回歸測試**：`test_cjk_spacing.py`（直接呼叫產品函式，不複刻判定邏輯）、`test_xui_entity_names.py`（以大括號配對解析 xuiSkin，並從 Lua 原始碼抓 pattern 比對）。兩者皆以注入迴歸實測過會失敗。
+- **`scripts/terminology.json` 新增 4 條規則**：大米→白米、黃油→奶油、蒜蓉→蒜末（replace），梁→樑（select，姓氏 `SurvivorSurname_Leung` 列入 cases 白名單禁自動替換）。
+- **登記簿新增 A26／A27／A28**，涵蓋動態拼鍵缺鍵、去句點失效、以及 xuiSkin `DisplayName` 的實際翻譯路徑。
+
+### Removed
+
+- **`SurvivalGuide_*_entrieN*` 83 鍵**（CH/CN 各 83）。B41 舊體例；B42 改用 `SurvivalGuideEntry.registerBase(id)` 產生 `SurvivalGuide_{id}_title`／`_description`，舊體例在反編譯 Java 全樹只命中第三方函式庫、PZ 自身零引用。刪後 CH/CN 各 229 鍵，恰等於官方 EN 鍵數；B42 必要的 192 鍵與 19 個 `_description_joypad` 變體 100% 覆蓋。
+
+### Notes
+
+- **`versionMin` 維持 42.20.1**；零機制變更，未新增任何 Lua 修補檔。
+- **技能「焊接」改回「金工」**（推翻 2026-07-29 的決定）。當初只看了 `IGUI_CraftingCategories_*` 一層，造成同一個技能在包內三種叫法——製作需求列「焊接」、技能書物品名與沙盒倍率「金工」、右鍵選單「金屬加工」。撞義顧慮亦不成立：官方本體 CH 自己就是「金工」（Welding）與「金屬加工」（Metalworking）並存。
+- **一次自我推翻**：曾判定 xuiSkin 的 `DisplayName` 因 `Translator.getTextInternal` 是純前綴路由而永遠翻不到，據此寫了 Lua 修補與 88 個新鍵。實際上 `XuiSkinScript.java` 在**腳本解析期**就先做 `replace(" ", "")` → `getRecipeName()`，`Recipes.json` 才是真相來源，44 個名稱有 43 個本來就正常。整批已撤銷，教訓記於 A28。同源的 `MetalDoor(Poor)`／`(Shoddy)` 誤判為死鍵後亦已復原，並順修「門框」誤植與非官方詞彙「劣質」。
+- 全程經 Claude 與 codex 雙邊 review-plus 獨立審查。兩邊互有補正：codex 抓到上述 xuiSkin 生產端與 A27 錨點引用錯誤，Claude 抓到 `CharcoalBurningPit` 改在死鍵上與第三顯示面漏對齊。
+- **未做遊戲內實機驗證**（使用者指定）。本版全部變更為翻譯 JSON 與工具鏈，無 Lua 行為變更。
+- 驗證：六組測試全綠、`terminology` selftest 通過、`fix-check` 五項全綠、CH/CN 各檔鍵集合完全對稱、`MOD/` 髒檔檢查無輸出。
+
 ## [42.20.2-1.15.3] - 2026-08-08
 
 ### Fixed
