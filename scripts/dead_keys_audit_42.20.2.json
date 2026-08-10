@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "_note": "⚠️ 本檔是【已完成清理的紀錄】，不是待辦清單。各檔 delete 陣列已於 commit 4e9ce58（42.20.2 對版，清理 354 鍵）套用完畢——2026-08-09 覆核：333 個 delete 候選在我方 CH/CN 檔案中已 0 個存在。keep_alive 是當時判定為動態組鍵而【保留】者，勿刪。",
+  "_note": "⚠️ 本檔是【已完成清理的紀錄】，不是待辦清單。各檔 delete 陣列已於 commit 4e9ce58（42.20.2 對版，清理 354 鍵）套用完畢——2026-08-09 覆核：333 個 delete 候選在我方 CH/CN 檔案中已 0 個存在。⚠️ 2026-08-11 更正：其中 MapLabel.json 的 39 鍵係誤判活鍵（見該節 _note 與 method ⑨），已回滾還原並自 delete 移入 keep_alive——現為 294 個 delete 候選已 0 個存在。keep_alive 是當時判定為動態組鍵而【保留】者，勿刪。",
   "verified": "2026-08-09",
   "applied_in": "4e9ce58",
   "later_batches": [
@@ -8,9 +8,14 @@
     "date": "2026-08-09",
     "keys": 85,
     "detail": "SurvivalGuide.json 83 鍵（B41 的 SurvivalGuide_*_entrieN* 體例；B42 改用 SurvivalGuideEntry.registerBase 產生的 SurvivalGuide_{id}_title/_description，96 個 entry。舊體例在 Java 全樹只命中 Jackson 函式庫、PZ 自身零引用。刪後 CH/CN 各 229 鍵＝官方 EN 鍵數，B42 必要 192 鍵＋19 個 _description_joypad 變體 100% 覆蓋、孤兒歸零）。⚠️ 同批原本還刪了 Recipes.json 的 MetalDoor(Poor)/(Shoddy)，**該判定是錯的、已復原**：它們不是死鍵，而是 xuiSkin DisplayName 的查表來源（`Metal Door (Poor)` 去空格後即此鍵，見 method 第 ⑫ 條）。當時的存活掃描只看 Lua/Java/scripts 的字面引用與 item/craftRecipe/entity 名，沒把 xuiSkin 的 DisplayName 去空格納入，因而誤判。復原時順修兩個既有缺陷：(Poor) 誤植成「門框」、階級詞「劣質」不在官方詞彙裡——比照官方 MetalWallLvl1/2/3 的 Basic/Advanced/Craftsman 改為 金屬門 (基礎)／(進階)"
+   },
+   {
+    "date": "2026-08-11",
+    "keys": 39,
+    "detail": "【回滾，非新刪批】MapLabel.json 39 鍵誤刪還原（GitHub issue #2，路易斯維爾地圖裸 key）。根因：存活掃描 method ⑨ 只掃官方 worldmap*.xml，漏了本 MOD 自帶 media/maps/Riverside, KY/worldmap-annotations.lua 的 addUntranslatedText 引用（56 鍵，引擎前綴路由只查 MapLabel.json、官方 EN 亦無、miss 即裸 key）。與 MetalDoor(Poor)/(Shoddy) 誤刪同型（存活來源清單漏一條路徑）。已還原 CH/CN 各 56 鍵（倖存 17 鍵值零異動）、順修 CN IrvingtonSpeedway 英文殘留，並新增 verify_mod.py 檢查 12（地圖註記鍵覆蓋：MapLabel.json 逐檔比對＋掃描失明交叉比對＋非 MapLabel_ 前綴防護）防同型回歸。"
    }
   ],
-  "method": "存活判定須跑多路徑，勿只掃 Lua：①Lua 全樹字面 ②反編譯 Java 全樹字面 ③scripts/**/*.txt 全語料字面 ④item X→ItemName/Tooltip_item_/ContextMenu_ ⑤craftRecipe X 與 entity X→Recipes/Tooltip_Recipe_（⚠️ entity 名這條漏過一次：CharcoalBurningPit 是死鍵、Charcoal_Pit 才是活鍵）⑥Tags=→IGUI_CraftingWindow_ ⑦Java enum（MoodleType 等，大小寫敏感：Bleeding≠Bleed、HasACold≠Hasacold）⑧sandbox 選項名 ⑨maps/**/worldmap*.xml 的 MapLabel_（全庫僅 14 個活鍵）⑩我方 MOD 自有 _Flx.lua（曾差點誤刪自家在用的 IGUI_Fish_Window_*）⑪官方 EN 是否仍持有 ⑫**xuiSkin 的 DisplayName 去空格後即 Recipes 鍵**（XuiSkinScript.java:163-169 在腳本解析期做 replace(\" \",\"\") → getRecipeName；這條漏過一次，害 MetalDoor 兩鍵被誤刪）⑬**tile 定義的 GroupName+CustomName → Moveables 鍵**（ISWorldObjectContextMenu／ISMoveableSpriteProps／ISDisassembleMenu 以 `GroupName .. \" \" .. CustomName` 呼叫 Translator.getMoveableDisplayName，Translator.java:642 做 空白→底線／連字號→底線／去單引號 後查 Moveables.json；句點不會被去掉，理由同 A27。官方 EN/Moveables.json 只收錄一部分 tile 名，另有 190 鍵是【官方 EN 沒有、但執行期真的會查】的活鍵（138 個可由 tile 的 GroupName+CustomName 直接對上，另 52 個來自假人 script 名 getMannequinScriptName 等其他路徑），**不可因為官方 EN 沒有就判死**（官方 FR 亦自行補鍵）。掃描來源 media/*.tiles，tdef v1 格式：magic `tdef` + int ver + int tilesetCount，每 tileset 為 name 行 + image 行 + 四個 int（末者為 tile 數），每 tile 為 int propCount + propCount 組「key 行 + value 行」。）"
+  "method": "存活判定須跑多路徑，勿只掃 Lua：①Lua 全樹字面 ②反編譯 Java 全樹字面 ③scripts/**/*.txt 全語料字面 ④item X→ItemName/Tooltip_item_/ContextMenu_ ⑤craftRecipe X 與 entity X→Recipes/Tooltip_Recipe_（⚠️ entity 名這條漏過一次：CharcoalBurningPit 是死鍵、Charcoal_Pit 才是活鍵）⑥Tags=→IGUI_CraftingWindow_ ⑦Java enum（MoodleType 等，大小寫敏感：Bleeding≠Bleed、HasACold≠Hasacold）⑧sandbox 選項名 ⑨maps/**/worldmap*.xml 的 MapLabel_ ＋ 我方 media/maps/**/worldmap-annotations.lua 的 addUntranslatedText 引用（⚠️ 這條原本只掃官方 .xml、記「全庫僅 14 個活鍵」，漏了本 MOD 自帶 annotations 的 56 個引用鍵，39 個 MapLabel_* POI 因此被誤刪、上線當日玩家回報裸 key——GitHub issue #2，2026-08-11 已回滾；verify_mod.py 檢查 12 現以此為閘）⑩我方 MOD 自有 _Flx.lua（曾差點誤刪自家在用的 IGUI_Fish_Window_*）⑪官方 EN 是否仍持有 ⑫**xuiSkin 的 DisplayName 去空格後即 Recipes 鍵**（XuiSkinScript.java:163-169 在腳本解析期做 replace(\" \",\"\") → getRecipeName；這條漏過一次，害 MetalDoor 兩鍵被誤刪）⑬**tile 定義的 GroupName+CustomName → Moveables 鍵**（ISWorldObjectContextMenu／ISMoveableSpriteProps／ISDisassembleMenu 以 `GroupName .. \" \" .. CustomName` 呼叫 Translator.getMoveableDisplayName，Translator.java:642 做 空白→底線／連字號→底線／去單引號 後查 Moveables.json；句點不會被去掉，理由同 A27。官方 EN/Moveables.json 只收錄一部分 tile 名，另有 190 鍵是【官方 EN 沒有、但執行期真的會查】的活鍵（138 個可由 tile 的 GroupName+CustomName 直接對上，另 52 個來自假人 script 名 getMannequinScriptName 等其他路徑），**不可因為官方 EN 沒有就判死**（官方 FR 亦自行補鍵）。掃描來源 media/*.tiles，tdef v1 格式：magic `tdef` + int ver + int tilesetCount，每 tileset 為 name 行 + image 行 + 四個 int（末者為 tile 數），每 tile 為 int propCount + propCount 組「key 行 + value 行」。）"
  },
  "Recipes.json": {
   "delete": [
@@ -444,7 +449,9 @@
   "keep_alive": []
  },
  "MapLabel.json": {
-  "delete": [
+  "_note": "⚠️ 2026-08-11 全數回滾：這 39 鍵不是死鍵——本 MOD 自帶的 media/maps/Riverside, KY/worldmap-annotations.lua 以 addUntranslatedText 引用 56 個 MapLabel_* 鍵，引擎按前綴路由只查 MapLabel.json（Translator.getTextInternal，不跨檔名），官方 EN 亦無這批 POI 鍵、miss 時無值可退直接畫裸 key。原存活掃描（method ⑨）只掃官方 worldmap*.xml、漏了本 MOD 的 annotations lua，誤刪隨 1.15.1 上線當日即被玩家回報（GitHub issue #2）。已還原 CH/CN 各 56 鍵並加 verify_mod.py 檢查 12（地圖註記鍵覆蓋）把關。",
+  "delete": [],
+  "keep_alive": [
    "MapLabel_BrandenburgDetentionCenter",
    "MapLabel_BrightValleyTrailerPark",
    "MapLabel_CampArthur",
@@ -484,8 +491,7 @@
    "MapLabel_Trainyard",
    "MapLabel_WadsworthLake",
    "MapLabel_WestMapleCountryClub"
-  ],
-  "keep_alive": []
+  ]
  },
  "UI.json": {
   "delete": [

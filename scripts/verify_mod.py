@@ -23,6 +23,15 @@
  11. CHANGELOG 洩漏掃描     — bullet 會被整段貼到公開的 Workshop 更新說明；掃基礎設施
                            樣式（/home/ 路徑、IP、SteamID64、ssh、主機名）當最後防線。
                            攻擊配方與玩家識別資訊機器認不出來，靠撰寫規則（AGENTS.md）
+ 12. 地圖註記鍵覆蓋         — worldmap-annotations.lua 以 addUntranslatedText 引用的
+                           MapLabel_* 鍵必須存在於各語系 MapLabel.json。引擎按前綴
+                           路由到 per-file map（Translator.getTextInternal：
+                           MapLabel_ → mapLabel，僅由各 mod／本體的 MapLabel.json
+                           填充；跨 mod 同檔名合併、不跨檔名），鍵放錯檔照樣裸 key。
+                           56 個引用鍵有 42 個官方 EN 亦無（39 個 POI＋3 個森林），
+                           miss 時 fallback 無值可退，直接畫裸 key。4e9ce58 死鍵清理
+                           以「官方 EN 有無」判死鍵誤刪其中 39 鍵，隨 1.15.1 上線
+                           當日玩家即於 Steam 回報（後提交 GitHub issue #2）
 
 新增檢查時：同步把對應的坑記進 AGENTS.md 踩坑錄，並依「踩坑進化協議」回流到
 pz-mod-template（見 AGENTS.md）。
@@ -296,6 +305,58 @@ if os.path.isfile(_cl):
                 if mm:
                     leaks.append(f"CHANGELOG.md:{lineno} {desc}（{mm.group()[:40]}）")
     fail("CHANGELOG 無基礎設施洩漏樣式", leaks) if leaks else ok("CHANGELOG 無基礎設施洩漏樣式")
+
+# ---- 12. 地圖註記鍵覆蓋 ----
+# 引擎按前綴路由到 per-file map（Translator.getTextInternal：MapLabel_ →
+# mapLabel，該 map 僅由 Translate/<lang>/MapLabel.json 填充；跨 mod 同檔名
+# 合併、不跨檔名）——鍵搬去別的 json 遊戲內照樣裸 key，故限定 MapLabel.json。
+ANNO_LABEL = "地圖註記鍵覆蓋（worldmap-annotations → MapLabel.json）"
+anno_details, anno_files = [], 0
+for m in MEDIA_DIRS:
+    maps_root = os.path.join(m, "maps")
+    troot = os.path.join(m, "lua", "shared", "Translate")
+    if not (os.path.isdir(maps_root) and os.path.isdir(troot)):
+        continue
+    refs = set()
+    for base, _, files in os.walk(maps_root):
+        for name in files:
+            if name != "worldmap-annotations.lua":
+                continue
+            anno_files += 1
+            rel = os.path.relpath(os.path.join(base, name), REPO)
+            with open(os.path.join(base, name), encoding="utf-8") as fh:
+                src = fh.read()
+            calls = len(re.findall(r"addUntranslatedText\s*\(", src))
+            found = re.findall(r"""addUntranslatedText\s*\(\s*(['"])([^'"]+)\1""", src)
+            if len(found) != calls:
+                anno_details.append(f"{rel}: {calls} 處呼叫僅擷取 {len(found)} 鍵——掃描失明（字串引號形式漂移？）")
+            refs |= {k for _, k in found}
+    for k in sorted(refs):
+        # MapLabel_Flx.lua 只保留 ^MapLabel_[^%s<>]+$ 的非玩家符號，其餘刪除——
+        # 非此前綴的引用鍵會被靜默移除（標籤消失，比裸 key 更難查）
+        if not re.fullmatch(r"MapLabel_[^\s<>]+", k):
+            anno_details.append(f"引用鍵 {k} 非 MapLabel_ 前綴——會被 MapLabel_Flx.lua 過濾刪除")
+    if not refs:
+        continue
+    for l in sorted(d for d in os.listdir(troot) if os.path.isdir(os.path.join(troot, d))):
+        p = os.path.join(troot, l, "MapLabel.json")
+        try:
+            with open(p, encoding="utf-8") as fh:
+                data = json.load(fh)
+        except Exception:
+            data = {}   # 缺檔/壞檔 ⇒ 引用鍵全數列缺（壞檔另由「翻譯 JSON 可解析」標出）
+        anno_details.extend(f"{l} 缺 {k}" for k in sorted(refs - set(data)))
+        for k in sorted(refs & set(data)):
+            v = data[k]
+            # 空值/非字串/值＝鍵名 都等同缺譯——引擎照樣畫空白或裸 key
+            if not isinstance(v, str) or not v.strip() or v.strip() == k:
+                anno_details.append(f"{l} 的 {k} 譯值無效（空值或等於鍵名）")
+if anno_files == 0:
+    skip(ANNO_LABEL, "未發現 worldmap-annotations.lua")
+elif anno_details:
+    fail(ANNO_LABEL, anno_details)
+else:
+    ok(ANNO_LABEL)
 
 # ---- 總結 ----
 print()
