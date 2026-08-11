@@ -1542,7 +1542,7 @@ local EN_FORMATS = {
     ScratchingTicketNameWinner = "%1 - Winner %2",
 }
 
--- 雪花玻璃球舊版 CH/CN 格式（1.6.4 前為 "%1 的 %2"，已改為 "%1 (%2)"）
+-- 雪花玻璃球舊版格式（CH 1.6.4 前為 "%1 的 %2"，已改 "%1 (%2)"；CN 現行仍為 "%1 的 %2"）
 local LEGACY_SNOWGLOBE_FORMATS = { "%1 的 %2" }
 
 -- 魚的大小字首（EN 值 → IGUI key；fixFish 會同時嘗試當前語言值）
@@ -1577,9 +1577,33 @@ local function translatedText(key)
     return nil
 end
 
--- 取 key 的「原始格式字串」（不帶參數呼叫 getText，%1/%2 佔位符保留）
+-- 取 key 的「原始格式字串」（%1/%2/%3 佔位符保留）。不可無參數呼叫 getText 解格式：
+-- Translator 載入期把 %N 改寫成 %N$s（formatFixer），無參數呼叫含佔位符的 key
+-- 每次都噴 "Missing arguments" 警告（42.20.2 reportMissingArgumentsFromPastAbuse，
+-- 無狀態、逐次觸發），掛在 inventory 高頻重掃上就是警告洪水。比照 ItemNameFix
+-- 的 keyRingSuffixLocal：帶哨兵參數讓官方自己格式化（成功路徑、零警告）再把
+-- 哨兵換回 %N，免疫格式規格改寫。結果整場不變，memoize 每 key 只查一次
+--（查無翻譯以 false 佔位，同樣只查一次）。
+local RAW_S1, RAW_S2, RAW_S3 = "\1\2", "\1\3", "\1\4"
+local rawFormatCache = {}
 local function rawFormat(key)
-    return translatedText(key)
+    if not key or key == "" then return nil end
+    local cached = rawFormatCache[key]
+    if cached == nil then
+        local text
+        if getTextOrNull then
+            text = getTextOrNull(key, RAW_S1, RAW_S2, RAW_S3)
+        else
+            text = getText(key, RAW_S1, RAW_S2, RAW_S3)
+        end
+        if text and text ~= "" and text ~= key then
+            cached = text:gsub(RAW_S1, "%%1"):gsub(RAW_S2, "%%2"):gsub(RAW_S3, "%%3")
+        else
+            cached = false
+        end
+        rawFormatCache[key] = cached
+    end
+    return cached or nil
 end
 
 -- 把 "%1 of %2" 這類格式編成 Lua pattern：%1 代入錨點字面值，%2/%3 變成捕獲

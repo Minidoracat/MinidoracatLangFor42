@@ -4,6 +4,20 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.2-1.18.2] - 2026-08-11
+
+### Fixed
+
+- **修復物品欄掃描灌爆 console 紀錄的警告洪水**。42.20 起，動態物品名修復（寵物牌、名片、證件、雪花球、舊報紙、股票等）向引擎索取名稱句型的方式會觸發「Missing arguments」警告，且物品欄每次刷新、每件相關物品都觸發一次——正式服玩家的紀錄檔 223 秒內被灌 1 萬 5 千條（佔整份紀錄 96%），把其他錯誤訊息全部淹掉。現改以帶占位參數的方式取句型、並於整場遊戲內快取，警告歸零，掃描負擔同步下降。
+  > 技術要點：玩家 log 223 秒 13,758 條 `Missing arguments for "IGUI_ItemWithDisplayName"`＋1,299 條 `IGUI_ItemWithDisplayNameAndJob`（60+ 條/秒）。機制經 42.20.2 反編譯查證：`Translator.getText`／`getTextOrNull` 一律經 `reportMissingArgumentsFromPastAbuse`，對含佔位符的翻譯在參數不足時逐次拋 `MissingFormatArgumentException` 逐次警告——無狀態、非「標記後全噴」制，帶齊參數的呼叫不觸發；洪水 100% 來自 `matchKnownFormats` 每次呼叫 `rawFormat(formatKey)` 無參數取原始格式，掛在 `OnContainerUpdate`／`OnRefreshInventoryWindowContainers`／`EveryOneMinute` × 每件物品。修法比照 `ItemNameFix_Flx.lua` 的 `keyRingSuffixLocal` 既例：`rawFormat` 改帶哨兵參數（`"\1\2"` 系）讓官方自己格式化——走 `text.formatted` 成功路徑、警告歸零（非僅降頻）——再把哨兵換回 `%N`，加 module-level memoize（查無翻譯的 nil 以 false 佔位、同樣只查一次）與 nil-key 守衛。五個涉事 key（`ItemWithDisplayName`／`AndJob`／`NoQuote`／`SnowGlobeOf`／`Newspaper_Name`）CH/CN 佔位符數量與 vanilla EN 逐一核對一致——警告純屬無參數呼叫，非翻譯格式錯誤；log 只見兩個 key 是因為另外三個的物品（雪花球／舊報紙／股票）沒出現在該玩家背包，同路徑一體修復。
+- **修復雪花球混語名稱**。「雪花玻璃球 (Louisville)」這類半中半英的殘留名稱自 42.20 起一直修不到，本次連帶修復，地名會正確補翻成中文。
+  > 技術要點：`Translator.tryFillMapFromFile` 載入期把 `%N` 改寫成 `%N$s`（`formatFixer`，`Translator.java:894`；repo 內 `test_item_name_fix.lua:19` 早已記載此行為），`rawFormat` 拿回的實為 `%1$s (%2$s)` 形態，而 `buildCapturePattern` 只認 `%N`——pattern 要求字面 `$s`、永不命中，currentFormat 解析分支 42.20 起全滅。格式與 EN 相同的 key（`%1: %2` 系）被「EN 格式＋當前錨點」交叉分支掩護僥倖可達，CH/EN 格式相異的 `IGUI_SnowGlobeOf`（CH `%1 (%2)` vs EN `%1 of %2`）則徹底修不到。哨兵版 `rawFormat` 由官方格式化結果換回 `%N`，天然拿回正確格式且不依賴 `formatFixer` 實作細節（TIS 改寫格式規格也不再靜默失效），`matchKnownFormats` 邏輯零改動。
+- 本次修復經離線回歸測試（88 案）與雙邊獨立 review 驗證，寵物牌／名片／報紙等既有翻譯功能無迴歸。
+  > 技術要點（測試）：新增 `scripts/test_dynamic_item_name.lua`（11 案），鑑別力已對修復前版本驗證——7 案紅（三個 key 各 50 次裸查 vs 歸零斷言、三個 key 窗內格式擷取 vs memoize 恰一次斷言、混語雪花球不可達），修復後全綠；EN 烘焙殘留、三參數名片、交叉分支僥倖路徑、冪等性（直呼 `computeFixedName` 繞過 pcall，快取層拋錯顯性可見）等守門案照舊。裸查與格式擷取分開計數——哨兵路徑帶參數，只算裸查會讓 cache 失效時測試假綠（codex 以 mutation 實證後補上）。既有 `test_item_name_fix.lua`（20 案）、`test_evolved_recipe_name.lua`（57 案）無迴歸，verify_mod.py 12/12 PASS。實機驗證（2026-08-11，debug 生成寵物牌／名片／股票／雪花球／舊報紙五類並反覆刷新物品欄）：console 零 `Missing arguments`、零本 mod ERROR，中文顯示照舊。
+  > 技術要點（review）：Claude base＋tests／errors／comments／performance 五 lane、codex review-plus 獨立 lane。哨兵改法出自 base lane 對照 `ItemNameFix` 既例駁回初版 memoize＋gsub 解法（初版警告僅降頻不歸零、且綁死 `formatFixer` 實作細節）；nil-key 守衛由 errors lane 抓出（`rawFormatCache[nil]` 寫入拋錯會被上層 pcall 吞成靜默 no-op、每 tick 重試）；測試 stub 單層計數與檔頭舉例修正由 tests／comments lane 抓出。
+  > 技術要點（取捨）：語言切換走完整 Lua reset、快取隨之重建（與同檔既有 `lazyDomainMaps` 同一取捨）；debug 用 `Translator.loadFiles()` 熱重載不重建快取，屬開發期限定風險，接受。
+- `versionMin` 維持 42.20.1。
+
 ## [42.20.2-1.18.1] - 2026-08-11
 
 ### Fixed
