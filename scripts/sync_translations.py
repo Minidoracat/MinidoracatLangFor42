@@ -22,6 +22,7 @@ PZ 翻譯同步工具
   gen-vehicle-map - 從 vanilla EN IG_UI.json 生成 VehicleKey_Flx 反查表
   gen-item-name-map - 從 vanilla EN ItemName.json 生成 ItemNameFix_Flx 反查表
   gen-radio-map   - 從 vanilla/MOD RadioData.json 生成 RadioData_Flx 英文→RD key 反查表
+  gen-aebs-map    - 從 vanilla EN DynamicRadio.json 生成 AEBSWeather_Flx 英文→AEBS key 反解表
   gen-media-map   - 從 vanilla recorded_media.lua + EN Recorded_Media.json 生成 RecordedMediaName_Flx 反查表
 """
 from __future__ import annotations
@@ -1642,6 +1643,389 @@ def cmd_gen_radio_map(pz_path: Path | None = None):
 
 
 # ============================================================
+# gen-aebs-map：從 vanilla EN DynamicRadio.json 生成 AEBSWeather_Flx 反解表
+# ------------------------------------------------------------
+# 目的：AEBS 天氣播報由 server 端 ISWeatherChannel.lua 以 getText() 組成「成品字串」
+#   後送給 client（WaveSignal 的 guid 為 null，client 無從反查 key），英文 server
+#   對中文 client 必然送英文。client 端只能反解字串，故輸出「英文成品 → 翻譯 key」
+#   的片語表與模板 pattern，由 AEBSWeather_Flx.lua 反解後以 getText(key, ...)
+#   用 client 端語言重組——因此輸出只含 key，不含譯文，CH/CN 共用同一份表。
+# ============================================================
+AEBS_LUA_PATH = MOD_BASE / "lua" / "client" / "Chat" / "AEBSWeather_Flx.lua"
+AEBS_GEN_BLOCK_START = "-- <AUTO-GEN:AEBS_MAP START>"
+AEBS_GEN_BLOCK_END = "-- <AUTO-GEN:AEBS_MAP END>"
+
+AEBS_PREFIX_KEYS = ("AEBS_Pre_today", "AEBS_Pre_tomorrow", "AEBS_Pre_dayafter")
+
+# producer 契約：ISWeatherChannel.lua 實際引用的 AEBS key 全集，依用途分類。
+# 反解表的每一段都由這份分類推導，任何一項對不上就代表 producer 漂移——generator
+# 直接 exit 1 強制人工重新對版，而不是靜默產出殘缺或錯位的表。
+AEBS_SEGMENT_KEYS = (
+    "AEBS_segment_night",
+    "AEBS_segment_early_morning",
+    "AEBS_segment_morning",
+    "AEBS_segment_afternoon",
+    "AEBS_segment_evening",
+)
+AEBS_WIND_KEYS = ("AEBS_wind_1", "AEBS_wind_2", "AEBS_wind_3", "AEBS_wind_4")
+AEBS_ZONE_KEYS = (
+    "AEBS_zone_name_s",
+    "AEBS_zone_name_sw",
+    "AEBS_zone_name_nw",
+    "AEBS_zone_name_c",
+    "AEBS_zone_name_n",
+    "AEBS_zone_name_ne",
+    "AEBS_zone_name_w",
+    "AEBS_zone_name_e",
+    "AEBS_zone_name_se",
+)
+AEBS_CLOUD_KEYS = (
+    "AEBS_clouds_0",
+    "AEBS_clouds_1",
+    "AEBS_clouds_2",
+    "AEBS_clouds_3",
+    "AEBS_clouds_4",
+)
+AEBS_UNIT_KEYS = ("AEBS_MpH", "AEBS_KpH")
+AEBS_WEATHER_SUFFIX_KEYS = (
+    "AEBS_weather_predicted",
+    "AEBS_weather_and_a",
+    "AEBS_weather_light_moderate",
+    "AEBS_weather_heavy_rain",
+    "AEBS_weather_storm",
+    "AEBS_weather_tropical",
+    "AEBS_weather_blizzard",
+    "AEBS_weather_snowfall",
+)
+AEBS_WEATHER_TITLE_KEYS = (
+    "AEBS_weather_storm_C",
+    "AEBS_weather_tropical_C",
+    "AEBS_weather_blizzard_C",
+)
+# WeatherChannel.Init() 的 activity 表逐項對應（vanilla 無 rand_pre_3／undead）
+AEBS_BARE_KEYS = (
+    "AEBS_rand_pre_0",
+    "AEBS_rand_pre_1",
+    "AEBS_rand_pre_2",
+    "AEBS_rand_pre_4",
+    "AEBS_rand_pre_5",
+    "AEBS_rand_pre_6",
+    "AEBS_rand_pre_7",
+    "AEBS_rand_pre_8",
+    "AEBS_rand_pre_9",
+    "AEBS_rand_pre_10",
+    "AEBS_rand_pre_11",
+    "AEBS_rand_pre_12",
+)
+# 帶 %N 佔位符者（錨定模板 7 ＋ 開放式續接中的 weather_0_a／0_c）
+AEBS_PARAMETRISED_KEYS = (
+    "AEBS_temperature",
+    "AEBS_wind_0",
+    "AEBS_weather_warning",
+    "AEBS_random_0",
+    "AEBS_random_1",
+    "AEBS_random_2",
+    "AEBS_random_3",
+    "AEBS_weather_0_a",
+    "AEBS_weather_0_c",
+)
+
+# `WeatherChannel.Init()` 把 activity 表整個換成 key 字面（"AEBS_rand_pre_0"…），
+# 而 AEBS_random_3 直接把它塞進 %1 **未經 getText**——vanilla 因此在任何語言都吐裸
+# key。反解時需認出 key 本身並補譯。（同一支 Init 也把 zones 換成 key，但 random_0
+# 那側有 getText(zone.name)，成品已是譯文，走一般片語表即可，不需列在這裡。）
+
+# 只有這些 key 會由 AddRadioLine 單獨送出一整行；其餘一律只出現在模板參數或天氣
+# 後綴裡。整行全等表若收錄 "North"／"Mild"／"unknown" 這類短詞，玩家在聊天打同樣
+# 的字就會被改寫，故全等表嚴格限縮到這份清單，短詞只供模板參數內的 greedy 使用。
+AEBS_STANDALONE_KEYS = (
+    "AEBS_Intro",
+    "AEBS_Choppah",
+    "AEBS_Power_1",
+    "AEBS_Power_2",
+    "AEBS_Power_3",
+    "AEBS_fog_0",
+    "AEBS_fog_1",
+    "AEBS_fog_2",
+    "AEBS_random_5",
+    "AEBS_random_6",
+    "AEBS_random_7",
+    "AEBS_random_8",
+    "AEBS_random_9",
+    "AEBS_random_10",
+    "AEBS_random_11",
+    "AEBS_random_12",
+    "AEBS_random_13",
+)
+
+AEBS_LUA_MAGIC = "^$()%.[]*+-?"
+AEBS_POSITIONAL_TOKEN = re.compile(r"%[1-9]")
+
+# GetForecastString 的 type 4/5 會在這三個 key 之後**續接**後綴（weather_predicted
+# ＋災害名／weather_light_moderate／weather_and_a／weather_snowfall），整行不等於
+# 單一 key，故另出一份不錨定行尾的 pattern 供「前段 + 剩餘 greedy」用。
+# 其餘 key 皆為 AddRadioLine 的完整一行，維持 $ 錨定以免誤匹配其他電台台詞。
+AEBS_OPEN_ENDED_KEYS = ("AEBS_weather_0_a", "AEBS_weather_0_b", "AEBS_weather_0_c")
+
+# 上列分類的聯集＝producer 引用的 AEBS key 全集。EN 實際鍵集必須與此完全相等。
+AEBS_EXPECTED_KEYS = frozenset(
+    AEBS_PREFIX_KEYS
+    + AEBS_STANDALONE_KEYS
+    + AEBS_OPEN_ENDED_KEYS
+    + AEBS_PARAMETRISED_KEYS
+    + AEBS_BARE_KEYS
+    + AEBS_SEGMENT_KEYS
+    + AEBS_WIND_KEYS
+    + AEBS_ZONE_KEYS
+    + AEBS_CLOUD_KEYS
+    + AEBS_UNIT_KEYS
+    + AEBS_WEATHER_SUFFIX_KEYS
+    + AEBS_WEATHER_TITLE_KEYS
+)
+
+
+def _aebs_check_contract(aebs: dict[str, str], mod_values: dict[str, dict[str, str]]) -> list[str]:
+    """驗證來源契約，回傳錯誤訊息清單（空 = 通過）。
+
+    涵蓋 codex review 以 mutation 實證過的六個缺口：producer 鍵增刪、CH/CN 空值或
+    未譯佔位、EN 佔位符順序錯置、runtime 英文碰撞、裸 key 清單漂移。
+    """
+    errors: list[str] = []
+
+    actual = set(aebs)
+    missing = sorted(AEBS_EXPECTED_KEYS - actual)
+    extra = sorted(actual - AEBS_EXPECTED_KEYS)
+    if missing:
+        errors.append(f"EN 缺少 producer 引用的 key（{len(missing)}）：{missing[:10]}")
+    if extra:
+        errors.append(f"EN 出現契約外的新 key（{len(extra)}），須先對版 producer：{extra[:10]}")
+
+    parametrised = {key for key in actual if AEBS_POSITIONAL_TOKEN.search(aebs[key])}
+    if parametrised != set(AEBS_PARAMETRISED_KEYS):
+        errors.append(
+            f"帶參數 key 集合漂移：多出 {sorted(parametrised - set(AEBS_PARAMETRISED_KEYS))}、"
+            f"少了 {sorted(set(AEBS_PARAMETRISED_KEYS) - parametrised)}"
+        )
+
+    # 捕獲組依 %N 在字串中的出現順序產生，之後原序 unpack 給 getText；
+    # EN 若寫成 %2…%1，參數就會錯位，故要求首次出現順序必須是 1..n 連續遞增。
+    for key in sorted(parametrised):
+        seen: list[int] = []
+        for token in AEBS_POSITIONAL_TOKEN.findall(aebs[key]):
+            slot = int(token[1])
+            if slot not in seen:
+                seen.append(slot)
+        if seen != list(range(1, len(seen) + 1)):
+            errors.append(f"{key} 的 %N 出現順序非 1..n 連續遞增：{seen}（捕獲會錯位）")
+
+    # runtime 形英文碰撞：整行全等表與 greedy 都以英文原文為索引，重複即無法消歧
+    by_runtime: dict[str, list[str]] = {}
+    for key in sorted(actual):
+        by_runtime.setdefault(aebs[key].replace("%%", "%"), []).append(key)
+    for runtime_en, keys in sorted(by_runtime.items()):
+        if len(keys) > 1:
+            errors.append(f"英文原文重複，無法消歧：{runtime_en!r} ← {keys}")
+
+    for label, values in sorted(mod_values.items()):
+        for key in sorted(actual):
+            value = values.get(key)
+            if value is None:
+                errors.append(f"MOD {label} 缺 key：{key}")
+            elif not isinstance(value, str) or not value.strip() or value.strip() == "~":
+                errors.append(f"MOD {label} 的 {key} 是空值／佔位值：{value!r}")
+            elif value == key:
+                errors.append(f"MOD {label} 的 {key} 值等於鍵名（未譯）")
+            elif set(AEBS_POSITIONAL_TOKEN.findall(aebs.get(key, ""))) != set(
+                AEBS_POSITIONAL_TOKEN.findall(value)
+            ):
+                errors.append(
+                    f"MOD {label} 的 {key} 佔位符與 EN 不符："
+                    f"EN={sorted(set(AEBS_POSITIONAL_TOKEN.findall(aebs.get(key, ''))))} "
+                    f"{label}={sorted(set(AEBS_POSITIONAL_TOKEN.findall(value)))}"
+                )
+
+    return errors
+
+
+def _aebs_lua_pattern(raw_en: str, anchored: bool = True) -> tuple[str, int]:
+    """EN 模板 → Lua pattern 與參數個數。
+
+    表鍵一律用執行期形：getText 會把 %% 還原成單一 %，server 烘進 RadioLine.text
+    的是 format 後的文字，故 pattern 裡的字面 % 必須寫成 Lua 的 %%。
+    位於字串結尾的參數用貪婪 (.*)，其餘用非貪婪 (.-) 靠後方固定文字錨定。
+    anchored=False 時省略行尾 $，供 string.find 取結束位置後續接剩餘內容。
+    """
+    pct, slot = "\x01", "\x02"
+    text = raw_en.replace("%%", pct)
+    count = len(AEBS_POSITIONAL_TOKEN.findall(text))
+    text = AEBS_POSITIONAL_TOKEN.sub(slot, text)
+    escaped = "".join(
+        char if char in (pct, slot) else ("%" + char if char in AEBS_LUA_MAGIC else char)
+        for char in text
+    )
+    escaped = escaped.replace(pct, "%%")
+
+    parts = escaped.split(slot)
+    pattern = parts[0]
+    for index in range(1, len(parts)):
+        greedy = index == len(parts) - 1 and parts[index] == ""
+        pattern += "(.*)" if greedy else "(.-)"
+        pattern += parts[index]
+    return "^" + pattern + ("$" if anchored else ""), count
+
+
+def _aebs_fixed_length(pattern: str) -> int:
+    """pattern 去掉捕獲組後的固定文字長度，用於排序（越具體越優先匹配）。"""
+    return len(re.sub(r"\(\.[-*]\)", "", pattern))
+
+
+def cmd_gen_aebs_map(pz_path: Path | None = None):
+    """從 vanilla EN DynamicRadio.json 生成 AEBS 英文成品 → 翻譯 key 反解表"""
+    pz_path = pz_path or VANILLA_PZ_DEFAULT
+    en_file = pz_path / "media" / "lua" / "shared" / "Translate" / "EN" / "DynamicRadio.json"
+
+    print("=" * 60)
+    print("生成 AEBS 天氣播報反解表（AEBSWeather_Flx）")
+    print("=" * 60)
+    print(f"Vanilla EN 來源：{en_file}")
+
+    if not en_file.exists():
+        print(f"❌ 找不到來源檔：{en_file}")
+        sys.exit(1)
+
+    en_data = read_translation(en_file)
+    # 這裡不過濾空值／"~"：空值屬於契約違規，要由 _aebs_check_contract 明確報錯，
+    # 先濾掉會讓「鍵存在但值是空的」偽裝成「鍵不存在」而被誤判成 producer 漂移。
+    aebs = {key: value for key, value in en_data.items() if key.startswith("AEBS_")}
+    if not aebs:
+        print("❌ EN DynamicRadio.json 內找不到任何 AEBS_* 鍵")
+        sys.exit(1)
+
+    mod_values: dict[str, dict[str, str]] = {}
+    for label, mod_dir in (("CH", MOD_CH), ("CN", MOD_CN)):
+        mod_file = mod_dir / "DynamicRadio.json"
+        if not mod_file.exists():
+            print(f"❌ 找不到 MOD {label} 來源檔：{mod_file}")
+            sys.exit(1)
+        mod_values[label] = read_translation(mod_file)
+
+    contract_errors = _aebs_check_contract(aebs, mod_values)
+    if contract_errors:
+        print(f"❌ 來源契約檢查未通過（{len(contract_errors)} 項）：")
+        for message in contract_errors[:20]:
+            print(f"  - {message}")
+        if len(contract_errors) > 20:
+            print(f"  …另有 {len(contract_errors) - 20} 項")
+        sys.exit(1)
+
+    templates: list[tuple[str, str, int]] = []
+    phrases: list[tuple[str, str]] = []
+    for key, raw_en in sorted(aebs.items()):
+        if AEBS_POSITIONAL_TOKEN.search(raw_en):
+            # 續接型 key 不得產生 $ 錨定版本：其參數後方的固定文字是 "..."，而續接的
+            # 後綴（light_moderate／and_a...）也以 "..." 收尾，(.-) 會為了讓行尾對上
+            # 錨點而把整段後綴一起吞進參數，反而比不匹配更糟。只走 OPEN_TEMPLATES。
+            if key in AEBS_OPEN_ENDED_KEYS:
+                continue
+            pattern, count = _aebs_lua_pattern(raw_en)
+            templates.append((pattern, key, count))
+        else:
+            phrases.append((raw_en.replace("%%", "%"), key))
+
+    open_templates: list[tuple[str, str, int]] = []
+    for key in AEBS_OPEN_ENDED_KEYS:
+        pattern, count = _aebs_lua_pattern(aebs[key], anchored=False)
+        open_templates.append((pattern, key, count))
+
+    templates.sort(key=lambda item: (-_aebs_fixed_length(item[0]), item[1]))
+    phrases.sort(key=lambda item: (-len(item[0]), item[1]))
+    open_templates.sort(key=lambda item: (-_aebs_fixed_length(item[0]), item[1]))
+
+    # 整行全等查表：只收單獨成行的 key，避免短詞誤改玩家聊天。
+    # 契約檢查已保證這些 key 存在、無參數、英文原文互不重複。
+    phrase_key: OrderedDict[str, str] = OrderedDict(
+        (en_value, key) for en_value, key in phrases if key in AEBS_STANDALONE_KEYS
+    )
+    bare_keys = list(AEBS_BARE_KEYS)
+
+    print(f"讀取到 {len(aebs)} 個 AEBS_* 條目（契約檢查通過）")
+    print(f"錨定模板：{len(templates)} 條；開放式續接前段：{len(open_templates)} 條")
+    print(f"greedy 片語：{len(phrases)} 條；整行全等（單獨成行）：{len(phrase_key)} 條")
+    print(f"裸 key token（vanilla 未經 getText）：{len(bare_keys)} 條")
+
+    lines = [AEBS_GEN_BLOCK_START]
+    lines.append("-- 由 scripts/sync_translations.py gen-aebs-map 自動產生，請勿手動編輯")
+    lines.append(f"-- 來源：vanilla EN/DynamicRadio.json（AEBS_* 共 {len(aebs)} 條）")
+    lines.append("-- 只含英文原文 → 翻譯 key，譯文一律由 client 端 getText 取得。")
+    lines.append("AEBSFlx = AEBSFlx or {}")
+    lines.append("")
+    lines.append("-- AddForecast 的行首前綴，需先剝離才能匹配後方模板")
+    lines.append("AEBSFlx.PREFIXES = {")
+    for key in AEBS_PREFIX_KEYS:
+        lines.append(f'    {{ en = "{_lua_string(aebs[key])}", key = "{_lua_string(key)}" }},')
+    lines.append("}")
+    lines.append("")
+    lines.append("-- 帶參數模板，依固定文字長度降序（越具體越先匹配）")
+    lines.append("AEBSFlx.TEMPLATES = {")
+    for pattern, key, count in templates:
+        lines.append(
+            f'    {{ pat = "{_lua_string(pattern)}", key = "{_lua_string(key)}", n = {count} }},'
+        )
+    lines.append("}")
+    lines.append("")
+    lines.append("-- 開放式前段：GetForecastString type 4/5 會在其後續接天氣後綴，")
+    lines.append("-- 故不錨定行尾，由 string.find 取結束位置後把剩餘內容交給 greedy。")
+    lines.append("AEBSFlx.OPEN_TEMPLATES = {")
+    for pattern, key, count in open_templates:
+        lines.append(
+            f'    {{ pat = "{_lua_string(pattern)}", key = "{_lua_string(key)}", n = {count} }},'
+        )
+    lines.append("}")
+    lines.append("")
+    lines.append("-- 整行全等查表")
+    lines.append("AEBSFlx.PHRASE_KEY = {")
+    for en_value, key in phrase_key.items():
+        lines.append(f'    ["{_lua_string(en_value)}"] = "{_lua_string(key)}",')
+    lines.append("}")
+    lines.append("")
+    lines.append("-- greedy 逐段吃掉模板參數內的片語，依長度降序")
+    lines.append("AEBSFlx.PHRASES = {")
+    for en_value, key in phrases:
+        lines.append(f'    {{ en = "{_lua_string(en_value)}", key = "{_lua_string(key)}" }},')
+    lines.append("}")
+    lines.append("")
+    lines.append("-- WeatherChannel.Init() 把 activity 表換成 key 字面，AEBS_random_3 未經")
+    lines.append("-- getText 就塞進 %1，成品因此含裸 key（vanilla 各語言皆然）——認出後補譯。")
+    lines.append("AEBSFlx.BARE_KEYS = {")
+    for key in bare_keys:
+        lines.append(f'    ["{_lua_string(key)}"] = true,')
+    lines.append("}")
+    lines.append(AEBS_GEN_BLOCK_END)
+    generated_block = "\n".join(lines)
+
+    if not AEBS_LUA_PATH.exists():
+        print(f"❌ 找不到目標 Lua 檔：{AEBS_LUA_PATH}")
+        print("   請先建立 AEBSWeather_Flx.lua 並包含 AUTO-GEN 標記區塊")
+        sys.exit(1)
+
+    original = AEBS_LUA_PATH.read_text(encoding="utf-8-sig")
+    block_pattern = re.compile(
+        re.escape(AEBS_GEN_BLOCK_START) + r".*?" + re.escape(AEBS_GEN_BLOCK_END),
+        re.DOTALL,
+    )
+    if not block_pattern.search(original):
+        print(f"❌ {AEBS_LUA_PATH.name} 內找不到 AUTO-GEN 標記區塊")
+        sys.exit(1)
+
+    updated = block_pattern.sub(lambda _m: generated_block, original)
+    if updated != original:
+        AEBS_LUA_PATH.write_text(updated, encoding="utf-8", newline="\n")
+        print(f"✅ 已更新 {AEBS_LUA_PATH.relative_to(PROJECT_ROOT)}")
+    else:
+        print(f"ℹ️  內容未變動：{AEBS_LUA_PATH.relative_to(PROJECT_ROOT)}")
+
+
+# ============================================================
 # gen-dynamic-name-map：從 vanilla EN 翻譯生成 DynamicItemName_Flx 反查表
 # ------------------------------------------------------------
 # 目的：修復 ItemCodeOnCreate / Fishing Lua 在物品生成時把翻譯結果烘焙進
@@ -2102,6 +2486,7 @@ def main():
             "gen-vehicle-map",
             "gen-item-name-map",
             "gen-radio-map",
+            "gen-aebs-map",
             "gen-dynamic-name-map",
             "gen-media-map",
         ],
@@ -2115,7 +2500,7 @@ def main():
     )
     args = parser.parse_args()
 
-    if args.command not in {"gen-vehicle-map", "gen-item-name-map", "gen-radio-map", "gen-dynamic-name-map", "gen-media-map", "en-snapshot", "en-diff", "ch-lint", "import-new", "sync-ch"}:
+    if args.command not in {"gen-vehicle-map", "gen-item-name-map", "gen-radio-map", "gen-aebs-map", "gen-dynamic-name-map", "gen-media-map", "en-snapshot", "en-diff", "ch-lint", "import-new", "sync-ch"}:
         if not REF_CN.exists():
             print(f"❌ 參考目錄不存在：{REF_CN}")
             sys.exit(1)
@@ -2150,6 +2535,8 @@ def main():
             cmd_gen_item_name_map(args.pz_path)
         case "gen-radio-map":
             cmd_gen_radio_map(args.pz_path)
+        case "gen-aebs-map":
+            cmd_gen_aebs_map(args.pz_path)
         case "gen-dynamic-name-map":
             cmd_gen_dynamic_name_map(args.pz_path)
         case "gen-media-map":

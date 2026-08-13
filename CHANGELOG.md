@@ -4,6 +4,25 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.2-1.19.0] - 2026-08-13
+
+### Added
+
+- **多人伺服器天氣廣播英文修復（登記簿 A30）**。玩家回報在伺服器上把收音機轉到 97.6 MHz 時，自動緊急廣播系統的天氣預報整段是英文（「輕霧」「明天平均氣溫…」「東北風…」），其他介面卻都是正常中文。現在客戶端會把收到的廣播還原成你自己的語言。
+  - **不是翻譯漏了**。這段廣播的 78 個詞條在本翻譯包裡全部都有中文。問題出在「誰把字組好」：天氣預報是**伺服器**每小時先組成完整句子、再把組好的文字送給每個玩家，所以伺服器跑英文環境時，送出來的就是英文——跟客戶端裝了什麼翻譯包無關。單人遊戲不受影響，也不是舊存檔殘留。
+  - **修復方式**：客戶端收到廣播後，先把英文還原回對應的詞條，再用你自己的語言重新組句。伺服器語言不同、或伺服器沒裝翻譯包，都不影響顯示。
+  - **順手修掉一個原版缺陷**：某類隨機軍事通報的內容原本在**任何語言**下都會顯示成一串識別碼而不是文字，現已一併補正。
+  - **已知上限**：只修好聊天視窗裡的字幕。收音機**旁邊**浮動的那一行仍會是伺服器語言——那條由遊戲底層直接繪製，模組無法介入。開伺服器的人可在啟動參數加上 `-Duser.language=CH`，讓兩個地方一起變中文（代價是全伺服器統一語言），與本修復互補。
+  > 技術要點（根因）：天氣播報由 `server/radio/ISWeatherChannel.lua` 的 `OnEveryHour` 每遊戲小時以 `getText()` 組成**成品字串**，再經 `ZomboidRadio.SendTransmission` 的 `GameMode.Server` 分支 `GameServer.sendIsoWaveSignal(..., msg, guid, ...)` 把最終文字送給 client。專用伺服器啟動時只跑 `Languages.init()` ＋ `Translator.loadFiles()`，**不載入 options.ini**，`optionLanguageName` 預設空字串（`Core.java:307`），`Translator.getLanguage()` 因此退回 `System.getProperty("user.language").toUpperCase()` 去比對 **Translate 目錄名**（`Language.name` ＝ 目錄名，繁中為 `CH`）——中文 Windows 主機的 `user.language` 是 `zh`、對不上 `CH` 仍落回 EN，故伺服器端解法是 `-Duser.language=CH` 這類 JVM 參數而非系統語系。單機走 `GameMode.SinglePlayer` 分支直接用本機生成的文字，不受影響；`RadioBroadCast` 無任何序列化方法、每小時重生成，故非舊存檔殘留。封包的 `guid` 由 `RadioChannel` 硬帶 `null`，client 無從反查翻譯 key，只能對字串本身反解——與 A7（live radio/TV 字幕）同一根因族，但 A7 只查靜態 `RD_` 整句表，涵蓋不到本項的參數化模板。
+  > 技術要點（攔截點）：`RadioChat.showMessage()` 只觸發 `OnAddMessage`、自身不渲染，實際渲染在 Lua 的 `ISChat.addLineInChat`，且 `ChatMessage.setText()` 為 public。vanilla 的 `Events.OnAddMessage.Add(ISChat.addLineInChat)` 寫在 `ISChat.createChat` 內、由 `OnGameStart` 觸發，**晚於 mod 載入**，因此直接覆寫該函式即可被註冊進事件，沒有 hook 順序問題。反解後一律以 `getText(key, ...)` 用客戶端語言重組，故 CH/CN 共用同一份表、日後調整譯文不需重新生成。浮動文字那條走 `ChatElement.addChatLine()`，該路徑沒有任何 `triggerEvent`、`ChatElement` 也無 `@UsedFromLua` 且公開 API 只有 `addChatLine`／`clear(playerIndex)`（沒有讀取或修改單行的方法），渲染由 Java 的 `IsoGameCharacter.render()`／`IsoWaveSignal.render()` 直呼 `renderBatched()`，Lua 攔不到；`OnDeviceText` 雖會觸發（`codes` 為 `""` 非 `null`）但在兩處顯示之後，靠 `clear()`＋重加會清掉整個元件的行、淡出計時歸零，裝備中的收音機還會誤刪玩家對話，不划算故不做。
+  > 技術要點（原版缺陷）：`WeatherChannel.Init()` 在 `OnLoadRadioScripts` 時把檔頭那兩張表整個換掉——`activity` 從裸英文換成 **key 字面**（`"AEBS_rand_pre_0"`…），`zones[i].name` 同樣換成 key。兩者結局不同：`AEBS_random_0` 那側寫的是 `getText(zone.name)`，成品已是譯文；但 `AEBS_random_3` **直接把 key 塞進 `%1` 而未經 `getText`**，vanilla 在任何語言下都顯示裸 key。反解時由 `BARE_KEYS`（12 條，generator 自動產生）認出並補譯。讀碼陷阱：只看檔頭的 `local activity = {"anomalous", ...}` 會誤判成裸英文字串，必須讀到 `Init()`。
+  > 技術要點（反解）：分四段——剝離行首前綴（`AEBS_Pre_*`）→ 7 條 `$` 錨定模板依固定文字長度降序匹配 → 17 條「單獨成行」片語全等查表 → 3 條開放式續接前段；模板捕獲到的參數再走 greedy 逐段吃掉已知片語（69 條，數值原樣保留，`25.09MpH` → `25.09英里/小時`，`Clear skies. Periodical cloudy spells.` 兩句串接可正確拆解）。**兩個陷阱**：(a) `GetForecastString` 的 type 4/5 會在 `AEBS_weather_0_a/b/c` 之後直接續接後綴，整行不等於任何單一 key；更糟的是這三個 key 的參數後方固定文字正是 `...`、而後綴也以 `...` 收尾，`$` 錨定版本的 `(.-)` 會為了讓行尾對上錨點而把整段後綴吞進參數（比不匹配更糟），故 generator 刻意不為這三個 key 產生錨定版本，只走 `string.find` 取結束位置＋剩餘交給 greedy。(b) 整行全等表**嚴格限縮到 17 個會由 `AddRadioLine` 單獨送出的 key**——初版收錄全部 69 條片語，導致 `North`／`Mild`／`unknown`／`class 5` 這類短詞會匹配整行，玩家在聊天打同樣的字就被改寫；短詞現在只供模板參數內的 greedy 使用，另加 `getRadioChannel() > 0` 閘門（`ChatMessage.radioChannel` 預設 `-1`，僅電台訊息會設值）擋掉一般聊天。17 個 `AddRadioLine` 呼叫點已逐一與反解表核對，無遺漏。
+  > 技術要點（fail-closed）：新增 `sync_translations.py gen-aebs-map`，輸出**只含英文原文 → 翻譯 key**、不含譯文。generator 以 producer 契約守門：78 個 key 的完整分類清單（前綴／單獨成行／開放式續接／帶參數／裸 key／方位／風力／雲量／時段／單位／天氣後綴），EN 鍵集必須與之完全相等，任何增刪都 exit 1 強制人工對版；另檢查帶參數 key 集合、EN 的 `%N` 首次出現順序須 1..n 連續遞增（否則捕獲會錯位）、runtime 形英文原文不得碰撞、CH/CN 值非空非佔位非等於鍵名、佔位符集合與 EN 一致。
+  > 技術要點（測試）：新增 `scripts/test_aebs_restore.lua`（51 案，`dofile` 生產 Lua，涵蓋 10 個模板全部、參數個數守門、23 個短詞不得整行匹配、一般聊天不得被改寫）與 `scripts/test_aebs_generator.py`（11 組 mutation，逐項證明契約漂移會 fail-closed；每個 mutation 皆確認由對應的檢查攔截）。既有 Lua/Python 測試無迴歸，verify_mod.py 12/12 PASS。
+  > 技術要點（review）：Claude 端與 codex 端各自獨立 review-plus 兩輪。type 4/5 續接缺陷由 Claude 端自查抓出；codex 端第一輪推翻了兩處判讀——`WeatherChannel.Init()` 會把 `activity`／`zones` 換成 key 字面（只看檔頭的 `local activity = {"anomalous", ...}` 會誤判成裸英文，`zones` 那側有 `getText` 所以正常、`activity` 那側沒有才是真缺陷），以及整行全等表會誤改玩家聊天；第二輪以 mutation probe 實證 generator 六個 fail-closed 缺口，本次一併補上並改由 `test_aebs_generator.py` 守門。
+  > 技術要點（待驗）：MP 實機驗證尚未進行——需英文 dedicated server ＋ 中文客戶端收聽 AEBS 頻道（隨機頻率，落在 88.0–108.0 MHz），確認聊天視窗字幕為中文、console 無 `Missing arguments`。
+- `versionMin` 維持 42.20.1。
+
 ## [42.20.2-1.18.2] - 2026-08-11
 
 ### Fixed
