@@ -4,6 +4,19 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [Unreleased]
+
+### Fixed
+
+- **簡中三處未翻譯與佔位符殘留**。《廚藝秀》的一句台詞顯示成 `OK!`，《哞哞牛》與飛行教學各有一句整句留著英文原文，現已補上譯文（繁中側原本就正確，本次僅修簡中）。
+- **製作人員名單兩個團隊名補字**。`VERTEX BREAK`／`GENERAL ARCADE` 補上「團隊／团队」，與官方中文一致。
+
+### Notes
+
+- 新增一道稽核閘門的雛形：以**官方中文**為第三方對照，掃出「官方有中文、本包卻是英文」的品質回歸。全庫 49,847 鍵僅命中 6 筆，即本次修正來源。既有 gate 全都只做 CH↔CN 交叉或 EN 單邊比對，看不見這一類。
+- **官方中文不可盲抄**：`RadioData.RD_8bddd749`（EN `Bam!`）官方簡中作「脚步轻盈!」，經上下文比對確認那是**下一句**的譯文——官方簡中在《廚藝秀》該段整體錯位一格，故本次刻意不採用，維持現值。同段 `RD_13e9fac4` 亦為 `Bam!` → `OK!`（官方繁簡皆同），屬既有上游用語問題，待風格定案後另行處理。
+- 玩家回報的三個 Workshop MOD 衝突（Detailed Descriptions for Occupations and Traits、Moodle Descriptions Expanded、Named Skill VHS Tapes）**經查證非本包缺陷**：三者皆以改寫原版翻譯鍵為功能主體，與任何完整中文化在同鍵上必然碰撞，PZ 依 mod 載入順序決定勝負（`Translator.tryFillMapFromFile`：後載入的非空值覆蓋前值）。三者自訂的新鍵本包一個都沒有定義。解法為調整載入順序。
+
 ## [42.20.2-1.19.0] - 2026-08-13
 
 ### Added
