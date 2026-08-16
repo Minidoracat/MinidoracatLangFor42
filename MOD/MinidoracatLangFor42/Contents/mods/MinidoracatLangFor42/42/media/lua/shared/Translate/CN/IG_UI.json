@@ -7615,5 +7615,15 @@
     "IGUI_CatLangBrush_RemoveByArea": "区域移除",
     "IGUI_CatLangBrush_Close": "关闭",
     "IGUI_CatLangBrush_Tiles": "图块",
+    "IGUI_CatLangStats_Permission": "权限不足",
+    "IGUI_CatLangStats_Args": "参数不完整",
+    "IGUI_CatLangStats_Direction": "无效的升降方向",
+    "IGUI_CatLangStats_Target": "找不到目标或权限不足",
+    "IGUI_CatLangStats_Identity": "目标身份不符，已取消（onlineID 可能已被其他玩家占用）",
+    "IGUI_CatLangStats_NotInWorld": "目标不在世界中",
+    "IGUI_CatLangStats_Dead": "目标已死亡",
+    "IGUI_CatLangStats_Clamped": "已达上下限",
+    "IGUI_CatLangStats_XpChecker": "等级已变更，但反作弊基准未能重置——请留意该玩家是否被误判",
+    "IGUI_CatLangStats_Timeout": "服务器未响应：已还原显示，实际结果未知",
     "IGUI_PlayerStats_Role": "角色:"
 }
