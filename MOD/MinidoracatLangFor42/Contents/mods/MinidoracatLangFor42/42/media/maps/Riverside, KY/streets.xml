@@ -1,17 +1,15 @@
 <streets version="1">
     <street name="橡樹街" width="8">
         <points>
-            <point x="10895.5" y="6666.5"/>
-            <point x="10943.0" y="6666.0"/>
-            <point x="10951.0" y="6670.0"/>
-            <point x="10958.0" y="6677.0"/>
-            <point x="10961.0" y="6683.0"/>
+            <point x="10961.0" y="6635.0"/>
             <point x="10961.0" y="6734.0"/>
             <point x="10964.0" y="6741.0"/>
             <point x="10969.0" y="6747.0"/>
             <point x="10977.0" y="6751.0"/>
-            <point x="11626.0" y="6751.0"/>
-            <point x="11626.0" y="6773.0"/>
+            <point x="11609.5" y="6751.0"/>
+            <point x="11619.0" y="6755.0"/>
+            <point x="11631.0" y="6767.5"/>
+            <point x="11642.5" y="6773.0"/>
             <point x="12095.0" y="6773.0"/>
             <point x="12104.0" y="6777.0"/>
             <point x="12110.0" y="6786.0"/>
@@ -20,13 +18,21 @@
     </street>
     <street name="俄亥俄大道" width="8">
         <points>
-            <point x="11266.0" y="6691.0"/>
-            <point x="11472.0" y="6691.0"/>
+            <point x="11262.0" y="6717.5"/>
+            <point x="11262.0" y="6708.0"/>
+            <point x="11265.5" y="6699.5"/>
+            <point x="11271.0" y="6695.0"/>
+            <point x="11278.5" y="6691.0"/>
+            <point x="11453.0" y="6691.0"/>
+            <point x="11463.0" y="6695.5"/>
+            <point x="11470.5" y="6703.0"/>
+            <point x="11475.0" y="6710.0"/>
+            <point x="11475.0" y="6712.0"/>
         </points>
     </street>
     <street name="第十街" width="8">
         <points>
-            <point x="11262.0" y="6687.0"/>
+            <point x="11262.0" y="6717.5"/>
             <point x="11262.0" y="6896.0"/>
         </points>
     </street>
@@ -53,7 +59,7 @@
             <point x="10872.0" y="6913.0"/>
             <point x="10882.0" y="6904.0"/>
             <point x="10891.0" y="6900.0"/>
-            <point x="12101.0" y="6900.0"/>
+            <point x="12114.0" y="6900.0"/>
         </points>
     </street>
     <street name="第二街" width="8">
@@ -65,26 +71,32 @@
     <street name="克拉克路" width="8">
         <points>
             <point x="12114.0" y="6900.0"/>
-            <point x="12277.0" y="6900.0"/>
-            <point x="12287.0" y="6905.0"/>
-            <point x="12291.0" y="6909.0"/>
-            <point x="12296.0" y="6919.0"/>
+            <point x="12273.0" y="6900.0"/>
+            <point x="12283.0" y="6904.0"/>
+            <point x="12293.0" y="6915.5"/>
+            <point x="12296.0" y="6922.0"/>
             <point x="12296.0" y="6945.0"/>
-            <point x="12291.0" y="6955.0"/>
-            <point x="12287.5" y="6958.5"/>
-            <point x="12278.0" y="6963.0"/>
+            <point x="12285.5" y="6957.0"/>
+            <point x="12275.5" y="6963.0"/>
             <point x="12239.0" y="6963.0"/>
         </points>
     </street>
     <street name="木屋路" width="8">
         <points>
-            <point x="11704.0" y="6708.0"/>
-            <point x="11917.0" y="6708.0"/>
+            <point x="11700.0" y="6729.0"/>
+            <point x="11700.0" y="6724.0"/>
+            <point x="11705.0" y="6715.5"/>
+            <point x="11707.5" y="6713.0"/>
+            <point x="11716.0" y="6708.0"/>
+            <point x="11893.5" y="6708.0"/>
+            <point x="11905.5" y="6713.5"/>
+            <point x="11915.0" y="6723.0"/>
+            <point x="11921.0" y="6734.5"/>
         </points>
     </street>
     <street name="第七街" width="8">
         <points>
-            <point x="11700.0" y="6704.0"/>
+            <point x="11700.0" y="6729.0"/>
             <point x="11700.0" y="7131.0"/>
             <point x="11712.0" y="7154.0"/>
             <point x="11725.0" y="7167.0"/>
@@ -94,7 +106,9 @@
     <street name="第八街" width="6">
         <points>
             <point x="11552.0" y="6953.0"/>
-            <point x="11552.0" y="6997.0"/>
+            <point x="11552.0" y="6983.5"/>
+            <point x="11549.0" y="6990.0"/>
+            <point x="11543.0" y="6997.5"/>
         </points>
     </street>
     <street name="第八街" width="8">
@@ -106,24 +120,28 @@
     <street name="第九街" width="8">
         <points>
             <point x="11400.0" y="6755.0"/>
-            <point x="11400.0" y="7041.0"/>
+            <point x="11400.0" y="7027.5"/>
         </points>
     </street>
     <street name="第六街" width="8">
         <points>
             <point x="11773.0" y="6777.0"/>
-            <point x="11773.0" y="6959.0"/>
+            <point x="11773.0" y="6940.0"/>
+            <point x="11777.5" y="6949.5"/>
+            <point x="11786.5" y="6959.5"/>
+            <point x="11792.0" y="6963.0"/>
+            <point x="11795.0" y="6963.0"/>
         </points>
     </street>
     <street name="第五街" width="8">
         <points>
-            <point x="11848.0" y="6712.0"/>
+            <point x="11848.0" y="6639.0"/>
             <point x="11848.0" y="6959.0"/>
         </points>
     </street>
     <street name="第四街" width="8">
         <points>
-            <point x="11921.0" y="6704.0"/>
+            <point x="11921.0" y="6734.5"/>
             <point x="11921.0" y="7052.0"/>
         </points>
     </street>
@@ -135,22 +153,20 @@
     </street>
     <street name="桑葚街" width="8">
         <points>
-            <point x="11555.9" y="6836.4"/>
-            <point x="11695.8" y="6836.4"/>
-            <point x="11704.0" y="6836.0"/>
+            <point x="11556.0" y="6836.0"/>
             <point x="12106.0" y="6836.0"/>
         </points>
     </street>
     <street name="教會街" width="8">
         <points>
-            <point x="11769.0" y="6963.0"/>
+            <point x="11795.0" y="6963.0"/>
             <point x="12102.0" y="6963.0"/>
         </points>
     </street>
     <street name="石嶺路" width="9">
         <points>
             <point x="7422.5" y="6000.0"/>
-            <point x="7422.5" y="6171.0"/>
+            <point x="7422.5" y="6154.5"/>
         </points>
     </street>
     <street name="石嶺路" width="8">
@@ -160,14 +176,32 @@
             <point x="5889.0" y="5298.0"/>
             <point x="5896.0" y="5291.0"/>
             <point x="5912.0" y="5283.0"/>
-            <point x="6813.0" y="5283.0"/>
-            <point x="6824.0" y="5289.0"/>
-            <point x="6831.0" y="5296.0"/>
-            <point x="6836.0" y="5306.0"/>
+            <point x="6000.0" y="5283.0"/>
+        </points>
+    </street>
+    <street name="西主街" width="10">
+        <points>
+            <point x="6000.0" y="5283.0"/>
+            <point x="6315.0" y="5283.0"/>
+        </points>
+    </street>
+    <street name="東主街" width="10">
+        <points>
+            <point x="6315.0" y="5283.0"/>
+            <point x="6817.0" y="5283.0"/>
+            <point x="6828.0" y="5288.0"/>
+            <point x="6833.5" y="5293.5"/>
+            <point x="6836.0" y="5298.5"/>
             <point x="6836.0" y="5439.0"/>
             <point x="6843.0" y="5453.0"/>
             <point x="6851.0" y="5461.0"/>
             <point x="6866.0" y="5469.0"/>
+            <point x="6875.0" y="5469.0"/>
+        </points>
+    </street>
+    <street name="石嶺路" width="8">
+        <points>
+            <point x="6875.0" y="5469.0"/>
             <point x="7270.0" y="5469.0"/>
             <point x="7286.0" y="5477.5"/>
             <point x="7291.5" y="5483.0"/>
@@ -183,203 +217,144 @@
             <point x="7422.0" y="6000.0"/>
         </points>
     </street>
-    <street name="復活節巷" width="5">
+    <street name="復活節巷" width="6">
         <points>
-            <point x="5758.0" y="5262.5"/>
-            <point x="5928.0" y="5262.5"/>
+            <point x="5758.0" y="5249.0"/>
+            <point x="5928.0" y="5249.0"/>
         </points>
     </street>
-    <street name="蕨路" width="5">
+    <street name="蕨路" width="6">
         <points>
-            <point x="5755.5" y="5229.0"/>
-            <point x="5755.5" y="5286.0"/>
+            <point x="5755.0" y="5219.0"/>
+            <point x="5755.0" y="5396.0"/>
         </points>
     </street>
-    <street name="陵園大道" width="5">
+    <street name="花崗岩街" width="8">
         <points>
-            <point x="5754.0" y="5289.0"/>
-            <point x="5728.5" y="5314.5"/>
-            <point x="5728.5" y="5373.0"/>
+            <point x="5960.0" y="5287.0"/>
+            <point x="5960.0" y="5396.0"/>
         </points>
     </street>
-    <street name="夏蔭路" width="5">
+    <street name="林肯街" width="8">
         <points>
-            <point x="5760.0" y="5290.5"/>
-            <point x="5768.0" y="5298.5"/>
-            <point x="5871.5" y="5298.5"/>
-            <point x="5878.0" y="5302.0"/>
-            <point x="5881.0" y="5305.0"/>
+            <point x="5885.0" y="5400.0"/>
+            <point x="6329.0" y="5400.0"/>
         </points>
     </street>
-    <street name="山茱萸路" width="4">
+    <street name="皮茨街" width="8">
         <points>
-            <point x="5731.0" y="5343.0"/>
-            <point x="5798.0" y="5343.0"/>
-            <point x="5806.0" y="5351.0"/>
-            <point x="5806.0" y="5373.0"/>
+            <point x="6391.0" y="5400.0"/>
+            <point x="6601.0" y="5400.0"/>
         </points>
     </street>
-    <street name="胡桃街" width="6">
+    <street name="海港街" width="8">
         <points>
-            <point x="5940.0" y="5287.0"/>
-            <point x="5940.0" y="5327.0"/>
+            <point x="6243.0" y="5288.0"/>
+            <point x="6243.0" y="5396.0"/>
         </points>
     </street>
-    <street name="林肯街" width="6">
-        <points>
-            <point x="5885.0" y="5446.0"/>
-            <point x="5915.0" y="5446.0"/>
-            <point x="5920.0" y="5443.0"/>
-            <point x="5923.0" y="5440.0"/>
-            <point x="5925.0" y="5436.0"/>
-            <point x="5925.0" y="5341.0"/>
-            <point x="5927.5" y="5336.0"/>
-            <point x="5931.5" y="5332.0"/>
-            <point x="5936.0" y="5330.0"/>
-            <point x="6018.0" y="5330.0"/>
-            <point x="6029.0" y="5336.0"/>
-            <point x="6036.0" y="5343.0"/>
-            <point x="6041.0" y="5353.0"/>
-            <point x="6041.0" y="5386.0"/>
-            <point x="6045.0" y="5394.0"/>
-            <point x="6049.0" y="5397.0"/>
-            <point x="6057.0" y="5400.5"/>
-            <point x="6522.0" y="5400.5"/>
-        </points>
-    </street>
-    <street name="潮汐巷" width="6">
-        <points>
-            <point x="6289.0" y="5363.0"/>
-            <point x="6289.0" y="5397.0"/>
-        </points>
-    </street>
-    <street name="花崗岩街" width="7">
-        <points>
-            <point x="6242.5" y="5287.0"/>
-            <point x="6242.5" y="5397.0"/>
-        </points>
-    </street>
-    <street name="松樹苑" width="4">
+    <street name="松樹苑" width="6">
         <points>
             <point x="6044.0" y="5363.0"/>
-            <point x="6085.0" y="5363.0"/>
+            <point x="6123.0" y="5363.0"/>
         </points>
     </street>
-    <street name="馬文廣場" width="6">
+    <street name="馬文廣場" width="8">
         <points>
-            <point x="6221.0" y="5404.0"/>
-            <point x="6221.0" y="5494.0"/>
-            <point x="6228.0" y="5508.0"/>
-            <point x="6237.0" y="5517.0"/>
-            <point x="6251.0" y="5524.0"/>
-            <point x="6304.0" y="5524.0"/>
+            <point x="6243.0" y="5404.0"/>
+            <point x="6243.0" y="5511.5"/>
+            <point x="6248.5" y="5523.5"/>
+            <point x="6256.5" y="5531.5"/>
+            <point x="6269.0" y="5537.0"/>
+            <point x="6303.0" y="5537.0"/>
         </points>
     </street>
-    <street name="肯尼迪街" width="6">
+    <street name="肯尼迪街" width="8">
         <points>
-            <point x="6307.0" y="5404.0"/>
-            <point x="6307.0" y="5539.0"/>
-            <point x="6312.0" y="5549.0"/>
-            <point x="6320.0" y="5557.0"/>
-            <point x="6330.0" y="5562.0"/>
-            <point x="6527.0" y="5562.0"/>
+            <point x="6303.0" y="5537.0"/>
+            <point x="6527.0" y="5537.0"/>
         </points>
     </street>
     <street name="瑪麗亞廣場" width="8">
         <points>
-            <point x="6388.0" y="5279.0"/>
-            <point x="6388.0" y="5230.0"/>
-            <point x="6416.0" y="5230.0"/>
+            <point x="6527.0" y="5223.0"/>
+            <point x="6324.0" y="5223.0"/>
         </points>
     </street>
     <street name="瑪麗巷" width="8">
         <points>
-            <point x="6512.0" y="5243.0"/>
-            <point x="6526.0" y="5243.0"/>
-            <point x="6526.0" y="5279.0"/>
+            <point x="6531.0" y="5185.0"/>
+            <point x="6531.0" y="5224.5"/>
+            <point x="6531.0" y="5278.0"/>
         </points>
     </street>
     <street name="站前大道" width="8">
         <points>
-            <point x="6526.0" y="5287.0"/>
-            <point x="6526.0" y="5397.0"/>
+            <point x="6531.0" y="5288.0"/>
+            <point x="6531.0" y="5396.0"/>
         </points>
     </street>
-    <street name="尼克松巷" width="7">
+    <street name="尼克松巷" width="6">
         <points>
-            <point x="6487.0" y="5452.5"/>
-            <point x="6534.0" y="5452.5"/>
+            <point x="6306.0" y="5454.0"/>
+            <point x="6306.0" y="5533.0"/>
         </points>
     </street>
-    <street name="捕鼠器街" width="8">
+    <street name="捕鼠器街" width="6">
         <points>
-            <point x="6483.5" y="5404.0"/>
-            <point x="6483.5" y="5513.0"/>
-            <point x="6601.0" y="5513.0"/>
+            <point x="6535.0" y="5440.0"/>
+            <point x="6563.0" y="5440.0"/>
+            <point x="6568.0" y="5445.0"/>
+            <point x="6568.0" y="5533.0"/>
         </points>
     </street>
-    <street name="墊子巷" width="7">
+    <street name="墊子巷" width="8">
         <points>
-            <point x="6603.0" y="5536.5"/>
-            <point x="6676.0" y="5536.5"/>
+            <point x="6535.0" y="5537.0"/>
+            <point x="6601.0" y="5537.0"/>
         </points>
     </street>
     <street name="俄亥俄街" width="8">
         <points>
             <point x="6605.0" y="5287.0"/>
-            <point x="6605.0" y="5509.0"/>
-            <point x="6606.0" y="5518.0"/>
-            <point x="6606.0" y="5533.0"/>
+            <point x="6605.0" y="5541.0"/>
         </points>
     </street>
-    <street name="皮茨街" width="7">
+    <street name="夏日苑" width="8">
         <points>
-            <point x="6609.0" y="5447.5"/>
-            <point x="6732.0" y="5447.5"/>
-        </points>
-    </street>
-    <street name="凱利大道" width="6">
-        <points>
-            <point x="6609.0" y="5353.0"/>
-            <point x="6826.0" y="5353.0"/>
-        </points>
-    </street>
-    <street name="希格斯街" width="7">
-        <points>
-            <point x="6735.5" y="5356.0"/>
-            <point x="6735.5" y="5513.0"/>
+            <point x="6609.0" y="5447.0"/>
+            <point x="6691.0" y="5447.0"/>
         </points>
     </street>
     <street name="艾倫路" width="8">
         <points>
-            <point x="6531.0" y="5516.5"/>
+            <point x="6531.0" y="5404.0"/>
             <point x="6531.0" y="5627.0"/>
         </points>
     </street>
     <street name="奧林路" width="8">
         <points>
             <point x="5462.0" y="5836.0"/>
-            <point x="6149.0" y="5836.0"/>
-            <point x="6245.0" y="5788.0"/>
-            <point x="6370.0" y="5663.0"/>
-            <point x="6435.0" y="5631.0"/>
+            <point x="6006.5" y="5836.0"/>
+            <point x="6101.5" y="5788.0"/>
+            <point x="6226.5" y="5662.5"/>
+            <point x="6289.5" y="5631.0"/>
             <point x="6780.0" y="5631.0"/>
             <point x="6934.0" y="5709.0"/>
             <point x="7096.0" y="5870.0"/>
-            <point x="7168.0" y="6015.0"/>
         </points>
     </street>
     <street name="碎布路" width="8">
         <points>
-            <point x="5743.0" y="5377.0"/>
-            <point x="5877.0" y="5377.0"/>
+            <point x="5711.0" y="5400.0"/>
+            <point x="5877.0" y="5400.0"/>
         </points>
     </street>
     <street name="長杈路" width="5">
         <points>
-            <point x="5712.0" y="5386.0"/>
-            <point x="5708.0" y="5386.0"/>
-            <point x="5688.0" y="5396.0"/>
+            <point x="5711.0" y="5400.0"/>
+            <point x="5694.0" y="5400.0"/>
+            <point x="5674.0" y="5410.0"/>
             <point x="5644.0" y="5440.0"/>
             <point x="5635.0" y="5445.0"/>
             <point x="5484.0" y="5445.0"/>
@@ -441,7 +416,7 @@
     </street>
     <street name="沙土路" width="6">
         <points>
-            <point x="5931.0" y="5223.0"/>
+            <point x="5931.0" y="5232.0"/>
             <point x="5931.0" y="5279.0"/>
         </points>
     </street>
@@ -454,22 +429,35 @@
     <street name="達菲爾德街" width="8">
         <points>
             <point x="11460.0" y="6953.0"/>
-            <point x="11460.0" y="7045.0"/>
-            <point x="11396.0" y="7045.0"/>
+            <point x="11460.0" y="7029.0"/>
+            <point x="11456.0" y="7036.5"/>
+            <point x="11445.0" y="7045.0"/>
+            <point x="11419.0" y="7045.0"/>
+            <point x="11412.0" y="7041.5"/>
+            <point x="11404.5" y="7034.0"/>
+            <point x="11400.5" y="7030.5"/>
+            <point x="11400.5" y="7027.5"/>
         </points>
     </street>
     <street name="佈告街" width="6">
         <points>
             <point x="11464.0" y="7000.0"/>
-            <point x="11555.0" y="7000.0"/>
+            <point x="11535.5" y="7000.0"/>
+            <point x="11543.5" y="6996.5"/>
         </points>
     </street>
     <street name="羅森沃爾德街" width="6">
         <points>
             <point x="11602.0" y="6953.0"/>
-            <point x="11602.0" y="7045.0"/>
-            <point x="11510.0" y="7045.0"/>
-            <point x="11510.0" y="7003.0"/>
+            <point x="11601.5" y="7033.0"/>
+            <point x="11599.5" y="7037.5"/>
+            <point x="11595.0" y="7042.0"/>
+            <point x="11590.0" y="7045.0"/>
+            <point x="11537.0" y="7045.0"/>
+            <point x="11527.5" y="7040.0"/>
+            <point x="11513.5" y="7027.0"/>
+            <point x="11508.0" y="7015.5"/>
+            <point x="11508.0" y="7003.0"/>
         </points>
     </street>
     <street name="河街" width="8">
@@ -480,21 +468,27 @@
     </street>
     <street name="短街" width="8">
         <points>
-            <point x="11475.0" y="6695.0"/>
+            <point x="11475.0" y="6712.0"/>
             <point x="11475.0" y="6747.0"/>
         </points>
     </street>
-    <street name="米勒大道" width="4">
+    <street name="米勒大道" width="6">
         <points>
-            <point x="11191.0" y="6747.0"/>
-            <point x="11191.0" y="6724.0"/>
-            <point x="11258.0" y="6724.0"/>
+            <point x="11179.0" y="6747.0"/>
+            <point x="11179.0" y="6724.0"/>
+            <point x="11182.0" y="6717.5"/>
+            <point x="11188.0" y="6714.0"/>
+            <point x="11258.0" y="6714.5"/>
         </points>
     </street>
     <street name="靜謐路" width="8">
         <points>
-            <point x="7980.0" y="11476.0"/>
-            <point x="8102.0" y="11476.0"/>
+            <point x="7889.0" y="11379.0"/>
+            <point x="7888.0" y="11454.5"/>
+            <point x="7891.5" y="11463.0"/>
+            <point x="7901.5" y="11472.5"/>
+            <point x="7908.5" y="11475.5"/>
+            <point x="8322.0" y="11476.5"/>
         </points>
     </street>
     <street name="醫生巷" width="6">
@@ -503,72 +497,78 @@
             <point x="8026.0" y="11575.0"/>
         </points>
     </street>
-    <street name="弗雷德裡克巷" width="8">
+    <street name="弗雷德里克巷" width="8">
         <points>
             <point x="7936.0" y="11774.0"/>
-            <point x="7936.0" y="11727.0"/>
-        </points>
-    </street>
-    <street name="弗雷德裡克巷" width="7">
-        <points>
-            <point x="7935.0" y="11729.0"/>
-            <point x="7964.0" y="11671.0"/>
-        </points>
-    </street>
-    <street name="弗雷德裡克巷" width="6">
-        <points>
-            <point x="7962.0" y="11674.0"/>
-            <point x="7963.5" y="11671.0"/>
-            <point x="7967.0" y="11667.5"/>
-            <point x="7982.5" y="11652.0"/>
-            <point x="7994.0" y="11628.5"/>
-            <point x="7994.0" y="11591.0"/>
-            <point x="7997.5" y="11584.0"/>
+            <point x="7936.0" y="11729.0"/>
+            <point x="7964.5" y="11671.5"/>
+            <point x="7984.0" y="11652.5"/>
+            <point x="7995.0" y="11629.5"/>
+            <point x="7995.0" y="11591.0"/>
+            <point x="7997.5" y="11584.5"/>
             <point x="7999.5" y="11582.0"/>
-            <point x="8007.0" y="11578.0"/>
-            <point x="8394.0" y="11578.0"/>
+            <point x="8005.0" y="11579.0"/>
+            <point x="8500.0" y="11579.0"/>
         </points>
     </street>
     <street name="日落草甸大道" width="5">
         <points>
-            <point x="7695.0" y="11498.5"/>
-            <point x="7740.0" y="11542.5"/>
-            <point x="7882.0" y="11542.5"/>
+            <point x="7529.0" y="11464.5"/>
+            <point x="7654.5" y="11464.5"/>
+            <point x="7666.0" y="11469.5"/>
+            <point x="7699.5" y="11503.0"/>
+            <point x="7732.5" y="11536.5"/>
+            <point x="7746.5" y="11542.5"/>
+            <point x="7874.5" y="11542.5"/>
+            <point x="7888.0" y="11549.0"/>
             <point x="7932.0" y="11592.5"/>
             <point x="7991.0" y="11592.5"/>
         </points>
     </street>
     <street name="莫蒂默街" width="6">
         <points>
-            <point x="8146.0" y="11581.0"/>
+            <point x="8146.0" y="11583.0"/>
             <point x="8146.0" y="11653.0"/>
         </points>
     </street>
     <street name="巴克街" width="6">
         <points>
-            <point x="8127.0" y="11656.0"/>
+            <point x="8110.0" y="11656.0"/>
             <point x="8262.0" y="11656.0"/>
         </points>
     </street>
     <street name="車輪街" width="6">
         <points>
-            <point x="8265.0" y="11581.0"/>
-            <point x="8265.0" y="11734.0"/>
-            <point x="8211.0" y="11734.0"/>
+            <point x="8265.0" y="11583.0"/>
+            <point x="8265.0" y="11723.0"/>
+            <point x="8262.5" y="11728.5"/>
+            <point x="8258.5" y="11732.0"/>
+            <point x="8254.5" y="11734.0"/>
+            <point x="8222.0" y="11734.0"/>
+            <point x="8216.5" y="11737.0"/>
+            <point x="8213.0" y="11740.5"/>
+            <point x="8211.0" y="11745.0"/>
             <point x="8211.0" y="11774.0"/>
         </points>
     </street>
     <street name="校舍街" width="6">
         <points>
-            <point x="8391.0" y="11581.0"/>
-            <point x="8391.0" y="11679.0"/>
+            <point x="8500.0" y="11579.0"/>
+            <point x="8503.0" y="11579.0"/>
+            <point x="8507.0" y="11582.0"/>
+            <point x="8512.0" y="11586.5"/>
+            <point x="8514.0" y="11591.5"/>
+            <point x="8514.0" y="11668.0"/>
+            <point x="8511.5" y="11673.0"/>
+            <point x="8507.5" y="11677.0"/>
+            <point x="8502.5" y="11679.0"/>
             <point x="8268.0" y="11679.0"/>
         </points>
     </street>
     <street name="南主幹道" width="6">
         <points>
             <point x="7932.0" y="11777.0"/>
-            <point x="8366.0" y="11777.0"/>
+            <point x="8276.0" y="11777.0"/>
         </points>
     </street>
     <street name="北主幹道" width="8">
@@ -580,44 +580,45 @@
     <street name="聖馬丁路" width="6">
         <points>
             <point x="8369.0" y="11682.0"/>
-            <point x="8369.0" y="11774.0"/>
+            <point x="8369.0" y="11777.0"/>
+            <point x="8276.0" y="11777.0"/>
         </points>
     </street>
     <street name="正義路" width="8">
         <points>
             <point x="7836.0" y="11887.0"/>
             <point x="7914.0" y="11887.0"/>
-            <point x="7926.0" y="11881.0"/>
-            <point x="7930.0" y="11877.0"/>
+            <point x="7924.5" y="11887.0"/>
+            <point x="7930.0" y="11884.5"/>
+            <point x="7934.0" y="11880.5"/>
+            <point x="7936.0" y="11876.5"/>
             <point x="7936.0" y="11865.0"/>
             <point x="7936.0" y="11780.0"/>
         </points>
     </street>
-    <street name="羅斯伍德路" width="6">
+    <street name="羅斯伍德路" width="8">
         <points>
             <point x="8273.0" y="11780.0"/>
-            <point x="8273.0" y="11983.0"/>
-            <point x="8348.0" y="12133.0"/>
-            <point x="8348.0" y="12321.0"/>
+            <point x="8273.0" y="11982.0"/>
+            <point x="8330.0" y="11982.0"/>
+            <point x="8337.0" y="11985.0"/>
+            <point x="8342.0" y="11990.0"/>
+            <point x="8347.0" y="12000.0"/>
+            <point x="8347.0" y="12316.0"/>
         </points>
     </street>
-    <street name="天使路" width="5">
+    <street name="天使路" width="8">
         <points>
-            <point x="8205.0" y="12323.5"/>
-            <point x="8156.5" y="12323.5"/>
-            <point x="8103.5" y="12376.5"/>
-            <point x="7953.0" y="12376.5"/>
-            <point x="7929.5" y="12353.0"/>
-            <point x="7929.5" y="12314.5"/>
-            <point x="7929.5" y="12244.5"/>
-            <point x="8017.5" y="12156.5"/>
-            <point x="8017.5" y="11996.0"/>
-            <point x="8032.0" y="11981.5"/>
-            <point x="8140.5" y="11981.5"/>
-            <point x="8148.5" y="11973.5"/>
-            <point x="8148.5" y="11928.5"/>
-            <point x="8180.5" y="11896.5"/>
-            <point x="8270.0" y="11896.5"/>
+            <point x="8343.0" y="12325.0"/>
+            <point x="7931.0" y="12325.0"/>
+            <point x="7930.0" y="12246.5"/>
+            <point x="7933.5" y="12241.0"/>
+            <point x="8015.5" y="12160.0"/>
+            <point x="8017.5" y="12152.5"/>
+            <point x="8017.5" y="11998.5"/>
+            <point x="8019.5" y="11994.5"/>
+            <point x="8032.5" y="11981.5"/>
+            <point x="8269.0" y="11982.0"/>
         </points>
     </street>
     <street name="傷心路" width="4">
@@ -627,23 +628,7 @@
             <point x="8141.0" y="12169.0"/>
             <point x="8141.0" y="12226.0"/>
             <point x="8158.0" y="12243.0"/>
-            <point x="8158.0" y="12321.0"/>
-        </points>
-    </street>
-    <street name="帶扣路" width="6">
-        <points>
-            <point x="8208.0" y="12321.0"/>
-            <point x="8208.0" y="12300.0"/>
-            <point x="8219.0" y="12289.0"/>
-            <point x="8287.0" y="12289.0"/>
-            <point x="8299.0" y="12301.0"/>
-            <point x="8299.0" y="12321.0"/>
-        </points>
-    </street>
-    <street name="帶扣路" width="8">
-        <points>
-            <point x="8205.0" y="12325.0"/>
-            <point x="8389.0" y="12325.0"/>
+            <point x="8158.0" y="12319.5"/>
         </points>
     </street>
     <street name="牛群路" width="6">
@@ -912,19 +897,14 @@
     </street>
     <street name="阿特隆高地路" width="7">
         <points>
-            <point x="2170.5" y="14881.5"/>
+            <point x="2017.0" y="14738.0"/>
+            <point x="2151.0" y="14872.0"/>
+            <point x="2172.5" y="14882.0"/>
             <point x="2179.5" y="14881.5"/>
             <point x="2195.5" y="14873.5"/>
             <point x="2423.0" y="14646.0"/>
             <point x="2434.0" y="14641.0"/>
             <point x="2496.0" y="14641.0"/>
-        </points>
-    </street>
-    <street name="阿特隆高地路" width="4">
-        <points>
-            <point x="2017.0" y="14738.0"/>
-            <point x="2151.0" y="14872.0"/>
-            <point x="2171.0" y="14882.0"/>
         </points>
     </street>
     <street name="松木路" width="6">
@@ -994,30 +974,45 @@
             <point x="7277.0" y="8558.0"/>
         </points>
     </street>
-    <street name="格里爾街" width="6">
+    <street name="百老匯街" width="6">
         <points>
             <point x="7135.0" y="8158.0"/>
             <point x="7135.0" y="8206.0"/>
-            <point x="7190.0" y="8206.0"/>
+            <point x="7174.5" y="8206.0"/>
+            <point x="7182.0" y="8209.5"/>
+            <point x="7186.5" y="8214.0"/>
+            <point x="7190.0" y="8221.0"/>
             <point x="7190.0" y="8315.0"/>
         </points>
     </street>
     <street name="凱西路" width="6">
         <points>
-            <point x="7110.0" y="8318.0"/>
-            <point x="7229.0" y="8318.0"/>
+            <point x="6978.0" y="8318.0"/>
+            <point x="7199.0" y="8318.0"/>
+            <point x="7205.5" y="8320.5"/>
+            <point x="7210.0" y="8325.0"/>
+            <point x="7213.0" y="8328.0"/>
+            <point x="7213.0" y="8331.0"/>
         </points>
     </street>
     <street name="維多利亞街" width="6">
         <points>
-            <point x="7107.0" y="8249.0"/>
-            <point x="7107.0" y="8394.0"/>
+            <point x="7135.5" y="8209.0"/>
+            <point x="7135.5" y="8214.5"/>
+            <point x="7131.0" y="8221.5"/>
+            <point x="7119.0" y="8228.0"/>
+            <point x="7113.5" y="8233.5"/>
+            <point x="7107.0" y="8246.0"/>
+            <point x="7107.0" y="8372.0"/>
+            <point x="7156.0" y="8372.0"/>
         </points>
     </street>
     <street name="布里克莫爾路" width="6">
         <points>
-            <point x="7213.0" y="8321.0"/>
-            <point x="7213.0" y="8451.0"/>
+            <point x="7213.0" y="8331.0"/>
+            <point x="7213.0" y="8443.0"/>
+            <point x="7211.5" y="8448.0"/>
+            <point x="7207.0" y="8450.5"/>
             <point x="7175.0" y="8451.0"/>
         </points>
     </street>
@@ -1037,7 +1032,7 @@
     <street name="法拉斯路" width="6">
         <points>
             <point x="7281.0" y="8275.0"/>
-            <point x="7420.0" y="8275.0"/>
+            <point x="7426.5" y="8275.0"/>
         </points>
     </street>
     <street name="小馬漫步路" width="8">
@@ -1052,39 +1047,28 @@
     </street>
     <street name="霍普威爾小徑" width="5">
         <points>
+            <point x="1138.5" y="6059.0"/>
+            <point x="1138.5" y="6446.0"/>
             <point x="1427.5" y="6735.5"/>
             <point x="1427.5" y="7384.5"/>
         </points>
     </street>
-    <street name="霍普威爾小徑" width="4">
-        <points>
-            <point x="1137.5" y="6445.5"/>
-            <point x="1428.5" y="6736.5"/>
-        </points>
-    </street>
-    <street name="霍普威爾小徑" width="5">
-        <points>
-            <point x="1139.0" y="6054.0"/>
-            <point x="1138.5" y="6059.0"/>
-            <point x="1138.5" y="6447.0"/>
-        </points>
-    </street>
     <street name="霍普威爾小徑" width="6">
         <points>
-            <point x="1139.0" y="5775.0"/>
+            <point x="1139.0" y="5769.0"/>
             <point x="1139.0" y="6054.0"/>
         </points>
     </street>
-    <street name="霍普威爾小徑" width="5">
+    <street name="曼努埃爾路" width="5">
         <points>
             <point x="1138.5" y="5465.0"/>
-            <point x="1138.5" y="5775.0"/>
+            <point x="1138.5" y="5769.0"/>
         </points>
     </street>
     <street name="戰地路" width="6">
         <points>
-            <point x="1141.0" y="5772.0"/>
-            <point x="1469.0" y="5772.0"/>
+            <point x="1142.0" y="5772.0"/>
+            <point x="1494.0" y="5772.0"/>
         </points>
     </street>
     <street name="集市路" width="5">
@@ -1249,16 +1233,11 @@
             <point x="2096.0" y="6233.0"/>
         </points>
     </street>
-    <street name="老以革倫路" width="5">
-        <points>
-            <point x="1970.0" y="6408.5"/>
-            <point x="2096.0" y="6408.5"/>
-        </points>
-    </street>
     <street name="老以革倫路" width="6">
         <points>
-            <point x="2102.0" y="6409.0"/>
-            <point x="2145.0" y="6409.0"/>
+            <point x="1970.0" y="6408.5"/>
+            <point x="2143.5" y="6409.0"/>
+            <point x="2147.0" y="6410.0"/>
             <point x="2159.0" y="6416.0"/>
             <point x="2173.0" y="6430.0"/>
             <point x="2192.0" y="6440.0"/>
@@ -1273,16 +1252,11 @@
             <point x="2315.0" y="6491.0"/>
         </points>
     </street>
-    <street name="鵪鶉路" width="6">
-        <points>
-            <point x="2099.0" y="6643.0"/>
-            <point x="2099.0" y="6484.0"/>
-        </points>
-    </street>
     <street name="鵪鶉路" width="8">
         <points>
             <point x="1978.0" y="6643.0"/>
-            <point x="2102.0" y="6643.0"/>
+            <point x="2099.0" y="6643.0"/>
+            <point x="2099.5" y="6480.0"/>
         </points>
     </street>
     <street name="棉尾兔巷" width="6">
@@ -1481,7 +1455,7 @@
             <point x="2067.0" y="6041.0"/>
             <point x="2081.0" y="6055.0"/>
             <point x="2099.0" y="6091.0"/>
-            <point x="2099.0" y="6462.0"/>
+            <point x="2099.0" y="6466.0"/>
         </points>
     </street>
     <street name="湖景巷" width="5">
@@ -1670,10 +1644,6 @@
     </street>
     <street name="卡彭特測試路" width="8">
         <points>
-            <point x="10372.0" y="9256.0"/>
-            <point x="10506.0" y="9256.0"/>
-            <point x="10516.0" y="9261.0"/>
-            <point x="10521.0" y="9266.0"/>
             <point x="10525.0" y="9274.0"/>
             <point x="10525.0" y="11197.0"/>
         </points>
@@ -1724,7 +1694,10 @@
     <street name="老銀行路" width="6">
         <points>
             <point x="10599.0" y="9200.0"/>
-            <point x="10643.0" y="9200.0"/>
+            <point x="10625.0" y="9200.0"/>
+            <point x="10632.0" y="9203.0"/>
+            <point x="10639.5" y="9210.5"/>
+            <point x="10643.0" y="9218.5"/>
             <point x="10643.0" y="9321.0"/>
             <point x="10649.0" y="9333.0"/>
         </points>
@@ -1802,7 +1775,7 @@
             <point x="10823.0" y="10079.5"/>
             <point x="10823.0" y="10189.0"/>
             <point x="10790.0" y="10255.0"/>
-            <point x="10790.0" y="10611.0"/>
+            <point x="10790.0" y="10619.0"/>
         </points>
     </street>
     <street name="西加內茨維爾路" width="8">
@@ -1874,16 +1847,11 @@
             <point x="11104.0" y="9318.0"/>
         </points>
     </street>
-    <street name="艾爾瑪大道" width="4">
-        <points>
-            <point x="10925.0" y="9869.5"/>
-            <point x="10925.0" y="9600.0"/>
-        </points>
-    </street>
     <street name="艾爾瑪大道" width="5">
         <points>
             <point x="10823.0" y="9869.5"/>
-            <point x="10927.0" y="9869.5"/>
+            <point x="10925.0" y="9869.5"/>
+            <point x="10925.0" y="9600.0"/>
         </points>
     </street>
     <street name="沙巷" width="4">
@@ -1956,7 +1924,7 @@
     </street>
     <street name="榛子街" width="4">
         <points>
-            <point x="10927.0" y="9869.5"/>
+            <point x="10927.5" y="9869.5"/>
             <point x="10987.0" y="9869.5"/>
             <point x="10999.5" y="9875.5"/>
             <point x="11002.0" y="9878.0"/>
@@ -2041,8 +2009,8 @@
             <point x="10641.0" y="9948.0"/>
             <point x="10641.0" y="10159.0"/>
             <point x="10624.0" y="10193.0"/>
-            <point x="10624.0" y="10472.0"/>
-            <point x="10644.0" y="10472.0"/>
+            <point x="10624.0" y="10447.0"/>
+            <point x="10644.5" y="10489.0"/>
             <point x="10644.0" y="10570.0"/>
             <point x="10647.0" y="10577.0"/>
             <point x="10652.0" y="10581.0"/>
@@ -2081,8 +2049,9 @@
     </street>
     <street name="老環路" width="5">
         <points>
-            <point x="10813.0" y="10217.0"/>
-            <point x="10818.0" y="10221.0"/>
+            <point x="10813.0" y="10217.5"/>
+            <point x="10816.5" y="10219.5"/>
+            <point x="10818.5" y="10222.0"/>
             <point x="10827.0" y="10226.0"/>
             <point x="10876.0" y="10226.0"/>
             <point x="10883.0" y="10230.0"/>
@@ -2104,7 +2073,8 @@
     <street name="穀倉路" width="4">
         <points>
             <point x="10818.0" y="10303.0"/>
-            <point x="10855.0" y="10303.0"/>
+            <point x="10853.5" y="10303.0"/>
+            <point x="10856.0" y="10305.5"/>
         </points>
     </street>
     <street name="伍德街" width="4">
@@ -2156,27 +2126,13 @@
             <point x="10420.0" y="8860.0"/>
             <point x="10426.0" y="8866.0"/>
             <point x="10433.5" y="8870.0"/>
-            <point x="10500.0" y="8870.0"/>
-            <point x="10506.0" y="8873.0"/>
-            <point x="10509.0" y="8876.0"/>
-            <point x="10513.0" y="8884.0"/>
-            <point x="10513.0" y="8913.5"/>
-            <point x="10510.0" y="8920.0"/>
-            <point x="10505.0" y="8924.0"/>
-            <point x="10500.0" y="8927.0"/>
-            <point x="10473.0" y="8927.0"/>
-            <point x="10466.0" y="8930.5"/>
-            <point x="10462.5" y="8934.0"/>
-            <point x="10459.0" y="8941.0"/>
-            <point x="10459.0" y="9051.0"/>
-            <point x="10464.0" y="9061.0"/>
-            <point x="10471.0" y="9069.0"/>
-            <point x="10483.0" y="9075.0"/>
-            <point x="10489.0" y="9075.0"/>
-            <point x="10494.0" y="9077.0"/>
-            <point x="10500.0" y="9083.0"/>
-            <point x="10503.0" y="9089.0"/>
-            <point x="10503.0" y="9252.0"/>
+            <point x="10484.0" y="8870.0"/>
+            <point x="10494.0" y="8875.0"/>
+            <point x="10506.0" y="8887.0"/>
+            <point x="10513.0" y="8901.0"/>
+            <point x="10513.0" y="9248.5"/>
+            <point x="10525.0" y="9272.5"/>
+            <point x="10525.0" y="9274.0"/>
         </points>
     </street>
     <street name="車站路" width="5">
@@ -2295,23 +2251,21 @@
             <point x="6063.0" y="14560.0"/>
         </points>
     </street>
-    <street name="火腿柄路" width="4">
+    <street name="火腿柄路" width="8">
         <points>
-            <point x="7500.0" y="12322.0"/>
-            <point x="7874.0" y="12322.0"/>
-            <point x="7899.0" y="12347.0"/>
-            <point x="7927.0" y="12347.0"/>
+            <point x="7298.0" y="12325.0"/>
+            <point x="7927.0" y="12325.0"/>
         </points>
     </street>
     <street name="提琴手小徑" width="15">
         <points>
-            <point x="8389.0" y="12324.5"/>
+            <point x="8343.0" y="12323.5"/>
             <point x="10585.0" y="12324.5"/>
         </points>
     </street>
     <street name="地獄路" width="8">
         <points>
-            <point x="9904.0" y="9793.0"/>
+            <point x="9904.0" y="9785.0"/>
             <point x="9904.0" y="10549.0"/>
             <point x="9958.0" y="10658.0"/>
             <point x="9958.0" y="10850.0"/>
@@ -2773,10 +2727,14 @@
     </street>
     <street name="河步道" width="6">
         <points>
-            <point x="7422.5" y="6171.0"/>
-            <point x="7422.5" y="6202.5"/>
-            <point x="7463.0" y="6243.0"/>
-            <point x="7463.0" y="6764.5"/>
+            <point x="7417.5" y="6168.5"/>
+            <point x="7423.0" y="6175.0"/>
+            <point x="7422.5" y="6197.0"/>
+            <point x="7428.5" y="6208.5"/>
+            <point x="7456.5" y="6236.0"/>
+            <point x="7463.0" y="6251.5"/>
+            <point x="7463.0" y="6754.0"/>
+            <point x="7473.5" y="6775.0"/>
             <point x="7521.0" y="6823.0"/>
             <point x="7521.0" y="7056.0"/>
             <point x="7580.0" y="7115.0"/>
@@ -2786,10 +2744,10 @@
             <point x="8079.0" y="7500.0"/>
             <point x="9177.5" y="7500.0"/>
             <point x="9241.5" y="7436.0"/>
-            <point x="9354.5" y="7436.0"/>
+            <point x="9351.0" y="7436.0"/>
         </points>
     </street>
-    <street name="河濱步道" width="7">
+    <street name="河步道" width="7">
         <points>
             <point x="9354.5" y="7439.0"/>
             <point x="9354.5" y="7155.0"/>
@@ -2801,22 +2759,10 @@
             <point x="9561.0" y="6804.0"/>
             <point x="9591.0" y="6789.0"/>
             <point x="9656.0" y="6789.0"/>
-            <point x="9686.0" y="6774.0"/>
-            <point x="9711.0" y="6748.0"/>
-            <point x="9719.0" y="6731.0"/>
-            <point x="9719.0" y="6693.0"/>
-            <point x="9724.0" y="6683.0"/>
-            <point x="9733.0" y="6678.0"/>
-            <point x="10003.0" y="6678.0"/>
-            <point x="10014.0" y="6683.0"/>
-            <point x="10027.0" y="6696.0"/>
-            <point x="10032.0" y="6707.0"/>
-            <point x="10032.0" y="6731.0"/>
-            <point x="10044.0" y="6756.0"/>
-            <point x="10142.0" y="6854.0"/>
-            <point x="10155.0" y="6880.0"/>
-            <point x="10155.0" y="6887.0"/>
-            <point x="10158.0" y="6894.0"/>
+            <point x="9749.5" y="6742.0"/>
+            <point x="9924.5" y="6743.0"/>
+            <point x="9992.0" y="6775.5"/>
+            <point x="10065.5" y="6848.5"/>
             <point x="10166.0" y="6899.0"/>
             <point x="10360.0" y="6899.0"/>
         </points>
@@ -2845,7 +2791,7 @@
     </street>
     <street name="普魯伊特大道" width="6">
         <points>
-            <point x="10141.0" y="6656.0"/>
+            <point x="10130.0" y="6656.0"/>
             <point x="10239.0" y="6656.0"/>
             <point x="10261.0" y="6678.0"/>
             <point x="10360.0" y="6678.0"/>
@@ -3380,26 +3326,15 @@
             <point x="7893.0" y="7837.0"/>
         </points>
     </street>
-    <street name="霍普威爾小徑" width="5">
+    <street name="霍普威爾小徑" width="6">
         <points>
-            <point x="939.5" y="8402.5"/>
+            <point x="137.5" y="8955.5"/>
+            <point x="369.5" y="8955.5"/>
+            <point x="403.5" y="8938.5"/>
+            <point x="406.0" y="8935.5"/>
             <point x="1413.0" y="7929.0"/>
             <point x="1427.5" y="7900.5"/>
             <point x="1427.5" y="7384.5"/>
-        </points>
-    </street>
-    <street name="霍普威爾小徑" width="6">
-        <points>
-            <point x="403.0" y="8938.5"/>
-            <point x="939.5" y="8402.0"/>
-        </points>
-    </street>
-    <street name="霍普威爾小徑" width="5">
-        <points>
-            <point x="138.0" y="8955.5"/>
-            <point x="369.0" y="8955.5"/>
-            <point x="388.5" y="8946.0"/>
-            <point x="403.5" y="8938.0"/>
         </points>
     </street>
     <street name="布倫福德大街" width="4">
@@ -4012,7 +3947,8 @@
             <point x="12620.0" y="5357.0"/>
             <point x="12620.0" y="5616.0"/>
             <point x="12594.0" y="5616.0"/>
-            <point x="12594.0" y="5766.0"/>
+            <point x="12594.0" y="5762.0"/>
+            <point x="12674.0" y="5762.0"/>
         </points>
     </street>
     <street name="磨坊路" width="4">
@@ -4034,7 +3970,7 @@
             <point x="12642.0" y="6450.0"/>
             <point x="12686.0" y="6450.0"/>
             <point x="12718.0" y="6466.0"/>
-            <point x="13197.0" y="6466.0"/>
+            <point x="13203.0" y="6466.0"/>
         </points>
     </street>
     <street name="鹹水河路" width="6">
@@ -4046,7 +3982,7 @@
     </street>
     <street name="鹹水河路" width="5">
         <points>
-            <point x="12096.0" y="7216.0"/>
+            <point x="12300.0" y="7216.0"/>
             <point x="12536.0" y="7216.5"/>
             <point x="12678.0" y="7145.5"/>
             <point x="12711.0" y="7112.5"/>
@@ -4201,7 +4137,7 @@
     </street>
     <street name="魯迪·格雷迪大道" width="10">
         <points>
-            <point x="13200.0" y="1357.0"/>
+            <point x="13200.0" y="1347.0"/>
             <point x="13200.0" y="2192.0"/>
         </points>
     </street>
@@ -4509,14 +4445,8 @@
     </street>
     <street name="60號公路" width="14">
         <points>
-            <point x="1501.0" y="5758.5"/>
+            <point x="1501.0" y="5517.0"/>
             <point x="1501.0" y="6080.0"/>
-        </points>
-    </street>
-    <street name="60號公路" width="12">
-        <points>
-            <point x="1501.0" y="5758.5"/>
-            <point x="1501.5" y="5517.0"/>
         </points>
     </street>
     <street name="勃蘭登堡繞城公路" width="10">
@@ -4732,7 +4662,8 @@
     </street>
     <street name="163號公路" width="8">
         <points>
-            <point x="7168.0" y="6015.0"/>
+            <point x="7096.0" y="5870.0"/>
+            <point x="7168.0" y="6015.5"/>
             <point x="7168.0" y="6258.0"/>
             <point x="7103.0" y="6389.0"/>
             <point x="7053.0" y="6438.5"/>
@@ -4765,7 +4696,8 @@
             <point x="12209.0" y="7173.0"/>
             <point x="12222.0" y="7160.0"/>
             <point x="12232.0" y="7139.5"/>
-            <point x="12232.0" y="6890.0"/>
+            <point x="12232.0" y="6887.5"/>
+            <point x="12244.0" y="6863.5"/>
             <point x="12247.0" y="6860.0"/>
             <point x="12258.5" y="6848.5"/>
             <point x="12298.5" y="6828.0"/>
@@ -4777,17 +4709,7 @@
     <street name="鹹水河大橋" width="14">
         <points>
             <point x="12316.0" y="6753.0"/>
-            <point x="12315.5" y="6689.0"/>
-        </points>
-    </street>
-    <street name="迪克西高速公路 (31號國道西路)" width="14">
-        <points>
-            <point x="12315.5" y="6689.0"/>
-            <point x="12315.5" y="6684.5"/>
-            <point x="12332.0" y="6657.0"/>
-            <point x="12346.5" y="6642.5"/>
-            <point x="12375.0" y="6628.0"/>
-            <point x="12576.0" y="6628.0"/>
+            <point x="12316.0" y="6689.0"/>
         </points>
     </street>
     <street name="迪克西高速公路 (31號國道西路)" width="13">
@@ -4800,18 +4722,18 @@
     </street>
     <street name="迪克西高速公路 (31號國道西路)" width="14">
         <points>
-            <point x="12635.0" y="6571.0"/>
+            <point x="12316.0" y="6688.5"/>
+            <point x="12316.0" y="6685.0"/>
+            <point x="12331.0" y="6658.0"/>
+            <point x="12346.0" y="6643.0"/>
+            <point x="12374.5" y="6628.0"/>
+            <point x="12576.5" y="6628.0"/>
+            <point x="12598.0" y="6617.5"/>
+            <point x="12623.5" y="6592.5"/>
+            <point x="12635.0" y="6568.5"/>
             <point x="12635.0" y="5914.5"/>
             <point x="12681.0" y="5822.5"/>
             <point x="12681.0" y="4859.5"/>
-        </points>
-    </street>
-    <street name="迪克西高速公路 (31號國道西路)" width="13">
-        <points>
-            <point x="12573.5" y="6629.0"/>
-            <point x="12602.0" y="6614.5"/>
-            <point x="12623.5" y="6592.5"/>
-            <point x="12636.0" y="6568.0"/>
         </points>
     </street>
     <street name="迪克西高速公路 (31號國道西路)" width="14">
@@ -4827,18 +4749,13 @@
             <point x="12513.0" y="3458.0"/>
         </points>
     </street>
-    <street name="弦鎮路" width="9">
-        <points>
-            <point x="906.5" y="10544.5"/>
-            <point x="832.0" y="10693.0"/>
-        </points>
-    </street>
     <street name="弦鎮路" width="8">
         <points>
             <point x="962.0" y="10302.0"/>
             <point x="962.0" y="10467.0"/>
             <point x="940.0" y="10511.0"/>
-            <point x="905.5" y="10545.0"/>
+            <point x="906.0" y="10545.0"/>
+            <point x="832.0" y="10692.5"/>
         </points>
     </street>
     <street name="弦鎮路" width="7">
@@ -4951,12 +4868,12 @@
     </street>
     <street name="163號公路" width="8">
         <points>
-            <point x="7277.0" y="8566.0"/>
+            <point x="7277.0" y="8558.0"/>
             <point x="7277.0" y="9749.0"/>
             <point x="7285.5" y="9766.0"/>
             <point x="7299.5" y="9780.0"/>
             <point x="7317.0" y="9789.0"/>
-            <point x="9899.5" y="9789.0"/>
+            <point x="9900.0" y="9789.0"/>
         </points>
     </street>
     <street name="哈雷追逐路" width="8">
@@ -5381,57 +5298,58 @@
             <point x="5776.0" y="5745.0"/>
         </points>
     </street>
-    <street name="湖畔連線路" width="6">
+    <street name="湖畔連線路" width="8">
         <points>
             <point x="7172.0" y="6094.0"/>
-            <point x="7223.5" y="6094.0"/>
-            <point x="7294.0" y="6162.5"/>
-            <point x="7311.0" y="6162.0"/>
-            <point x="7322.0" y="6173.5"/>
-            <point x="7370.5" y="6173.5"/>
-            <point x="7419.5" y="6173.5"/>
+            <point x="7217.0" y="6094.0"/>
+            <point x="7232.5" y="6101.0"/>
+            <point x="7287.5" y="6155.5"/>
+            <point x="7320.5" y="6171.5"/>
+            <point x="7406.0" y="6172.0"/>
+            <point x="7413.0" y="6168.0"/>
+            <point x="7418.5" y="6162.0"/>
+            <point x="7419.5" y="6160.0"/>
+            <point x="7422.5" y="6155.0"/>
         </points>
     </street>
     <street name="漢克巷" width="4">
         <points>
-            <point x="7333.0" y="6176.5"/>
-            <point x="7333.0" y="6225.0"/>
+            <point x="7355.0" y="6176.0"/>
             <point x="7355.0" y="6225.0"/>
-            <point x="7355.0" y="6267.5"/>
+            <point x="7355.0" y="6266.0"/>
         </points>
     </street>
     <street name="撬棍路" width="5">
         <points>
-            <point x="7375.5" y="6170.5"/>
-            <point x="7375.5" y="6114.5"/>
-            <point x="7364.5" y="6103.0"/>
-            <point x="7358.5" y="6097.0"/>
-            <point x="7358.5" y="5946.0"/>
+            <point x="7375.0" y="6168.0"/>
+            <point x="7375.0" y="6127.0"/>
+            <point x="7358.0" y="6092.5"/>
+            <point x="7358.0" y="5946.5"/>
             <point x="7362.0" y="5940.0"/>
-            <point x="7368.5" y="5936.0"/>
+            <point x="7368.0" y="5937.0"/>
             <point x="7418.0" y="5936.5"/>
         </points>
     </street>
-    <street name="瑪麗亞街" width="6">
+    <street name="四季巷" width="8">
         <points>
-            <point x="6823.0" y="5356.0"/>
-            <point x="6823.0" y="5513.0"/>
+            <point x="6783.0" y="5357.0"/>
+            <point x="6783.0" y="5533.0"/>
         </points>
     </street>
-    <street name="梧桐巷" width="5">
+    <street name="梧桐巷" width="6">
         <points>
-            <point x="6095.5" y="5403.5"/>
-            <point x="6095.5" y="5484.0"/>
+            <point x="6096.0" y="5403.5"/>
+            <point x="6096.0" y="5490.0"/>
         </points>
     </street>
-    <street name="凱利大道" width="6">
+    <street name="秋日路" width="8">
         <points>
-            <point x="6732.0" y="5516.0"/>
-            <point x="6854.5" y="5516.0"/>
-            <point x="6865.0" y="5511.0"/>
-            <point x="6872.5" y="5504.0"/>
-            <point x="6878.0" y="5493.0"/>
-            <point x="6878.0" y="5473.0"/>
+            <point x="6609.0" y="5537.0"/>
+            <point x="6854.0" y="5537.0"/>
+            <point x="6865.5" y="5531.5"/>
+            <point x="6873.5" y="5523.5"/>
+            <point x="6879.0" y="5512.5"/>
+            <point x="6879.0" y="5473.0"/>
         </points>
     </street>
     <street name="雌鹿谷大道" width="6">
@@ -5471,11 +5389,10 @@
             <point x="6236.5" y="6696.5"/>
         </points>
     </street>
-    <street name="伊萬路" width="5">
+    <street name="伊萬路" width="6">
         <points>
-            <point x="7012.0" y="5473.0"/>
-            <point x="7012.0" y="5513.0"/>
-            <point x="7012.0" y="5604.0"/>
+            <point x="7013.0" y="5473.0"/>
+            <point x="7013.0" y="5605.0"/>
         </points>
     </street>
     <street name="威爾遜路" width="6">
@@ -5523,9 +5440,9 @@
             <point x="2700.0" y="6373.0"/>
         </points>
     </street>
-    <street name="樹樁巷" width="4">
+    <street name="樹樁巷" width="6">
         <points>
-            <point x="7372.0" y="6517.0"/>
+            <point x="7378.0" y="6517.0"/>
             <point x="7460.0" y="6517.0"/>
         </points>
     </street>
@@ -5697,7 +5614,7 @@
     <street name="河濱公園" width="5">
         <points>
             <point x="2062.5" y="5800.0"/>
-            <point x="2062.5" y="5701.0"/>
+            <point x="2062.5" y="5761.5"/>
         </points>
     </street>
     <street name="湖鉤路" width="5">
@@ -5954,7 +5871,7 @@
     </street>
     <street name="郵票路" width="4">
         <points>
-            <point x="7574.0" y="12324.0"/>
+            <point x="7574.0" y="12329.0"/>
             <point x="7574.0" y="12366.0"/>
             <point x="7533.0" y="12366.0"/>
         </points>
@@ -6010,7 +5927,7 @@
     <street name="索雷託路" width="4">
         <points>
             <point x="8052.0" y="11979.0"/>
-            <point x="8052.0" y="11910.0"/>
+            <point x="8052.0" y="11912.0"/>
         </points>
     </street>
     <street name="普爾帕斯路" width="5">
@@ -6155,7 +6072,7 @@
             <point x="6962.5" y="10635.0"/>
         </points>
     </street>
-    <street name="Ram Road" width="5">
+    <street name="公羊路" width="5">
         <points>
             <point x="7395.0" y="10734.5"/>
             <point x="7320.0" y="10734.5"/>
@@ -6211,8 +6128,8 @@
     </street>
     <street name="漁人巷" width="5">
         <points>
-            <point x="11625.5" y="6747.0"/>
-            <point x="11625.5" y="6691.0"/>
+            <point x="11625.5" y="6757.0"/>
+            <point x="11625.5" y="6627.5"/>
         </points>
     </street>
     <street name="以斯帖路" width="8">
@@ -6410,14 +6327,14 @@
             <point x="9895.0" y="7825.0"/>
         </points>
     </street>
-    <street name="福勒路" width="4">
+    <street name="默瑟路" width="4">
         <points>
             <point x="9766.0" y="7774.5"/>
             <point x="9766.0" y="7676.5"/>
             <point x="9773.0" y="7671.0"/>
             <point x="9813.0" y="7671.0"/>
             <point x="9823.0" y="7661.5"/>
-            <point x="9823.0" y="7635.0"/>
+            <point x="9823.0" y="7631.0"/>
         </points>
     </street>
     <street name="奮鬥路" width="5">
@@ -8674,7 +8591,7 @@
     </street>
     <street name="西部鐵路 (以革倫 - 勃蘭登堡)" width="5">
         <points>
-            <point x="820.5" y="11805.5"/>
+            <point x="820.5" y="11853.5"/>
             <point x="820.5" y="11192.5"/>
             <point x="547.5" y="10919.5"/>
             <point x="547.5" y="9248.5"/>
@@ -8716,12 +8633,12 @@
             <point x="1980.5" y="13475.5"/>
             <point x="961.5" y="13475.5"/>
             <point x="820.5" y="13334.5"/>
-            <point x="820.5" y="11875.0"/>
+            <point x="820.5" y="11853.5"/>
         </points>
     </street>
     <street name="印第安納鐵路 (勃蘭登堡 - 印第安納)" width="5">
         <points>
-            <point x="2024.5" y="6695.5"/>
+            <point x="2030.5" y="6695.5"/>
             <point x="1958.0" y="6695.0"/>
             <point x="1808.5" y="6546.0"/>
             <point x="1808.0" y="6448.0"/>
@@ -8765,6 +8682,252 @@
             <point x="10724.5" y="8071.5"/>
             <point x="10761.5" y="8108.5"/>
             <point x="12104.0" y="8108.5"/>
+        </points>
+    </street>
+    <street name="羅傑斯大道" width="8">
+        <points>
+            <point x="6387.0" y="5288.0"/>
+            <point x="6387.0" y="5533.0"/>
+        </points>
+    </street>
+    <street name="啤酒花巷" width="4">
+        <points>
+            <point x="10810.5" y="9785.5"/>
+            <point x="10821.5" y="9774.5"/>
+            <point x="10826.5" y="9771.5"/>
+            <point x="10923.0" y="9772.0"/>
+        </points>
+    </street>
+    <street name="方舟巷" width="8">
+        <points>
+            <point x="6040.0" y="5288.0"/>
+            <point x="6040.0" y="5396.0"/>
+        </points>
+    </street>
+    <street name="胡桃街" width="6">
+        <points>
+            <point x="5885.0" y="5363.0"/>
+            <point x="5910.5" y="5363.0"/>
+            <point x="5912.5" y="5363.0"/>
+            <point x="5915.5" y="5360.5"/>
+            <point x="5917.0" y="5358.0"/>
+            <point x="5917.0" y="5341.5"/>
+            <point x="5917.0" y="5331.0"/>
+            <point x="5918.0" y="5329.5"/>
+            <point x="5919.0" y="5328.5"/>
+            <point x="5920.0" y="5328.0"/>
+            <point x="5956.0" y="5328.0"/>
+        </points>
+    </street>
+    <street name="小約翰內斯街" width="8">
+        <points>
+            <point x="6168.0" y="5288.0"/>
+            <point x="6168.0" y="5396.0"/>
+        </points>
+    </street>
+    <street name="春日大道" width="8">
+        <points>
+            <point x="6609.0" y="5353.0"/>
+            <point x="6791.0" y="5353.0"/>
+        </points>
+    </street>
+    <street name="冬日巷" width="8">
+        <points>
+            <point x="6695.0" y="5357.0"/>
+            <point x="6695.0" y="5533.0"/>
+        </points>
+    </street>
+    <street name="河風巷" width="6">
+        <points>
+            <point x="6793.0" y="5201.0"/>
+            <point x="6793.0" y="5278.0"/>
+        </points>
+    </street>
+    <street name="磨石路" width="6">
+        <points>
+            <point x="7005.0" y="5465.0"/>
+            <point x="7005.0" y="5354.5"/>
+            <point x="7005.5" y="5353.0"/>
+            <point x="7007.5" y="5349.0"/>
+            <point x="7009.5" y="5347.0"/>
+            <point x="7014.5" y="5344.0"/>
+            <point x="7172.0" y="5344.0"/>
+        </points>
+    </street>
+    <street name="麥種路" width="6">
+        <points>
+            <point x="7175.0" y="5241.0"/>
+            <point x="7175.0" y="5465.0"/>
+        </points>
+    </street>
+    <street name="羅斯伍德街" width="6">
+        <points>
+            <point x="6391.0" y="5367.0"/>
+            <point x="6461.0" y="5367.0"/>
+        </points>
+    </street>
+    <street name="綻放巷" width="6">
+        <points>
+            <point x="6437.0" y="5370.0"/>
+            <point x="6437.0" y="5396.0"/>
+        </points>
+    </street>
+    <street name="伊德羅恩巷" width="6">
+        <points>
+            <point x="6391.0" y="5480.0"/>
+            <point x="6527.0" y="5480.0"/>
+        </points>
+    </street>
+    <street name="雌鹿谷步道" width="6">
+        <points>
+            <point x="7164.0" y="6119.0"/>
+            <point x="7103.0" y="6119.0"/>
+            <point x="7088.0" y="6111.5"/>
+            <point x="7077.5" y="6101.0"/>
+            <point x="7070.0" y="6086.5"/>
+            <point x="7070.0" y="6044.5"/>
+            <point x="7065.5" y="6035.5"/>
+            <point x="7056.0" y="6025.5"/>
+            <point x="7044.5" y="6021.0"/>
+            <point x="7025.0" y="6021.0"/>
+        </points>
+    </street>
+    <street name="鴉啼路" width="5">
+        <points>
+            <point x="7929.5" y="12329.0"/>
+            <point x="7929.5" y="12349.0"/>
+            <point x="7932.5" y="12356.5"/>
+            <point x="7948.0" y="12372.5"/>
+            <point x="7955.5" y="12376.5"/>
+            <point x="8100.0" y="12376.5"/>
+            <point x="8105.0" y="12375.0"/>
+            <point x="8148.5" y="12332.0"/>
+            <point x="8148.5" y="12330.0"/>
+        </points>
+    </street>
+    <street name="傑克斯巷" width="8">
+        <points>
+            <point x="8106.0" y="11780.0"/>
+            <point x="8106.0" y="11977.5"/>
+        </points>
+    </street>
+    <street name="丹頓街" width="8">
+        <points>
+            <point x="8110.0" y="11275.0"/>
+            <point x="8333.0" y="11275.0"/>
+        </points>
+    </street>
+    <street name="蟾跳路" width="6">
+        <points>
+            <point x="7888.0" y="11379.0"/>
+            <point x="7888.0" y="11281.5"/>
+            <point x="7883.5" y="11272.5"/>
+            <point x="7875.5" y="11265.5"/>
+            <point x="7868.5" y="11262.0"/>
+            <point x="7750.5" y="11262.0"/>
+            <point x="7740.5" y="11258.0"/>
+            <point x="7732.5" y="11249.0"/>
+            <point x="7727.5" y="11239.5"/>
+            <point x="7728.0" y="11212.0"/>
+        </points>
+    </street>
+    <street name="JC卡羅爾路" width="8">
+        <points>
+            <point x="8110.0" y="11382.0"/>
+            <point x="8317.5" y="11382.0"/>
+            <point x="8326.5" y="11379.0"/>
+            <point x="8334.0" y="11371.5"/>
+            <point x="8337.0" y="11365.5"/>
+            <point x="8337.0" y="11212.0"/>
+        </points>
+    </street>
+    <street name="蝴蝶街" width="6">
+        <points>
+            <point x="8265.0" y="11386.0"/>
+            <point x="8265.0" y="11575.0"/>
+        </points>
+    </street>
+    <street name="墨菲神父巷" width="5">
+        <points>
+            <point x="7860.5" y="11540.0"/>
+            <point x="7860.5" y="11469.0"/>
+            <point x="7865.0" y="11460.0"/>
+            <point x="7880.5" y="11444.5"/>
+            <point x="7884.0" y="11441.5"/>
+        </points>
+    </street>
+    <street name="蛇街" width="6">
+        <points>
+            <point x="7893.0" y="11382.0"/>
+            <point x="8102.0" y="11382.0"/>
+        </points>
+    </street>
+    <street name="層架街" width="6">
+        <points>
+            <point x="8026.0" y="11334.0"/>
+            <point x="8026.0" y="11472.0"/>
+        </points>
+    </street>
+    <street name="十字街" width="6">
+        <points>
+            <point x="7892.5" y="11430.0"/>
+            <point x="8023.0" y="11430.0"/>
+        </points>
+    </street>
+    <street name="監獄聯外道路" width="7">
+        <points>
+            <point x="8026.5" y="11982.0"/>
+            <point x="8012.0" y="11982.0"/>
+            <point x="8000.0" y="11976.0"/>
+            <point x="7924.5" y="11900.5"/>
+            <point x="7916.5" y="11891.0"/>
+        </points>
+    </street>
+    <street name="柳絮街" width="6">
+        <points>
+            <point x="8372.0" y="11777.0"/>
+            <point x="8380.5" y="11777.0"/>
+            <point x="8386.0" y="11779.5"/>
+            <point x="8389.0" y="11783.0"/>
+            <point x="8391.0" y="11787.0"/>
+            <point x="8391.0" y="12060.0"/>
+            <point x="8386.5" y="12070.5"/>
+            <point x="8379.0" y="12077.5"/>
+            <point x="8370.0" y="12082.0"/>
+            <point x="8351.0" y="12082.0"/>
+        </points>
+    </street>
+    <street name="格里爾路" width="6">
+        <points>
+            <point x="6991.0" y="8158.0"/>
+            <point x="6991.0" y="8263.5"/>
+            <point x="6975.0" y="8295.5"/>
+            <point x="6975.0" y="8455.0"/>
+            <point x="6971.5" y="8461.5"/>
+            <point x="6944.5" y="8488.5"/>
+            <point x="6933.0" y="8496.0"/>
+            <point x="6685.0" y="8496.0"/>
+            <point x="6654.0" y="8511.0"/>
+            <point x="6654.0" y="8513.0"/>
+        </points>
+    </street>
+    <street name="洗衣巷" width="6">
+        <points>
+            <point x="7273.0" y="8562.0"/>
+            <point x="7136.0" y="8562.0"/>
+            <point x="7093.0" y="8540.5"/>
+            <point x="7066.5" y="8514.0"/>
+            <point x="7045.5" y="8504.0"/>
+            <point x="7015.5" y="8504.0"/>
+            <point x="6961.0" y="8477.0"/>
+        </points>
+    </street>
+    <street name="老軍營路" width="6">
+        <points>
+            <point x="7521.0" y="8149.0"/>
+            <point x="7521.0" y="8021.5"/>
+            <point x="7502.5" y="8008.5"/>
+            <point x="7483.0" y="8008.0"/>
         </points>
     </street>
 </streets>
