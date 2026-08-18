@@ -8,13 +8,17 @@
 
 ### Fixed
 
-- **42.20.3 起大地圖路名中英混雜（如「Spring Dr凱利大道」疊字、「Winter Lane」整條英文）**。兩個官方變化疊出來的：42.20.0 起官方把 Muldraugh 街道資料大改版（新增 144 條、移除 133 條、部分改名），本模組的街道檔一直停在舊版；42.20.3 又給物件池加了容量上限，讓「先載官方英文再清除、再載中文」這條舊載入流程的殘影現形——官方的清除函式不會清空間索引，被清掉的英文街道物件超過池上限後不再被中文載入重複利用覆寫，英文名就永遠殘留在大地圖上。現在載入流程改為「跳過官方英文街道檔、直接載中文」，從源頭不讓英文進入索引；街道資料也全面對齊官方 42.20.3——全 1098 條 = 954 條（幾何與舊版完全相同，沿用既有譯名）＋ 144 條官方新增或改線的條目（27 條街名沿用既有同名映射；117 條逐一人工決策，涉及 113 個不重複街名：81 個沿用改線前的既有譯名、32 個全新翻譯，含春日大道／夏日苑／秋日路／冬日巷／四季巷等官方新社區街名。完整帳目見 `HARDCODE_REGISTRY.md` 42.20.3 對版結論）。
-  > 技術要點：`WorldMapStreets.clear()`（Java）只清 street list 並 release 回 `WorldMapStreet.s_pool`，不清 `StreetLookup` 空間索引，而渲染 `getStreetsOverlapping` 走的正是該索引；42.20.3 `ObjectPool` 新增 `DEFAULT_MAX_SIZE = 1024`（超限 `release` 直接丟棄），官方檔 1098 條 clear 後尾端物件永不被 alloc 重用改寫，名稱停在英文。`MapStreets_Flx.lua` 重寫為 add-only：先顯式載入 `Riverside, KY/streets.xml` 中文（pcall 保護，失敗印錯誤並退回原版流程；原版路徑亦以 pcall 防護，雙重失敗時放棄街道資料、保住 `initDataAndStyle` 其餘地圖初始化），再依 `getLotDirectories()` 逐目錄 pcall 載入其他地圖 MOD 街道、唯獨跳過 `Muldraugh, KY`（大小寫不敏感）；中文檔缺失時同樣走受防護的原版 fallback。新增資料閘門 `scripts/test_streets_sync.py`（幾何／寬度與官方**逐位**一致、無未譯街名、官方承載目錄仍唯一、CRLF 無 BOM），已掛進 `verify_mod.py` 第 13 項隨發版必跑；另有行為回歸測試 `scripts/test_map_streets.lua`（add-only／跳過清單／pcall 隔離／fallback 例外攔截，7 案例）。
-- **街道譯名勘誤**：`Ram Road` 一直未翻譯（現譯「公羊路」）；`Frederick Lane` 修正 OpenCC 誤轉「弗雷德**裡**克巷」→「弗雷德**里**克巷」（人名音譯用「里」）；`Doe Valley Walk Road` 統一為既有「雌鹿谷」地名（譯「雌鹿谷步道」，與雌鹿谷大道／雌鹿谷森林／雌鹿谷湖一致）。
+- **修復大地圖路名中英文混雜**。遊戲更新到 42.20.3 後，大地圖上會出現英文和中文疊在一起的路名（例如「Spring Dr凱利大道」），也有整條路只顯示英文（例如「Winter Lane」）。這是官方兩次改動疊加造成的：官方更新了街道資料（新增了不少街道、也改了一些路名），同時改了遊戲內部的資源回收方式，讓舊的翻譯載入流程留下英文殘影。現在已改用新的載入方式從源頭避免英文殘留，並把全部街道翻譯更新到最新版——官方新社區的路名也都翻好了（春日大道、夏日苑、秋日路、冬日巷、四季巷等）。
+  > 技術要點（根因）：`WorldMapStreets.clear()`（Java）只清 street list 並 release 回 `WorldMapStreet.s_pool`，不清 `StreetLookup` 空間索引，而渲染 `getStreetsOverlapping` 走的正是該索引；42.20.3 `ObjectPool` 新增 `DEFAULT_MAX_SIZE = 1024`（超限 `release` 直接丟棄），官方檔 1098 條 clear 後尾端物件永不被 alloc 重用改寫，名稱停在英文。官方 `Muldraugh, KY/streets.xml` 自 42.20.0 改版：+144/-133 條、部分改名（如 Kaylee Ave 段改名 Spring Dr）。
+  > 技術要點（修法）：`MapStreets_Flx.lua` 重寫為 add-only：先顯式載入 `Riverside, KY/streets.xml` 中文（pcall 保護，失敗印錯誤並退回原版流程；原版路徑亦以 pcall 防護，雙重失敗時放棄街道資料、保住 `initDataAndStyle` 其餘地圖初始化），再依 `getLotDirectories()` 逐目錄 pcall 載入其他地圖 MOD 街道、唯獨跳過 `Muldraugh, KY`（大小寫不敏感）；中文檔缺失時同樣走受防護的原版 fallback。
+  > 技術要點（資料同步帳目）：全 1098 條 = 954 條（幾何與舊版完全相同，沿用既有譯名）＋ 144 條官方新增或改線的條目（27 條街名沿用既有同名映射；117 條逐一人工決策，涉及 113 個不重複街名：81 個沿用改線前的既有譯名、32 個全新翻譯）。完整帳目見 `HARDCODE_REGISTRY.md` 42.20.3 對版結論。
+  > 技術要點（守門）：新增資料閘門 `scripts/test_streets_sync.py`（幾何／寬度與官方**逐位**一致、無未譯街名、官方承載目錄仍唯一、CRLF 無 BOM），已掛進 `verify_mod.py` 第 13 項隨發版必跑；另有行為回歸測試 `scripts/test_map_streets.lua`（add-only／跳過清單／pcall 隔離／fallback 例外攔截，7 案例）。
+- **修正三個路名翻譯**：「Ram Road」之前一直沒翻譯，現在譯為「公羊路」；「弗雷德裡克巷」改正為「弗雷德里克巷」（簡轉繁誤字，人名音譯應該用「里」）；「Doe Valley Walk Road」譯為「雌鹿谷步道」，與周邊的雌鹿谷大道、雌鹿谷森林、雌鹿谷湖用同一個地名。
 
 ### Notes
 
-- 42.20.3 全面盤查結論：本次官方更新只動 jar（物件池容量上限與 MP 連線槽位調整），官方 EN 翻譯 47251 鍵零增減改、vanilla Lua／scripts 零變更；`HARDCODE_REGISTRY.md` 全部 A／B／C 表錨點逐條重驗通過（Java 錨點檔與 42.20.2 bit-identical、Lua 錨點逐條 grep 命中），所有硬編碼修補維持有效，無需對版調整。除錯選單涵蓋率基準不變（168 條涵蓋 167、唯一未涵蓋為不該譯的 `'servertest'`）。
+- 本次官方 42.20.3 更新已全面檢查：官方這次只更新了遊戲程式本體，沒有動任何翻譯文本，本模組所有既有的修補（硬編碼英文修復等）也全部確認仍然有效，不需要調整。
+  > 技術要點：官方本次僅動 jar（`ObjectPool` 容量上限與 MP 連線槽位 512→255），官方 EN 翻譯 47251 鍵零增減改、vanilla Lua／scripts 零變更；`HARDCODE_REGISTRY.md` 全部 A／B／C 表錨點逐條重驗通過（Java 錨點檔與 42.20.2 bit-identical、Lua 錨點逐條 grep 命中）。除錯選單涵蓋率基準不變（168 條涵蓋 167、唯一未涵蓋為不該譯的 `'servertest'`）。
 
 ## [42.20.2-1.20.0] - 2026-08-16
 
