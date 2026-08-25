@@ -4,6 +4,16 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.3-1.21.1] - 2026-08-25
+
+### Fixed
+
+- **修復刮刮樂刮開後名字變成中英夾雜**（例如「刮刮樂彩票 - Winner $1」「刮刮樂彩票 - Loser」）。遊戲 42.20 起，多人伺服器上刮開刮刮樂時，票券名字改由伺服器決定並蓋回玩家畫面；伺服器語言不是中文時就會產生中英夾雜的名字，而且會永久留在票券上。現在模組會自動把這些票券修回中文——中獎顯示「刮刮樂 (贏家 $金額)」、未中獎顯示「刮刮樂 (輸家)」，之前已經變英文的舊票券也會一併修好。
+  > 技術要點（根因）：`RecipeCodeOnCreate.scratchTicket` 只 `setName`/`setTexture` 不換型別，刮開後 fullType 仍是 `Base.ScratchTicket`；42.20.0 起尾端新增 `GameServer.server` 分支 `sendReplaceItemInContainer`，MP 由 server 端 `Translator.getText` 組名推送覆蓋（`getDisplayName()` 回傳既存 `this.name`，故產生「中文基底名＋EN 格式」混血）。42.19 無此推送、client 端組名全中文——正是玩家回報「原本中文、現在變英文」的時間點。翻譯檔本身無恙：CH/CN 的 `ItemName` 三鍵與 `IGUI_ScratchingTicketNameWinner/Loser` 格式鍵自 As1 42.0 起齊全。
+  > 技術要點（修法）：`DynamicItemName_Flx.lua`（登記簿 A3）dispatch 原只認世界生成的 `Base.ScratchTicket_Winner`，現放行 `Base.ScratchTicket`＋官方同函式寫入的 `modData.scratched == true`（fail-closed，未刮不碰）；名含 `$N`（官方金額集合 `$1`–`$10000`，語言中立）走 `IGUI_ScratchingTicketNameWinner`，否則走 `IGUI_ScratchingTicketNameLoser`，以現行譯名重組。回歸測試 `scripts/test_dynamic_item_name.lua` 11→18 案。
+- **消除啟動時的 4 條錯誤訊息**。遊戲每次啟動都會到每個模組裡找動畫資料夾，找不到就在紀錄檔印一條錯誤。本模組是純翻譯包、本來就沒有動畫檔，於是每次啟動固定產生 4 條無意義的錯誤訊息，把紀錄檔塞滿、真正的問題反而不好找。現在補上佔位檔讓那些資料夾存在，錯誤歸零；遊戲功能完全不受影響。
+  > 技術要點：`AdvancedAnimator.java:771-798` 對每個啟用 MOD 無條件走訪 `common/` 與 `42/` 的 `media/AnimSets`、`media/actiongroups`，拼路徑前不檢查目錄是否存在，不存在則 `visitFileFailed` 印 ERROR 後 CONTINUE（:752-754），每 MOD 每次啟動固定 4 條。修法：四個目錄各放一個佔位 txt 讓目錄存在（同 NeatUI 解法），實測家族 12 MOD log 全數歸零。
+
 ## [42.20.3-1.21.0] - 2026-08-18
 
 ### Fixed

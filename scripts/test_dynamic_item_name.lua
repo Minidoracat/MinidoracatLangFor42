@@ -21,6 +21,8 @@ local FAKE = {
     IGUI_PetName_Rex = "雷克斯",
     IGUI_Doctor = "醫生",
     IGUI_Photo_Louisville = "路易斯維爾",
+    IGUI_ScratchingTicketNameWinner = "%1$s (贏家 %2$s)",
+    IGUI_ScratchingTicketNameLoser = "%1$s (輸家)",
     -- IGUI_Newspaper_Name 故意缺席：驗證「查無翻譯」也要 memoize
 }
 
@@ -114,6 +116,45 @@ check("CH 烘焙寵物牌 → 寵物名補翻",
 check("CH 烘焙雪花球（CH/EN 格式相異，只有取回 %N 格式後可達）→ 地名補翻",
     { fullType = "Base.SnowGlobe", name = "雪花玻璃球 (Louisville)", display = "雪花玻璃球" },
     "雪花玻璃球 (路易斯維爾)")
+
+-- ============ 已刮開刮刮樂（fullType 不變，靠官方 modData.scratched 判定） ============
+
+-- 42.20.0+ MP：刮票改由 server 端組名並 sendReplaceItemInContainer 推送覆蓋，
+-- 非中文伺服器產生「中文基底名 + EN 格式」混血烘焙名
+check("混血烘焙中獎票（EN 格式 + 中文基底名）→ 現行譯名重組",
+    { fullType = "Base.ScratchTicket", name = "刮刮樂彩票 - Winner $10", display = "刮刮樂",
+      modData = { scratched = true } },
+    "刮刮樂 (贏家 $10)")
+
+check("混血烘焙未中獎票 → 現行譯名重組",
+    { fullType = "Base.ScratchTicket", name = "刮刮樂彩票 - Loser", display = "刮刮樂",
+      modData = { scratched = true } },
+    "刮刮樂 (輸家)")
+
+check("全英文烘焙中獎票（server EN 完整生成）→ 中文",
+    { fullType = "Base.ScratchTicket", name = "Scratch Ticket - Winner $5", display = "刮刮樂",
+      modData = { scratched = true } },
+    "刮刮樂 (贏家 $5)")
+
+check("42.19 全中文舊烘焙名 → 基底名更新為現行譯名",
+    { fullType = "Base.ScratchTicket", name = "刮刮樂彩票 (贏家 $1)", display = "刮刮樂",
+      modData = { scratched = true } },
+    "刮刮樂 (贏家 $1)")
+
+check("已正名輸家票冪等",
+    { fullType = "Base.ScratchTicket", name = "刮刮樂 (輸家)", display = "刮刮樂",
+      modData = { scratched = true } },
+    "刮刮樂 (輸家)")
+
+-- fail-closed：無 scratched 標記＝未刮，一律不碰
+check("未刮票不重組（無 modData.scratched）",
+    { fullType = "Base.ScratchTicket", name = "刮刮樂彩票 - Winner $10", display = "刮刮樂" },
+    "刮刮樂彩票 - Winner $10")
+
+-- 世界生成 _Winner 型別既有路徑迴歸守門
+check("世界生成中獎票（_Winner 型別，EN 烘焙）→ 中文",
+    { fullType = "Base.ScratchTicket_Winner", name = "Scratch Ticket - Winner $2", display = "刮刮樂 (中獎)" },
+    "刮刮樂 (中獎) (贏家 $2)")
 
 -- 冪等性：已修好的名字重掃不得疊加。直呼 computeFixedName 繞過 fixItemName 的
 -- pcall——快取層若拋錯要顯性炸出來，不得被吞成「名字沒變」的假綠

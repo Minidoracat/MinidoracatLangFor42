@@ -1821,6 +1821,22 @@ local function fixScratchTicketWinner(item, currentName)
     return getText("IGUI_ScratchingTicketNameWinner", baseName, amount)
 end
 
+-- 已刮開的刮刮樂（fullType 仍是 Base.ScratchTicket）：官方刮票 recipe 只 setName／
+-- setTexture 不換型別（RecipeCodeOnCreate.scratchTicket），42.20.0 起 MP 改由 server 端
+-- 組名再 sendReplaceItemInContainer 推送覆蓋，非中文伺服器產生「中文基底名 - Winner $N／
+-- - Loser」混血烘焙名。判定依官方同函式寫入的 modData.scratched（fail-closed：無標記
+-- 即未刮，不重組）。有金額＝中獎，無金額＝未中獎。
+local function fixScratchedTicket(item, currentName)
+    local modData = item:getModData()
+    if not modData or modData.scratched ~= true then return nil end
+    if currentName:find("%$%d") then
+        return fixScratchTicketWinner(item, currentName)
+    end
+    local baseName = getBaseDisplayName(item)
+    if not baseName then return nil end
+    return getText("IGUI_ScratchingTicketNameLoser", baseName)
+end
+
 -- 魚："{大小} {魚名} " 或 "{大小} {魚名} - Ncm"
 local function fixFish(item, currentName)
     local baseName = getBaseDisplayName(item)
@@ -1956,6 +1972,7 @@ local function computeFixedName(item)
     if BUSINESS_CARD_TYPE_SET[fullType] then return fixBusinessCard(item, currentName) end
     if LETTER_TYPE_SET[fullType] then return fixLetter(item, currentName) end
     if fullType == "Base.ScratchTicket_Winner" then return fixScratchTicketWinner(item, currentName) end
+    if fullType == "Base.ScratchTicket" then return fixScratchedTicket(item, currentName) end
     if FISH_TYPE_SET[fullType] then return fixFish(item, currentName) end
     if fullType == "Base.Chum" then return fixChum(item, currentName) end
 
