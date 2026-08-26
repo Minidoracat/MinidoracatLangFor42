@@ -4,10 +4,13 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
-## [Unreleased]
+## [42.20.4-1.22.0] - 2026-08-26
 
 ### Fixed
 
+- **修復更新 42.20.4 後報紙、傳單可能只剩空白或排版錯亂**。官方這次更換了印刷品版面的讀取方式，舊格式不再相容；模組原有的中文資料會蓋過官方已更新的資料，導致圖片、字型或顏色讀不到。現在繁中與簡中印刷品已全部換成新版格式，既有中文內容沒有改動。由於新舊格式互不相容，最低支援版本同步提高為 Build 42.20.4。
+  > 技術要點：官方 `PrintMedia.lua`／`ISReadABook.lua` 移除翻譯值內的 `loadstring`，改用 `tonumber`、`UIFont.FromString` 與 `getTexture(value)`。官方 EN 0 新增／162 改值／14 刪除，162 筆 `<type:text>` 內文逐段零變；我方 CH/CN 各遷移 165 個保留值，另刪除無任何 Java／Lua 消費端的 `FlyerTemplate1–14_info`。
+  > 技術要點（守門）：`sync_translations.py fix-check` 現會依 42.20.4 的實際解析契約檢查 Print Media 標記，拒絕舊式 `getTexture(...)`、`UIFont.*`、算式／布林等 `tonumber` 無法讀取的值，避免下次同步把舊格式帶回。
 - **修復做菜後菜名出現英文代碼**（例如「Base.FishFingers 三明治」「Base.MincedMeat 漢堡」「Base.Oysters 三明治」）。用魚條、牡蠣、絞肉、兔肉等食材做三明治、漢堡、沙拉、燉菜這類料理時，菜名裡的食材部分會顯示成遊戲內部代碼而不是中文。這是遊戲本身的問題——官方只替英文版準備了這份食材簡稱對照表，中文版只有少數幾筆，繁中有 148 種食材、簡中有 162 種食材會中招（不只玩家回報的那三個）。現在已把全部 173 種食材的簡稱補齊，菜名會正常顯示「魚條 三明治」「牛肉 漢堡」「兔肉 燉菜」。
   > 技術要點（根因）：script 的 `EvolvedRecipeName` 值由 `Item.java:2730-2732` 在解析期處理，但 `Translator.setDefaultItemEvolvedRecipeName` 的第一行就是 `if (getLanguage() == getDefaultLanguage())`——**只有 EN 會把英文字面填進 `itemEvolvedRecipeName`**，非英文語言一律 no-op。接著 `getItemEvolvedRecipeName` 查不到鍵就 fallback 到 `scriptItem.getDisplayName()`，而 42.x generated script **零 `DisplayName=`**（`food.txt` 命中 0），`Item.getDisplayName()` 於 `displayName` 為 null 時回傳 `getFullName()`，於是拿到裸 `Base.XXX` 並 `put` 進 map 永久快取。消費端是官方 Lua `ISAddItemInRecipe.lua:115/174`。**官方 bug、全非英語語系通病**：法文組自行補到 174 鍵（覆蓋 173/173）、UA 69，而 vanilla CH 僅 32 鍵（扣 7 個死鍵有效 25）、CN/RU/DE/ES 僅 11 鍵。
   > 技術要點（非本模組造成）：`Translator.tryFillMapFromFile` 是逐鍵 merge（`toMap().forEach` → `map.put`），MOD 只覆蓋同鍵、不取代整檔；修補前我方 11 鍵是 vanilla CH 32 鍵的子集，未砍掉任何官方鍵。補鍵即生效的依據是 `Core.java:3925 Translator.loadFiles()` 早於 `:3931 ScriptManager.instance.Load()`——翻譯表先填好就不會走 fallback、不會被快取污染。

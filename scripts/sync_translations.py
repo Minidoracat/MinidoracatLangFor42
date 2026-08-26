@@ -30,6 +30,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import re
 import shutil
 import sys
@@ -195,33 +196,93 @@ def sha256(path: Path) -> str:
 # ============================================================
 
 
+_PRINT_MEDIA_LAYOUT_KEYS = {"maptext", "wrinkles"}
+_PRINT_MEDIA_ELEMENT_TYPES = {"parent", "text", "texture", "map"}
+_PRINT_MEDIA_TRIM_CHARS = "".join(chr(codepoint) for codepoint in range(0x21))
+_PRINT_MEDIA_FONT_NAMES = frozenset({
+    "Small", "Medium", "Large", "Massive", "MainMenu1", "MainMenu2",
+    "Cred1", "Cred2", "NewSmall", "NewMedium", "NewLarge", "Code",
+    "CodeSmall", "CodeMedium", "CodeLarge", "MediumNew", "AutoNormSmall",
+    "AutoNormMedium", "AutoNormLarge", "Dialogue", "Intro", "Handwritten",
+    "DebugConsole", "Title", "SdfRegular", "SdfBold", "SdfItalic",
+    "SdfBoldItalic", "SdfOldRegular", "SdfOldBold", "SdfOldItalic",
+    "SdfOldBoldItalic", "SdfRobertoSans", "SdfCaveat",
+})
+_PRINT_MEDIA_NUMBER = re.compile(
+    r"[+-]?(?:(?:[0-9]+(?:\.[0-9]*)?)|(?:\.[0-9]+))(?:[eE][+-]?[0-9]+)?"
+)
+_PRINT_MEDIA_TEXTURE_PATH = re.compile(r"media/[A-Za-z0-9_./ -]+")
+_PRINT_MEDIA_MAP_ID = re.compile(r'"[A-Za-z0-9_ -]+"')
+
+
 def _validate_print_media_info(key: str, value: str) -> str | None:
-    """檢查 Print_Media _info 值是否被截斷。
-
-    Returns:
-        錯誤描述字串，None 表示無問題。
-    """
-    if not key.endswith("_info"):
+    """檢查 42.20.4 PrintMedia 標記可由新解析器安全讀取。"""
+    if not (key.endswith("_info") or key in _PRINT_MEDIA_LAYOUT_KEYS):
         return None
+    if not value.startswith("<"):
+        return "版面值必須以 <type:...> 標籤開始"
 
-    # 檢查 getTexture( 是否有配對的 )
-    pos = 0
-    while True:
-        idx = value.find("getTexture(", pos)
-        if idx == -1:
-            break
-        paren_start = idx + len("getTexture(")
-        close_pos = value.find(")", paren_start)
-        if close_pos == -1:
-            return "getTexture( 缺少閉合括號 — 值被截斷"
-        pos = close_pos + 1
-
-    # 檢查最後一個 < 是否有對應的 >
-    last_open = value.rfind("<")
-    if last_open != -1:
-        last_close = value.rfind(">")
-        if last_close < last_open:
+    position = 0
+    while position < len(value):
+        close = value.find(">", position + 1)
+        if close == -1:
             return "未閉合的 <type:...> 標籤 — 值被截斷"
+
+        tag = value[position + 1:close]
+        if "<" in tag:
+            return "標籤內又出現 < — 前一個標籤未閉合"
+
+        next_open = value.find("<", close + 1)
+        if next_open == -1:
+            next_open = len(value)
+        payload = value[close + 1:next_open]
+        if ">" in payload:
+            return "標籤後文字含有多餘的 >"
+        position = next_open
+
+        fields: list[tuple[str, str]] = []
+        element_type: str | None = None
+        for raw_field in tag.split(","):
+            raw_field = raw_field.strip(_PRINT_MEDIA_TRIM_CHARS)
+            if not raw_field:
+                continue
+            name, separator, raw_value = raw_field.partition(":")
+            if not separator:
+                return f"標籤欄位缺少冒號：{raw_field!r}"
+            name = name.strip(_PRINT_MEDIA_TRIM_CHARS)
+            raw_value = raw_value.strip(_PRINT_MEDIA_TRIM_CHARS)
+            if name == "type":
+                element_type = raw_value
+            fields.append((name, raw_value))
+
+        if element_type not in _PRINT_MEDIA_ELEMENT_TYPES:
+            return f"未知或缺少 type：{element_type!r}"
+        if element_type == "text":
+            if not payload:
+                return "text 標籤缺少文字內容"
+        elif payload:
+            return f"{element_type} 標籤後不可有文字內容"
+
+        for name, raw_value in fields:
+            if name == "type":
+                continue
+            if element_type == "text" and name == "font":
+                if raw_value not in _PRINT_MEDIA_FONT_NAMES:
+                    return f"font 不是 42.20.4 UIFont 名稱：{raw_value}"
+                continue
+            if element_type == "texture" and name == "texture":
+                path_parts = raw_value.split("/")
+                if not _PRINT_MEDIA_TEXTURE_PATH.fullmatch(raw_value) or ".." in path_parts:
+                    return f"texture 不是未加引號的 media/ 資源路徑：{raw_value}"
+                continue
+            if element_type == "map" and name == "mapID":
+                if not _PRINT_MEDIA_MAP_ID.fullmatch(raw_value):
+                    return f"mapID 格式無效：{raw_value}"
+                continue
+            if not _PRINT_MEDIA_NUMBER.fullmatch(raw_value):
+                return f"{name} 必須是 Lua tonumber 可讀的純數值：{raw_value}"
+            if not math.isfinite(float(raw_value)):
+                return f"{name} 必須是有限數值：{raw_value}"
 
     return None
 
@@ -919,15 +980,18 @@ def cmd_fix_check():
         issues = check_suspicious(content, str(rel_path))
         all_issues.extend(issues)
 
-    # Check Print_Media _info values for truncation (CH + CN)
-    for lang, mod_dir in [("CH", MOD_CH), ("CN", MOD_CN)]:
+    print_media_issues: list[str] = []
+    # Check 42.20.4 Print Media marker compatibility (CH + CN)
+    for lang, mod_dir in (("CH", MOD_CH), ("CN", MOD_CN)):
         pm_file = mod_dir / "Print_Media.json"
         if pm_file.exists():
             pm_data = read_translation(pm_file)
             for key, value in pm_data.items():
                 err = _validate_print_media_info(key, value)
                 if err:
-                    all_issues.append(f"  [{lang}] {key}: {err}")
+                    issue = f"  [{lang}] {key}: {err}"
+                    print_media_issues.append(issue)
+                    all_issues.append(issue)
 
     # Check remaining .txt files (streets.txt, credits.txt)
     for ch_file in sorted(MOD_CH.rglob("*.txt")):
@@ -964,7 +1028,7 @@ def cmd_fix_check():
             print(issue)
     else:
         print("✅ 所有 % 序列皆為 formatted() 安全形式")
-    # 唯一 crash 級守門：其餘檢查屬外觀類照舊只列印，這類必須讓執行失敗
+    # % 是 crash 級硬閘；Print Media 相容性於函式尾端另列為硬閘
     format_gate_failed = bool(fmt_issues)
 
     # 片段重複（潤色擴寫時貼兩次）
@@ -1030,8 +1094,11 @@ def cmd_fix_check():
         else:
             print("✅ 兩專案字典一致（已註記的語境分岔除外）")
 
+    if print_media_issues:
+        print("\n❌ Print Media 標記不相容 42.20.4，以失敗狀態結束")
     if format_gate_failed:
         print("\n❌ % 格式 token 檢查未通過（會使遊戲黑畫面），以失敗狀態結束")
+    if print_media_issues or format_gate_failed:
         sys.exit(1)
 
 

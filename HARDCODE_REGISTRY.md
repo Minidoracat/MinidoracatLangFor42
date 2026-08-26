@@ -45,11 +45,15 @@ uv run scripts/decompile.py verify {新版本}
 
 **42.20.3 隨附事件——大地圖幽靈街道（非硬編碼英文，UI 修補對版）**：pool 上限讓一個潛伏 bug 現形——`WorldMapStreets.clear()`（錨點 `WorldMapStreet.s_pool.releaseAll(this.streets)`）只清 list 不清 `StreetLookup` 空間索引，渲染 `getStreetsOverlapping` 卻走該索引；42.20.2 以前被 release 的街道物件全數回池、隨即被中文載入 alloc 重用覆寫（幽靈內容變中文、視覺無感），42.20.3 起超過 1024 的物件被丟棄、**內容永遠停在官方英文**。疊加官方 `Muldraugh, KY/streets.xml` 自 42.20.0 改版（1087→1098 條、+144/-133、Kaylee Ave 段改名 Spring Dr 等），玩家 2026-08-18 回報大地圖「Spring Dr凱利大道」中英混雜。處置：`MapStreets_Flx.lua` 重寫為 **add-only**（跳過 `Muldraugh, KY`、絕不 clear；中文主路徑 pcall fail-loud＋fallback 原版，詳見 `AGENTS.md` 地圖目錄規則）＋我方 streets.xml 對齊官方 42.20.3。**同步帳目（下次重跑對版用，單位＝XML `<street>` 條目）**：官方 1098 條 = 954 條幾何完全相同（直接沿用我方譯名；此集合以幾何為橋建得 846 對不重複街名 EN→中文映射）＋ 144 條官方獨有（其中 27 條街名命中映射直接借名；117 條人工決策——涉 113 個不重複街名：81 個沿用「我方獨有 133 條」〔官方已移除/改線〕集合的同名譯、32 個全新翻譯）；勘誤 `Ram Road` 未譯→公羊路、`Frederick Lane` 誤轉「裡」→「弗雷德里克巷」、`Doe Valley Walk Road` 統一既有「雌鹿谷」地名（review lane 抓到的分岔）。守門：`scripts/test_streets_sync.py`（幾何/width 與官方**逐位**一致、無未譯街名、**官方 streets.xml 承載目錄集合仍 == {Muldraugh, KY}**——集合變動＝需擴充 Lua 跳過清單、CRLF 無 BOM），已掛入 `verify_mod.py` 第 13 項；行為契約由 `scripts/test_map_streets.lua` 7 案例把關（永不 clear／中文優先／大小寫不敏感跳過／pcall 隔離／缺檔與載入失敗 fallback／fallback 例外攔截——_orig 委派亦以 pcall 防護，雙重失敗時放棄街道資料保住地圖初始化）。**PZ 升版後必跑**；失敗＝官方又動 streets.xml，重跑同步流程（幾何相同沿用 → 同名借名 → 真新名人工翻譯）。
 
+**42.20.4 對版結論（2026-08-26，全表 delta 驗證）**：Steam depot manifest 42.20.3→42.20.4 為 **0 新增／1 刪除／23 改值檔**；刪除的根層 `serialize.lua` 無 MOD 消費端，改值範圍只有 `projectzomboid.jar`、4 份 Lua 與 18 語系的 `Print_Media.json`，`media/scripts`、街道、Radio／Recorded Media 皆未動。官方 EN 47251→47237 鍵：0 新增／162 改值／14 刪除，全部集中 `Print_Media.json`；162 筆的 `<type:text>` 內文逐段 **0 變更**，只遷移標記。根因是 `PrintMedia.lua` 與 `ISReadABook.lua` 移除翻譯值內的 `loadstring` 執行，改為 `tonumber`、`UIFont.FromString`、`getTexture(value)`；我方舊 `getTexture("…")`／`UIFont.*`／算式值會逐鍵蓋過官方新格式，造成圖片、字型與排版失效。處置：CH/CN 各遷移 165 個保留值（中文內文零改）、刪除 EN 同步淘汰且全 Java/Lua 無引用的 `FlyerTemplate1–14_info`，並把 `fix-check` 的 Print Media 閘門升級為 42.20.4 解析契約。
+
+**42.20.4 Lua／Java 硬編碼結論**：4 份 Lua 精確逐行 diff（舊檔 SHA1 由 42.20.3 Steam manifest 驗證）除上述 Print Media 解析器外，只把 ContextMenu config 的 `loadstring` 動態呼叫改交 `ISWorldObjectContextMenuLogic.callCustomFunction`，沒有新增玩家可見英文字面；B10、動物物品欄 early-return 與 `doBedOption` 零呼叫觀察項均維持。Java `zombie/**/*.java` 3078 對 3078、零增刪、9 檔改值；登記簿錨點檔只有 `ISWorldObjectContextMenuLogic` 被碰到，差異同為 custom-function dispatch，C1/C2/C5/C9 字串與 gate 原樣存在，`Translator` 及其餘 31 個錨點檔 bit-identical。新增兩句 `LoadPlayerProfile: invalid character size=…`／`RCON: invalid packet size=…` 只寫 multiplayer／RCON log，不是 UI 文本，比照 C11 不譯。**A/B/C/D 全表維持，無條目可淘汰。**
+
 ---
 
 ## A. 已修補（現行 `_Flx.lua`，PZ 更新後逐條對版）
 
-最後驗證版本：**42.20.0**（全部，2026-07-29）；**42.20.2 delta 驗證通過**（2026-08-06，見 §0 對版結論——變更檔未觸及任何 A 表錨點，五個 gen-* 查表冪等）；**42.20.3 delta 驗證通過**（2026-08-18，見 §0 對版結論——32 錨點檔 bit-identical）
+最後驗證版本：**42.20.0**（全部，2026-07-29）；**42.20.2 delta 驗證通過**（2026-08-06，見 §0 對版結論——變更檔未觸及任何 A 表錨點，五個 gen-* 查表冪等）；**42.20.3 delta 驗證通過**（2026-08-18，見 §0 對版結論——32 錨點檔 bit-identical）；**42.20.4 delta 驗證通過**（2026-08-26，`ISWorldObjectContextMenuLogic` 只改 custom-function dispatch，其餘 31 錨點檔 bit-identical，A 表全數維持）
 
 | # | 修補檔（`MOD_ROOT/media/lua/`） | 官方硬編碼來源（錨點） | 症狀 |
 |---|---|---|---|
@@ -103,6 +107,7 @@ uv run scripts/decompile.py verify {新版本}
 > **仍未修（刻意）**：B15-f 開發者編輯器群 32 條（純開發工具，投報比過低）、B17 的 `ISAnimalGenomeUI` Add/Remove 按鈕標題（在每幀更新路徑上 `setTitle`，為兩個通用詞付出逐幀成本不划算，其對話框已由 A19 涵蓋）、B12 的 Help 視窗長段說明文字、B10 的 sprite 資源 ID 與 `ISVehicleMechanics.cheat=` 技術切換標籤（本來就該保留原文）。
 
 > **2026-08-18 42.20.3 對版**：依 SOP 逐條 grep 當前 vanilla Lua——B1~B21 全叢集錨點命中、仍為英文字面（B3/B5 內少數項官方已掛鍵，見 §0 42.20.3 Lua 錨點逐條 grep 結果；B6 `doCheatMenu` 仍零呼叫點死碼、B14 :597 仍註解死碼、B20 兩句與「觀察項」`doBedOption` 三句逐字仍在）。B 表全數維持。
+> **2026-08-26 42.20.4 對版**：官方 media 只改 4 份 Lua；`ISWorldObjectContextMenu.lua` 的 B10 三項仍是英文字面，`doBedOption` 三句仍只有定義、全 Lua／Java 零呼叫；`ISInventoryPaneContextMenu.lua` 的動物物品欄 early-return 仍在。其餘 B 表錨點檔未進 manifest 差異，B1~B21 全數維持。
 
 > **2026-07-29 42.20 對版結論**：B1~B11、B13、B14 **全部「仍存在未變」**——官方檔案路徑無一變動，錨點字串逐字仍在、仍是英文字面、零 `getText`，僅行號 +3～+8 漂移。B6 的 `doCheatMenu` 在 42.20 仍是零呼叫點死碼（vanilla Lua 全樹＋Java 全樹皆無命中）。**B15 拆出兩條移入 D 表**（D4 `ISHealthPanel`、D5 `ISInventoryPage`）。B9 的 `"Tile params:"` 錨點檔案歸屬更正：不在 `DebugContextMenu.lua`，實際位於 `ISUI/ISWorldObjectContextMenu.lua:234`（`option.toolTip:setName("Tile params:")`）。
 
@@ -140,7 +145,7 @@ uv run scripts/decompile.py verify {新版本}
 
 ## C. 修不到／不修（持續觀察，官方修復後移出）
 
-最後驗證版本：**42.20.0**（全部，2026-07-29）；**42.20.2 delta 驗證通過**（2026-08-06，`formatFixer` 與 `getTextInternal` 前綴路由逐字未變、仍無泛用 fallback，全數維持）；**42.20.3 delta 驗證通過**（2026-08-18，Translator/ISWorldObjectContextMenuLogic/ItemPickerJava/InventoryItem/RagdollDebugWindow/Durability/HaloTextHelper 皆 bit-identical，全數維持）
+最後驗證版本：**42.20.0**（全部，2026-07-29）；**42.20.2 delta 驗證通過**（2026-08-06，`formatFixer` 與 `getTextInternal` 前綴路由逐字未變、仍無泛用 fallback，全數維持）；**42.20.3 delta 驗證通過**（2026-08-18，Translator/ISWorldObjectContextMenuLogic/ItemPickerJava/InventoryItem/RagdollDebugWindow/Durability/HaloTextHelper 皆 bit-identical，全數維持）；**42.20.4 delta 驗證通過**（2026-08-26，`Translator` bit-identical；`ISWorldObjectContextMenuLogic` 只改 custom-function dispatch，C1/C2/C5/C9 錨點原樣存在；新增兩句網路防護 log 比照 C11 不譯）
 
 > **42.20 對版結論：C1~C8 沒有任何一條可移到 D 表。** 核心問題的答案是否定的——`Translator.getTextInternal` 的前綴清單與 42.19 完全相同、**仍無泛用 fallback 表**，無前綴偽 key 依然永遠 miss 回傳原文；vanilla EN 翻譯 JSON 全域 grep 也查不到這些字串的任何 key，官方一個都沒改成正規鍵。C2、C5 標「實作變更」但**變的是 gate 不是字串**：42.20 把 `Core.debug || isUnstableScriptNameSpam()` 從內層 if 上移併進外層 `uiShowContextMenuReportOptions`（四種真值組合逐一驗過，可見性完全等價），`String.format` 格式一字未改。**我方 A16 在 `DebugContextMenu_Flx.lua` 的五條 pattern（TileReport / RoomReportxyz / CoordinatesReportxyz / Nolootdistroforin / Nolootdistrofor）在 42.20 仍逐字吻合，不需對版。**
 
