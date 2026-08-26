@@ -4,6 +4,17 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [Unreleased]
+
+### Fixed
+
+- **修復做菜後菜名出現英文代碼**（例如「Base.FishFingers 三明治」「Base.MincedMeat 漢堡」「Base.Oysters 三明治」）。用魚條、牡蠣、絞肉、兔肉等食材做三明治、漢堡、沙拉、燉菜這類料理時，菜名裡的食材部分會顯示成遊戲內部代碼而不是中文。這是遊戲本身的問題——官方只替英文版準備了這份食材簡稱對照表，中文版只有少數幾筆，繁中有 148 種食材、簡中有 162 種食材會中招（不只玩家回報的那三個）。現在已把全部 173 種食材的簡稱補齊，菜名會正常顯示「魚條 三明治」「牛肉 漢堡」「兔肉 燉菜」。
+  > 技術要點（根因）：script 的 `EvolvedRecipeName` 值由 `Item.java:2730-2732` 在解析期處理，但 `Translator.setDefaultItemEvolvedRecipeName` 的第一行就是 `if (getLanguage() == getDefaultLanguage())`——**只有 EN 會把英文字面填進 `itemEvolvedRecipeName`**，非英文語言一律 no-op。接著 `getItemEvolvedRecipeName` 查不到鍵就 fallback 到 `scriptItem.getDisplayName()`，而 42.x generated script **零 `DisplayName=`**（`food.txt` 命中 0），`Item.getDisplayName()` 於 `displayName` 為 null 時回傳 `getFullName()`，於是拿到裸 `Base.XXX` 並 `put` 進 map 永久快取。消費端是官方 Lua `ISAddItemInRecipe.lua:115/174`。**官方 bug、全非英語語系通病**：法文組自行補到 174 鍵（覆蓋 173/173）、UA 69，而 vanilla CH 僅 32 鍵（扣 7 個死鍵有效 25）、CN/RU/DE/ES 僅 11 鍵。
+  > 技術要點（非本模組造成）：`Translator.tryFillMapFromFile` 是逐鍵 merge（`toMap().forEach` → `map.put`），MOD 只覆蓋同鍵、不取代整檔；修補前我方 11 鍵是 vanilla CH 32 鍵的子集，未砍掉任何官方鍵。補鍵即生效的依據是 `Core.java:3925 Translator.loadFiles()` 早於 `:3931 ScriptManager.instance.Load()`——翻譯表先填好就不會走 fallback、不會被快取污染。
+  > 技術要點（修法）：CH/CN 各自持有全部 173 鍵，值為**食材簡稱**（依官方 EN 的 `EvolvedRecipeName` 值翻譯，非物品全名——`MincedMeat` 的簡稱是 `Beef`→「牛肉」而非「碎牛肉」），117 個相異英文簡稱逐一定譯。刻意不依賴 vanilla 補的那 14 鍵，避免官方值與我方 `ItemName` 用語脫鉤（如 `CannedMilkOpen` 官方譯「煉乳」而我方物品名為「淡奶罐頭」）。登記簿新增 A31。
+- **修正 7 個食材名多出空格**：沙拉、派這類料理的菜名會顯示成「番 茄 沙拉」「胡 蘿 蔔 沙拉」。涉及番茄、胡蘿蔔、玉米、豌豆、馬鈴薯、沙丁魚、鹹牛肉。
+  > 技術要點：我方舊值 `番 茄`／`胡 蘿 蔔` 等 7 筆帶多餘空白，且因逐鍵覆蓋反而蓋掉了官方 CH 原本乾淨的值。簡中側另有沿用物品全名的問題（`番茄罐头 (已打开) 沙拉`），同批改為簡稱。
+
 ## [42.20.3-1.21.1] - 2026-08-25
 
 ### Fixed
