@@ -4,6 +4,13 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.4-1.22.1] - 2026-08-26
+
+### Fixed
+
+- **修正 1993 年 7 月 6 日《路易斯維爾太陽時報》的報社名仍顯示英文**。原本會顯示成「Louisville Sun Times - 1993年7月6日」，現在繁中與簡中都會完整顯示中文。
+  > 技術要點：不是 Java／Lua 硬編碼。`RecipeCodeHelper.nameNewspaper` 正確以 `newspaper.getTitle(issue)` 取得 `Print_Media_LouisvilleSunTimes_July6_title`，再交給 `Translator.getText`；問題是我方 CH/CN 同鍵都把英文報社名直接寫進值裡，且官方 CH 自己也有同一錯誤（官方 CN 正確）。已用 `IGUI_NewspaperTitle_*` 對全 22 期報紙標題逐筆核對，CH/CN 各只命中這一筆錯位，並新增回歸守門。
+
 ## [42.20.4-1.22.0] - 2026-08-26
 
 ### Fixed

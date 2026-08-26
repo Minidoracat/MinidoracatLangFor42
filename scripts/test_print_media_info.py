@@ -11,6 +11,7 @@ from __future__ import annotations
 import contextlib
 import io
 import json
+import re
 import sys
 import tempfile
 from pathlib import Path
@@ -105,4 +106,31 @@ with tempfile.TemporaryDirectory() as temp_dir:
         else:
             raise AssertionError("Print Media 標記錯誤未讓 fix-check 非零退出")
 
-print(f"✅ PrintMedia 標記驗證 {len(VALID) + len(INVALID)} 案＋CLI gate 通過")
+# 每一期報紙標題的報社名前綴，必須等於同語系 IGUI_NewspaperTitle_*。
+newspaper_issue_key = re.compile(
+    r"^Print_Media_(.+?)_"
+    r"(?:January|February|March|April|May|June|July|August|September|October|November|December)"
+    r"\d+_title$"
+)
+newspaper_titles_checked = 0
+for language, translate_dir in (("CH", sync.MOD_CH), ("CN", sync.MOD_CN)):
+    print_media = json.loads((translate_dir / "Print_Media.json").read_text(encoding="utf-8"))
+    ig_ui = json.loads((translate_dir / "IG_UI.json").read_text(encoding="utf-8"))
+    language_count = 0
+    for key, value in print_media.items():
+        match = newspaper_issue_key.match(key)
+        if not match:
+            continue
+        expected = ig_ui.get("IGUI_NewspaperTitle_" + match.group(1))
+        assert expected, f"{language} {key}: 缺少報社名稱翻譯鍵"
+        actual, separator, _date = value.partition(" - ")
+        assert separator and actual == expected, (
+            f"{language} {key}: 報社名 {actual!r}，期望 {expected!r}"
+        )
+        language_count += 1
+    assert language_count == 22, f"{language}: 期別標題數量漂移 {language_count} != 22"
+    newspaper_titles_checked += language_count
+print(
+    f"✅ PrintMedia 標記驗證 {len(VALID) + len(INVALID)} 案＋CLI gate，"
+    f"報紙標題 {newspaper_titles_checked} 筆通過"
+)
