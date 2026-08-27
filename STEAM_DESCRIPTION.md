@@ -39,9 +39,6 @@
 
 [hr][/hr]
 
-[h2]📺 關注作者[/h2]
-[url=https://www.twitch.tv/minidoracat]🎬 Twitch 直播頻道[/url]
-
 [hr][/hr]
 
 [h2]📋 MOD 資訊[/h2]
