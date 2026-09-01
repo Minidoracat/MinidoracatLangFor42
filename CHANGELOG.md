@@ -4,6 +4,49 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.4-1.23.0] - 2026-09-01
+
+### Fixed
+
+- **修復多人伺服器上肉品名稱顯示英文**（例如「Beef (Prime Cut)」「Steak (Average Cut)」）。
+  屠宰動物取得的肉會標示品質等級，但在英文伺服器上整串名稱都是英文——牛肉、牛排、豬肉、
+  豬排、羊肉、兔肉、鹿肉這七種肉的中文其實早就在翻譯包裡，只是從來沒顯示出來過。現在繁中
+  與簡中都會正常顯示成「牛肉 (上等肉塊)」。**這個問題不裝任何模組也會遇到。**
+  > 技術要點（根因）：官方 `ButcheringUtil.lua:394-395` 以
+  > `setName(getText("IGUI_AnimalMeat", getText(baseName), getText(extraName)))` 組名後接
+  > `setCustomName(true)`。MP 下由 server 端組名再同步給 client，而 server 的翻譯 map 只有
+  > base game 的鍵（載入順序見下一條），vanilla 肉品因此拿到 EN 值。variant 定義在
+  > `AnimalPartsDefinitions.lua:701+`，vanilla 自帶 7 種肉 × 3 品質 = 21 個組合。本表先前
+  > 未收錄此項。
+  > 技術要點（修法）：登記簿 A33。`setCustomName(true)` 是官方 `:395` 自己設的（非玩家改名，
+  > 屬 A20 守衛註解所列「vanilla 對自己生成的名字設旗標」同類，第 9 處），故本分支刻意置於
+  > `isCustomName` 全域守衛之前，改以三重收斂替代：fullType 在官方
+  > `AnimalPartsDefinitions.meat` 表內／rawName 以某 variant 的 EN 完整後綴結尾／
+  > `getText(baseName) ~= baseName`（miss 會回鍵名，`Translator.java:495`，未收錄該 mod
+  > 譯文時若照樣重組會把英文換成更糟的裸鍵名）。EN 後綴由 `gen-item-name-map` 新產的
+  > `CUT_SUFFIX_EN` 提供——自 vanilla EN `IGUI_AnimalMeat`（`"%1 %2"`）切出分隔字元再接三個
+  > `*Cut` 值，同 A25 keyring 手法，Lua 端只做 plain 比對。殘留誤傷面：玩家把肉品自訂名成
+  > 「X (Poor Cut)」會被重建（面極窄，已接受）。
+- **修復多人伺服器上模組物品名稱顯示成內部代碼**（例如「VFX.SourdoughStarter」）。玩家回報
+  在伺服器上物品名變成一串英文代碼，單機卻正常。現在客戶端會用自己的翻譯把名稱還原。
+  > 技術要點（根因）：登記簿 A32。**server 端的翻譯表永遠不含任何模組的鍵**——
+  > `GameServer.java:597` `Translator.loadFiles()` 在 `:1400` `loadMods` 之前，且 `1400`→
+  > `1431` `ScriptManager.Load()` 之間無任何翻譯重載（全反編譯樹 server 端唯一一處
+  > `loadFiles`）；`Translator.java:374` `tryFillMapFromMods` 依賴 `getModIDs()`，該處為空。
+  > 於是 server 端 `Item.java:3053` 取 `displayName` 時 map miss，`Translator.java:607-611`
+  > 退回 `scriptItem.getDisplayName()`，而 B42 的 script 幾乎不寫 `DisplayName`（TIS 要求全改
+  > 走 JSON；實測 Vanilla Foods Expanded 1,908 個 item 宣告 **0** 個，vanilla 自己也只有
+  > 5,158 對 350），最終 `Item.java:494` 回 `getFullName()`＝fullType，並被
+  > `Translator.java:614` 快取回 map。client 端載入順序相反（`Core.java:3922` loadMods →
+  > `:3925` loadFiles → `:3931` Load），故 script item 的 displayName 是正確譯名。
+  > 技術要點（零依賴）：判定式 `rawName == item:getFullType()` 等號兩邊都取自同一個 item，
+  > 不需任何模組清單或反查表；未收錄譯文時寫入來源亦等於 fullType，自動 no-op。上游
+  > Vanilla Foods Expanded 作者已於 Workshop 留言確認此現象「only in multiplayer」。
+  > 技術要點（回歸）：`test_item_name_fix.lua` 由 20 案擴充至 35 案，新增 15 案涵蓋 A32／A33
+  > 的命中、守衛與冪等，其中兩案專守易退化的行為：「官方設的 customName 不得擋掉 A33」與
+  > 「baseName 鍵缺失時不得產出裸鍵名」。
+
+
 ## [42.20.4-1.22.1] - 2026-08-26
 
 ### Fixed
