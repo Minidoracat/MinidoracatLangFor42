@@ -1310,6 +1310,27 @@ def cmd_gen_item_name_map(pz_path: Path | None = None):
         print(f"❌ vanilla EN IG_UI.json 的 IGUI_KeyRingName 缺失或格式改變（{keyring_en!r}），中止")
         sys.exit(1)
 
+    # 屠宰品質後綴（A33）：官方 ButcheringUtil.lua:394-395 以
+    #   setName(getText("IGUI_AnimalMeat", getText(baseName), getText(extraName)))
+    #   + setCustomName(true)
+    # 組名。MP 下由 server 端組出英文形再同步給 client——server 的翻譯 map 只有 base game
+    # 的鍵（GameServer.java:597 Translator.loadFiles() 在 :1400 loadMods 之前，且 1400→1431
+    # ScriptManager.Load 之間無任何翻譯重載；全反編譯樹 server 端唯一一處 loadFiles）。
+    # 同 keyring：這裡產出「EN 完整後綴」（含格式字串的分隔字元），Lua 端只做 plain 後綴
+    # 比對，不自行解析格式字串（載入期 %N 會被改寫成 %N$s）。
+    meat_fmt = ig_data.get("IGUI_AnimalMeat", "")
+    if not (meat_fmt.startswith("%1") and meat_fmt.endswith("%2")):
+        print(f"❌ vanilla EN IG_UI.json 的 IGUI_AnimalMeat 缺失或格式改變（{meat_fmt!r}），中止")
+        sys.exit(1)
+    meat_sep = meat_fmt[len("%1"):-len("%2")]
+    cut_suffixes: dict[str, str] = {}
+    for k in sorted(ig_data):
+        if re.fullmatch(r"IGUI_AnimalMeat_\w*Cut", k) and ig_data[k]:
+            cut_suffixes[k] = meat_sep + ig_data[k]
+    if not cut_suffixes:
+        print("❌ vanilla EN IG_UI.json 找不到 IGUI_AnimalMeat_*Cut 品質後綴鍵，中止")
+        sys.exit(1)
+
     entries = OrderedDict(
         (key, value) for key, value in en_data.items()
         if value and "." in key  # fullType 形如 Base.Bacon
@@ -1318,7 +1339,7 @@ def cmd_gen_item_name_map(pz_path: Path | None = None):
 
     lines = [ITEM_GEN_BLOCK_START]
     lines.append("-- 由 scripts/sync_translations.py gen-item-name-map 自動產生，請勿手動編輯")
-    lines.append(f"-- 來源：vanilla EN/ItemName.json（共 {len(entries)} 條）＋ EN UI_foraging_WildFood")
+    lines.append(f"-- 來源：vanilla EN/ItemName.json（共 {len(entries)} 條）＋ EN UI_foraging_WildFood＋EN IG_UI.json")
     lines.append("ItemNameFixFlx = ItemNameFixFlx or {}")
     lines.append(f'ItemNameFixFlx.WILD_EN = "{_lua_string(wild_en)}"')
     lines.append(f'ItemNameFixFlx.ANNOTATED_EN = "{_lua_string(annotated_en)}"')
@@ -1327,6 +1348,11 @@ def cmd_gen_item_name_map(pz_path: Path | None = None):
     lines.append("ItemNameFixFlx.KEY_SUFFIX = {")
     for en_value, igui_key in sorted(key_suffixes.items()):
         lines.append(f'    ["{_lua_string(en_value)}"] = "{_lua_string(igui_key)}",')
+    lines.append("}")
+    lines.append("-- 屠宰品質後綴（A33）：extraName 鍵 → EN 完整後綴（含 IGUI_AnimalMeat 格式的分隔字元）")
+    lines.append("ItemNameFixFlx.CUT_SUFFIX_EN = {")
+    for cut_key, cut_suffix in sorted(cut_suffixes.items()):
+        lines.append(f'    ["{_lua_string(cut_key)}"] = "{_lua_string(cut_suffix)}",')
     lines.append("}")
     lines.append("ItemNameFixFlx.EN_NAME = {")
     for full_type, en_value in sorted(entries.items()):

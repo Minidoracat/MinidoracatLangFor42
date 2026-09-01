@@ -38,7 +38,7 @@ ItemNameFixFlx = ItemNameFixFlx or {}
 -- （generator 另提供 ItemNameFixFlx.ANNOTATED_EN＝EN Stash_AnnotedMap 值）
 -- <AUTO-GEN:ITEM_NAME_MAP START>
 -- 由 scripts/sync_translations.py gen-item-name-map 自動產生，請勿手動編輯
--- 來源：vanilla EN/ItemName.json（共 4889 條）＋ EN UI_foraging_WildFood
+-- 來源：vanilla EN/ItemName.json（共 4889 條）＋ EN UI_foraging_WildFood＋EN IG_UI.json
 ItemNameFixFlx = ItemNameFixFlx or {}
 ItemNameFixFlx.WILD_EN = "Wild"
 ItemNameFixFlx.ANNOTATED_EN = "Annotated Map"
@@ -206,6 +206,12 @@ ItemNameFixFlx.KEY_SUFFIX = {
     ["West Maple Country Club"] = "IGUI_WestMapleCountryClubKey",
     ["Wire Factory"] = "IGUI_wirefactoryKey",
     ["Zippee Market"] = "IGUI_zippeestoreKey",
+}
+-- 屠宰品質後綴（A33）：extraName 鍵 → EN 完整後綴（含 IGUI_AnimalMeat 格式的分隔字元）
+ItemNameFixFlx.CUT_SUFFIX_EN = {
+    ["IGUI_AnimalMeat_MediumCut"] = " (Average Cut)",
+    ["IGUI_AnimalMeat_PoorCut"] = " (Poor Cut)",
+    ["IGUI_AnimalMeat_PrimeCut"] = " (Prime Cut)",
 }
 ItemNameFixFlx.EN_NAME = {
     ["Base.3030Box"] = "Box of .30-30 Rounds",
@@ -5132,6 +5138,61 @@ end
 local function fixItemName(item)
     if not item then return end
 
+    -- rawName ＝ InventoryItem.name 欄位原值（getDisplayName 的實作就是 `return this.name`，
+    -- InventoryItem.java:3204-3206；全繼承鏈只有 Moveable.java:77 覆寫）。這是「被生成端
+    -- 語言烘死的字串」——是**比對與取代的目標**，不是譯名來源。
+    --
+    -- 比對基準一律用 rawName，不可用 getName()：後者在 Bloody/Broken/Worn/blunt/dull/
+    -- empty/activated 任一成立時把名稱包成 IGUI_ClothingNaming「%2 (%1)」
+    -- （InventoryItem.java:2440-2478），Food 另有 新鮮/陳腐/腐爛/生 前綴
+    -- （Food.java:1371-1408），getMechanicType()>0 還會再包一層。任何裝飾都讓精確比對失效。
+    local rawName = item:getDisplayName()
+    local fullType = item:getFullType()
+
+    -- ── A32／A33 共同根因（升版盤查與登記簿 A32／A33 同源，改一處要同步兩處）─────
+    -- server：GameServer.java:597 loadFiles 在 :1400 loadMods 之前、1400→1431 Load 之間
+    --   無重載（server 端唯一一處 loadFiles），Translator.java:374 tryFillMapFromMods
+    --   依賴 getModIDs() 而該處為空 ⇒ **server 端每一張翻譯 map 永遠不含 mod 鍵**。
+    -- client：Core.java:3922 loadMods → :3925 loadFiles → :3931 Load ⇒ 譯文齊備，
+    --   script item 的 displayName 與 getText 都是正確的重建來源。
+
+    -- ── 屠宰品質後綴（A33）：官方 ButcheringUtil.lua:394-395 ─────────────────
+    --   setName(getText("IGUI_AnimalMeat", getText(baseName), getText(extraName)))
+    --   setCustomName(true)
+    -- server 端組名時只拿得到 base game 鍵（見上），vanilla 肉品因此出貨成
+    -- 「Beef (Prime Cut)」——7 種肉 × 3 品質 = 21 組合，本體譯文早已齊備卻從未顯示。
+    --
+    -- **本分支刻意置於 isCustomName 守衛之前**：那個 customName 是官方 :395 自己設的
+    -- （不是玩家改名，屬守衛註解所列「vanilla 對自己生成的名字設旗標」同類，第 9 處），
+    -- 守衛在此會 100% 擋掉目標。改以三重收斂替代：
+    --   (a) fullType 必須在官方 AnimalPartsDefinitions.meat 表內（vanilla 7 種＋mod 自行註冊）
+    --   (b) rawName 必須以某 variant 的 EN 完整後綴結尾（generator 自 vanilla EN 產出，
+    --       含 IGUI_AnimalMeat 格式的分隔字元，Lua 端只做 plain 比對）
+    --   (c) baseName 鍵必須存在——getText miss 會回傳鍵名本身（Translator.java:495），
+    --       未收錄該 mod 譯文時若照樣重組，會把英文換成更糟的裸鍵名
+    -- 殘留誤傷面：玩家把肉品自訂名成「X (Poor Cut)」會被重建（已接受，面極窄）。
+    -- 重組一律用官方同一個格式鍵，結果與生成端逐字相同。
+    local meatDefs = AnimalPartsDefinitions and AnimalPartsDefinitions.meat
+    local meatDef = meatDefs and meatDefs[fullType]
+    local cutSuffixes = ItemNameFixFlx.CUT_SUFFIX_EN
+    if meatDef and meatDef.variants and cutSuffixes then
+        for i = 1, #meatDef.variants do
+            local variant = meatDef.variants[i]
+            local suffixEn = variant and cutSuffixes[variant.extraName]
+            if suffixEn and variant.baseName and #rawName > #suffixEn
+                and rawName:sub(-#suffixEn) == suffixEn then
+                local baseLocal = getText(variant.baseName)
+                if baseLocal ~= variant.baseName then
+                    local localForm = getText("IGUI_AnimalMeat", baseLocal, getText(variant.extraName))
+                    if localForm ~= rawName then
+                        item:setName(localForm)
+                    end
+                end
+                return
+            end
+        end
+    end
+
     -- **全域自訂名守衛：玩家改過名的物品一律不碰。**
     -- 本檔所有分支都是「精確比對英文建構形」，玩家若把物品改名成剛好等於某個 EN 原名
     -- （"Bacon"）、EN 野採形（"Poppies (Wild)"）、EN 鑰匙形（"Key - Army Surplus Store"）
@@ -5156,16 +5217,6 @@ local function fixItemName(item)
     -- 意外都隨本次死碼修復消失了。
     if item:isCustomName() then return end
 
-    -- rawName ＝ InventoryItem.name 欄位原值（getDisplayName 的實作就是 `return this.name`，
-    -- InventoryItem.java:3204-3206；全繼承鏈只有 Moveable.java:77 覆寫）。這是「被生成端
-    -- 語言烘死的字串」——是**比對與取代的目標**，不是譯名來源。
-    --
-    -- 比對基準一律用 rawName，不可用 getName()：後者在 Bloody/Broken/Worn/blunt/dull/
-    -- empty/activated 任一成立時把名稱包成 IGUI_ClothingNaming「%2 (%1)」
-    -- （InventoryItem.java:2440-2478），Food 另有 新鮮/陳腐/腐爛/生 前綴
-    -- （Food.java:1371-1408），getMechanicType()>0 還會再包一層。任何裝飾都讓精確比對失效。
-    local rawName = item:getDisplayName()
-
     -- 藏寶圖：名稱固化為 EN「Annotated Map」（與 fullType 的物品名無關，先於反查表判斷）
     local annotatedEn = ItemNameFixFlx.ANNOTATED_EN
     if annotatedEn and annotatedEn ~= "" and rawName == annotatedEn then
@@ -5176,7 +5227,26 @@ local function fixItemName(item)
         return
     end
 
-    local enName = ItemNameFixFlx.EN_NAME[item:getFullType()]
+    -- ── mod 物品的 fullType fallback（A32）────────────────────────────────
+    -- server 端 Item.OnScriptsLoaded（GameServer.java:1431）跑 Item.java:3053
+    -- `displayName = getItemNameFromFullType(getFullName())` 時 map miss（見上），
+    -- Translator.java:607-611 退回 scriptItem.getDisplayName()，而 B42 的 script 幾乎
+    -- 不寫 DisplayName（TIS 要求全改走 JSON；實測 VFE 1908 個 item 宣告 0 個 DisplayName、
+    -- vanilla 自己也只有 5158 對 350），於是 Item.java:494 回 getFullName() ＝ fullType，
+    -- 並被 Translator.java:614 快取回 map；server 建立/替換/同步的 mod 物品便帶著
+    -- 「Module.Item」字面名送到 client（上游作者證言：只在多人發生）。
+    -- 判定自我一致——等號兩邊都取自同一個 item，不需任何 mod 清單或反查表；
+    -- 未收錄譯文時 localName 亦等於 fullType，自動 no-op。
+    if rawName == fullType then
+        local modScriptItem = item:getScriptItem()
+        local modLocalName = modScriptItem and modScriptItem:getDisplayName()
+        if modLocalName and modLocalName ~= fullType then
+            item:setName(modLocalName)
+        end
+        return
+    end
+
+    local enName = ItemNameFixFlx.EN_NAME[fullType]
     if not enName then return end
 
     -- localName ＝ script item 的 displayName（Item.java:493-495，值於 :3053 由

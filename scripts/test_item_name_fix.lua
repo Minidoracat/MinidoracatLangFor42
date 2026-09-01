@@ -6,6 +6,8 @@
 -- 於是 client 的 this.name（＝getDisplayName()）是英文，但 script item 的
 -- displayName（＝getScriptItem():getDisplayName()）仍是本機中文譯名。
 --
+-- 另含 A32（mod 物品 fullType fallback）與 A33（屠宰品質後綴）兩分支的把關。
+--
 -- 修復前的三個死因（本測試逐條把關）：
 --   (a) 寫入來源誤用 item:getDisplayName()（＝this.name，就是要被取代的英文本身）
 --   (b) 比對基準誤用 item:getName()（會被 新鮮/染血 等狀態前綴包住而永不相等）
@@ -18,6 +20,32 @@ local FAKE = {
     IGUI_SurvivalistKey = "軍用品店",
     -- Translator.tryFillMapFromFile 在載入期把 %N 改寫成 %N$s，故此處比照運行期形態
     IGUI_KeyRingName = "%1$s %2$s的鑰匙圈",
+    -- A33 屠宰品質後綴（官方 IGUI_AnimalMeat 檔案原文為 "%1 %2"）
+    IGUI_AnimalMeat = "%1$s %2$s",
+    IGUI_AnimalMeat_Beef = "牛肉",
+    IGUI_AnimalMeat_BeefBrisket = "牛胸肉",
+    IGUI_AnimalMeat_PrimeCut = "(上等肉塊)",
+    IGUI_AnimalMeat_MediumCut = "(中等肉塊)",
+    IGUI_AnimalMeat_PoorCut = "(劣質肉塊)",
+    -- IGUI_AnimalMeat_Unknown 刻意缺席：測守衛 (c)「getText miss 回鍵名時不得重組」
+}
+
+-- A33：官方 AnimalPartsDefinitions.meat（vanilla 自帶 7 種，mod 自行 table.insert 註冊）
+AnimalPartsDefinitions = {
+    meat = {
+        ["Base.Beef"] = { variants = {
+            { item = "Base.Beef", baseName = "IGUI_AnimalMeat_Beef", extraName = "IGUI_AnimalMeat_PrimeCut" },
+            { item = "Base.Beef", baseName = "IGUI_AnimalMeat_Beef", extraName = "IGUI_AnimalMeat_MediumCut" },
+            { item = "Base.Beef", baseName = "IGUI_AnimalMeat_Beef", extraName = "IGUI_AnimalMeat_PoorCut" },
+        } },
+        ["VFX.BeefBrisket"] = { variants = {
+            { baseName = "IGUI_AnimalMeat_BeefBrisket", extraName = "IGUI_AnimalMeat_PrimeCut" },
+            { baseName = "IGUI_AnimalMeat_BeefBrisket", extraName = "IGUI_AnimalMeat_PoorCut" },
+        } },
+        ["VFX.Unknown"] = { variants = {
+            { baseName = "IGUI_AnimalMeat_Unknown", extraName = "IGUI_AnimalMeat_PoorCut" },
+        } },
+    },
 }
 
 function getText(key, a, b)
@@ -51,6 +79,8 @@ dofile("MOD/MinidoracatLangFor42/Contents/mods/MinidoracatLangFor42/42/media/lua
 local fixItemName = ItemNameFixFlx.fixItemName
 assert(type(fixItemName) == "function", "fixItemName 未匯出")
 assert(ItemNameFixFlx.EN_NAME["Base.Poppies"] == "Poppies", "AUTO-GEN 反查表未載入")
+assert(ItemNameFixFlx.CUT_SUFFIX_EN["IGUI_AnimalMeat_PoorCut"] == " (Poor Cut)",
+    "AUTO-GEN CUT_SUFFIX_EN 未載入（gen-item-name-map 需重跑）")
 
 -- ============ item stub ============
 -- name    = InventoryItem.name（getDisplayName 直接回傳此欄位，InventoryItem.java:3204）
@@ -166,6 +196,64 @@ check("藏寶圖 → 譯名",
 check("藏寶圖＋染血（修前因 getName() 裝飾而 miss）",
     { fullType = "Base.Map", name = "Annotated Map", display = "地圖", deco = "染血" }, "註記地圖")
 
+-- ============ A32：mod 物品的 fullType fallback ============
+-- server 端翻譯 map 永遠不含 mod 鍵，故 Item.displayName 落到 getFullName()＝fullType。
+
+check("mod 物品 name==fullType → script 譯名",
+    { fullType = "VFX.SourdoughStarter", name = "VFX.SourdoughStarter", display = "酸種酵頭 (已餵養)" },
+    "酸種酵頭 (已餵養)")
+
+check("fullType 形＋狀態裝飾仍命中（比對基準為 rawName）",
+    { fullType = "VFX.SourdoughStarter", name = "VFX.SourdoughStarter", display = "酸種酵頭 (已餵養)", deco = "新鮮" },
+    "酸種酵頭 (已餵養)")
+
+check("未收錄譯文（localName == fullType）→ 不動，不得無意義寫入",
+    { fullType = "SomeMod.Widget", name = "SomeMod.Widget", display = "SomeMod.Widget" },
+    "SomeMod.Widget")
+
+check("fullType 形＋玩家自訂名 → 不動",
+    { fullType = "VFX.SourdoughStarter", name = "VFX.SourdoughStarter", display = "酸種酵頭", custom = true },
+    "VFX.SourdoughStarter")
+
+check("fullType 形＋getScriptItem() 回 nil → 安全穿透",
+    { fullType = "VFX.Ghost", name = "VFX.Ghost", display = "幽靈", noScript = true },
+    "VFX.Ghost")
+
+-- ============ A33：屠宰品質後綴 ============
+-- 官方 ButcheringUtil.lua:394-395 setName + setCustomName(true)；vanilla 7 種肉同樣中招。
+
+check("vanilla 肉品英文形 → 中文（本體自身 bug）",
+    { fullType = "Base.Beef", name = "Beef (Prime Cut)", display = "牛肉" },
+    "牛肉 (上等肉塊)")
+
+check("vanilla 肉品英文形＋狀態裝飾仍命中",
+    { fullType = "Base.Beef", name = "Beef (Poor Cut)", display = "牛肉", deco = "新鮮" },
+    "牛肉 (劣質肉塊)")
+
+check("mod 肉品英文形 → 中文（零 mod 資料，鍵取自官方 runtime 表）",
+    { fullType = "VFX.BeefBrisket", name = "Beef Brisket (Poor Cut)", display = "牛胸肉" },
+    "牛胸肉 (劣質肉塊)")
+
+check("官方設的 customName 不得擋掉本分支（刻意置於守衛之前）",
+    { fullType = "Base.Beef", name = "Beef (Prime Cut)", display = "牛肉", custom = true },
+    "牛肉 (上等肉塊)")
+
+check("baseName 鍵不存在（getText 回鍵名）→ 不動，不得產出裸鍵名",
+    { fullType = "VFX.Unknown", name = "Whatever (Poor Cut)", display = "某物" },
+    "Whatever (Poor Cut)")
+
+check("已是本地形 → 不動",
+    { fullType = "Base.Beef", name = "牛肉 (上等肉塊)", display = "牛肉" },
+    "牛肉 (上等肉塊)")
+
+check("fullType 不在官方肉品表 → 不動",
+    { fullType = "Base.Bacon", name = "Bacon (Poor Cut)", display = "培根" },
+    "Bacon (Poor Cut)")
+
+check("後綴非 EN 品質形 → 不動",
+    { fullType = "Base.Beef", name = "Beef (Something)", display = "牛肉" },
+    "Beef (Something)")
+
 -- ============ 冪等性：掃描每 tick 重跑，二次套用不得疊加 ============
 
 local idem = { fullType = "Base.Key1", name = "Key - Army Surplus Store", display = "鑰匙" }
@@ -186,6 +274,26 @@ if idem2.name == "John Smith的鑰匙圈" then
 else
     failed = failed + 1
     print("FAIL 鑰匙圈三次套用不冪等\n  got: " .. idem2.name)
+end
+
+local idem3 = { fullType = "Base.Beef", name = "Beef (Prime Cut)", display = "牛肉" }
+local it3 = makeItem(idem3)
+fixItemName(it3); fixItemName(it3); fixItemName(it3)
+if idem3.name == "牛肉 (上等肉塊)" then
+    passed = passed + 1
+else
+    failed = failed + 1
+    print("FAIL 肉品品質後綴三次套用不冪等\n  got: " .. idem3.name)
+end
+
+local idem4 = { fullType = "VFX.SourdoughStarter", name = "VFX.SourdoughStarter", display = "酸種酵頭" }
+local it4 = makeItem(idem4)
+fixItemName(it4); fixItemName(it4); fixItemName(it4)
+if idem4.name == "酸種酵頭" then
+    passed = passed + 1
+else
+    failed = failed + 1
+    print("FAIL mod fullType 形三次套用不冪等\n  got: " .. idem4.name)
 end
 
 print(string.format("passed=%d failed=%d", passed, failed))
