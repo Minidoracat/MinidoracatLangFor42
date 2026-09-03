@@ -4,6 +4,25 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.4-1.24.0] - 2026-09-03
+
+### Fixed
+
+- **修復英文語系下大地圖／小地圖街名顯示成 `???`**。中文街道資料不分語系一律載入，
+  英文字型沒有中文字形就畫成問號。現在只有繁中／簡中語系載入中文街名，其他語系維持官方英文街名。
+  > 技術要點：`MapStreets_Flx.lua` 以 `Translator.getLanguage():name()` 閘門（用例
+  > `MainOptions.lua:1828`），非 CH/CN 走 `runVanillaStreetData`。
+
+### Added
+
+- **英文與其他語系也能顯示中文字**：伺服器上外國玩家裝本包後，聊天室等處的中文不再是 `???`。
+  > 技術要點：新增 `media/fonts/EN/fonts.txt`（與 CH/CN 同內容）。引擎對任何語系都先讀
+  > `EN/fonts.txt` 再疊語系檔（`TextManager.java:196-201`），`ZomboidFileSystem.getString`
+  > 走 activeFileMap 故 MOD 可覆寫；`ResetLua` 先 `loadMods` 再 `TextManager.Init`
+  > （`Core.java:3922/3947`）。RU/KO/JP/PL/TH 有自己的 fonts.txt 疊在上面、不受影響。
+  > 已知上限：EN 路徑找不到 `EN/<size>/` 時退到根層 1x 字型（`TextManager.java:156-185`），
+  > 字型大小選項對這些玩家的中文無效；要支援得複製 2x-4x 進 `EN/`（+~100MB），暫不做。
+
 ## [42.20.4-1.23.0] - 2026-09-01
 
 ### Fixed

@@ -41,6 +41,12 @@ local function runVanillaStreetData(mapUI)
 end
 
 function MapUtils.initDefaultStreetData(mapUI)
+    -- 非中文語系維持原版英文街道：中文街名在英文 UI 下語意不一致，且 EN 玩家
+    -- 以英文搜街會全部落空（Translator.getLanguage():name() 用例 MainOptions.lua:1828）
+    local lang = Translator.getLanguage():name()
+    if lang ~= "CH" and lang ~= "CN" then
+        return runVanillaStreetData(mapUI)
+    end
     if not fileExists(MOD_STREETS) then
         -- 中文街道檔缺失（異常情況）→ 維持原版行為
         print(TAG .. " [Streets] Chinese streets not found, fallback to vanilla: " .. MOD_STREETS)
