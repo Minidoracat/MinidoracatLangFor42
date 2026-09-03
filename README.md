@@ -128,6 +128,12 @@ CH 成品現為人工真相，不再由 OpenCC 再生：全域術語規則見 `s
 - 翻譯檔編碼：**UTF-8（無 BOM）**
 - 翻譯 API：`getText("KEY")` 取得翻譯、`getTextOrNull("KEY")` 取得可能為 nil 的翻譯
 
+## ☕ 支持作者
+
+MOD 永遠免費。喜歡的話可以請我喝杯咖啡，贊助會用在伺服器與 MOD 開發上。
+
+[![Ko-fi](https://raw.githubusercontent.com/Minidoracat/workshop-resources/refs/heads/main/badges/badge_kofi.png)](https://ko-fi.com/minidoracat)
+
 ## 問題回報 & 交流
 
 - [Discord 伺服器](https://discord.gg/Gur2V67)
