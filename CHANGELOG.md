@@ -4,6 +4,16 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.4-1.24.1] - 2026-09-05
+
+### Changed
+
+- **模組清單現在會顯示本包的圖標**：進遊戲的模組管理清單時，本包名稱旁邊會多一個小圖示，
+  在一長串模組裡比較好認、也好找。
+  > 技術要點：`mod.info` 新增 `icon=CH.png`，圖檔（32×32 RGBA）放在 `MOD_ROOT/CH.png`。
+- **更新 Workshop 預覽圖與遊戲內模組封面**：換上新版封面圖。
+  > 技術要點：`MOD/MinidoracatLangFor42/preview.png` 與 `MOD_ROOT/poster.png` 同步替換（兩檔內容相同）。
+
 ## [42.20.4-1.24.0] - 2026-09-03
 
 ### Fixed

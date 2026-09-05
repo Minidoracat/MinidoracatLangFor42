@@ -40,3 +40,4 @@ temp/
 scripts/en_diff_queue.json
 scripts/import_proposals.json
 scripts/equivalence_unadjudicated.json
+output/
