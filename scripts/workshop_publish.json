@@ -1,0 +1,12 @@
+{
+    "app_id": 108600,
+    "published_file_id": "3386633401",
+    "owner_steamid64": "76561198033176898",
+    "workshop_root": "MOD/MinidoracatLangFor42",
+    "mod_info": "MOD/MinidoracatLangFor42/Contents/mods/MinidoracatLangFor42/42/mod.info",
+    "preview_gif": "MOD/MinidoracatLangFor42/workshop/preview.gif",
+    "changelog": "STEAM_CHANGELOG.md",
+    "descriptions": {
+        "english": "STEAM_DESCRIPTION.md"
+    }
+}
