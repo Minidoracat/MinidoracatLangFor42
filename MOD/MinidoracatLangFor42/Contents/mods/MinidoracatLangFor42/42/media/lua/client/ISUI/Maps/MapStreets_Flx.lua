@@ -1,84 +1,195 @@
--- MapStreets_Flx.lua
--- 街道資料修復（確保 SP/MP 都能載入中文 streets.xml）
---
--- 取代原版 initDefaultStreetData 的載入策略：
---   1. 原版依 getLotDirectories() 載入各目錄 streets.xml；官方英文街道
---      只存在 'Muldraugh, KY/streets.xml'（全地圖唯一承載檔）。本檔改為
---      跳過該目錄、改載我方中文版（media/maps/Riverside, KY/streets.xml），
---      其他地圖 MOD 的街道目錄照舊載入。
---   2. 絕對不可走「先載官方英文再 clearStreetData() 再載中文」的舊流程：
---      官方 WorldMapStreets.clear() 只清 street list 並把物件 release 回
---      物件池，「不清 StreetLookup 空間索引」，而渲染 getStreetsOverlapping
---      走的正是該索引——被清掉的英文街道物件會以幽靈引用殘留。
---      42.20.2 以前 ObjectPool 無上限，幽靈物件會被後續 alloc 重用改寫、
---      視覺無感；42.20.3 起 ObjectPool 有容量上限（1024，超限 release 直接
---      丟棄），官方 1098 條街道 clear 後尾端物件永不被重用，英文街名就
---      永遠殘留在大地圖上（42.20.3 玩家回報「Spring Dr凱利大道」中英混雜
---      的根因）。因此本檔全程只 add、永不 clear。
---   3. WorldMap.addStreetData 以檔案為單位冪等（streetData contains 去重、
---      s_fileNameToData 全程序快取），小地圖 InitPlayer 等處重入安全。
---
--- MP client 的 getLotDirectories() 只回當前遊戲地塊目錄（如 Muldraugh, KY），
--- 不含 Riverside, KY，故中文檔必須顯式指定路徑載入，不能依賴目錄迴圈。
+-- 原版街名的純文字翻譯：UI_WorldMapStreet_<原名>（CH/CN）。
+-- WorldMap.java:193-218 同步建立顯示副本；只在該窗口改名，結束還原 raw。
+-- WorldMapStreet.java:170-176/565-622：setter 不改幾何，split 副本須重新 clip。
+-- 不替換 XML、不改來源/路寬、不碰 editor setter，不清已顯示的玩家地圖。
+-- scratch 清理僅解除本窗口 listener；重入與例外均須恢復原名。
 
 local TAG = "[CatLangFor42]"
-local MOD_STREETS = 'media/maps/Riverside, KY/streets.xml'
--- 官方英文 streets.xml 的唯一承載目錄（小寫比對）；由我方中文檔整份取代
-local VANILLA_STREETS_DIR = 'muldraugh, ky'
+-- 官方英文街名的唯一承載目錄（小寫比對）；本檔只處理這個來源
+local VANILLA_STREETS_DIR = "muldraugh, ky"
+local KEY_PREFIX = "UI_WorldMapStreet_"
 
-local _orig_initDefaultStreetData = MapUtils.initDefaultStreetData
-
--- fallback 共用：委派原版流程，並以 pcall 防護——若失敗根因在 getAPIv3/
--- getStreetsAPI（javaObject 異常），_orig 第一行會原樣重拋，必須攔下，
--- 否則例外炸穿 ISWorldMap:initDataAndStyle，其後的 initDefaultStyleV3/
--- overlayPaper/initDefaultAnnotations 全部不執行（整張大地圖壞掉）。
--- 攔下後放棄街道資料（大地圖只是沒有街名，其餘功能照常）。
-local function runVanillaStreetData(mapUI)
-    local ok, err = pcall(_orig_initDefaultStreetData, mapUI)
-    if not ok then
-        print(TAG .. " [Streets] vanilla street data also failed: " .. tostring(err))
-    end
+local origInit = MapUtils and MapUtils.initDirectoryStreetData
+if type(origInit) ~= "function" then
+    print(TAG .. " [Streets] DISABLED: MapUtils.initDirectoryStreetData unavailable")
+    return
+end
+if not UIWorldMap or not getStreets then
+    -- getStreets 為 42.20.0 新增；缺 API 時保留原版載入流程。
+    print(TAG .. " [Streets] DISABLED: world map street API unavailable")
+    return
 end
 
-function MapUtils.initDefaultStreetData(mapUI)
-    -- 非中文語系維持原版英文街道：中文街名在英文 UI 下語意不一致，且 EN 玩家
-    -- 以英文搜街會全部落空（Translator.getLanguage():name() 用例 MainOptions.lua:1828）
-    local lang = Translator.getLanguage():name()
-    if lang ~= "CH" and lang ~= "CN" then
-        return runVanillaStreetData(mapUI)
-    end
-    if not fileExists(MOD_STREETS) then
-        -- 中文街道檔缺失（異常情況）→ 維持原版行為
-        print(TAG .. " [Streets] Chinese streets not found, fallback to vanilla: " .. MOD_STREETS)
-        return runVanillaStreetData(mapUI)
-    end
+local logged = {}
+local function logOnce(key, message)
+    if logged[key] then return end
+    logged[key] = true
+    print(TAG .. " [Streets] " .. message)
+end
 
-    -- 先載中文街道（核心目標優先：任何第三方目錄出錯都不得影響中文載入）。
-    -- 主路徑 pcall＝fail-loud＋graceful degrade：中文檔存在但載入失敗（XML 損毀等）
-    -- 時印醒目錯誤並退回原版流程（英文街名），絕不讓例外炸穿呼叫端
-    local okZh, errZh = pcall(function()
-        local mapAPI = mapUI.javaObject:getAPIv3()
-        local streetsAPI = mapAPI:getStreetsAPI()
-        streetsAPI:addStreetData(MOD_STREETS)
-    end)
-    if not okZh then
-        print(TAG .. " [Streets] ERROR loading Chinese streets (" .. MOD_STREETS .. "): " .. tostring(errZh))
-        print(TAG .. " [Streets] falling back to vanilla street data")
-        return runVanillaStreetData(mapUI)
-    end
-    print(TAG .. " [Streets] loaded Chinese streets: " .. MOD_STREETS)
+-- Java 與 Lua 空白判定不同；setter 正規化成空值的譯名不再重試。
+local rejectedText = {}
+-- 目前生效中的顯示窗口變更；raw 為全程序共享，重入／同檔不同地圖都指向同一份
+local inFlight
+local degradedReason
 
-    -- 照原版順序載入其他地圖 MOD 的街道，只跳過官方英文承載目錄；
-    -- 逐目錄 pcall 隔離：單一 MOD 的 streets.xml 損壞不拖垮其他目錄
-    -- （SP 下 Riverside 目錄會再遇到中文檔，addStreetData 冪等無妨）
-    local dirs = getLotDirectories()
-    for i = 1, dirs:size() do
-        local dir = tostring(dirs:get(i - 1)) -- Java String → Lua string，確保 string.lower 安全
-        if string.lower(dir) ~= VANILLA_STREETS_DIR then
-            local ok, err = pcall(MapUtils.initDirectoryStreetData, mapUI, 'media/maps/' .. dir)
-            if not ok then
-                print(TAG .. " [Streets] initDirectoryStreetData error (" .. dir .. "): " .. tostring(err))
+local function translateName(original)
+    if original == "" then return original end
+    local key = KEY_PREFIX .. original
+    local ok, value = pcall(getTextOrNull, key)
+    if not ok then
+        logOnce("lookup", "name lookup failed: " .. tostring(value) .. "; keeping original names")
+        return original
+    end
+    -- 缺鍵（nil）／空白／鍵回顯／曾被引擎拒收 → 原名
+    if type(value) ~= "string" then return original end
+    if value == key or value:match("^%s*$") then return original end
+    if rejectedText[value] then return original end
+    return value
+end
+
+local function applyChange(change)
+    local street = change.street
+    street:setTranslatedText(change.translated)
+    if street:getTranslatedText() == "" and change.translated ~= "" then
+        -- 引擎正規化後為空：保留原名，避免空標籤。
+        rejectedText[change.translated] = true
+        logOnce("rejected", "engine rejected a translated name; keeping original")
+        street:setTranslatedText(change.original)
+    end
+    change.translated = street:getTranslatedText()
+    -- 共享 raw 改名後會先產生 split copy，必須重新 clip 才不會留下舊標籤
+    street:clipToObscuredCells()
+end
+
+local function restoreChanges(changes)
+    if not changes then return end
+    local failures, firstError = 0, nil
+    for i = #changes, 1, -1 do
+        local change = changes[i]
+        local ok, err = pcall(function()
+            -- 只還原「還是我們寫上去的那個名字」；原 loader 期間被外部改掉的名字保留
+            if change.street:getTranslatedText() == change.translated then
+                change.street:setTranslatedText(change.original)
+                if change.street:getTranslatedText() ~= change.original then
+                    error("native street name restore rejected")
+                end
             end
+            change.street:clipToObscuredCells()
+        end)
+        if not ok then
+            failures = failures + 1
+            firstError = firstError or tostring(err)
+        end
+    end
+    if failures > 0 then return failures .. " street name restore failure(s): " .. firstError end
+end
+
+-- 重入／同檔不同地圖：內層開工前先把外層窗口還原成 raw 原名，
+-- 內層（可能是別的語系）不得借用外層譯名；內層結束後由 restoreChanges 復原外層
+local function suspendWindow(parent, suspended)
+    for i = #parent, 1, -1 do
+        local old = parent[i]
+        if old.street:getTranslatedText() == old.translated then
+            local change = { street = old.street, original = old.translated, translated = old.original }
+            suspended[#suspended + 1] = change
+            applyChange(change)
         end
     end
 end
+
+function MapUtils.initDirectoryStreetData(mapUI, directory)
+    local dir = type(directory) == "string" and directory:match("^media/maps/(.+)$") or nil
+    if dir and string.lower(dir) ~= VANILLA_STREETS_DIR then
+        -- 原版目錄迴圈沒有 pcall；保留其他 MOD 的隔離，不改順序或重試壞來源。
+        local ok, result = pcall(origInit, mapUI, directory)
+        if not ok then
+            logOnce("directory:" .. dir, "street data load failed (" .. dir .. "): "
+                .. tostring(result) .. "; continuing other map directories")
+            return
+        end
+        return result
+    end
+    if not dir or degradedReason then
+        return origInit(mapUI, directory)
+    end
+
+    local relative = directory .. "/streets.xml"
+    local changes, scratchAPI, suspended, parent, windowed = {}, nil, nil, nil, false
+    local suspensionReady, acquiring = true, false
+    local lang, streetCount
+    local translatedCount = 0
+    local prepared, prepareErr = pcall(function()
+        parent = inFlight
+        if parent then
+            suspensionReady = false
+            suspended = {}
+            suspendWindow(parent, suspended)
+            suspensionReady = true
+        end
+        lang = Translator.getLanguage():name()
+        if lang ~= "CH" and lang ~= "CN" then return end
+        if not fileExists(relative) then return end
+        local targetAPI = mapUI.javaObject:getAPIv3():getStreetsAPI()
+        if targetAPI:getStreetDataByRelativeFileName(relative) then return end
+        local scratch = UIWorldMap.new({})
+        scratchAPI = scratch:getAPIv3():getStreetsAPI()
+        acquiring = true
+        scratchAPI:addStreetData(relative)
+        acquiring = false
+        local data = scratchAPI:getStreetDataByRelativeFileName(relative)
+        if not data then error("native street data unavailable") end
+        inFlight, windowed = changes, true
+        local streets = getStreets(data)
+        streetCount = streets:size()
+        for i = 0, streetCount - 1 do
+            local street = streets:get(i)
+            local original = street:getTranslatedText() or ""
+            local translated = translateName(original)
+            if translated ~= original then
+                local change = { street = street, original = original, translated = translated }
+                changes[#changes + 1] = change
+                applyChange(change)
+                if change.translated ~= original then translatedCount = translatedCount + 1 end
+            end
+        end
+    end)
+
+    local restoreErr, parentErr
+    if not prepared then
+        restoreErr = restoreChanges(changes)
+        if not suspensionReady then
+            -- 暫停不完整時先回到父窗口，不能把半套狀態當成新語系的原名。
+            parentErr = restoreChanges(suspended)
+            suspended = nil
+        end
+        degradedReason = tostring(prepareErr)
+    end
+    local loaded, result
+    if acquiring then
+        -- native 先快取再解析；同次重試可能吃到半份來源。原始載入錯誤必須保留。
+        loaded, result = false, prepareErr
+    else
+        loaded, result = pcall(origInit, mapUI, directory)
+    end
+    -- 內層降級不能跳過外層正在進行的還原與 listener 清理。
+    if prepared then restoreErr = restoreChanges(changes) end
+    if suspended then parentErr = restoreChanges(suspended) end
+    if windowed then inFlight = parent end
+    local cleanupErr
+    if scratchAPI then
+        local ok, err = pcall(function() scratchAPI:clearStreetData() end)
+        if not ok then cleanupErr = "scratch cleanup failed: " .. tostring(err) end
+    end
+    degradedReason = restoreErr or parentErr or cleanupErr or degradedReason
+    if degradedReason then
+        logOnce("degraded", degradedReason .. "; street translation disabled for this session; restart to reload original names")
+    elseif loaded and windowed then
+        logOnce("loaded:" .. lang,
+            "street names applied (" .. lang .. ", " .. translatedCount .. " of " .. streetCount .. ")")
+    end
+    if not loaded then error(result) end
+    return result
+end
+
+print(TAG .. " [Streets] armed (names only, official directory)")

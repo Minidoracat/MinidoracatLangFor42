@@ -1,103 +1,104 @@
 # /// script
 # requires-python = ">=3.11"
 # ///
-"""streets.xml 同步資料閘門回歸測試。
+"""街名翻譯資料閘門回歸測試（純文字覆蓋，無 XML 幾何副本）。
 
-驗證 MOD 中文街道檔與官方 vanilla streets.xml 的結構一致性：
-  1. XML well-formed
-  2. 條目數與幾何＋width **依官方順序逐位一致**（zip 對位；檔案以官方順序逐條
-     重建，順序即對應關係——多重集合比對會放過整片錯位）—— 官方新增/移除/
-     改線街道未同步時在此失敗（42.20.3 路名中英混雜事件的資料面根因）
-  3. 官方 streets.xml 承載目錄集合仍 == {Muldraugh, KY}（MapStreets_Flx.lua
-     只跳過該目錄；集合變動＝需擴充跳過清單）
-  4. 無純 ASCII 街名（未翻譯偵測；含中文的混合名如「JC卡羅爾路」合法）
-  5. 全檔 CRLF 行尾（拒混合行尾與裸 CR）、無 BOM（與官方檔一致）
+42.20.4 起街名中文化改走 Translate/CH|CN/UI.json 的 `UI_WorldMapStreet_<原版街名>`
+鍵（鍵＝字面前綴＋官方街名原字串），MapStreets_Flx.lua 只在原版 loader 的顯示
+副本窗口套字，不再夾帶 streets.xml。本閘門驗：
 
-官方檔缺失（無 PZ 安裝）時 exit 2 跳過；可用環境變數 PZ_PATH 覆蓋安裝路徑。
-PZ 版本更新後必跑：失敗即代表官方動了 streets.xml，需重跑同步流程
-（幾何橋映射沿用 + 新街名人工翻譯，見 HARDCODE_REGISTRY.md 42.20.3 對版結論）。
+  1. 沒有 XML 幾何副本殘留：MOD 樹內不得再出現 maps/**/streets.xml
+  2. CH / CN 兩語系的街名鍵集與譯值完全一致
+  3. 譯值有效：非空白、不等於鍵名、不等於英文原名（未翻譯偵測）
+  4. 覆蓋當前官方街名：官方 Muldraugh, KY/streets.xml 每個街名都有譯鍵
+  5. 無殘留譯鍵：官方已不存在的街名不該還留著（官方改版後的清理提示）
+
+刻意不再比對幾何／width／點數／條目數——我方不再持有街道幾何，官方改線、
+增減條目都不影響本包；唯一需要跟版的是「官方出現新街名」，由第 4 項抓。
+
+官方檔缺失（無 PZ 安裝）時 exit 2 跳過官方相關項（1-3 仍會跑）；
+可用環境變數 PZ_PATH 覆蓋安裝路徑。
 """
 
+import json
 import os
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-OURS = (
-    REPO
-    / "MOD/MinidoracatLangFor42/Contents/mods/MinidoracatLangFor42/42/media/maps/Riverside, KY/streets.xml"
-)
+MOD_MEDIA = REPO / "MOD/MinidoracatLangFor42/Contents/mods/MinidoracatLangFor42/42/media"
+TRANSLATE = MOD_MEDIA / "lua/shared/Translate"
+LANGS = ("CH", "CN")
+KEY_PREFIX = "UI_WorldMapStreet_"
+
 PZ_PATH = Path(os.environ.get("PZ_PATH", r"D:\SteamLibrary\steamapps\common\ProjectZomboid"))
 OFFICIAL = PZ_PATH / "media" / "maps" / "Muldraugh, KY" / "streets.xml"
 
 
-def load(path: Path):
-    root = ET.parse(path).getroot()
-    out = []
-    for s in root.findall("street"):
-        pts = tuple(
-            (float(p.get("x")), float(p.get("y"))) for p in s.find("points").findall("point")
-        )
-        out.append({"name": s.get("name"), "width": s.get("width"), "pts": pts})
-    return out
-
-
 def main() -> int:
-    if not OFFICIAL.exists():
-        print(f"SKIP: 官方檔不存在（{OFFICIAL}），設 PZ_PATH 後重跑")
-        return 2
-
     failures = []
 
-    raw = OURS.read_bytes()
-    if raw[:3] == b"\xef\xbb\xbf":
-        failures.append("我方檔含 BOM（應為 UTF-8 無 BOM）")
-    if b"\r\n" not in raw:
-        failures.append("我方檔非 CRLF 行尾（應與官方一致）")
-    else:
-        stripped = raw.replace(b"\r\n", b"")
-        if b"\n" in stripped or b"\r" in stripped:
-            failures.append("我方檔含混合行尾（存在非 CRLF 的裸 LF 或裸 CR）")
+    # 1. 幾何副本已退場
+    leftovers = sorted(str(p.relative_to(REPO)) for p in MOD_MEDIA.glob("maps/*/streets.xml"))
+    if leftovers:
+        failures.append(f"MOD 樹仍有 streets.xml 幾何副本：{leftovers}——街名已改走翻譯鍵，副本會與官方資料打架")
 
-    ours = load(OURS)  # 解析失敗直接拋例外 = XML 不合法
-    off = load(OFFICIAL)
+    # 2+3. 各語系鍵集與譯值
+    per_lang = {}
+    for lang in LANGS:
+        path = TRANSLATE / lang / "UI.json"
+        data = json.loads(path.read_text(encoding="utf-8"))  # 解析失敗直接拋例外＝檔案不合法
+        entries = {k: v for k, v in data.items() if k.startswith(KEY_PREFIX)}
+        per_lang[lang] = entries
+        if not entries:
+            failures.append(f"{lang}/UI.json 沒有任何 {KEY_PREFIX}* 街名鍵")
+        for key in sorted(entries):
+            value, original = entries[key], key[len(KEY_PREFIX):]
+            if not original:
+                failures.append(f"{lang}：{key} 缺原版街名（前綴後為空）")
+            if not isinstance(value, str) or not value.strip():
+                failures.append(f"{lang}：{key} 譯值為空")
+            elif value == key:
+                failures.append(f"{lang}：{key} 譯值等於鍵名（遊戲內會顯示裸 key）")
+            elif value == original:
+                failures.append(f"{lang}：{key} 尚未翻譯（譯值等於英文原名）")
 
-    if len(ours) != len(off):
-        failures.append(f"條目數不一致：我方 {len(ours)} vs 官方 {len(off)}")
-    # 幾何＋width 逐位比對：檔案以官方順序逐條重建，順序即對應關係；
-    # 多重集合比對會放過「整片錯位但集合相等」的對位錯亂（review lanes 共識）
-    mism = [
-        i
-        for i, (a, b) in enumerate(zip(off, ours))
-        if a["pts"] != b["pts"] or a["width"] != b["width"]
-    ]
-    if mism:
-        i = mism[0]
-        failures.append(
-            f"幾何/width 逐位不一致 {len(mism)} 條（首例 #{i}：官方 {off[i]['name']!r} w={off[i]['width']} vs 我方 {ours[i]['name']!r} w={ours[i]['width']}）——官方 streets.xml 已改版，需重同步"
-        )
+    if per_lang["CH"].keys() != per_lang["CN"].keys():
+        only_ch = sorted(per_lang["CH"].keys() - per_lang["CN"].keys())
+        only_cn = sorted(per_lang["CN"].keys() - per_lang["CH"].keys())
+        failures.append(f"CH/CN 街名鍵集不一致：僅 CH {only_ch[:5]}（{len(only_ch)}）／僅 CN {only_cn[:5]}（{len(only_cn)}）")
+    elif per_lang["CH"] != per_lang["CN"]:
+        failures.append("CH/CN 街名譯值不一致")
 
-    # 核心不變量：官方英文街道檔的唯一承載目錄必須仍是 Muldraugh, KY——
-    # MapStreets_Flx.lua 只跳過該目錄；若官方新增第二個帶 streets.xml 的地圖目錄，
-    # 其英文街道會被目錄迴圈載入、與中文並存（幽靈街道事件重演），必須擴充跳過清單
-    carriers = sorted(p.parent.name for p in (PZ_PATH / "media" / "maps").glob("*/streets.xml"))
-    if carriers != ["Muldraugh, KY"]:
-        failures.append(
-            f"官方 streets.xml 承載目錄集合變動：{carriers}（預期僅 ['Muldraugh, KY']）——需同步擴充 MapStreets_Flx.lua 的跳過清單與本閘門"
-        )
+    maps = PZ_PATH / "media" / "maps"
+    if maps.is_dir():
+        sources = {path.parent.name.lower() for path in maps.glob("*/streets.xml")}
+        if sources != {"muldraugh, ky"}:
+            failures.append(f"官方街道承載目錄已變動，需審核純文字 loader 範圍：{sorted(sources)}")
 
-    ascii_names = sorted({s["name"] for s in ours if all(ord(ch) < 128 for ch in s["name"])})
-    if ascii_names:
-        failures.append(f"疑似未翻譯街名 {len(ascii_names)} 個：{ascii_names[:10]}")
+    # 4+5. 對當前官方街名的覆蓋
+    if OFFICIAL.exists():
+        root = ET.parse(OFFICIAL).getroot()
+        official_names = {s.get("name") for s in root.findall("street")}
+        have = {k[len(KEY_PREFIX):] for k in per_lang["CH"]}
+        missing = sorted(official_names - have)
+        if missing:
+            failures.append(f"官方街名缺譯鍵 {len(missing)} 個（官方已改版，需補譯）：{missing[:10]}")
+        stale = sorted(have - official_names)
+        if stale:
+            failures.append(f"殘留譯鍵 {len(stale)} 個（官方已無此街名，請刪除）：{stale[:10]}")
+    elif not failures:
+        print(f"SKIP: 官方檔不存在（{OFFICIAL}），已驗鍵集/譯值，官方覆蓋項跳過；設 PZ_PATH 後重跑")
+        return 2
 
     if failures:
-        print("FAIL: streets.xml 資料閘門")
+        print("FAIL: 街名翻譯資料閘門")
         for f in failures:
             print("  -", f)
         return 1
 
-    print(f"PASS: streets.xml 資料閘門（{len(ours)} 條，與官方 {OFFICIAL.parent.name} 幾何一致、全譯）")
+    print(f"PASS: 街名翻譯資料閘門（{len(official_names)} 個官方街名全覆蓋，CH/CN 各 {len(per_lang['CH'])} 鍵，無 XML 副本）")
     return 0
 
 

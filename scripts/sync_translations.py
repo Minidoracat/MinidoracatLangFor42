@@ -165,7 +165,7 @@ POST_FIXES, SUSPICIOUS_PATTERNS = _load_fixes()
 # ============================================================
 
 # 不得生成的 REF 檔：
-# - streets.txt：CN/CH 皆未版控也無消費端（街道翻譯走 maps/Riverside, KY/streets.xml）。
+# - streets.txt：街名改由 UI.json 的 UI_WorldMapStreet_ 鍵維護，不生成 XML 道路副本。
 # - language.txt：PZ 42.20 起 Languages.java 只認 language.json，tryFillMapFromFile 的
 #   路徑模板亦寫死 .json，全快照 grep language.txt 零命中 → 死檔，2026-07-29 已刪除。
 #   （MOD 也**不應**改放 language.json：loadTranslateDirectory 對已存在語言是

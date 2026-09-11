@@ -32,11 +32,10 @@
                            miss 時 fallback 無值可退，直接畫裸 key。4e9ce58 死鍵清理
                            以「官方 EN 有無」判死鍵誤刪其中 39 鍵，隨 1.15.1 上線
                            當日玩家即於 Steam 回報（後提交 GitHub issue #2）
- 13. streets.xml 資料閘門   — 委派 scripts/test_streets_sync.py：中文街道檔的幾何/
-                           width 與官方 Muldraugh, KY/streets.xml 逐位一致、無未譯
-                           街名、官方承載目錄集合仍唯一、CRLF 無 BOM。42.20.3 幽靈
-                           街道事件（官方 42.20.0 起改版街道資料而我方未同步＋
-                           ObjectPool 容量上限讓 clear 殘影現形，大地圖中英混雜）
+ 13. 街名翻譯資料閘門       — 委派 scripts/test_streets_sync.py：官方街名文字鍵全覆蓋、
+                           CH/CN 鍵值一致、譯值有效，MOD 樹不再夾帶街道 XML 副本。
+ 14. 街名載入行為測試       — 委派 scripts/test_map_streets.lua：顯示譯名、原名與
+                           split 還原、重入／語系／失敗清理；不清已顯示玩家地圖。
 
 新增檢查時：同步把對應的坑記進 AGENTS.md 踩坑錄，並依「踩坑進化協議」回流到
 pz-mod-template（見 AGENTS.md）。
@@ -363,14 +362,12 @@ elif anno_details:
 else:
     ok(ANNO_LABEL)
 
-# ---- 13. streets.xml 資料閘門 ----
-# 42.20.3 幽靈街道事件（HARDCODE_REGISTRY.md §0）：官方 streets.xml 改版而我方
-# 未同步時，大地圖出現中英混雜／路網缺名。重用 test_streets_sync.py 的閘門
-# （幾何/width 逐位對官方一致、無未譯街名、唯一承載目錄不變、CRLF 無 BOM）。
-STREETS_LABEL = "streets.xml 資料閘門（test_streets_sync）"
+# ---- 13. 街名翻譯資料閘門 ----
+# 不再同步官方幾何；只驗文字覆蓋與語系一致性，拒絕重新夾帶 XML 道路副本。
+STREETS_LABEL = "街名翻譯資料閘門（test_streets_sync）"
 _streets_test = os.path.join(os.path.dirname(os.path.abspath(__file__)), "test_streets_sync.py")
 if not os.path.isfile(_streets_test):
-    skip(STREETS_LABEL, "scripts/test_streets_sync.py 不存在")
+    fail(STREETS_LABEL, ["scripts/test_streets_sync.py 不存在"])
 else:
     _r = subprocess.run([sys.executable, _streets_test], capture_output=True, text=True, encoding="utf-8", errors="replace")
     if _r.returncode == 0:
@@ -385,6 +382,24 @@ else:
             _details = [l for l in (_r.stderr or "").strip().splitlines() if l][-6:]
         _details.append(f"test_streets_sync.py exit code {_r.returncode}")
         fail(STREETS_LABEL, _details)
+
+# ---- 14. 街名載入行為測試 ----
+LUA_STREETS_LABEL = "街名載入行為（test_map_streets.lua）"
+_lua = shutil.which("lua")
+_lua_streets_test = os.path.join(os.path.dirname(os.path.abspath(__file__)), "test_map_streets.lua")
+if not os.path.isfile(_lua_streets_test):
+    fail(LUA_STREETS_LABEL, ["scripts/test_map_streets.lua 不存在"])
+elif not _lua:
+    skip(LUA_STREETS_LABEL, "PATH 沒有 lua")
+else:
+    _r = subprocess.run([_lua, _lua_streets_test], cwd=REPO,
+                        capture_output=True, text=True, encoding="utf-8", errors="replace")
+    if _r.returncode == 0 and _r.stdout.strip():
+        ok(LUA_STREETS_LABEL)
+    else:
+        _details = (_r.stdout or _r.stderr or "測試無輸出").strip().splitlines()[-8:]
+        _details.append(f"test_map_streets.lua exit code {_r.returncode}")
+        fail(LUA_STREETS_LABEL, _details)
 
 # ---- 總結 ----
 print()
