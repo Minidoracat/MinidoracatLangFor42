@@ -39,14 +39,14 @@ Lua／翻譯變更需重新啟動遊戲，既有地圖不會在執行中強制�
 
 ```
 MinidoracatLangFor42/
-├── link_workshop.bat              # Workshop 符號連結管理（雙擊啟動）
+├── link_workshop.bat              # 開發實體副本同步管理（雙擊啟動）
 ├── PZ_Test.bat                    # PZ 本地測試啟動器（雙擊啟動）
 ├── scripts/
 │   ├── sync_translations.py    # 翻譯同步工具（uv run）
 │   ├── convert_txt_to_json.py  # 格式轉換工具（.txt → .json）
 │   ├── pz_translate.py         # 共用翻譯解析模組
 │   ├── opencc_fixes.json       # OpenCC 後處理修正字典
-│   ├── link_workshop.ps1       # 符號連結管理腳本（PowerShell）
+│   ├── link_workshop.ps1       # 實體副本同步管理（PowerShell）
 │   └── PZ_Test.ps1             # 遊戲測試啟動器（PowerShell）
 ├── STEAM_DESCRIPTION.md           # Steam 商店頁面描述
 └── MOD/MinidoracatLangFor42/      # Workshop 上傳根目錄
@@ -75,42 +75,21 @@ MinidoracatLangFor42/
 
 ### 快速開始
 
-#### 1. 掛載到遊戲目錄
+#### 1. 同步到遊戲目錄
 
-雙擊 `link_workshop.bat`，選擇 **[1] 掛載**。
+首次可用 `link_workshop.bat` → **[1] 同步**，建立 `Zomboid\Workshop\MinidoracatLangFor42` 與 `Zomboid\mods\CatLangFor42` 的實體副本，不需符號連結或 UAC。
+日常修改後直接用 `PZ_Test.bat`，啟動前會自動同步。來源、歸檔及執行中保護規則見 `../pz-family-docs/tools.md`。
 
-腳本會建立兩個符號連結：
-
-```
-%UserProfile%\Zomboid\Workshop\MinidoracatLangFor42
-  → <專案目錄>\MOD\MinidoracatLangFor42
-
-%UserProfile%\Zomboid\mods\CatLangFor42
-  → <專案目錄>\MOD\MinidoracatLangFor42\Contents\mods\MinidoracatLangFor42
-```
-
-> 如果權限不足，會自動彈出 UAC 提示，不需要手動以管理員啟動。
->
-> 或者啟用 **Windows 開發人員模式**（設定 → 系統 → 開發人員專用）即可免提示。
 
 #### 2. 啟動遊戲測試
 
-雙擊 `PZ_Test.bat`，選擇啟動模式：
+雙擊 `PZ_Test.bat` 開啟暗色視窗，選擇連線模式、客戶端／伺服器／組合、客戶端數量及 Debug，再按 **同步並啟動**。首次預設 no-Steam，之後記住本專案上次的選擇；需要只更新副本時按 **只同步**。
 
-| 選項 | 說明 |
-|------|------|
-| **1** | 啟動客戶端 |
-| **2** | 啟動客戶端（Debug 模式） |
-| **3** | 啟動專用伺服器 |
-| **4** | 一鍵：伺服器 + 1 客戶端 |
-| **5** | 一鍵：伺服器 + 2 客戶端 |
-| **6** | 兩個客戶端（Host 模式） |
-
-> 首次使用請修改 `scripts/PZ_Test.ps1` 頂部的 `$PZ_PATH` 為你的 PZ 安裝路徑。
+Steam 需先登入且最多一個客戶端；no-Steam 可選兩個供 Host／Join。伺服器與客戶端模式必須一致，切換前先正常關服。遊戲路徑可透過環境變數 `PZ_PATH` 覆寫；快取與完整驗證的規則見 `../pz-family-docs/tools.md`。
 
 ### 卸載
 
-雙擊 `link_workshop.bat`，選擇 **[2] 卸載** 即可移除符號連結（不會刪除原始檔案）。
+`link_workshop.bat` → **[2] 歸檔卸載**，移出本 MOD 的受管副本，不刪除原始專案。
 
 ## 翻譯流程
 
