@@ -41,3 +41,6 @@ scripts/en_diff_queue.json
 scripts/import_proposals.json
 scripts/equivalence_unadjudicated.json
 output/
+
+# Jev 掃描報告（可重生，不入版控）
+reports/

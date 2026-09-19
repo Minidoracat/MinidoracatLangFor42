@@ -541,7 +541,7 @@
     "IGUI_Keyboard_Space": "Space",
     "IGUI_Tutorial1_Welcome1": "<CENTRE> <SIZE:large> 歡 迎 來 到 殭 屍 毀 滅 工 程 ! <LINE> <LINE> <SIZE:medium> 不 久 你 就 會 發 現 死 亡 的 可 怕 . 沒 人 會 哀 悼 你 , 甚 至 沒 人 會 記 得 你 . 一 切 都 將 白 費  ! <LINE> <LINE> 讓 我 們 來 學 習 一 些 基 本 操 作 和 生 存 知 識 !",
     "IGUI_Tutorial1_Welcome2": "<CENTRE> <SIZE:medium> 首 先 你 可 以 使 用 滑 鼠 滾 輪 或 者 鍵 盤 上 的 %1 / %2 鍵 縮 放 可 視 範 圍 大 小 . <LINE> <LINE> 所 以 不 要 只 用 較 小 的 可 視 範 圍 去 觀 察 , 你 會 死 得 很 慘 的 . <LINE> <LINE> 請 記 得 善 用 滾 輪 來 調 整 視 野 大 小 ! <LINE> <LINE> 縮 放 成 遠 景 吧 !",
-    "IGUI_Tutorial1_Welcome3": "<CENTRE> <SIZE:medium> 太 棒 了 ! <LINE> <LINE> 讓 我 們 來 看 看 角 色 資 訊 . <LINE> <LINE> <SIZE:large> 點 擊 左 側 閃 爍 的 心 形 圖 示 !",
+    "IGUI_Tutorial1_Welcome3": "<CENTRE> <SIZE:medium> 太 棒 了 ! <LINE> <LINE> 讓 我 們 來 看 看 角 色 資 訊 . <LINE> <LINE> <SIZE:large> 點 選 左 側 閃 爍 的 心 形 圖 示 !",
     "IGUI_Tutorial1_Welcome4": "<CENTRE> <SIZE:medium> 在 這 裡 你 能 看 到 自 己 的 健 康 狀 態 . <LINE> <LINE> 比 如 刮 傷 , 咬 傷 , 流 血 , 骨 折 等 , 一 切 傷 病 都 在 這 裡 列 出 ! <LINE> <LINE> 此 頁 面 也 可 以 用 來 實 施 包 紮 和 治 療 傷 口 的 動 作 .",
     "IGUI_Tutorial1_Welcome5": "<CENTRE> <SIZE:medium> 現在讓我們看看技能面板! <LINE> <LINE> <SIZE:large> 點擊技能標籤.",
     "IGUI_Tutorial1_Welcome6": "<CENTRE> <SIZE:medium> 幹 得 不 錯 ! 失 去 你 會 是 一 件 多 麼 可 惜 的 事 情 呀 ! <LINE> <LINE> 該 面 板 顯 示 你 的 各 項 技 能 等 級 .",
