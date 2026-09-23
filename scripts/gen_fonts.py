@@ -6,9 +6,9 @@
 以 Noto Sans（OFL）重新產生中文點陣字型圖集（AngelCode BMFont 文字格式）。
 
 輸出：
-  media/fonts/CH/{1x..4x}/zomboid{Small,Medium,Large}CN.*   Noto Sans TC 優先
+  media/fonts/CH/{1x..4x}/zomboid{Small,Medium,Large}CatLang.*   Noto Sans TC 優先
   media/fonts/CN/{1x..4x}/...                              Noto Sans SC 優先
-  media/fonts/zomboid*CN.*                                 CH/1x 副本（EN fallback，見 AGENTS.md）
+  media/fonts/zomboid*CatLang.*                                 CH/1x 副本（EN fallback，見 AGENTS.md）
 
 字集 = 現有 CH/1x 圖集字元 ∪ CH/CN 翻譯檔用字；主字型沒有的字依序由其他 Noto CJK 補，
 拉丁擴充／希臘／西里爾字母最後由 Noto Sans 補。
@@ -60,7 +60,7 @@ def load_font(tag, px):
 
 def charset():
     ids = set()
-    with open(os.path.join(FONTS_OUT, "CH/1x/zomboidMediumCN.fnt"), encoding="utf-8") as f:
+    with open(os.path.join(FONTS_OUT, "CH/1x/zomboidMediumCatLang.fnt"), encoding="utf-8") as f:
         for line in f:
             if line.startswith("char id="):
                 ids.add(int(line.split()[1][3:]))
@@ -90,7 +90,15 @@ def build(job):
             continue
         img = Image.new("L", (r - l, b - t))
         ImageDraw.Draw(img).text((-l, -t), ch, font=f, fill=255, anchor="ls")
-        glyphs.append((cp, img, l, base + t, adv))
+        # 引擎以 max(yoffset+height) 當行高（AngelCodeFont.parseChar），不看 common lineHeight；
+        # 超出行格的字形（如 〱〲）會把全部 UI 行高撐大，必須裁回 [0, lineHeight)。
+        top = base + t
+        y0, y1 = max(0, -top), min(img.height, line_h - top)
+        if y1 <= y0:
+            glyphs.append((cp, None, 0, 0, adv))
+            continue
+        img = img.crop((0, y0, img.width, y1))
+        glyphs.append((cp, img, l, max(0, top), adv))
 
     # shelf packing，1px 間距
     pages, placed = [], {}
@@ -111,7 +119,7 @@ def build(job):
     pages.append(page)
 
     out = os.path.join(FONTS_OUT, lang, dpi)
-    stem = f"zomboid{name}CN"
+    stem = f"zomboid{name}CatLang"
     for old in glob.glob(os.path.join(out, f"{stem}_*.png")):
         os.remove(old)
     white = Image.new("L", (PAGE, PAGE), 255)
@@ -146,9 +154,9 @@ def main():
     with ProcessPoolExecutor() as ex:
         for msg in ex.map(build, jobs):
             print(msg)
-    for p in glob.glob(os.path.join(FONTS_OUT, "zomboid*CN*")):
+    for p in glob.glob(os.path.join(FONTS_OUT, "zomboid*CatLang*")):
         os.remove(p)
-    for p in glob.glob(os.path.join(FONTS_OUT, "CH/1x/zomboid*CN*")):
+    for p in glob.glob(os.path.join(FONTS_OUT, "CH/1x/zomboid*CatLang*")):
         shutil.copy2(p, FONTS_OUT)
     print("根層已同步 CH/1x（EN fallback）")
 

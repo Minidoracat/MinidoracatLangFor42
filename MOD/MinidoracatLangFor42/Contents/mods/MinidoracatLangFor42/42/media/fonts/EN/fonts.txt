@@ -8,27 +8,27 @@ font Code
 
 font Cred1
 {
-	fnt = zomboidLargeCN.fnt,
+	fnt = zomboidLargeCatLang.fnt,
 }
 
 font Cred2
 {
-	fnt = zomboidLargeCN.fnt,
+	fnt = zomboidLargeCatLang.fnt,
 }
 
 font Dialogue
 {
-	fnt = zomboidMediumCN.fnt,
+	fnt = zomboidMediumCatLang.fnt,
 }
 
 font Intro
 {
-	fnt = zomboidLargeCN.fnt,
+	fnt = zomboidLargeCatLang.fnt,
 }
 
 font Handwritten
 {
-	fnt = zomboidMediumCN.fnt,
+	fnt = zomboidMediumCatLang.fnt,
 }
 
 font MainMenu1
@@ -45,95 +45,95 @@ font MainMenu2
 
 font Massive
 {
-	fnt = zomboidLargeCN.fnt,
+	fnt = zomboidLargeCatLang.fnt,
 }
 
 font NewSmall
 {
-	fnt = zomboidSmallCN.fnt,
+	fnt = zomboidSmallCatLang.fnt,
 }
 
 font AutoNormSmall
 {
-	fnt = zomboidSmallCN.fnt,
+	fnt = zomboidSmallCatLang.fnt,
 }
 
 font NewMedium
 {
-	fnt = zomboidMediumCN.fnt,
+	fnt = zomboidMediumCatLang.fnt,
 }
 
 font AutoNormMedium
 {
-	fnt = zomboidMediumCN.fnt,
+	fnt = zomboidMediumCatLang.fnt,
 }
 
 font MediumNew
 {
-	fnt = zomboidMediumCN.fnt,
+	fnt = zomboidMediumCatLang.fnt,
 }
 
 font NewLarge
 {
-	fnt = zomboidLargeCN.fnt,
+	fnt = zomboidLargeCatLang.fnt,
 }
 
 font AutoNormLarge
 {
-	fnt = zomboidLargeCN.fnt,
+	fnt = zomboidLargeCatLang.fnt,
 }
 
 font Small
 {
-	fnt = zomboidSmallCN.fnt,
+	fnt = zomboidSmallCatLang.fnt,
 }
 
 font Medium
 {
-	fnt = zomboidMediumCN.fnt,
+	fnt = zomboidMediumCatLang.fnt,
 }
 
 font Large
 {
-	fnt = zomboidLargeCN.fnt,
+	fnt = zomboidLargeCatLang.fnt,
 }
 
 font Title
 {
-	fnt = zomboidMediumCN.fnt,
+	fnt = zomboidMediumCatLang.fnt,
 }
 
 font SdfRegular
 {
-	fnt = zomboidLargeCN.fnt,
+	fnt = zomboidLargeCatLang.fnt,
 }
 
 font SdfBold
 {
-	fnt = zomboidLargeCN.fnt,
+	fnt = zomboidLargeCatLang.fnt,
 }
 
 font SdfOldBold
 {
-	fnt = zomboidLargeCN.fnt,
+	fnt = zomboidLargeCatLang.fnt,
 }
 
 font SdfOldBoldItalic
 {
-	fnt = zomboidLargeCN.fnt,
+	fnt = zomboidLargeCatLang.fnt,
 }
 
 font SdfOldRegular
 {
-	fnt = zomboidLargeCN.fnt,
+	fnt = zomboidLargeCatLang.fnt,
 }
 
 font SdfRobertoSans
 {
-	fnt = zomboidLargeCN.fnt,
+	fnt = zomboidLargeCatLang.fnt,
 }
 
 font SdfCaveat
 {
-	fnt = zomboidLargeCN.fnt,
+	fnt = zomboidLargeCatLang.fnt,
 }
