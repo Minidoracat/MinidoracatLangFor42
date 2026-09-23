@@ -4,6 +4,19 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.4-1.26.0] - 2026-09-24
+
+### Changed
+
+- **中文字型換成 Noto Sans（思源黑體）**：數字不再忽高忽低、看起來往下沉，數字和中文放在一起也能對齊。繁中使用台灣字形，簡中使用大陸字形，兩種語系都能同時顯示繁體與簡體字。
+  > 技術要點：原圖集英數來自 Corbel（預設舊式數字，且為 Microsoft 專有字型），改由 `scripts/gen_fonts.py`
+  > 以 Noto Sans TC／SC（Medium，OFL）重新產生 CH／CN 各 4 DPI 與根層 EN fallback 圖集；
+  > 字集沿用舊圖集 31,209 字，Noto 皆無的 9 個罕用貨幣／符號（֏؋৳฿៛∙≒◈﷼）略過；lineHeight／base 沿用舊值。
+
+### Fixed
+
+- 繁中食物狀態改回官方譯名：腐爛（Rotten）、變質（Stale），原本誤將「腐爛」顯示為「變質」。
+
 ## [42.20.4-1.25.1] - 2026-09-19
 
 ### Fixed
