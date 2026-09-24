@@ -4,6 +4,13 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [Unreleased]
+
+### Fixed
+
+- **修復 VHS 封底等說明視窗的長段中文超出框外（GitHub issue #3）**：一整串沒有空格的中文現在會自動換行，不會再畫到視窗外。
+  > 技術要點：`ISRichTextPanel_Flx.lua` 的 `paginate()` 只在空白處換行，單一 token 超過行寬時改為逐字貪婪切段（Kahlua UTF-16／標準 Lua UTF-8 兩種字串模型皆支援）。回歸：`lua scripts/test_rich_text_wrap.lua`。
+
 ## [42.20.4-1.26.1] - 2026-09-24
 
 ### Fixed

@@ -1,3 +1,29 @@
+-- 中文常整串無空白，單一 token 就超過行寬；官方只在空白換行，會畫出框外。
+-- Kahlua 字串是 UTF-16（#"字"==1），標準 Lua 是 UTF-8 位元組（==3），兩邊都要能逐字切。
+local UTF8_BYTES = #"字" == 3
+local function charLen(s, i)
+	if not UTF8_BYTES then return 1 end
+	local b = string.byte(s, i)
+	if b >= 0xF0 then return 4 elseif b >= 0xE0 then return 3 elseif b >= 0xC0 then return 2 end
+	return 1
+end
+
+-- 把放不進一行的 token 逐字貪婪切成每段不超過 width 的片段（每段至少一字）
+local function splitToWidth(font, text, width)
+	local pieces = {}
+	local start, i, n = 1, 1, #text
+	while i <= n do
+		local j = i + charLen(text, i) - 1
+		if j > start and getTextManager():MeasureStringX(font, string.sub(text, start, j)) > width then
+			table.insert(pieces, string.sub(text, start, i - 1))
+			start = i
+		end
+		i = j + 1
+	end
+	table.insert(pieces, string.sub(text, start))
+	return pieces
+end
+
 function ISRichTextPanel:paginate()
 	local lines = 1;
 	self.textDirty = false;
@@ -88,6 +114,11 @@ function ISRichTextPanel:paginate()
 				if token:contains("&gt;") then
 					token = token:gsub("&gt;", ">")
 				end
+				local pieces = { token }
+				if getTextManager():MeasureStringX(self.font, string.trim(token)) > maxLineWidth - self.indent then
+					pieces = splitToWidth(self.font, string.trim(token), maxLineWidth - self.indent)
+				end
+				for _, token in ipairs(pieces) do
 				local chunkText = self.lines[lines] or ''
 				local chunkX = self.lineX[lines] or x
 				if chunkText == '' then
@@ -130,6 +161,7 @@ function ISRichTextPanel:paginate()
 						self.lineX[lines] = self.indent
 					end
 					x = self.lineX[lines] + pixLen
+				end
 				end
 			end
 		else
