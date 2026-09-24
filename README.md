@@ -35,6 +35,18 @@ Lua／翻譯變更需重新啟動遊戲，既有地圖不會在執行中強制�
 | **支援版本** | Build 42.20.4+ |
 | **Mod 版本** | 42.20.4-1.26.1 |
 
+## 授權
+
+本專案由 Minidoracat 持有著作權且有權授權的原創程式碼及相關文件，採用 [MIT License](LICENSE)。
+使用、修改或散布適用 MIT 的內容時，須保留著作權聲明與授權條款。
+
+合作漢化組提供的譯文、第三方字型與圖片，以及 Project Zomboid 原始程式碼與素材，
+不因本專案加入 MIT 授權而變更其授權；相關權利仍屬各自權利人，使用時須遵循原授權或取得許可。
+MIT 授權不代表整個 MOD 內的所有內容皆可自由再授權。
+
+中文點陣字型由 [Noto Sans TC／SC／HK／JP 與 Noto Sans](https://github.com/google/fonts/tree/main/ofl)（Google，SIL Open Font License 1.1）
+以 `scripts/gen_fonts.py` 產生。
+
 ## 專案結構
 
 ```
