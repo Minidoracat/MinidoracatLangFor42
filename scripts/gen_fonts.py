@@ -6,8 +6,8 @@
 以 Noto Sans（OFL）重新產生中文點陣字型圖集（AngelCode BMFont 文字格式）。
 
 輸出：
-  media/fonts/CH/{1x..4x}/zomboid{Small,Medium,Large}CatLang.*   Noto Sans TC 優先
-  media/fonts/CN/{1x..4x}/...                              Noto Sans SC 優先
+  media/fonts/CH/{,1x..4x}/zomboid{Small,Medium,Large}CatLang.*  Noto Sans TC 優先（無子目錄＝字級選項 16px）
+  media/fonts/CN/{,1x..4x}/...                             Noto Sans SC 優先
   media/fonts/zomboid*CatLang.*                                 CH/1x 副本（EN fallback，見 AGENTS.md）
 
 字集 = 現有 CH/1x 圖集字元 ∪ CH/CN 翻譯檔用字；主字型沒有的字依序由其他 Noto CJK 補，
@@ -37,8 +37,11 @@ WEIGHT = 500  # Medium：小字級清楚又不糊
 PAGE = 1024
 FALLBACK = {"CH": ["TC", "HK", "SC", "JP", "Latin"], "CN": ["SC", "TC", "HK", "JP", "Latin"]}
 TAGS = FALLBACK["CH"]
-# (dpi, 名稱) -> (像素字級, lineHeight, base)，沿用舊圖集數值
+# (dpi, 名稱) -> (像素字級, lineHeight, base)。1x~4x 沿用舊圖集數值；
+# dpi "" 是語系根目錄，對應遊戲字級選項最小檔「16px」（TextManager.Init：fontSize 1 不帶 sizeDir），
+# 缺它時該檔會退到根層 1x 副本，等於和「19px」一樣大。
 SIZES = {
+    ("", "Small"): (13, 16, 12), ("", "Medium"): (16, 20, 15), ("", "Large"): (20, 25, 19),
     ("1x", "Small"): (16, 20, 15), ("1x", "Medium"): (20, 25, 19), ("1x", "Large"): (24, 30, 23),
     ("2x", "Small"): (20, 25, 19), ("2x", "Medium"): (24, 30, 23), ("2x", "Large"): (28, 34, 27),
     ("3x", "Small"): (24, 30, 23), ("3x", "Medium"): (28, 34, 27), ("3x", "Large"): (32, 39, 31),

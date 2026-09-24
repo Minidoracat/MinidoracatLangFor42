@@ -4,6 +4,22 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.20.4-1.27.0] - 2026-09-24
+
+### Added
+
+- **新增更小的中文字型**：「設定→使用者介面→字型大小」選最小一檔時，中文會比下一檔再小一級；原本這兩檔看起來一樣大。其他字型大小維持不變。
+  > 技術要點：`TextManager.Init` 對 fontSize 1（16px）不帶 DPI 子目錄，只查 `media/fonts/<語系>/`；本包原本沒有這層，退到根層 1x 副本，16px 與 19px 共用同一組圖集。
+  > `gen_fonts.py` 新增 CH／CN 語系根目錄圖集 Small／Medium／Large＝13／16／20px（lineHeight 16／20／25），1x–4x 重生後逐位元不變。
+  > 字型大小選「隨視窗高度縮放」且螢幕高度低於 1080 時，官方同樣會落到這一檔。
+- **字型大小選項改為「特小／小／中／大／特大」**：原本標示的 16px、19px 等數字和本包實際字級對不上，改用相對大小避免誤會。
+
+### Changed
+
+- **整理技能名稱修補的程式**：拿掉一段從來不會執行的程式，技能名稱照樣正確顯示中文。
+  > 技術要點：`PerkName_Flx.lua` 逐項改 `perk.name` 的迴圈依賴 `perk.translation`，但 Kahlua 讀不到 Java public 欄位（恆為 nil），迴圈從未生效；
+  > 實際生效的是 `PerkFactory.initTranslations()`（Translator 載入後亦會呼叫，Translator.java:237），故只保留這個呼叫。E2E `load-sp` 以反射比對全部技能名稱驗證。
+
 ## [42.20.4-1.26.2] - 2026-09-24
 
 ### Added
