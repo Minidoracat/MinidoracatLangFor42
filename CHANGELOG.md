@@ -4,7 +4,12 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
-## [Unreleased]
+## [42.20.4-1.26.2] - 2026-09-24
+
+### Added
+
+- **補上地圖選項「建築」「詳細標記」的中文名稱**：原本這兩項只由模組翻譯包提供；現在統一由本包負責，只裝本包也會顯示中文。
+  > 技術要點：CH／CN `IG_UI` 新增 `IGUI_MapOption_Buildings`、`IGUI_MapOption_DetailedSymbols`；模組翻譯包同步停止出貨 6 個 `IGUI_MapOption_*` 原版鍵，避免覆蓋順序造成用詞不一。
 
 ### Fixed
 
