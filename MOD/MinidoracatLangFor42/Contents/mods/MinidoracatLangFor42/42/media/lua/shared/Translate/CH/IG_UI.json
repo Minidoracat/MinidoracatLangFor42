@@ -7418,6 +7418,8 @@
     "IGUI_MapOption_Basements": "地下室",
     "IGUI_MapOption_BlurUnvisited": "模糊未探索區域",
     "IGUI_MapOption_BuildingsWithoutFeatures": "無特徵建築",
+    "IGUI_MapOption_Buildings": "建築",
+    "IGUI_MapOption_DetailedSymbols": "詳細標記",
     "IGUI_MapOption_CellGrid": "區塊格線",
     "IGUI_MapOption_RemoteSymbols": "其他玩家標記",
     "IGUI_MapOption_CellGrid300": "區塊格線 (300)",
