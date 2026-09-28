@@ -88,9 +88,10 @@ MOD_LUA = MOD_BASE / "lua" / "client"
 # ============================================================
 # Flx 腳本（雙語通用，直接從 REF 複製）
 # MOD 統一使用 _Flx.lua 處理雙語，不再建立分離的 _CN/_CH 版本
+# REF 的 ModInfoPanel_FIx.lua 不再同步：它只新增一個 vanilla 從不呼叫的
+# ModInfoPanel:setModInfo（42.21 對版查證為死碼，已自 MOD 移除）。
 FLX_FILES: list[str] = [
     "MapLabel_Flx.lua",
-    "ModInfoPanel_FIx.lua",
 ]
 
 # ============================================================

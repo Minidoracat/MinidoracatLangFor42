@@ -46,6 +46,7 @@ NON_MENU_RECEIVERS = {
     # ISTickBox / ISComboBox 欄位（非情境選單）
     "self.tickBoxLeft", "self.tickBoxCenter", "self.tickBoxRight",
     "self.categoryCB",
+    "self.settingsComboBox",  # CoopOptionsScreen 的伺服器設定檔下拉（'servertest' 是預設集名）
 }
 
 # 刻意保留原文（技術標籤 / 資源 ID），不列為缺口

@@ -13,6 +13,11 @@
     "date": "2026-08-11",
     "keys": 39,
     "detail": "【回滾，非新刪批】MapLabel.json 39 鍵誤刪還原（GitHub issue #2，路易斯維爾地圖裸 key）。根因：存活掃描 method ⑨ 只掃官方 worldmap*.xml，漏了本 MOD 自帶 media/maps/Riverside, KY/worldmap-annotations.lua 的 addUntranslatedText 引用（56 鍵，引擎前綴路由只查 MapLabel.json、官方 EN 亦無、miss 即裸 key）。與 MetalDoor(Poor)/(Shoddy) 誤刪同型（存活來源清單漏一條路徑）。已還原 CH/CN 各 56 鍵（倖存 17 鍵值零異動）、順修 CN IrvingtonSpeedway 英文殘留，並新增 verify_mod.py 檢查 12（地圖註記鍵覆蓋：MapLabel.json 逐檔比對＋掃描失明交叉比對＋非 MapLabel_ 前綴防護）防同型回歸。"
+   },
+   {
+    "date": "2026-09-28",
+    "keys": 23,
+    "detail": "42.21.0 對版：Recipes.json 刪 23 鍵（Dome_Kiln、Wood_BarElement_Lvl1-3、Wood_BarElementCorner_Lvl1-3、Wood_Bookcase_Lvl1/2、Wood_BookcaseSmall_Lvl1/2、Wood_Chair_Lvl1-3、Wood_TableDrawerLvl1-3、Wood_TableSmall_Lvl1-3、Forge_Shortsword_Blade、Make_Metal_Drum、WoodBarElement）。官方 42.21 EN 已刪；存活掃描：3 鍵 scripts/Lua/Java 全樹零引用，其餘 20 鍵只剩 entity id／CraftRecipe 名（translationName 被 CraftRecipeComponentScript 以 xuiSkin 名覆寫，GrantedRecipes 只進 knownRecipes 不顯示），唯一露出點是 debug 選單 ShowRecipesUsedIn；官方 CH/CN 仍保留逐字相同的值，刪除後任何路徑顯示不變。⚠️ 同批被 EN 刪除的 Metal_Counter_Lvl1/2、Metal_CounterCorner_Lvl1/2、Metal_Crate_Lvl1/2、Metal_LockerBig_Lvl1/2、Metal_LockerSmall_Lvl1/2 **不是死鍵**：items/literature.txt 的 MetalworkMag2 LearnedRecipes 仍引用，雜誌 tooltip（Literature.java Translator.getRecipeName）、閱讀清單（ISLiteratureUI）與「顯示配方」選單都會顯示——已列入 Recipes.json keep_alive。另把 IGUI_ContainerTitle_mannequin 列入 IG_UI.json keep_alive：42.21 EN 改成大寫鍵，但 IsoMannequin 的容器 type 寫死小寫，ISInventoryPage／corpseStorageCheck 以 getType() 組鍵，小寫鍵仍是活鍵。"
    }
   ],
   "method": "存活判定須跑多路徑，勿只掃 Lua：①Lua 全樹字面 ②反編譯 Java 全樹字面 ③scripts/**/*.txt 全語料字面 ④item X→ItemName/Tooltip_item_/ContextMenu_ ⑤craftRecipe X 與 entity X→Recipes/Tooltip_Recipe_（⚠️ entity 名這條漏過一次：CharcoalBurningPit 是死鍵、Charcoal_Pit 才是活鍵）⑥Tags=→IGUI_CraftingWindow_ ⑦Java enum（MoodleType 等，大小寫敏感：Bleeding≠Bleed、HasACold≠Hasacold）⑧sandbox 選項名 ⑨maps/**/worldmap*.xml 的 MapLabel_ ＋ 我方 media/maps/**/worldmap-annotations.lua 的 addUntranslatedText 引用（⚠️ 這條原本只掃官方 .xml、記「全庫僅 14 個活鍵」，漏了本 MOD 自帶 annotations 的 56 個引用鍵，39 個 MapLabel_* POI 因此被誤刪、上線當日玩家回報裸 key——GitHub issue #2，2026-08-11 已回滾；verify_mod.py 檢查 12 現以此為閘）⑩我方 MOD 自有 _Flx.lua（曾差點誤刪自家在用的 IGUI_Fish_Window_*）⑪官方 EN 是否仍持有 ⑫**xuiSkin 的 DisplayName 去空格後即 Recipes 鍵**（XuiSkinScript.java:163-169 在腳本解析期做 replace(\" \",\"\") → getRecipeName；這條漏過一次，害 MetalDoor 兩鍵被誤刪）⑬**tile 定義的 GroupName+CustomName → Moveables 鍵**（ISWorldObjectContextMenu／ISMoveableSpriteProps／ISDisassembleMenu 以 `GroupName .. \" \" .. CustomName` 呼叫 Translator.getMoveableDisplayName，Translator.java:642 做 空白→底線／連字號→底線／去單引號 後查 Moveables.json；句點不會被去掉，理由同 A27。官方 EN/Moveables.json 只收錄一部分 tile 名，另有 190 鍵是【官方 EN 沒有、但執行期真的會查】的活鍵（138 個可由 tile 的 GroupName+CustomName 直接對上，另 52 個來自假人 script 名 getMannequinScriptName 等其他路徑），**不可因為官方 EN 沒有就判死**（官方 FR 亦自行補鍵）。掃描來源 media/*.tiles，tdef v1 格式：magic `tdef` + int ver + int tilesetCount，每 tileset 為 name 行 + image 行 + 四個 int（末者為 tile 數），每 tile 為 int propCount + propCount 組「key 行 + value 行」。）"
@@ -221,7 +226,18 @@
    "ThermalFuel_Plank",
    "WoodTablewithDrawer(Poor)"
   ],
-  "keep_alive": []
+  "keep_alive": [
+   "Metal_Counter_Lvl1",
+   "Metal_Counter_Lvl2",
+   "Metal_CounterCorner_Lvl1",
+   "Metal_CounterCorner_Lvl2",
+   "Metal_Crate_Lvl1",
+   "Metal_Crate_Lvl2",
+   "Metal_LockerBig_Lvl1",
+   "Metal_LockerBig_Lvl2",
+   "Metal_LockerSmall_Lvl1",
+   "Metal_LockerSmall_Lvl2"
+  ]
  },
  "IG_UI.json": {
   "delete": [
@@ -385,7 +401,8 @@
    "IGUI_VehicleNameVan_Leather",
    "IGUI_VehicleNameVan_Locksmith",
    "IGUI_VehicleNameVan_Masonry",
-   "IGUI_VehicleNameVan_Perfick_Potato"
+   "IGUI_VehicleNameVan_Perfick_Potato",
+   "IGUI_ContainerTitle_mannequin"
   ]
  },
  "ItemName.json": {

@@ -157,7 +157,7 @@
     "Sandbox_SeenHoursPreventLootRespawn": "造訪後阻止物資重生的時數",
     "Sandbox_SeenHoursPreventLootRespawn_tooltip": "若大於 0，最近在設定的遊戲時數內造訪過的區域不會重生物資。",
     "Sandbox_HoursForLootRespawn": "物資重生間隔（小時）",
-    "Sandbox_HoursForLootRespawn_tooltip": "如果此參數大於 0, 在 X 小時後 , 世界上城鎮和拖車公園中的所有容器將重新生成物品 . \\n 要生成物品 , 容器必須至少被搜刮過一次 . 物資重生不受可見性或後續搜刮的影響 .",
+    "Sandbox_HoursForLootRespawn_tooltip": "如果此參數大於 0, 在 X 小時後, 世界上城鎮和拖車公園中的所有容器將重新生成物品. \\n要生成物品, 容器必須至少被搜刮過一次. 物資重生不受可見性或後續搜刮的影響.",
     "Sandbox_MaxItemsForLootRespawn": "物資重生的物品數量上限",
     "Sandbox_MaxItemsForLootRespawn_tooltip": "容器中的物品數量大於或等於此設定時，該容器不會重生物資。",
     "Sandbox_ConstructionPreventsLootRespawn": "建造會阻止物資重生",

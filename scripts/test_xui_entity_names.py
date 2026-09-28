@@ -30,13 +30,18 @@ no-op，而且補的值與 `Recipes.json` 實際生效值分岔了 12～13 筆�
 顯示去空格後的英文字面。所以守門條件是：**每個 DisplayName 去空格後都要在
 CH/CN `Recipes.json` 有鍵**。
 
-本檔只對「可見」子集強制要求——`ISEntityUI.CanOpenWindowFor`（`ISEntityUI.lua:332`）
-檢查 `config:isUiEnabled()`，只有 `uiEnabled = true` 的實體會開視窗／進世界右鍵
-選單／出現在手把互動提示（`ISButtonPrompt.lua:624-633`）。其餘僅列為資訊。
+本檔只對「可見」子集強制要求，可見有兩條路（2026-09-28 42.21 對版更正）：
+- `uiEnabled = true`：`ISEntityUI.CanOpenWindowFor`（`ISEntityUI.lua:332`）只讓這類實體
+  開視窗／進世界右鍵選單／出現在手把互動提示（`ISButtonPrompt.lua:624-633`）。
+- 帶 `component CraftRecipe`：`CraftRecipeComponentScript.OnLoadedAfterLua` 以
+  `EntityUiStyle.getDisplayName()` 覆寫配方 translationName，建造視窗
+  （`ISEntityUI.OpenBuildWindow` → `ISRecipeScrollingListBox`）直接顯示，**不看 uiEnabled**。
+其餘僅列為資訊。component 層 DisplayName 不在檢查範圍：`XuiSkinScript.LoadComponentBlock`
+原樣存入字面、不查 Recipes，補鍵無效（登記簿 C12）。
 
 ⚠️ **潛在風險**：`ISEntityBuildMenu.lua:77-78` 也吃 `style:getDisplayName()`，
 目前因 `hasSomethingToBuild()` 開頭是 `return; --TODO REMOVE` 而不可達。官方
-若把它接回來，那 39 個不可見名稱就會一起變成可見缺口。升版時請重查該死碼。
+若把它接回來，資訊列出的不可見名稱就會一起變成可見缺口。升版時請重查該死碼。
 
 解析 xuiSkin 用**大括號配對**，不靠縮排猜測（各檔縮排不一致，會漏）也不靠
 扁平掃描（會把巢狀 component 的值算到 entity 頭上）。
@@ -102,8 +107,8 @@ def _blocks(text: str):
                     pending = piece
 
 
-def ui_enabled_styles() -> set[str]:
-    """entity 定義中 uiEnabled = true 者所引用的 entityStyle 名。
+def visible_styles() -> set[str]:
+    """會把 xuiSkin 名稱顯示給玩家的 entityStyle：uiEnabled = true 或帶 CraftRecipe。
 
     註：`UiConfigScript` 的 Java 預設值是 true 且解析大小寫不敏感，此處只認
     腳本裡明寫的小寫 true——42.20.2 全庫實測 200 個引用皆明寫，故等價；
@@ -116,9 +121,10 @@ def ui_enabled_styles() -> set[str]:
         except OSError:
             continue
         for m in re.finditer(r"entity\s+(\w+)\s*\n\s*\{(.*?)\n    \}", t, re.S):
-            st = re.search(r"entityStyle\s*=\s*(\w+)", m.group(2))
-            ui = re.search(r"uiEnabled\s*=\s*(\w+)", m.group(2))
-            if st and ui and ui.group(1) == "true":
+            body = m.group(2)
+            st = re.search(r"entityStyle\s*=\s*(\w+)", body)
+            ui = re.search(r"uiEnabled\s*=\s*(\w+)", body)
+            if st and ((ui and ui.group(1) == "true") or re.search(r"component\s+CraftRecipe\b", body)):
                 out.add(st.group(1))
     return out
 
@@ -126,7 +132,6 @@ def ui_enabled_styles() -> set[str]:
 def display_names() -> tuple[dict[str, set[str]], dict[str, set[str]]]:
     """回傳 (可見, 不可見)，各為 {DisplayName: {來源說明}}。"""
     entity_dn: dict[str, str] = {}
-    comp_dn: dict[str, set[str]] = {}
     for p in (VANILLA / "scripts").rglob("*.txt"):
         try:
             t = p.read_text(encoding="utf-8", errors="ignore")
@@ -142,18 +147,14 @@ def display_names() -> tuple[dict[str, set[str]], dict[str, set[str]]]:
                 continue
             style = ent.split(None, 1)[1]
             if any(s.startswith("component ") or s == "components" for s in path):
-                comp_dn.setdefault(v, set()).add(style)
-            else:
-                entity_dn[style] = v
+                continue  # component 層不查 Recipes（見檔頭），不列入
+            entity_dn[style] = v
 
-    vis = ui_enabled_styles()
+    vis = visible_styles()
     visible: dict[str, set[str]] = {}
     hidden: dict[str, set[str]] = {}
     for style, dn in entity_dn.items():
         (visible if style in vis else hidden).setdefault(dn, set()).add(f"entity {style}")
-    for dn, styles in comp_dn.items():
-        for style in styles:
-            (visible if style in vis else hidden).setdefault(dn, set()).add(f"component of {style}")
     return visible, {k: v for k, v in hidden.items() if k not in visible}
 
 
@@ -172,7 +173,7 @@ def main() -> int:
     ch, cn = load_recipes("CH"), load_recipes("CN")
     visible, hidden = display_names()
     if not visible:
-        fail("掃不到任何 uiEnabled=true 的 DisplayName——解析規則可能已失效")
+        fail("掃不到任何可見的 DisplayName——解析規則可能已失效")
         return 1
 
     for lang, d in (("CH", ch), ("CN", cn)):
@@ -192,14 +193,14 @@ def main() -> int:
     gap_hidden = sorted(n for n in hidden if recipe_key(n) not in ch)
     if gap_hidden:
         print(f"ℹ️ 另有 {len(gap_hidden)} 個 DisplayName 查無 Recipes 鍵，但其實體 "
-              f"uiEnabled=false 故目前不可見。若官方把 ISEntityBuildMenu "
+              f"uiEnabled=false 且沒有 CraftRecipe，目前不可見。若官方把 ISEntityBuildMenu "
               f"（hasSomethingToBuild 目前是 `return; --TODO REMOVE` 死碼）接回來，"
               f"這些會一起變成缺口：{gap_hidden[:5]}…")
 
     if failed:
         print(f"\n{len(failed)} 項失敗")
         return 1
-    print(f"PASS: {len(visible)} 個可見工作站名稱（entity＋component 層）"
+    print(f"PASS: {len(visible)} 個可見工作站名稱（uiEnabled 或建造清單）"
           f"去空格後在 CH/CN Recipes.json 皆有有效譯文")
     return 0
 

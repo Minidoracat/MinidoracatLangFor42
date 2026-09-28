@@ -4,6 +4,40 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.21.0-1.28.0] - 2026-09-29
+
+### Added
+
+- **補上 42.21 新介面的中文**：伺服器瀏覽器的「上次清檔」、右鍵燈開關時的「需要燈泡」提示、搬屍體遇到上鎖容器的提示、多人工單的欄位名稱、按鍵設定新增的「切換舊版渲染器」，以及製作人員名單新增的 QA 團隊職稱，原本都會顯示英文。
+  > 技術要點：官方 CH/CN 對 42.21 新 UI 鍵皆未譯。CH/CN 新增 22 鍵：UI 5（`UI_servers_last_wipe`／`wipe_days_ago`／`wipe_today`／`wipe_unknown`、`UI_optionscreen_binding_ToggleOldRenderer`）、ContextMenu 1（`ContextMenu_AddLightbulb_RequiresBulb`）、IG_UI 9（`IGUI_Tooltip_ContainerLocked`、`IGUI_AdminPanel_ID`／`Message`／`Author`／`Viewed`、`IGUI_DebugMenu_Dev_SeamEditor`、`IGUI_Sandbox_Overwrite`、`IGUI_ContainerTitle_GloveBox`／`Mannequin`）、Credits 7（USS 群組與 6 個 QA 職稱）。
+  > 42.21 EN 把 `IGUI_ContainerTitle_mannequin` 改成大寫，但 `IsoMannequin` 的容器 type 仍寫死小寫，小寫鍵保留，大寫鍵為防禦補上。
+
+### Changed
+
+- **需要遊戲版本 42.21.0 以上**：配合 42.21 的街名介面變更，本版不再支援 42.20.4。搭配 MiniMap 時請一併更新，才有中英文街名搜尋。
+  > 技術要點：`versionMin=42.21.0`（修補改用 42.21 才有的 `WorldMapStreet.setUntranslatedText`，家族政策不寫兩版相容層）；README 支援版本、簡介與 workshop.txt 同步。
+- **報紙版面跟上官方**：Kentucky Herald、Knox Knews、Louisville Sun Times、National Dispatch 共 22 期報紙的版面數值同步 42.21，補上一條原本畫在版面外的分隔線；內文不變。
+  > 技術要點：`Print_Media` 22 鍵 CH/CN 只同步兩種數值：`[rgb]:0.803`→`0.8039`、KentuckyHerald ×5 `y:2480`→`y:680`；保留我方 `shadow:1` 與 CJK autoWidth。42.21 解析器（`PrintMedia.lua`）未變，恢復 `loadstring` 不影響，42.20.4 解析契約仍適用。
+
+### Fixed
+
+- **大地圖街名恢復中文**：遊戲更新到 42.21 後，繁中與簡中的大地圖街名會全部變回英文；現在重新顯示中文。
+  > 技術要點：42.21 的 `WorldMapStreet` 移除 `setTranslatedText`（改為 `setUntranslatedText`），`getTranslatedText()` 改為 `Translator.getText(untranslated)`；舊 `MapStreets_Flx.lua` 第一次呼叫舊 setter 就在 pcall 內失敗並降級。改為在官方街名的顯示副本窗口，把有譯文的 raw 暫時換成 `UI_WorldMapStreet_<原名>` 翻譯鍵、`clipToObscuredCells` 固化譯文後還原；讀原名改用 `getUntranslatedText()`。鍵內含英文原名，萬一還原失敗，42.21 新增的鐵路判斷（`registerNavZones`）仍正確。
+  > `test_map_streets.lua` 的 stub 原本仍模擬舊 API，42.21 下照樣全綠；已改為 42.21 語意，舊程式在新 stub 下會失敗。
+- **修正氚光手槍瞄具說明**：官方把效果改成「增加命中率」，中文原本還寫「增加最大射程」。
+  > 技術要點：`Tooltip_IronSight` 跟進 42.21 EN 改義，沿用 `Tooltip_Laser` 的「增加槍械命中率」。
+- **修正多處既有錯譯**：繁中隨機姓名夾雜的 4 個簡體字（哈內斯、約瑟芬、歐內斯特、昆頓）、簡中霰彈槍收束器說明與實際效果相反、「CeroSec 終端機」被誤譯成「調音終端機」、「圓頂窯爐」建造名稱與其他地方不一致、拖車動物選項改為「將動物移出拖車」。
+  > 技術要點：CH `SurvivorNames` 4 鍵；CN `Tooltip_ChokeTubeFull`／`Improved` 依 CH 改寫；CH/CN Moveables `CeroSec_Terminal`、CN ItemName `Base.Mov_SecurityTerminal2`；CH/CN Recipes `DomeKiln`；CH/CN `ContextMenu_RemoveAnimalFromTrailer`（42.21 起也用在單隻動物右鍵）。
+- **簡中手把教學改用實際按鍵綁定圖示**：改過手把按鍵後，教學提示也會顯示正確的按鍵。
+  > 技術要點：CN `IGUI_Tutorial1_*Joypad` 40 鍵的 `<JOYPAD:AButton>` 等實體按鍵 token 改為與 EN／CH 相同的動作名（`Interact`、`Aiming`…），正文不動；`Fight3BisJoypad` 採官方 CN 值（原本少一個 token）。
+- **修正影集、傳單與說明的小錯**：被空格拆開的千分位數字、寫成 0.44／0.45 的槍械口徑、漏掉的年份、集數標題的多餘空格與生硬譯名，以及螢幕鍵盤「取消」、雜誌名「告密者」、服裝部位「軀幹1」、地圖寫字提示「需要筆或鉛筆」、管理員 `/additem` 說明補齊。
+  > 技術要點：CN `Print_Text_HouseforSale907`／`943`、CH/CN `912` 千分位；CH/CN `RM_0336c01f`（10,500 年）、`RM_7e4a47a6`（.44 馬格南）、`RM_258f8629`（.45）、`RM_9710d65b`（補 1963 年）、CH `RM_886ac07c`、CH/CN `RM_2543f116`、CH/CN `RM_e55c50b8`（S5-04 集名改「班長選舉」，採官方 CH）；CH/CN `IGUI_Keyboard_Cancel`、`IGUI_MagazineTitle_Telltale`、`UI_ClothingType_Torso1`、`Tooltip_Map_CantWrite`、`UI_ServerOptionDesc_AddItem`；CN `UI_ClothingType_TorsoExtra`（誤為「额外」，改「围裙」）；CH `Sandbox_HoursForLootRespawn_tooltip` 清游離空格。`IGUI_Keyboard_Space` 與 Shift／Enter 等鍵帽名一致保留英文。
+
+### Removed
+
+- **移除用不到的程式與翻譯**：一支從未被遊戲呼叫的舊修補檔，以及 23 個 42.21 已無用途的配方名稱；遊戲畫面不受影響。
+  > 技術要點：刪 `ModInfoPanel_FIx.lua`（只新增 vanilla 從不呼叫的 `ModInfoPanel:setModInfo`），`sync_translations.py` 的 `FLX_FILES` 同步移除以免從 REF 復活。Recipes 刪 `Dome_Kiln`、`Wood_*` 19 鍵、`Forge_Shortsword_Blade`、`Make_Metal_Drum`、`WoodBarElement`（42.21 EN 已刪、只剩內部 id 或零引用，官方 CH/CN 仍保留同值）；同批被 EN 刪除的 `Metal_*` 10 鍵仍被 `MetalworkMag2` 的配方清單使用，保留。
+
 ## [42.20.4-1.27.0] - 2026-09-24
 
 ### Added

@@ -10,7 +10,7 @@ description=Project Zomboid Build 42 遊戲本體的繁體／簡體中文完整�
 description=
 description=[h2]📦 需要安裝[/h2]
 description=[list]
-description=[*] 遊戲版本 Build 42.20.4 以上
+description=[*] 遊戲版本 Build 42.21.0 以上
 description=[*] 姊妹作：其他 Workshop 模組的中文由[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3765907717]模組翻譯包[/url]負責，兩者搭配才是完整中文體驗
 description=[/list]
 description=

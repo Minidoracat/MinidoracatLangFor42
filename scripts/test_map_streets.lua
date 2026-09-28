@@ -4,7 +4,8 @@
 -- 行為契約（本測試逐條把關；刻意只驗可觀測狀態、不 pin 呼叫序列）：
 --   (1) CH/CN：原 loader 複製出的顯示副本吃到譯名，raw 名稱在收工後回到英文原名，
 --       幾何（點座標）全程不變
---   (2) 缺鍵／空白值／鍵回顯／查詢例外／引擎拒收 → 該條退回原名，其餘照常翻譯
+--   (2) 缺鍵／空白值／鍵回顯／查詢例外 → 該條退回原名，其餘照常翻譯；
+--       翻譯鍵寫入未生效屬機制故障，整張明確降級為原名
 --   (3) 非 CH/CN 語系（含未來新語系）完全不介入，連 scratch 都不建立
 --   (4) 只翻官方街名；其他地圖保留原始資料，逐目錄隔離載入錯誤
 --   (5) 重入（原 loader 期間再次載入同一份 raw）：內層自行取得譯名，內層若是
@@ -19,24 +20,31 @@ local OTHER_DIR = 'media/maps/Raven Creek'
 local OTHER_RELATIVE = OTHER_DIR .. '/streets.xml'
 
 -- ============ 可調狀態（每案例 reset） ============
-local lang, translations, rejectValues, clipFails, setFails
+local lang, translations, dropWrites, clipFails, setFails
 local lookupFails, fileMissing, scratchFailNew, scratchFailAdd, origFails, origHook
 local scratchCreated, scratchCleared
 local shared -- raw 街道資料：引擎依檔名快取、全程序共享
 
 -- ============ PZ global stubs ============
+-- 42.21 WorldMapStreet：raw 只存未翻譯文字，getTranslatedText() 經 Translator 解析
+-- （有鍵回譯文、無鍵原樣回傳）；split 副本在 clip 時以解析後的文字固化。
+local function resolve(text) return translations[text] or text end
+
 local function makeStreet(name, x, y)
     return {
         name = name, splitName = name, x = x, y = y,
-        getTranslatedText = function(self) return self.name end,
-        setTranslatedText = function(self, value)
+        getUntranslatedText = function(self) return self.name end,
+        setUntranslatedText = function(self, value)
             if setFails[value] then error("boom: restore setter") end
+            if dropWrites[value] then return end -- 模擬寫入未生效
             -- 模擬 Java 的空值正規化。
-            self.name = rejectValues[value] and "" or value
+            self.name = value:match("^%s*$") and "" or value
         end,
+        getTranslatedText = function(self) return resolve(self.name) end,
         clipToObscuredCells = function(self)
-            if clipFails[self.name] then error("boom: street clipping") end
-            self.splitName = self.name
+            local text = self:getTranslatedText()
+            if clipFails[text] then error("boom: street clipping") end
+            self.splitName = text
         end,
     }
 end
@@ -134,7 +142,7 @@ local function reset()
         ["UI_WorldMapStreet_Oak St"] = "橡樹街",
         ["UI_WorldMapStreet_Ohio Dr"] = "俄亥俄大道",
     }
-    rejectValues, clipFails, setFails = {}, {}, {}
+    dropWrites, clipFails, setFails = {}, {}, {}
     lookupFails, fileMissing = false, false
     scratchFailNew, scratchFailAdd, origFails, origHook = false, false, false, nil
     scratchCreated, scratchCleared = 0, 0
@@ -178,6 +186,16 @@ local englishAfter = makeMapUI()
 MapUtils.initDirectoryStreetData(englishAfter, VANILLA_DIR)
 check("後開英文地圖不借用中文 split 副本", shownNames(englishAfter) == "Oak St|Ohio Dr|Nowhere Rd", shownNames(englishAfter))
 
+-- 窗口期間 raw 存的是含英文原名的翻譯鍵：以原名判斷的消費端（鐵路排除）仍可辨識
+reset()
+local duringWindow
+origHook = function() duringWindow = rawNames() end
+ui = makeMapUI()
+MapUtils.initDirectoryStreetData(ui, VANILLA_DIR)
+check("窗口期間 raw 為含原名的翻譯鍵",
+    duringWindow == "UI_WorldMapStreet_Oak St|UI_WorldMapStreet_Ohio Dr|Nowhere Rd", duringWindow)
+check("窗口期間建立的顯示副本為譯名", shownNames(ui) == "橡樹街|俄亥俄大道|Nowhere Rd", shownNames(ui))
+
 -- CN 與 CH 走同一條路徑
 reset()
 lang = "CN"
@@ -207,13 +225,11 @@ check("查詢例外：全部維持原名", shownNames(ui) == "Oak St|Ohio Dr|Now
 check("查詢例外：raw 乾淨", rawNames() == "Oak St|Ohio Dr|Nowhere Rd", rawNames())
 
 reset()
-translations["UI_WorldMapStreet_Nowhere Rd"] = "拒收路"
-rejectValues["拒收路"] = true -- 引擎拒收（讀回空字串）
+dropWrites["UI_WorldMapStreet_Ohio Dr"] = true -- 引擎未接受翻譯鍵（讀回不符）
 ui = makeMapUI()
-MapUtils.initDirectoryStreetData(ui, VANILLA_DIR)
-check("引擎拒收：該條退回原名、不留空標籤",
-    shownNames(ui) == "橡樹街|俄亥俄大道|Nowhere Rd", shownNames(ui))
-check("引擎拒收：raw 還原英文原名", rawNames() == "Oak St|Ohio Dr|Nowhere Rd", rawNames())
+ok, res = pcall(MapUtils.initDirectoryStreetData, ui, VANILLA_DIR)
+check("寫入未生效：不拋例外、整張維持原名", ok and shownNames(ui) == "Oak St|Ohio Dr|Nowhere Rd", shownNames(ui))
+check("寫入未生效：raw 還原英文原名", rawNames() == "Oak St|Ohio Dr|Nowhere Rd", rawNames())
 
 -- ============ (3) 其他語系（含未來新語系）完全不介入 ============
 reset()
