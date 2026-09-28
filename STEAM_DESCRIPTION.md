@@ -3,52 +3,40 @@
 
 [hr][/hr]
 
-[h2]📢 公告[/h2]
-本 MOD 目前已與 [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3556544454]統一中文漢化[/url] 進行合作。
-未來將配合「統一中文漢化 × 如一漢化組」持續更新，並進行校對精翻。
+Project Zomboid Build 42 遊戲本體的繁體／簡體中文完整翻譯，與[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3556544454]統一中文漢化[/url]合作持續校對更新。
 
-[hr][/hr]
-
-[h2]✨ 功能特色[/h2]
+[h2]📦 需要安裝[/h2]
 [list]
-[*] 繁體中文 / 簡體中文 完整支援
-[*] 出生點地圖漢化（城市名稱、世界地圖標籤、中文地圖圖片）
-[*] 世界地圖街道名稱中文化（單人 / 多人均支援）
-[*] 地圖選項面板完整翻譯
-[*] 動態命名物品翻譯修復（護照、身分證等）
-[*] 報紙 / 傳單內容漢化（135 張傳單圖片）
-[*] 技能書書名漢化
-[*] 新手引導漢化
-[*] CJK 字元換行處理（無需空格斷行）
-[*] 釣魚視窗、管理面板、除錯選單等 UI 翻譯修補
+[*] 遊戲版本 Build 42.20.4 以上
+[*] 姊妹作：其他 Workshop 模組的中文由[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3765907717]模組翻譯包[/url]負責，兩者搭配才是完整中文體驗
 [/list]
-[hr][/hr]
 
-[h2]🧩 姊妹作：模組翻譯包[/h2]
-本 MOD 涵蓋遊戲本體文本；其他 Workshop 模組的翻譯請搭配訂閱：
-[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3765907717]👉 [B42]繁體簡體模組翻譯 By Minidoracat 如一漢化組[/url]
-涵蓋 460+ 個 Workshop 模組（600+ 個 mod ID）的繁簡雙語翻譯，兩者搭配即為完整中文體驗。
-[url=https://github.com/Minidoracat/MinidoracatModLangFor42/blob/main/SUPPORTED_MODS.md]📋 完整支援 MOD 清單（含中文名稱與摘要）[/url]
+[h2]🚀 快速上手[/h2]
+[olist]
+[*] 訂閱本 MOD；有裝其他模組就再訂閱模組翻譯包，不必另訂統一中文漢化
+[*] 在「模組順序」把翻譯包排到最後：模組翻譯倒數第二、本 MOD 最後
+[*] 多人遊戲要由服主把翻譯包加進伺服器，自己訂閱不會帶進伺服器
+[/olist]
+📖 [b]安裝、排序、多人設定與常見問題：[/b][url=https://steamcommunity.com/workshop/filedetails/discussion/3386633401/586187095760095821/]安裝、排序與常見問題（本體＋模組翻譯）[/url]
 
-[hr][/hr]
-
-[h2]💬 問題回報 & 交流[/h2]
-如果遇到任何問題或有翻譯建議，歡迎透過以下管道回報：
-[url=https://github.com/Minidoracat/MinidoracatLangFor42/issues]🐛 GitHub Issues 回報問題（可附截圖，請一併附上啟用的模組清單與遊戲語言，最容易定位問題）[/url]
-[url=https://discord.gg/Gur2V67]👉 點此加入 Discord 伺服器[/url]
-
-[hr][/hr]
-
-[hr][/hr]
-
-[h2]📋 MOD 資訊[/h2]
+[h2]✨ 主要功能[/h2]
 [list]
-[*] [b]Workshop ID:[/b] 3386633401
-[*] [b]Mod ID:[/b] CatLangFor42
-[*] [b]支援版本:[/b] Build 42.20.4+
-[*] [b]Mod 版本:[/b] 42.20.4-1.27.0
+[*] [b]繁簡中文[/b]：繁體中文與簡體中文都完整支援
+[*] [b]地圖漢化[/b]：出生點、世界地圖與街道名稱都是中文
+[*] [b]地圖選項[/b]：地圖選項面板完整翻譯
+[*] [b]報紙與書籍[/b]：報紙傳單、技能書書名與新手引導漢化
+[*] [b]英文殘留修復[/b]：動態命名物品與各介面的英文殘留一併修好
+[*] [b]中文換行[/b]：不需空格也能正確斷行
 [/list]
-[hr][/hr]
+
+[h2]🔗 Minidoracat 全系列[/h2]
+其他作品都在[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3809297109]Minidoracat 全系列收藏[/url]，依需求自選訂閱。
+
+[h2]💬 回報與交流[/h2]
+[list]
+[*] [url=https://github.com/Minidoracat/MinidoracatLangFor42/issues]GitHub Issues[/url]（請附截圖、啟用的模組清單與遊戲語言）
+[*] [url=https://discord.gg/Gur2V67]Discord[/url]
+[/list]
 
 [h2]☕ 支持作者[/h2]
 覺得有幫助的話，請在這頁按個 👍 讚、到 GitHub 給個 ⭐ 星星，讓更多玩家找得到它。
