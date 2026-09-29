@@ -33,7 +33,7 @@
                            以「官方 EN 有無」判死鍵誤刪其中 39 鍵，隨 1.15.1 上線
                            當日玩家即於 Steam 回報（後提交 GitHub issue #2）
  13. 街名翻譯資料閘門       — 委派 scripts/test_streets_sync.py：官方街名文字鍵全覆蓋、
-                           CH/CN 鍵值一致、譯值有效，MOD 樹不再夾帶街道 XML 副本。
+                           CH/CN 鍵集一致、譯值有效，MOD 樹不再夾帶街道 XML 副本。
  14. 街名載入行為測試       — 委派 scripts/test_map_streets.lua：顯示譯名、原名與
                            split 還原、重入／語系／失敗清理；不清已顯示玩家地圖。
 
@@ -400,6 +400,47 @@ else:
         _details = (_r.stdout or _r.stderr or "測試無輸出").strip().splitlines()[-8:]
         _details.append(f"test_map_streets.lua exit code {_r.returncode}")
         fail(LUA_STREETS_LABEL, _details)
+
+# ---- 15. 印刷品分語系圖片 ----
+# CH/CN 的 Print_Media 各自指向 printMedia/<類別>_CH|_CN/ 下的中文圖；打錯檔名、
+# 漏放檔案或指到另一語系的資料夾，遊戲內會變成空白或看到錯的字體，離線看不出來。
+# 官方自己就有指向不存在檔案的佔位路徑（TEST.png 等），所以只驗本包的分語系資料夾。
+PM_LABEL = "印刷品分語系圖片（Print_Media → printMedia/*_CH|_CN）"
+pm_details, pm_refs_total = [], 0
+_pm_re = re.compile(r"texture:\s*(media/textures/printMedia/([A-Za-z]+)_(CH|CN)/[^,>]+?\.png)")
+for m in MEDIA_DIRS:
+    troot = os.path.join(m, "lua", "shared", "Translate")
+    pm_root = os.path.join(m, "textures", "printMedia")
+    base42 = os.path.dirname(m)
+    for lang in ("CH", "CN"):
+        p = os.path.join(troot, lang, "Print_Media.json")
+        if not os.path.isfile(p):
+            continue
+        with open(p, encoding="utf-8") as fh:
+            values = [v for v in json.load(fh).values() if isinstance(v, str)]
+        used = set()
+        for v in values:
+            for path, _cat, ref_lang in _pm_re.findall(v):
+                pm_refs_total += 1
+                used.add(path)
+                if ref_lang != lang:
+                    pm_details.append(f"{lang}/Print_Media.json 指到 {ref_lang} 的圖：{path}")
+                if not os.path.isfile(os.path.join(base42, path)):
+                    pm_details.append(f"{lang}/Print_Media.json 引用的圖不存在：{path}")
+        if os.path.isdir(pm_root):
+            for d in sorted(os.listdir(pm_root)):
+                if not d.endswith(f"_{lang}"):
+                    continue
+                for name in sorted(os.listdir(os.path.join(pm_root, d))):
+                    path = f"media/textures/printMedia/{d}/{name}"
+                    if path not in used:
+                        pm_details.append(f"{path} 沒有被 {lang}/Print_Media.json 引用（多餘檔案）")
+if pm_details:
+    fail(PM_LABEL, pm_details)
+elif pm_refs_total == 0:
+    skip(PM_LABEL, "Print_Media 尚未引用分語系圖片")
+else:
+    ok(PM_LABEL)
 
 # ---- 總結 ----
 print()

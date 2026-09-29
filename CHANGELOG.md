@@ -4,6 +4,24 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.21.0-1.30.0] - 2026-09-29
+
+### Changed
+
+- **傳單、報紙照片與報紙刊頭改成繁中、簡中各一套**：所有傳單、帶文字的報紙照片與 4 家報紙的刊頭，都依官方英文原圖重新製作。繁中玩家看到繁體字與台灣用語，簡中玩家看到簡體字與大陸用語；舊圖只有一套，而且帶有 AI 浮水印。圖上的店名、街名與地名都改用遊戲裡的譯名；其他語系的玩家會看到官方英文原圖。
+  > 技術要點：新增 `media/textures/printMedia/{FlyerPics,NewspaperPics,logos}_{CH,CN}/`，每個語系 145 檔（傳單 133、報紙照片 8、刊頭 4），尺寸同原版，PNG 調色盤量化，每個語系約 70 MB。CH/CN `Print_Media.json` 各 155 個 texture 路徑改指向本語系目錄；移除舊的語系共用覆寫 `printMedia/FlyerPics/`（135 檔、121 MB）與只服務該目錄的 `scripts/resize_flyers.py`。其餘 26 張報紙照片沒有可辨識文字，沿用官方原圖。遊戲實際引用的 logo 只有 4 個刊頭（另 7 個只出現在官方未註冊的 FlyerTemplate，其餘 174 個無引用），所以只做刊頭。插畫裡的商品包裝、車牌、小招牌等細節維持英文。`verify_mod.py` 新增檢查 15：CH/CN `Print_Media` 引用的分語系圖片必須存在且語系一致，目錄內不得有未引用的檔案。
+- **簡中大地圖街名改成簡體字**：簡中的大地圖街名原本和繁中完全相同，顯示的是繁體字；現在逐條改成簡體字，譯名也改成大陸常見的寫法。
+  > 技術要點：CN `UI.json` 583 個 `UI_WorldMapStreet_*` 逐鍵重譯，未用 OpenCC 轉換（例：Ct 譯「苑」、Mabel St「梅布尔街」、Forrest Ave「福雷斯特大道」）。`test_streets_sync.py` 不再要求 CH/CN 值相同，只要求鍵集合一致。
+
+### Fixed
+
+- **修正繁中街名錯譯**：50 條繁中街名修正誤譯與音譯錯字，例如 Flaherty Road 原本譯成「獵槍路」、Hikes Lane 譯成「煙囪街」、Tang St 譯成「唐人街」。
+  > 技術要點：CH `UI.json` 50 個 `UI_WorldMapStreet_*`，例：弗萊厄蒂路、海克斯巷、唐街、丹森街（原「弗雷斯諾街」）、福雷斯特大道、梅布爾街（原「梅布林街」）、彈藥庫路（Magazine Road）、航站大道；音譯用字「託→托」「裡→里」（薩克拉門托街、基爾里街等）；Ct 與 CN 一致譯「苑」。
+- **傳單的文字版與新圖一致**：閱讀傳單時切換成文字顯示的內容，逐張對照新圖校正：店名、街名改用遊戲譯名，補上漏譯的句子，刪掉原文沒有的內容，繁中改用台灣用語（槍枝、門市、履歷等）。
+  > 技術要點：`Print_Text.json` CH 114 鍵、CN 105 鍵（文字版由 `ISReadABook:displayPrintMedia` 的 `textData` 帶進 `PrintMedia` 視窗）。`Print_Media` 標題：LSU「路易斯維爾州立大學」、Spiffo's 路易斯維爾徵才的括號改地名、歐文頓賽車場，CH 槍支→槍枝；`Print_Text_BrottAuction_info` 依 EN 寫成 `100%%`。
+- **簡中錯字**：「路易斯维尔州立大学」少了「斯」、「麦芬顿妈妈烘焙」誤寫成「烘培」。
+  > 技術要點：CN `IGUI_LouisvilleStateUniversity`、`IGUI_MamaMcFudgingtons`、Moveables `McFudgingtons_Sign`。
+
 ## [42.21.0-1.29.0] - 2026-09-29
 
 ### Changed

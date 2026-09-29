@@ -8,7 +8,7 @@
 副本窗口套字，不再夾帶 streets.xml。本閘門驗：
 
   1. 沒有 XML 幾何副本殘留：MOD 樹內不得再出現 maps/**/streets.xml
-  2. CH / CN 兩語系的街名鍵集與譯值完全一致
+  2. CH / CN 兩語系的街名鍵集一致（譯值各自為繁／簡，不要求相同）
   3. 譯值有效：非空白、不等於鍵名、不等於英文原名（未翻譯偵測）
   4. 覆蓋當前官方街名：官方 Muldraugh, KY/streets.xml 每個街名都有譯鍵
   5. 無殘留譯鍵：官方已不存在的街名不該還留著（官方改版後的清理提示）
@@ -68,8 +68,6 @@ def main() -> int:
         only_ch = sorted(per_lang["CH"].keys() - per_lang["CN"].keys())
         only_cn = sorted(per_lang["CN"].keys() - per_lang["CH"].keys())
         failures.append(f"CH/CN 街名鍵集不一致：僅 CH {only_ch[:5]}（{len(only_ch)}）／僅 CN {only_cn[:5]}（{len(only_cn)}）")
-    elif per_lang["CH"] != per_lang["CN"]:
-        failures.append("CH/CN 街名譯值不一致")
 
     maps = PZ_PATH / "media" / "maps"
     if maps.is_dir():
