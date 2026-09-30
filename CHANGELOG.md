@@ -4,6 +4,15 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.21.0-1.31.0] - 2026-09-30
+
+### Fixed
+
+- **多人伺服器的電視、電台節目與天氣播報，改成每位玩家看自己的語言**：以前在英文伺服器上，電視與電台節目一律被改成繁體中文，英文玩家也看到繁中、簡中玩家看到繁體；天氣播報（自動緊急廣播）收音機上方的字幕則一律是英文，只有聊天視窗會翻成中文。現在電視、收音機上方的字幕和聊天視窗，都依每位玩家自己的遊戲語言顯示。原版天氣播報偶爾出現的 `AEBS_rand_pre_0` 這類代碼也一起改成文字；英文單人遊戲的節目也不會再被改成繁中。伺服器更新到這一版並重新啟動後生效。
+  > 技術要點：新增 `shared/RadioLine_Flx.lua`：專用伺服器 `setDisableBroadcasting(true)`，Java 照常排程但不送出；`OnTick` 偵測每個頻道剛播的那一行，RadioData 台詞以伺服器語言原文反查 RD key（執行期對本包 CH/RadioData.json 的 key 呼叫伺服器 `getText`，不論伺服器語言都對得上），連同顏色、效果碼送給所有連線，client 用本機翻譯解開後呼叫原生 `DistributeTransmission`；伺服器先照 `SendTransmission` 套天氣干擾、再對自己的裝置分發，無聊、配方等效果照舊；認不得的行原樣交回 `SendTransmission`。`shared/AEBSWeather_Flx.lua` 在 `CreateBroadcast` 期間把全域 `getText` 換成 token，以自訂播放時間鎖回原句節奏後照原版交給 Java。`RadioData_Flx.lua` 移除伺服器改寫台詞與重建廣告片段，只留頻道名稱與 `gen-radio-map` 產生的廣告樣式表（9,299 行減為 750 行）。移除 `client/Chat/AEBSWeather_Flx.lua` 的聊天列英文反解、`sync_translations.py gen-aebs-map`、`scripts/test_aebs_restore.lua`、`scripts/test_aebs_generator.py`、`scripts/test_radio_map_tokens.py`；新增 `scripts/test_radio_lines.lua`（假 Java 電台逐字移植 42.21，逐行對照原版送出序列）。每一行照原版送給所有連線，一行約 125 bytes（原版約 75）。
+- **單獨一個字元的字前面的空格被吃掉**：聊天視窗、物品說明等段落裡，單獨一個字元的字（數字、連字號、a、& 等）會黏到前一個字，例如「Market Radio:1 listings from1 sellers」「Generator- Premium Technologies」，中文句子裡的數字也會變成「目前1 筆」。現在照原文保留空格。英文玩家只要載入本翻譯包（例如伺服器要求安裝）也會碰到，這次一起修好。
+  > 技術要點：`ISRichTextPanel_Flx.lua` 的 `paginate()` 拿掉沿用自簡中版的 `#token == 3` 分支，改回原版一律用一個空白接續。那個分支原意是「單一中文字不加空白」，但第二個以後的 token 前後都帶著空白，`" 1 "`、`" - "` 的長度正好是 3（Kahlua 與標準 Lua 都一樣），所以被當成中文字黏上。`scripts/test_rich_text_wrap.lua` 新增英文與中文句中數字兩案。
+
 ## [42.21.0-1.30.0] - 2026-09-29
 
 ### Changed

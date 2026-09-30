@@ -36,4 +36,10 @@ check("切行不遺失文字", table.concat(all):gsub("%s", "") == vhs:gsub("%s"
 p = paginate("hello world foo", 360)
 check("英文短句不受影響", #p.lines == 1 and p.lines[1] == "hello world foo")
 
+-- 單字元字詞（連字號、數字、a、&）前後的空白照原文保留：曾被當成「一個中文字」黏到前一個字
+p = paginate("Market Radio: 1 listings from 1 sellers. Generator - Premium & a 2", 2000)
+check("英文單字元字詞保留空白", #p.lines == 1 and p.lines[1] == "Market Radio: 1 listings from 1 sellers. Generator - Premium & a 2")
+p = paginate("市場電台：目前 1 筆刊登、1 位賣家", 2000)
+check("中文句中的數字保留空白", #p.lines == 1 and p.lines[1] == "市場電台：目前 1 筆刊登、1 位賣家")
+
 if fails > 0 then os.exit(1) end

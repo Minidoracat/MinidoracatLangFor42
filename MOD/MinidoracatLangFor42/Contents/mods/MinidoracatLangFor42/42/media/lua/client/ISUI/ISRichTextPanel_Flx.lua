@@ -124,13 +124,8 @@ function ISRichTextPanel:paginate()
 				if chunkText == '' then
 					chunkText = string.trim(token)
 				elseif string.trim(token) ~= '' then
-					if #token == 3 then
-						chunkText = chunkText..''..string.trim(token);
-					else
-						chunkText = chunkText..' '..string.trim(token);
-					end
+					chunkText = chunkText..' '..string.trim(token)
 				end
-				--the code snippet above is changed for localization of zh-Hans.
 				local pixLen = getTextManager():MeasureStringX(self.font, chunkText);
 				if chunkX + pixLen > maxLineWidth then
 					if self.lines[lines] and self.lines[lines] ~= '' then
