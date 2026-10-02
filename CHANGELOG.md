@@ -4,6 +4,13 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.21.0-1.31.1] - 2026-10-02
+
+### Fixed
+
+- **延伸 3D 放置模式打不開**：字型大小設成「中」時，對地上的物品按右鍵選「延伸 3D 放置模式」會報錯，視窗不會出現；字型大小用預設的「隨視窗高度縮放」、螢幕是 2560×1440 這類 1440p 時也會碰到。現在每一種字型大小都能正常使用。
+  > 技術要點：原版 `ISExtendedPlacementUI:adjust()` 在 Z 軸標籤比 X、Y 都寬時讀 `self.labelaxisz.name`（`ISExtendedPlacementUI.lua:301`），這個欄位從未賦值（應為 `labelzmov`），`initialise()` 丟 `attempted index: name of non-table: null`，視窗不會加進畫面。原版 29 個語言、5 個字級的 Z 軸標籤都不會最寬；本包 2x 圖集（`fontSize=3`；「隨視窗高度縮放」在視窗高 1212–1475 px 時也落在這一檔）的 `Z` 比 `X` 寬 1px，`UIFont.NewMedium` 量得 X/Y/Z＝38/37/39，CH、CN 都會踩到。新增 `client/ISUI/ISExtendedPlacementUI_Flx.lua` 包裝 `adjust()`，執行前補上 `labelaxisz` 別名，不複製原版排版邏輯；官方修掉筆誤後即可刪除。
+
 ## [42.21.0-1.31.0] - 2026-09-30
 
 ### Fixed

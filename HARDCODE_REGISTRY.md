@@ -114,7 +114,7 @@ uv run scripts/decompile.py verify {新版本}
 
 > ~~**待另案處理（非硬編碼）**：vanilla `CH/Recorded_Media.json` 在 42.20 被官方更新，我方 CH/CN 覆寫值應另做一次差異比對。~~ **2026-09-28 結案**：A7／A17 反查表以 EN 為鍵、中文取自合併後翻譯（我方檔案優先），RD_／RM_ 我方 100% 覆寫，官方 CH 改動不會漏出；差異幾乎都是風格（官方「影集錄影帶:」前綴與 `S5.01` 集數 vs 我方「VHS:」與 `S5-01`），不整批同步，真錯誤已逐筆修（千分位、口徑、年份遺漏等）。
 
-> 其餘 `_Flx` 檔（MapStreets、MapLabel、ISRichTextPanel、MainScreen、MapSpawnSelect、CreditsScreen、CatLang*）屬 UI 行為/顯示修補，非硬編碼英文殘留，見 `AGENTS.md` LUA FILES QUICK REFERENCE。
+> 其餘 `_Flx` 檔（MapStreets、MapLabel、ISRichTextPanel、ISExtendedPlacementUI、MainScreen、MapSpawnSelect、CreditsScreen、CatLang*）屬 UI 行為/顯示修補，非硬編碼英文殘留，見 `AGENTS.md` LUA FILES QUICK REFERENCE。
 
 ---
 
