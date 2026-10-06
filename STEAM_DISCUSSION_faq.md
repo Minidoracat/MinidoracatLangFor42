@@ -15,7 +15,7 @@
 [h2]📦 該訂哪些？[/h2]
 [list]
 [*] [b]本體完全翻譯[/b]：遊戲本體的文字（介面、物品、地圖、報紙傳單等）。只玩原版的話，訂這個就夠了。
-[*] [b]模組翻譯[/b]：其他 Workshop 模組的文字，支援 700+ 個模組。有沒有支援你的模組，請查[url=https://github.com/Minidoracat/MinidoracatModLangFor42/blob/main/SUPPORTED_MODS.md]完整支援 MOD 清單[/url]。
+[*] [b]模組翻譯[/b]：其他 Workshop 模組的文字，支援 1350+ 個模組。有沒有支援你的模組，請查[url=https://github.com/Minidoracat/MinidoracatModLangFor42/blob/main/SUPPORTED_MODS.md]完整支援 MOD 清單[/url]。
 [*] 兩者分工不重疊：模組翻譯刻意不碰遊戲本體的文字，所以有裝模組的人兩個都要訂。
 [/list]
 
