@@ -5371,7 +5371,10 @@ Events.OnFillContainer.Add(onFillContainer)
 -- 物品欄/戰利品面板」，與 DynamicItemName 等四檔同一 idiom。
 local function fixInventoryPage(page)
     local pane = page and page.inventoryPane
-    fixContainer(pane and pane.inventory)
+    local inv = pane and pane.inventory
+    -- 開著的大容器不必每次 refresh／每遊戲分鐘逐件重掃（OpenPageScanGate_Flx.lua）
+    if OpenPageScanGateFlx and OpenPageScanGateFlx.skip("ItemNameFix", inv) then return end
+    fixContainer(inv)
 end
 
 local containerPathLogged = false
@@ -5393,6 +5396,7 @@ end
 
 local function onContainerUpdate()
     if not shouldRunClientRepair() then return end
+    if OpenPageScanGateFlx then OpenPageScanGateFlx.invalidate("ItemNameFix") end
     fixOpenInventoryPages()
 end
 Events.OnContainerUpdate.Add(onContainerUpdate)

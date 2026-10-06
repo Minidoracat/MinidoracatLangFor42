@@ -221,7 +221,10 @@ end
 
 local function fixInventoryPage(page)
     local pane = page and page.inventoryPane
-    return fixContainer(pane and pane.inventory)
+    local inv = pane and pane.inventory
+    -- 開著的大容器不必每次 refresh／每遊戲分鐘逐件重掃（OpenPageScanGate_Flx.lua）
+    if OpenPageScanGateFlx and OpenPageScanGateFlx.skip("EvolvedRecipeName", inv) then return 0 end
+    return fixContainer(inv)
 end
 
 local function fixOpenInventoryPages()
@@ -325,6 +328,7 @@ Events.OnFillContainer.Add(onFillContainer)
 
 local function onContainerUpdate()
     if not shouldRunClientRepair() then return end
+    if OpenPageScanGateFlx then OpenPageScanGateFlx.invalidate("EvolvedRecipeName") end
     runRepair(fixOpenInventoryPages)
 end
 Events.OnContainerUpdate.Add(onContainerUpdate)

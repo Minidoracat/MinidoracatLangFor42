@@ -4,6 +4,13 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [Unreleased]
+
+### Fixed
+
+- **打開裝了大量物品的容器時，畫面會一頓一頓**：箱子、貨櫃或車廂裡放了上千件物品（例如六千根草）並把它打開時，本翻譯包每隔幾秒、以及每次轉身或走動，都會把整箱物品逐件重新檢查一遍，畫面因此週期性卡一下。現在只有容器內容有變動時才重新檢查：站著不動不再定時卡頓，轉身時的頓挫也少了一大半。物品名稱修正照常運作。
+  > 技術要點：`shared/Items` 七個遷移層（ItemNameFix、DynamicItemName、EvolvedRecipeName、AnimalProductName、RecipeLiterature、RecordedMediaName、VehicleKey）的 `fixOpenInventoryPages` 在 `OnRefreshInventoryWindowContainers`（戰利品視窗每換方向或格子就 refresh，原版 `ISInventoryPage:update`）與 `EveryOneMinute`（日長 1 小時＝每 2.5 秒）逐件重掃開著的容器。新增 `shared/Items/OpenPageScanGate_Flx.lua`：各遷移層記住每個容器上次掃描時的「件數＋頭尾物品 ID」與時間，簽章沒變且 30 秒內掃過就略過；`OnContainerUpdate` 先清掉該遷移層的紀錄再全掃；`OnFillContainer`、`OnGameStart`、`OnCreatePlayer` 不經過節流。server 補送容器內容（`AddInventoryItemToContainerPacket`）與替換物品（`ReplaceInventoryItemInContainerPacket`）都不觸發 Lua 事件，但前者件數變、後者把新物品接在尾端（`ItemContainer.addItem` 一律 append），簽章都會變；簽章看不出的就地改名最晚 30 秒補修。實機（139 個 MOD 的多人環境，6007 件的櫃子開著，修改前後各跑兩輪）：站著時每 2.5 秒一次約 40 ms 的卡頓消失；每秒轉向 4 次時，每次轉向的幀從 55–65 ms 降到 20–27 ms；DevProfiler 量本包 refresh 處理 12 秒合計約 1700 ms → 40 ms，`EveryOneMinute` 每次約 37 ms → 0.3 ms。剩下每次轉向約 20 ms 是物品欄介面本身重建 6000 件清單。`scripts/test_open_page_scan_gate.lua` 驗略過與重掃條件。
+
 ## [42.21.0-1.31.1] - 2026-10-02
 
 ### Fixed
