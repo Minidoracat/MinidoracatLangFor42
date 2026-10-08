@@ -9,6 +9,7 @@ Project Zomboid Build 42 遊戲本體的繁體／簡體中文完整翻譯，與[
 [list]
 [*] 遊戲版本 Build 42.21.0 以上
 [*] 姊妹作：其他 Workshop 模組的中文由[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3765907717]模組翻譯包[/url]負責，兩者搭配才是完整中文體驗
+[*] [b]中途加入／移除：[/b]都可以
 [/list]
 
 [h2]🚀 快速上手[/h2]
