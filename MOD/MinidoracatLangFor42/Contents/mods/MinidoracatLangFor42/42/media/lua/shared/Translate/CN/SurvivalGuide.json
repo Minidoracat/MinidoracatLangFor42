@@ -221,10 +221,10 @@
     "SurvivalGuide_multiplayer_category_image": "media/ui/survival_guide_spiffo/category_multiplayer.png",
     "SurvivalGuide_activate_pvp_title": "激活 PVP",
     "SurvivalGuide_activate_pvp_description": "点击 %1 来开启或关闭 PvP 安全模式. <LINE> PvP 安全模式关闭时, 你的用户名旁会出现一个骷髅图标. <LINE> 两位均开启 PvP 安全的玩家无法互相攻击, 但关闭 PvP 安全的玩家可以攻击任何人.",
-    "SurvivalGuide_faction_menu_title": "建立派系",
-    "SurvivalGuide_faction_menu_description": "点击 %1, 然后选择建立派系, 可以建立仅限邀请加入的群组, 并拥有私聊. <LINE> 可以关闭对派系成员的 PvP, 且成员会显示在彼此的地图上. <LINE> 注意: 派系成员不一定共享安全屋, 这需透过安全屋菜单操作.",
+    "SurvivalGuide_faction_menu_title": "建立阵营",
+    "SurvivalGuide_faction_menu_description": "点击 %1, 然后选择建立阵营, 可以建立仅限邀请加入的群组, 并拥有私聊. <LINE> 可以关闭对阵营成员的 PvP, 且成员会显示在彼此的地图上. <LINE> 注意: 阵营成员不一定共享安全屋, 这需透过安全屋菜单操作.",
     "SurvivalGuide_multiplayer_chat_title": "使用聊天框",
-    "SurvivalGuide_multiplayer_chat_description": "按 %1 在聊天中输入文字. 聊天前可加入指令: /all (全局聊天, 不会吸引僵尸), /say 或 /s (本地聊天), /whisper 或 /w 后接用户名 (私信), <LINE> /yell 或 /y (大喊), /safehouse 或 /sh (安全屋成员), /faction 或 /f (派系成员), <LINE> /admin 或 /a (管理员聊天), /r 或 /radio (用已装备的无线电发消息).",
+    "SurvivalGuide_multiplayer_chat_description": "按 %1 在聊天中输入文字. 聊天前可加入指令: /all (全局聊天, 不会吸引僵尸), /say 或 /s (本地聊天), /whisper 或 /w 后接用户名 (私信), <LINE> /yell 或 /y (大喊), /safehouse 或 /sh (安全屋成员), /faction 或 /f (阵营成员), <LINE> /admin 或 /a (管理员聊天), /r 或 /radio (用已装备的无线电发消息).",
     "SurvivalGuide_multiplayer_chat_description_joypad": "<IGNORE>",
     "SurvivalGuide_medical_check_title": "医疗检查",
     "SurvivalGuide_medical_check_description": "对玩家使用 %1 并选择执行医疗检查的选项. <LINE> 在这里你可以为其他玩家提供援助 - 或是检查可怕的咬痕."

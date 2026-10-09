@@ -221,10 +221,10 @@
     "SurvivalGuide_multiplayer_category_image": "media/ui/survival_guide_spiffo/category_multiplayer.png",
     "SurvivalGuide_activate_pvp_title": "啟用 PVP",
     "SurvivalGuide_activate_pvp_description": "點選 %1 來開啟或關閉 PvP 安全模式. <LINE> PvP 安全模式關閉時, 你的使用者名稱旁會出現一個骷髏圖示. <LINE> 兩位均開啟 PvP 安全的玩家無法互相攻擊, 但關閉 PvP 安全的玩家可以攻擊任何人.",
-    "SurvivalGuide_faction_menu_title": "建立派系",
-    "SurvivalGuide_faction_menu_description": "點選 %1, 然後選擇建立派系, 可以建立僅限邀請加入的群組, 並擁有私聊. <LINE> 可以關閉對派系成員的 PvP, 且成員會顯示在彼此的地圖上. <LINE> 注意: 派系成員不一定共享安全屋, 這需透過安全屋選單操作.",
+    "SurvivalGuide_faction_menu_title": "建立陣營",
+    "SurvivalGuide_faction_menu_description": "點選 %1, 然後選擇建立陣營, 可以建立僅限邀請加入的群組, 並擁有私聊. <LINE> 可以關閉對陣營成員的 PvP, 且成員會顯示在彼此的地圖上. <LINE> 注意: 陣營成員不一定共享安全屋, 這需透過安全屋選單操作.",
     "SurvivalGuide_multiplayer_chat_title": "使用聊天框",
-    "SurvivalGuide_multiplayer_chat_description": "按 %1 在聊天中輸入文字. 聊天前可加入指令: /all (全域聊天, 不會吸引殭屍), /say 或 /s (本地聊天), /whisper 或 /w 後接使用者名稱 (私訊), <LINE> /yell 或 /y (大喊), /safehouse 或 /sh (安全屋成員), /faction 或 /f (派系成員), <LINE> /admin 或 /a (管理員聊天), /r 或 /radio (用已裝備的無線電發訊息).",
+    "SurvivalGuide_multiplayer_chat_description": "按 %1 在聊天中輸入文字. 聊天前可加入指令: /all (全域聊天, 不會吸引殭屍), /say 或 /s (本地聊天), /whisper 或 /w 後接使用者名稱 (私訊), <LINE> /yell 或 /y (大喊), /safehouse 或 /sh (安全屋成員), /faction 或 /f (陣營成員), <LINE> /admin 或 /a (管理員聊天), /r 或 /radio (用已裝備的無線電發訊息).",
     "SurvivalGuide_multiplayer_chat_description_joypad": "<IGNORE>",
     "SurvivalGuide_medical_check_title": "醫療檢查",
     "SurvivalGuide_medical_check_description": "對玩家使用 %1 並選擇執行醫療檢查的選項. <LINE> 在這裡你可以為其他玩家提供援助 - 或是檢查可怕的咬痕."
