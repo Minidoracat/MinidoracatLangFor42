@@ -27,5 +27,5 @@ local guide = get(FishWindow, "children", "body", "children", "tabPanel", "child
 if guide then guide.name = getText("IGUI_Fish_Window_Tab_Guide") end
 
 if not (title and info and guide) then
-    print("[CatLangFor42] FishWindow 模板不完整，部分翻譯跳過（可能為 MOD 衝突或 PZ 結構變更）")
+    print("[CatLangFor42] FishWindow template incomplete, some translations skipped (MOD conflict or PZ layout change?)")
 end

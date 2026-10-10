@@ -11,6 +11,8 @@
 --       格式相異的 key 修不到（如 CH 烘的「雪花玻璃球 (Louisville)」；格式與
 --       EN 相同的 key 仍可靠「EN 格式＋當前錨點」交叉分支僥倖修到）。
 --       修後由官方格式化結果換回 %N，分支復活。
+--   (c) 反查表與舊格式含非 ASCII（地名 the Zócalo、CN 舊格式 "%1 的 %2"）。以前直接
+--       寫在字面值裡，Kahlua 截成低位 byte 後永遠比不中；以 kahlua_load 載入才重現得出來。
 
 -- ============ PZ global stubs（模擬 CH client） ============
 -- 翻譯值比照 Translator 載入期 %N→%N$s 改寫後的運行期形態
@@ -21,6 +23,7 @@ local FAKE = {
     IGUI_PetName_Rex = "雷克斯",
     IGUI_Doctor = "醫生",
     IGUI_Photo_Louisville = "路易斯維爾",
+    IGUI_Photo_theZocalo = "憲法廣場",
     IGUI_ScratchingTicketNameWinner = "%1$s (贏家 %2$s)",
     IGUI_ScratchingTicketNameLoser = "%1$s (輸家)",
     -- IGUI_Newspaper_Name 故意缺席：驗證「查無翻譯」也要 memoize
@@ -64,8 +67,8 @@ function getPlayer() return nil end
 local noopEvent = { Add = function() end }
 Events = setmetatable({}, { __index = function() return noopEvent end })
 
--- ============ 載入待測檔案 ============
-dofile("MOD/MinidoracatLangFor42/Contents/mods/MinidoracatLangFor42/42/media/lua/shared/Items/DynamicItemName_Flx.lua")
+-- ============ 載入待測檔案（字面值照 Kahlua 的行為處理，見 kahlua_load.lua） ============
+dofile("scripts/kahlua_load.lua")("MOD/MinidoracatLangFor42/Contents/mods/MinidoracatLangFor42/42/media/lua/shared/Items/DynamicItemName_Flx.lua")
 
 local fixItemName = DynamicItemNameFlx.fixItemName
 assert(type(fixItemName) == "function", "fixItemName 未匯出")
@@ -115,6 +118,16 @@ check("CH 烘焙寵物牌 → 寵物名補翻",
 -- 修前 rawFormat 回傳 "%1$s (%2$s)"，pattern 要求字面 "$s" → 永不命中
 check("CH 烘焙雪花球（CH/EN 格式相異，只有取回 %N 格式後可達）→ 地名補翻",
     { fullType = "Base.SnowGlobe", name = "雪花玻璃球 (Louisville)", display = "雪花玻璃球" },
+    "雪花玻璃球 (路易斯維爾)")
+
+-- ============ (c) 非 ASCII 的反查表與舊格式 ============
+
+check("EN 烘焙雪花球（地名含 ó）→ 地名補翻",
+    { fullType = "Base.SnowGlobe", name = "Snow Globe of the Zócalo", display = "雪花玻璃球" },
+    "雪花玻璃球 (憲法廣場)")
+
+check("CN 舊格式雪花球（%1 的 %2）→ 現行格式",
+    { fullType = "Base.SnowGlobe", name = "雪花玻璃球 的 路易斯維爾", display = "雪花玻璃球" },
     "雪花玻璃球 (路易斯維爾)")
 
 -- ============ 已刮開刮刮樂（fullType 不變，靠官方 modData.scratched 判定） ============

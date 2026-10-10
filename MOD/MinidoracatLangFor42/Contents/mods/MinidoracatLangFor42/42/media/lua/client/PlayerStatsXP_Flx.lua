@@ -266,24 +266,25 @@ end
 -- 基準沒重設，該玩家有被 AntiCheatXPUpdate 誤判的風險）尤其不能無聲。
 -- 用管理員本機的 halo，不經 server，因此不會有語言問題。
 --
--- reason -> { 翻譯 key, 無翻譯時的備援文字 }。
+-- reason -> { 翻譯 key, 無翻譯時的英文備援 }。
 -- 本 mod 只提供 CH / CN 兩份翻譯（shared/Translate/{CH,CN}/IG_UI.json）；其他語言下
 -- getText 找不到 key 時會原樣把 key 當結果回傳（Translator.java:495），
 -- 直接顯示就會在管理員畫面上跳出 "IGUI_CatLangStats_Permission" 這種原始鍵。
 -- 用 getTextOrNull 而非比較 getText(k) == k：後者在 Core.debug 且開啟 Translation.Prefix 時
 -- 會拿到 "!key"、比較失效（Translator.java:496）。getTextOrNull 直接回 nil，
 -- 也是 vanilla 既有慣用寫法（ISHotbar.lua:43、ISZoneDisplay.lua:459）。
+-- 備援寫英文：其他語言的管理員看得懂；以前寫中文字面值，被 Kahlua 截成亂碼（verify_mod 4b）。
 local REASON_TEXT = {
-    permission = { "IGUI_CatLangStats_Permission", "權限不足" },
-    args = { "IGUI_CatLangStats_Args", "參數不完整" },
-    direction = { "IGUI_CatLangStats_Direction", "無效的升降方向" },
-    target = { "IGUI_CatLangStats_Target", "找不到目標或權限不足" },
-    identity = { "IGUI_CatLangStats_Identity", "目標身分不符，已取消（onlineID 可能已被其他玩家佔用）" },
-    notinworld = { "IGUI_CatLangStats_NotInWorld", "目標不在世界中" },
-    dead = { "IGUI_CatLangStats_Dead", "目標已死亡" },
-    clamped = { "IGUI_CatLangStats_Clamped", "已達上下限" },
-    xpchecker = { "IGUI_CatLangStats_XpChecker", "等級已變更，但反作弊基準未能重設——請留意該玩家是否被誤判" },
-    timeout = { "IGUI_CatLangStats_Timeout", "伺服器未回應：已還原顯示，實際結果未知" },
+    permission = { "IGUI_CatLangStats_Permission", "Insufficient permission" },
+    args = { "IGUI_CatLangStats_Args", "Incomplete arguments" },
+    direction = { "IGUI_CatLangStats_Direction", "Invalid level up/down direction" },
+    target = { "IGUI_CatLangStats_Target", "Target not found or insufficient permission" },
+    identity = { "IGUI_CatLangStats_Identity", "Target identity mismatch, cancelled (the onlineID may now belong to another player)" },
+    notinworld = { "IGUI_CatLangStats_NotInWorld", "Target is not in the world" },
+    dead = { "IGUI_CatLangStats_Dead", "Target is dead" },
+    clamped = { "IGUI_CatLangStats_Clamped", "Already at the level limit" },
+    xpchecker = { "IGUI_CatLangStats_XpChecker", "Level changed, but the anti-cheat baseline was not reset - watch this player for false flags" },
+    timeout = { "IGUI_CatLangStats_Timeout", "Server did not respond: display reverted, actual result unknown" },
 }
 
 -- server 的失敗回覆分兩類，只有「未提交」才該把本機那次樂觀增／刪反向做回去：

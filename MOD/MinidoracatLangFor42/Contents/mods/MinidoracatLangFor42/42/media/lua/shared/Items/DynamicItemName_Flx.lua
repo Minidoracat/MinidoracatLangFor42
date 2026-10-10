@@ -824,7 +824,7 @@ DynamicItemNameFlx.MAPS = {
         ["a Suspicious Meeting"] = "IGUI_Photo_aSuspiciousMeeting",
         ["a Suspicious Object"] = "IGUI_Photo_aSuspiciousObject",
         ["a Suspicious Person"] = "IGUI_Photo_aSuspiciousPerson",
-        ["a Séance"] = "IGUI_Photo_aSeance",
+        ["a S\195\169ance"] = "IGUI_Photo_aSeance",
         ["a Teenage Band"] = "IGUI_Photo_aTeenageBand",
         ["a Teenager"] = "IGUI_Photo_aTeenager",
         ["a Teenager's Birthday Party"] = "IGUI_Photo_aTeenagersBirthdayParty",
@@ -978,7 +978,7 @@ DynamicItemNameFlx.MAPS = {
         ["the Virginia Patterson Museum"] = "IGUI_Photo_theVirginiaPattersonMuseum",
         ["the Washington Monument"] = "IGUI_Photo_theWashingtonMonument",
         ["the White House"] = "IGUI_Photo_theWhiteHouse",
-        ["the Zócalo"] = "IGUI_Photo_theZocalo",
+        ["the Z\195\179calo"] = "IGUI_Photo_theZocalo",
     },
     NEWSPAPER_TITLE = {
         ["Bowling Green Post"] = "IGUI_NewspaperTitle_BowlingGreenPost",
@@ -1542,8 +1542,9 @@ local EN_FORMATS = {
     ScratchingTicketNameWinner = "%1 - Winner %2",
 }
 
--- 雪花玻璃球舊版格式（CH 1.6.4 前為 "%1 的 %2"，已改 "%1 (%2)"；CN 現行仍為 "%1 的 %2"）
-local LEGACY_SNOWGLOBE_FORMATS = { "%1 的 %2" }
+-- 雪花玻璃球舊版格式（CH 1.6.4 前為 "%1 的 %2"，已改 "%1 (%2)"；CN 現行仍為 "%1 的 %2"）。
+-- 「的」寫成 UTF-8 位元組跳脫：直接寫的非 ASCII 字面值會被 Kahlua 截壞（verify_mod 4b）。
+local LEGACY_SNOWGLOBE_FORMATS = { "%1 \231\154\132 %2" } -- "%1 的 %2"
 
 -- 魚的大小字首（EN 值 → IGUI key；fixFish 會同時嘗試當前語言值）
 local FISH_SIZE_EN_TO_KEY = {

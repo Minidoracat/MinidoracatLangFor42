@@ -4,6 +4,15 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [Unreleased]
+
+### Fixed
+
+- **在中文環境產生的動物、肉品與食譜剪報名稱，換成其他語言後不會跟著翻譯**：繁中或簡中伺服器、或用中文玩過的存檔裡，動物屍體與骨架、活體動物、屠宰後的肉品，以及食譜剪報上的配方名，換成英文或另一種中文遊玩時，一直停在當初產生時的中文。現在會改成目前語言的名稱。舊版格式的簡中雪花玻璃球（「雪花玻璃球 的 某地」），以及英文環境產生、地名帶重音字母的雪花玻璃球（例如憲法廣場 the Zócalo），也一併修好。
+  > 技術要點：Kahlua 編譯器逐 char 讀原始碼，`LexState.save()` 以 `(byte)c` 存進 token 緩衝（`LexState.java:194-199`），字串結束才以 UTF-8 解回（`newstring`，:245-247），直接寫在 Lua 字面值的中文與重音字只剩低位 byte。`AnimalProductName_Flx`（品種、類型、肉品品質、野生後綴 81 個）、`RecipeLiterature_Flx`（配方名 40 個）、`DynamicItemName_Flx`（`"%1 的 %2"` 舊格式；`gen-dynamic-name-map` 產生的 `a Séance`、`the Zócalo`）的反查字面值，以 projectzomboid.jar 的編譯器實測全變成 U+FFFD 或別的字，從未比中；改寫成 UTF-8 位元組的十進位跳脫（行尾註解寫原文），同一編譯器實測 131 個原字串全部正確。`sync_translations.py` 的 `_lua_string` 改為一律這樣輸出。`CatLangDiag`、`FishWindow_Flx` 的 log 改英文（原本的中文 log 是亂碼，診斷比對也永遠不中）。`verify_mod.py` 新增檢查 4b：Lua 字串字面值只能 ASCII（家族模板同款，先剝註解再掃）。新增 `scripts/kahlua_load.lua`，讓 harness 照 Kahlua 的字面值行為載入待測檔；新增 `scripts/test_source_language_names.lua`，`test_dynamic_item_name.lua` 補兩案。
+- **英文等非中文介面的管理員調整玩家技能或特質失敗時，提示是亂碼**：現在顯示英文說明。繁中、簡中介面照舊顯示中文。
+  > 技術要點：`PlayerStatsXP_Flx` 的 `REASON_TEXT` 備援字（找不到 `IGUI_CatLangStats_*` 鍵的語言才用）原為中文字面值，被 Kahlua 截成亂碼；改為英文。
+
 ## [42.21.0-1.31.3] - 2026-10-09
 
 ### Changed

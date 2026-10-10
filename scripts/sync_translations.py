@@ -1162,14 +1162,19 @@ GEN_BLOCK_END = "-- <AUTO-GEN:VEHICLE_NAME_MAP END>"
 
 
 def _lua_string(value: str) -> str:
-    """將 Python 字串轉成 Lua 雙引號字串內容。"""
-    return (
+    """將 Python 字串轉成 Lua 雙引號字串內容。
+
+    非 ASCII 字寫成 UTF-8 位元組的十進位跳脫：Kahlua 編譯器把直接寫的非 ASCII 字面值截成低位 byte
+    （LexState.save），`\\ddd` 跳脫則照 byte 存入、字串結束時以 UTF-8 解回原字（verify_mod 4b）。
+    """
+    escaped = (
         value.replace("\\", "\\\\")
         .replace("\r", "\\r")
         .replace("\n", "\\n")
         .replace("\t", "\\t")
         .replace('"', '\\"')
     )
+    return "".join(ch if ord(ch) < 128 else "".join(f"\\{b}" for b in ch.encode("utf-8")) for ch in escaped)
 
 
 def cmd_gen_vehicle_map(pz_path: Path | None = None):

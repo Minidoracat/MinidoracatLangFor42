@@ -1,6 +1,7 @@
 -- 中文常整串無空白，單一 token 就超過行寬；官方只在空白換行，會畫出框外。
 -- Kahlua 字串是 UTF-16（#"字"==1），標準 Lua 是 UTF-8 位元組（==3），兩邊都要能逐字切。
-local UTF8_BYTES = #"字" == 3
+-- 「字」寫成 UTF-8 位元組跳脫：直接寫的非 ASCII 字面值會被 Kahlua 截成低位 byte（verify_mod 4b）。
+local UTF8_BYTES = #"\229\173\151" == 3 -- "字"
 local function charLen(s, i)
 	if not UTF8_BYTES then return 1 end
 	local b = string.byte(s, i)
