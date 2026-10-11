@@ -21,7 +21,7 @@ description=[*] 訂閱本 MOD；有裝其他模組就再訂閱模組翻譯包，
 description=[*] 在「模組順序」把翻譯包排到最後：模組翻譯倒數第二、本 MOD 最後
 description=[*] 多人遊戲要由服主把翻譯包加進伺服器，自己訂閱不會帶進伺服器
 description=[/olist]
-description=📖 [b]安裝、排序、多人設定與常見問題：[/b][url=https://steamcommunity.com/workshop/filedetails/discussion/3386633401/586187095760095821/]安裝、排序與常見問題（本體＋模組翻譯）[/url]
+description=📖 [b]安裝、排序、多人設定與常見問題：[/b][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3817839726]中文翻譯包 Chinese Translation MOD 完整說明：安裝、排序與常見問題[/url]
 description=
 description=[h2]✨ 主要功能[/h2]
 description=[list]
