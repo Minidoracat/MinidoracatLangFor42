@@ -279,7 +279,10 @@ fail("MOD/ 樹無 AI 工具狀態目錄", junk) if junk else ok("MOD/ 樹無 AI 
 tokens = []
 SELF = os.path.abspath(__file__)   # 本檔 docstring 有 {{TOKEN}} 範例字樣，排除自己
 for base, dirs, files in os.walk(REPO):
-    dirs[:] = [d for d in dirs if d not in (".git", ".omc", ".claude", ".gitnexus", "__pycache__")]
+    # 根層 output/ 是 gitignored 本機草稿（巴哈文、封面產物），不入版控也不上傳；只略過根層，MOD/ 底下同名目錄照掃。
+    # ponytail: 依目錄名略過，temp/ 等其他 gitignored 暫存仍會掃；不能改成「git 忽略的全略過」，AGENTS.md 也被忽略但有 scaffold 佔位符要抓
+    dirs[:] = [d for d in dirs if d not in (".git", ".omc", ".claude", ".gitnexus", "__pycache__")
+               and not (base == REPO and d == "output")]
     for name in files:
         p = os.path.join(base, name)
         if os.path.abspath(p) == SELF:
