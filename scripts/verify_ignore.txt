@@ -1,0 +1,6 @@
+# 逐一查證後豁免的 finding（每行一個子字串樣式）。新增條目前必須先查證，並在上一行註明依據。
+
+# 角色資訊「慣用武器」：原版顯示 Fav: 鍵的 ScriptItem:getDisplayName()（XpUpdate.lua:63-66、ISCharacterScreen.lua:650-661），
+# 本來就不含車型；這裡只把同一個英文顯示名譯成當前語言（fullType 由英文名反查，同名型號本來就合併在一筆）。
+# 來源是 OnWeaponHitXp 的 HandWeapon，原版車輛零件都在 normal／drainable，不會是武器
+getItemNameFromFullType in client/XpSystem/ISUI/ISCharacterScreen_Flx.lua:

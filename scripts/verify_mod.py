@@ -39,6 +39,9 @@
                            CH/CN 鍵集一致、譯值有效，MOD 樹不再夾帶街道 XML 副本。
  14. 街名載入行為測試       — 委派 scripts/test_map_streets.lua：顯示譯名、原名與
                            split 還原、重入／語系／失敗清理；不清已顯示玩家地圖。
+ 16. client 物品名稱用 getItemName — getItemNameFromFullType 只回翻譯表的物品名；原版背包顯示車輛零件時再接上車型，
+                          getItemName 照同一規則（LuaManager.java:8745-8763）。BigGasTank1／2／3 因此都顯示「油箱 (大型)」
+                          （Economy、UIFor42 2026-10-18）。不拿來顯示或不會出現車輛零件的用法寫進 verify_ignore.txt 並註明查證依據
 
 新增檢查時：同步把對應的坑記進 AGENTS.md 踩坑錄，並依「踩坑進化協議」回流到
 pz-mod-template（見 AGENTS.md）。
@@ -474,6 +477,25 @@ elif pm_refs_total == 0:
     skip(PM_LABEL, "Print_Media 尚未引用分語系圖片")
 else:
     ok(PM_LABEL)
+
+# ---- 16. client 顯示物品名稱用 getItemName ----
+# getItemNameFromFullType 只回翻譯表的物品名；原版背包顯示車輛零件時再接上車型，getItemName 照同一規則
+# （LuaManager.java:8745-8763；getItemNameFromFullType 在 :8579-8583）。BigGasTank1／2／3 因此都顯示「油箱 (大型)」
+# （Economy、UIFor42 物品挑選器 2026-10-18，家族 pitfalls.md「UI」）。不拿來顯示、或那裡不會出現車輛零件的用法：
+# 把 finding 寫進 scripts/verify_ignore.txt（寫到檔名加冒號就好，不寫行號），上一行用 # 註明查證依據。
+_PLAIN_NAME = re.compile(r"(?<!\w)getItemNameFromFullType\b")
+plain_names = []
+for f in LUA_FILES:
+    lua_rel = os.path.relpath(f, REPO).replace(os.sep, "/").split("/lua/", 1)[-1]
+    if not lua_rel.startswith("client/"):
+        continue
+    with open(f, encoding="utf-8", errors="replace") as fh:
+        src = _LONG_COMMENT.sub(lambda mm: "\n" * mm.group().count("\n"), fh.read())
+    for lineno, line in enumerate(src.split("\n"), 1):
+        if _PLAIN_NAME.search(line.split("--", 1)[0]):
+            plain_names.append(f"getItemNameFromFullType in {lua_rel}:{lineno}")
+_t = "client 顯示物品名稱用 getItemName（getItemNameFromFullType 沒有車型）"
+fail(_t, plain_names) if plain_names else ok(_t)
 
 # ---- 總結 ----
 print()
