@@ -11,6 +11,11 @@
 - **其他 MOD 列出沒打開過的容器時，物品名稱也換成中文**：本包平常要玩家打開容器，才把伺服器寫死的英文名稱（屠宰的肉品、採集物、鑰匙、自己煮的湯和燉菜等）換成中文；Minidoracat 安全屋的〔搜尋物品〕會列出整間安全屋裡還沒打開過的容器，名稱因此是英文。搭配同時更新的安全屋，搜尋清單直接顯示中文。
   > 技術要點：新增 `shared/Items/ItemNameApi_Flx.lua`，公開 `CatLangFor42.fixItemNames(items)`（InventoryItem 的 Lua 陣列）：每件做玩家打開容器時七個遷移層的修名，只改本機、不送伺服器；演化食譜那層整批最多刷新一次物品欄；dedicated server 不做。其他 MOD 用 `type(CatLangFor42) == "table" and type(CatLangFor42.fixItemNames) == "function"` 判斷有沒有這個功能。
 
+### Fixed
+
+- **用英文等非中文語言遊玩時，記錄檔有兩行誤報的 FAIL**：遊戲記錄檔（console.txt）開頭會印「FAIL: MOD translation does not override built-in translation」等兩行，看起來像翻譯包沒有載入，其實功能都正常。現在非中文語言改印一行說明略過檢查；繁中、簡中照舊檢查。
+  > 技術要點：`client/CatLangDiag.lua` 的期望值是繁中字，非 CH／CN 語言必定比不中；改成只在 CH、CN 比對，其他語言印 `translation diagnostics skipped (language <代碼>)`。
+
 ## [42.21.0-1.31.4] - 2026-10-11
 
 ### Fixed

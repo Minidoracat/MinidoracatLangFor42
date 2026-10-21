@@ -15,6 +15,13 @@ print(TAG .. " Diag tool started (v" .. MOD_VERSION .. ")")
 -- 翻譯載入診斷（OnGameStart 後執行）
 -- ============================================
 local function runDiagnostics()
+    -- 期望值是繁中字（簡中的「管理面板」「角色列表」同字也比得中）；其他語言一定比不中，印 FAIL 會讓人以為翻譯包壞了
+    local lang = Translator.getLanguage():name()
+    if lang ~= "CH" and lang ~= "CN" then
+        print(TAG .. " translation diagnostics skipped (language " .. tostring(lang) .. ")")
+        return
+    end
+
     -- 組1：MOD 是否能覆蓋遊戲內建翻譯
     local overrideTests = {
         { key = "IGUI_AdminPanel_AdminPanel",       modValue = "\231\174\161\231\144\134\233\157\162\230\157\191" }, -- 管理面板
