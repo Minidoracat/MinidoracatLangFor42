@@ -5307,7 +5307,7 @@ local function fixItemName(item)
     end
 end
 
--- 匯出供離線測試呼叫（同 DynamicItemName_Flx.lua:1956 慣例）；遊戲內不使用。
+-- 匯出給 ItemNameApi_Flx.lua（CatLangFor42.fixItemNames）逐件呼叫；離線測試也用（同 DynamicItemName_Flx.lua:1956 慣例）。
 ItemNameFixFlx.fixItemName = fixItemName
 
 --- 掃描容器（含子容器）內所有物品並修復。

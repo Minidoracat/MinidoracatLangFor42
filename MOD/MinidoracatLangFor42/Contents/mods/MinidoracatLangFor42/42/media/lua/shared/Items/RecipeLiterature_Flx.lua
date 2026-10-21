@@ -163,6 +163,10 @@ local function fixRecipeLiteratureName(item)
     return 1
 end
 
+-- 給 ItemNameApi_Flx.lua（CatLangFor42.fixItemNames）逐件呼叫
+RecipeLiteratureFlx = RecipeLiteratureFlx or {}
+RecipeLiteratureFlx.fixItemName = fixRecipeLiteratureName
+
 local function fixContainer(container)
     if not container or not instanceof(container, "ItemContainer") then return 0 end
 

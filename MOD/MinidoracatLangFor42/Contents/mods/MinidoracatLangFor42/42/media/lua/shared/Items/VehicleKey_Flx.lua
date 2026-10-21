@@ -271,6 +271,9 @@ local function fixVehicleKeyName(item)
     end
 end
 
+-- 給 ItemNameApi_Flx.lua（CatLangFor42.fixItemNames）逐件呼叫
+VehicleKeyFlx.fixItemName = fixVehicleKeyName
+
 --- 掃描容器內所有 Base.CarKey（含子容器）並修復。
 --- @param container ItemContainer
 local function fixContainer(container)

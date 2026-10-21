@@ -430,6 +430,9 @@ local function fixRecordedMediaName(item)
     return 1
 end
 
+-- 給 ItemNameApi_Flx.lua（CatLangFor42.fixItemNames）逐件呼叫
+RecordedMediaNameFlx.fixItemName = fixRecordedMediaName
+
 local function fixContainer(container)
     if not container or not instanceof(container, "ItemContainer") then return 0 end
 

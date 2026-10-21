@@ -238,6 +238,10 @@ local function fixAnimalProductName(item)
     return 1
 end
 
+-- 給 ItemNameApi_Flx.lua（CatLangFor42.fixItemNames）逐件呼叫
+AnimalProductNameFlx = AnimalProductNameFlx or {}
+AnimalProductNameFlx.fixItemName = fixAnimalProductName
+
 local function fixContainer(container)
     if not container then return 0 end
     if instanceof and not instanceof(container, "ItemContainer") then return 0 end
