@@ -15,7 +15,7 @@ Project Zomboid Build 42 遊戲本體的繁體／簡體中文完整翻譯，與[
 [h2]🚀 快速上手[/h2]
 [olist]
 [*] 訂閱本 MOD；有裝其他模組就再訂閱模組翻譯包，不必另訂統一中文漢化
-[*] 在「模組順序」把翻譯包排到最後：模組翻譯倒數第二、本 MOD 最後
+[*] 在「模組順序」把翻譯包排到最後：本 MOD 倒數第二、模組翻譯最後。不想讓模組改寫原版文字，就把本 MOD 排到最後
 [*] 多人遊戲要由服主把翻譯包加進伺服器，自己訂閱不會帶進伺服器
 [/olist]
 📖 [b]安裝、排序、多人設定與常見問題：[/b][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3817839726]中文翻譯包 Chinese Translation MOD 完整說明：安裝、排序與常見問題[/url]
