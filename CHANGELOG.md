@@ -4,6 +4,12 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [Unreleased]
+
+### Fixed
+
+- **遊戲內 MOD 清單看不到本 MOD 的封面圖**：從 1.24.1 起，MOD 清單裡本 MOD 的封面一直是空白。現在 MOD 清單會正常顯示封面。翻譯沒有受影響，更新後不用做任何設定。
+
 ## [42.21.0-1.32.0] - 2026-10-21
 
 ### Added
