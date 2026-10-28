@@ -4,6 +4,13 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [Unreleased]
+
+### Added
+
+- **42.22 Pre-Release 的梯子與撬棍選單改成中文**：切到 Pre-Release 分支（42.22）的玩家，右鍵地圖上的梯子會看到英文「Climb Ladder」，拿撬棍右鍵上鎖的門窗會看到「Force」。現在顯示「爬上梯子」「爬下梯子」「撬開」，撬不開時的原因也是中文（「無法撬開」「已加固」）。正式版 42.21 沒有這些選單，不受影響。
+  > 技術要點：CH、CN 的 `ContextMenu.json` 新增 42.22 的 5 個鍵：`ContextMenu_Climb_Ladder`、`ContextMenu_Climb_Down_Ladder`、`ContextMenu_Force`、`ContextMenu_Force_cannotBeForced`、`ContextMenu_Force_isBarricaded`；原版繁中也還沒有這幾個鍵。
+
 ## [42.21.0-1.32.1] - 2026-10-27
 
 ### Fixed
