@@ -15,6 +15,8 @@
 
 ### Changed
 
+- **需要遊戲 Build 42.22.2 以上**：這一版配合 42.22 改寫了教學入口與技能說明，在 42.21 以前的遊戲上不能用；還在玩舊版遊戲的玩家請先更新遊戲。
+  > 技術要點：`MainScreen_Flx.lua` 改傳 42.22 才有的 `GameMode.TUTORIAL`（42.21 的 `zombie.core.GameMode` 沒有這個常數、`deleteAllGameModeSaves` 還收字串），技能說明也改成 42.22 的 id 鍵；發版時 `mod.info` 的 `versionMin`、README「支援版本」與簡介的遊戲版本行一起改成 42.22.2。
 - **技能說明跟上 42.22 的新格式**：42.22 改了技能面板滑鼠提示查技能說明的方式，本包把短棍、長刀、急救、耕作等 16 個技能的說明搬到新格式，滑鼠移到技能上照樣是本包的說明。為了補救舊版官方錯誤而加的技能說明修補已經用不到，一併移除。
   > 技術要點：42.22 的 `ISSkillProgressBar:updateTooltip` 改用 `perk:getId()` 拼 `IGUI_perks_<id>_Description`，官方 EN 同步把 16 個以顯示名為鍵的描述鍵（`IGUI_perks_Short Blunt_Description` 等）改成 id 鍵（`IGUI_perks_SmallBlunt_Description` 等）。CH／CN `IG_UI.json` 把這 16 鍵就地改名、譯文不變；`client/XpSystem/ISUI/SkillDescription_Flx.lua`（登記簿 A23）找的是 `getName()` 拼成的鍵，42.22 起找不到，已刪除（A23 移到 D6）。
 - **補上 42.22 新增的文字**：太臭睡不著的提示、屠宰時可以用水桶接血的提示、用汽油補充打火機燃料與 4 個合併後的鋸金屬配方名稱、金屬梯的名稱、除錯生成殭屍的「無害」選項；「竊賊」特質說明改成 42.22 的新效果（撬開門窗有加成）。
