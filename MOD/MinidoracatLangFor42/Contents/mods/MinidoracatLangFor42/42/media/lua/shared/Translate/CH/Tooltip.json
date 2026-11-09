@@ -551,6 +551,7 @@
     "Tooltip_Animal_NoShear": "需要剪毛器。",
     "Tooltip_Animal_TooHeavy": "動物太重, 無法撿起.",
     "Tooltip_Animal_NoKnifeButcher": "需要一把刀.",
+    "Tooltip_Animal_OptionalBucketButcher": "可以用水桶收集血液。",
     "Tooltip_food_SheepMilk": "羊",
     "Tooltip_food_CowMilk": "牛",
     "Tooltip_food_AnimalMilk": "動物",

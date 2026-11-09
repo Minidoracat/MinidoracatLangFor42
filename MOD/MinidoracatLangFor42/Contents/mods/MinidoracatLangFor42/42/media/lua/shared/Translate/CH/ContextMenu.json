@@ -490,6 +490,7 @@
     "ContextMenu_Sleeping": "睡覺",
     "ContextMenu_PainNoSleep": "太過痛苦, 睡不著!",
     "ContextMenu_PanicNoSleep": "太害怕了, 睡不著!",
+    "ContextMenu_SmellNoSleep": "太臭了, 睡不著!",
     "ContextMenu_NoSleepTooEarly": "現在還睡不著. <br>待會再試試.",
     "ContextMenu_NoSleepEngineRunning": "無法在引擎啟動的狀態下睡覺.",
     "ContextMenu_NoOptionSleeping": "睡覺的時候不能做這個動作.",

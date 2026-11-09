@@ -3,11 +3,11 @@
 --
 -- 非缺鍵：Base.BaseballBat_RakeHead 等在官方與我方 CH/CN 皆有正確譯文，
 -- 但此欄位根本不查 ItemName 表。官方鏈路：
---   1. 寫入 server/XpSystem/XpUpdate.lua:63-66
+--   1. 寫入 server/XpSystem/XpUpdate.lua:65-68
 --      modData["Fav:" .. weapon:getScriptItem():getDisplayName()]，
 --      key 由寫入端當下語言的 DisplayName 組成，持久化進玩家存檔。
---   2. MP 下 WeaponHit.java 在 `if (GameServer.server)` 分支才觸發
---      OnWeaponHitXp，故 key 是**伺服器語言**（通常 EN）；單機走
+--   2. MP 下 Hit.java（42.22 起；原 WeaponHit.java 已刪）在 `if (GameServer.server)`
+--      分支才觸發 OnWeaponHitXp，故 key 是**伺服器語言**（通常 EN）；單機走
 --      CombatManager 的 !GameServer.server 路徑、寫入本機語言，不受影響。
 --   3. 讀取 ISCharacterScreen.lua:650-661 以 string.gmatch(key, "^Fav:(.+)")
 --      取 key 後綴當顯示字串，:224 直接 drawText，全程無 getText。

@@ -8,7 +8,13 @@ function getTextManager() return {
 } end
 function string.trim(s) return (s:gsub("^%s+", ""):gsub("%s+$", "")) end
 function string.contains(s, p) return s:find(p, 1, true) ~= nil end
-ISRichTextPanel = {}
+ISRichTextPanel = {
+	-- 只模擬 <LINE>：換到下一行；其他 tag 不動座標
+	processCommand = function(_, cmd, x, y, lineImageHeight, lineHeight)
+		if cmd == "LINE" then return 0, y + lineHeight, 0 end
+		return x, y, lineImageHeight
+	end,
+}
 dofile("MOD/MinidoracatLangFor42/Contents/mods/MinidoracatLangFor42/42/media/lua/client/ISUI/ISRichTextPanel_Flx.lua")
 
 local function paginate(text, w)
@@ -41,5 +47,10 @@ p = paginate("Market Radio: 1 listings from 1 sellers. Generator - Premium & a 2
 check("英文單字元字詞保留空白", #p.lines == 1 and p.lines[1] == "Market Radio: 1 listings from 1 sellers. Generator - Premium & a 2")
 p = paginate("市場電台：目前 1 筆刊登、1 位賣家", 2000)
 check("中文句中的數字保留空白", #p.lines == 1 and p.lines[1] == "市場電台：目前 1 筆刊登、1 位賣家")
+
+-- 42.22 原版 paginate 新增「< 前缺空白」分支：文字與 tag 黏在一起時先排文字、下一輪才處理 tag
+p = paginate("abc<LINE> def", 2000)
+local joined = table.concat(p.lines, "|")
+check("tag 前缺空白：文字保留、tag 不進行內", joined:find("abc", 1, true) ~= nil and joined:find("def", 1, true) ~= nil and joined:find("<", 1, true) == nil)
 
 if fails > 0 then os.exit(1) end

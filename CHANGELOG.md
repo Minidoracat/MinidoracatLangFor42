@@ -4,6 +4,22 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [Unreleased]
+
+### Fixed
+
+- **遊戲更新到 42.22 後，從主選單進不了教學**：裝著本翻譯包按「教學」會出錯、停在主選單。現在可以正常開始教學。
+  > 技術要點：42.22.2 的 `deleteAllGameModeSaves` 參數由字串改成 `GameMode`（`LuaManager`），本包整份複製原版函式的 `client/OptionScreens/MainScreen_Flx.lua` 仍傳 `"Tutorial"`，Kahlua 轉不了參數型別而丟錯。照 42.22.2 原版 `MainScreen.startTutorial` 重抄成 `GameMode.TUTORIAL`，保留本包原有的差異（`ActiveMods.getById("default")`、不 `clear()`），並刪掉早已停用的手把註解段。
+- **緊貼在格式標記前面的字會不見**：伺服器歡迎訊息或其他 MOD 的說明文字裡，像「歡迎<LINE>」這樣字和換行標記中間沒有空格時，緊貼在標記前的那段字不會顯示。現在照常顯示，和 42.22 原版的修正一致。
+  > 技術要點：本包整份覆寫 `ISRichTextPanel:paginate`（`client/ISUI/ISRichTextPanel_Flx.lua`，長串中文換行用），42.22 原版新增「`<` 前缺空白」分支（先排文字、下一輪才處理標記），覆寫版沒有就會把「文字<標記>」整段當標記吃掉。照原版移植該分支，保留本包的 `splitToWidth` 切行；`scripts/test_rich_text_wrap.lua` 補一案（舊版實測 FAIL）。本包 CH／CN 譯文沒有這種寫法。
+
+### Changed
+
+- **技能說明跟上 42.22 的新格式**：42.22 改了技能面板滑鼠提示查技能說明的方式，本包把短棍、長刀、急救、耕作等 16 個技能的說明搬到新格式，滑鼠移到技能上照樣是本包的說明。為了補救舊版官方錯誤而加的技能說明修補已經用不到，一併移除。
+  > 技術要點：42.22 的 `ISSkillProgressBar:updateTooltip` 改用 `perk:getId()` 拼 `IGUI_perks_<id>_Description`，官方 EN 同步把 16 個以顯示名為鍵的描述鍵（`IGUI_perks_Short Blunt_Description` 等）改成 id 鍵（`IGUI_perks_SmallBlunt_Description` 等）。CH／CN `IG_UI.json` 把這 16 鍵就地改名、譯文不變；`client/XpSystem/ISUI/SkillDescription_Flx.lua`（登記簿 A23）找的是 `getName()` 拼成的鍵，42.22 起找不到，已刪除（A23 移到 D6）。
+- **補上 42.22 新增的文字**：太臭睡不著的提示、屠宰時可以用水桶接血的提示、用汽油補充打火機燃料與 4 個合併後的鋸金屬配方名稱、金屬梯的名稱、除錯生成殭屍的「無害」選項；「竊賊」特質說明改成 42.22 的新效果（撬開門窗有加成）。
+  > 技術要點：官方 EN 對 42.21.0 快照新增 29 鍵、改 1 鍵、刪 26 鍵（`sync_translations.py en-diff`，處理完已 `en-snapshot` 換成 42.22.2 基準）。CH／CN 補 `ContextMenu_SmellNoSleep`、`IGUI_SpawnHorde_IsUseless`、`Tooltip_Animal_OptionalBucketButcher`、`Recipes.json` 的 `RefillLighterWithGasoline`／`SawBlockIntoChunks`／`SawIngotIntoBlocks`／`SawIntoHalves`／`SawSheet`，改 `UI_trait_BurglarDesc`；梯子與撬棍 5 鍵已在 1.33.0 補上。`Moveables.json` 另補官方各語言都沒有的 `Metal_Ladder`（tiles 有這組名稱）。官方刪掉、42.22.2 的 scripts／Lua／Java 都不再引用的 8 個舊鋸金屬配方鍵（`SawIronBlockIntoChunks` 等）與 `UI_optionscreen_texture2x`／`_tt` 一併刪除。
+
 ## [42.21.0-1.33.0] - 2026-11-03
 
 ### Added
