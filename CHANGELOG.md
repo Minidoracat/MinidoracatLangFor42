@@ -4,6 +4,13 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.22.2-1.35.0] - 2026-11-10
+
+### Changed
+
+- **出生點選擇畫面的中文地圖換成 42.22 的新版地圖**：遊戲 42.22 重畫了選出生點時的那張觀光地圖（新的農地、溪流、森林範圍、圖示位置，羅盤換成「肯塔基汽車協會」徽章），本包的繁體、簡體中文地圖還是舊版畫面。現在兩份都照新地圖重做，地形和官方一致，畫質也和官方相同；圖上的地名改成和遊戲裡一樣的譯名（例：馬爾德勞的「鐵路調度站」）。更新時會重新下載這兩張圖，下載量比以前大。
+  > 技術要點：`maps/Riverside, KY/spawnSelectImagePyramid.zip`（簡體）與 `spawnSelectImagePyramid_CH.zip`（繁體）改由新工具 `scripts/spawnmap/build.py` 從官方 42.22.2 `Muldraugh, KY/spawnSelectImagePyramid.zip` 產生：`labels/*.json`（409 筆標籤）逐筆抹掉英文、補回紙紋，再用 Noto Sans／Serif TC、SC 排中文；沒有字的 tile 直接沿用官方位元組，條目順序、`pyramid.txt` 與格線同官方，輸出全彩 PNG（舊檔是 256 色），兩份合計約 352 MB（原本 110 MB）。新增閘門 `build.py check`：比對 tile CRC，官方日後再重畫底圖時會 FAIL。`MapSpawnSelect_Flx.lua` 沒有改。
+
 ## [42.22.2-1.34.0] - 2026-11-10
 
 ### Fixed

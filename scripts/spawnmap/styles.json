@@ -1,0 +1,10 @@
+{
+  "town": {"family": "sans", "weight": 900, "thr": 90},
+  "place": {"family": "sans", "weight": 500, "italic": 0.2},
+  "place_upright": {"family": "sans", "weight": 500},
+  "desc_title": {"family": "sans", "weight": 800, "italic": 0.2, "thr": 120},
+  "desc_body": {"family": "sans", "weight": 500, "thr": 130, "align": "l", "justify": true},
+  "title_big": {"family": "sans", "weight": 900, "thr": 110, "sat": 60, "grow": 3, "fill": "smooth", "fill_sigma": 14, "outline": [9, 6], "worn": true},
+  "panel": {"family": "sans", "weight": 700, "thr": 110, "fill": "smooth"},
+  "panel_serif": {"family": "serif", "weight": 700, "thr": 110, "fill": "smooth"}
+}

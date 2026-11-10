@@ -1,0 +1,22 @@
+{
+  "labels": [
+    {"en": "ROSEWOOD", "style": "town", "erase": [[4296, 5796, 4620, 5854]], "at": [4458, 5825], "size": 57, "tracking": 22, "ch": "羅斯伍德", "cn": "罗斯伍德"},
+    {"en": "Ind. Area", "style": "place", "erase": [[4900, 5524, 5097, 5570]], "at": [4998, 5547], "size": 40, "tracking": 6, "ch": "工業區", "cn": "工业区"},
+    {"en": "drive-in theater", "style": "place_upright", "erase": [[4417, 6160, 134, 80, 30]], "at": [4417, 6160], "angle": 30, "size": 32, "leading": 1.05, "ch": "汽車\n電影院", "cn": "汽车\n影院"},
+    {"en": "farmer's market", "style": "place_upright", "erase": [[4795, 6143, 136, 80, -21]], "at": [4795, 6143], "angle": -21, "size": 34, "leading": 1.05, "tracking": 4, "ch": "農夫\n市集", "cn": "农贸\n市场"},
+    {"en": "MARCH RIDGE", "style": "town", "thr": 120, "grow": 3, "bg_k": 101, "erase": [[4864, 6337, 5243, 6395]], "at": [5053, 6366], "size": 57, "tracking": 40, "ch": "三月嶺", "cn": "三月岭"},
+    {"en": "Military Housing", "style": "place", "erase": [[5160, 6558, 5350, 6670]], "at": [5256, 6614], "size": 42, "tracking": 2, "ch": "軍眷宿舍", "cn": "军属公寓"},
+    {"en": "scenic lodges", "style": "place_upright", "note": "erase 分兩塊，避開 s 旁的黑色點線步道", "erase": [[4383, 7302, 196, 52, -10], [4482, 7310, 4505, 7334]], "at": [4396, 7304], "angle": -10, "size": 38, "tracking": 6, "ch": "山林旅館", "cn": "山林旅馆"},
+    {"en": "camp arthur", "style": "place_upright", "erase": [[4231, 7400, 104, 72, 5]], "at": [4231, 7400], "angle": 5, "size": 34, "leading": 1.05, "tracking": 2, "ch": "亞瑟\n營地", "cn": "亚瑟\n营地"},
+    {"en": "DARKWALLOW LAKE（壓在小島上的 R、K 與 A、K、E，只抹不排）", "note": "壓在島上的字母用 grow 1、min_diff 12，少吃島的外框；必須排在下一筆前面，否則會把下一筆排的中文抹掉", "mode": "color", "ink": [126, 133, 116], "thr": 12, "min_diff": 12, "grow": 1, "bg_k": 81, "fill": "telea",
+     "erase": [[4314, 7699, 80, 52, 40.5], [4430, 7677, 127, 58, 40.5]]},
+    {"en": "DARKWALLOW LAKE（湖面上的淡色大字）", "note": "fill 用 telea 才不會把壓在字下的小島糊掉", "mode": "color", "ink": [126, 133, 116], "thr": 10, "min_diff": 8, "grow": 2, "bg_k": 81, "fill": "telea",
+     "erase": [[4254, 7750, 78, 52, 40.5], [4439, 7592, 248, 52, 40.5], [4370, 7728, 32, 58, 40.5]],
+     "at": [4398, 7665], "angle": 40.5, "family": "serif", "weight": 700, "italic": 0.2, "size": 88, "tracking": 40, "ch": "黑沼湖", "cn": "黑沼湖"},
+    {"en": "HARBOR of PEACE（說明框標題）", "style": "desc_title", "erase": [[4719, 7822, 4975, 7888]], "at": [4847, 7855], "size": 44, "tracking": 8, "ch": "和平港灣", "cn": "和平港湾"},
+    {"en": "The Dixie Highway was a pioneering network of roads that connected the U.S. Midwest with the Southern states, conceived in 1915. It wasn't a single highway but a system of interconnected routes stretching over 5,000 miles.",
+     "style": "desc_body", "erase": [[4634, 7909, 5077, 8058]], "box": [4640, 7912, 5072, 8054], "size": 24, "leading": 1.36, "wrap": 432,
+     "ch": "迪克西高速公路誕生於 1915 年，是串連美國中西部與南方各州的先驅公路網。它並非單一公路，而是由多條相互銜接的路線組成，總長超過 5,000 英里。",
+     "cn": "迪克西高速公路诞生于 1915 年，是连接美国中西部与南方各州的先驱公路网。它并非单一公路，而是由多条相互衔接的路线组成，总长超过 5,000 英里。"}
+  ]
+}
