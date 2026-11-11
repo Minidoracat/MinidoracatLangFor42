@@ -130,6 +130,8 @@
     "UI_optionscreen_UIRenderFPS_tt": "设置用户界面每秒刷新多少次.",
     "UI_optionscreen_texture_compress": "纹理压缩",
     "UI_optionscreen_texture_compress_tt": "压缩纹理以节省显存的使用量. 修改后需要重启.",
+    "UI_optionscreen_texture2x": "双重纹理",
+    "UI_optionscreen_texture2x_tt": "使用新的双重纹理. 需重启游戏来生效.",
     "UI_optionscreen_MaxTextureSize": "最大纹理尺寸",
     "UI_optionscreen_MaxTextureSize_tt": "限制非车辆模型纹理的最大尺寸. \\n较低的值使用较少的图形内存.",
     "UI_optionscreen_MaxVehicleTextureSize": "最大车辆纹理尺寸",

@@ -130,6 +130,8 @@
     "UI_optionscreen_UIRenderFPS_tt": "設定使用者介面每秒重新整理多少次.",
     "UI_optionscreen_texture_compress": "紋理壓縮",
     "UI_optionscreen_texture_compress_tt": "壓縮紋理以節省視訊記憶體的使用量. 修改後需要重啟.",
+    "UI_optionscreen_texture2x": "雙倍尺寸紋理",
+    "UI_optionscreen_texture2x_tt": "使用新的雙倍尺寸紋理. 需重啟遊戲來生效.",
     "UI_optionscreen_MaxTextureSize": "最大紋理尺寸",
     "UI_optionscreen_MaxTextureSize_tt": "限制非車輛模型紋理的最大尺寸. \\n較低的值使用較少的圖形記憶體.",
     "UI_optionscreen_MaxVehicleTextureSize": "最大車輛紋理尺寸",
