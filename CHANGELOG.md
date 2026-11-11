@@ -4,6 +4,15 @@
 
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.1.0/)，版本號遵循 `{PZ版本}-{Mod主版本}.{次版本}.{修訂}` 格式。
 
+## [42.22.2-1.35.1] - 2026-11-11
+
+### Changed
+
+- **遊戲 42.21 也能啟用**：1.34.0 起本包要求遊戲 Build 42.22.2 以上，留在 42.21 的玩家啟用不了。現在最低版本降回 42.21.0：教學入口在兩個版本都能進，42.21 還在用的 8 個鋸金屬配方名稱與「雙倍尺寸紋理」選項的中文也補回來。這一版只在遊戲 42.22.2 上測試，42.21 沒有實測；之後也只在遊戲最新的穩定版測試，只在 42.21 出現的問題不處理。遊戲 42.22 的玩家更新後沒有任何變化。
+  > 技術要點：`versionMin=42.21.0`。`client/OptionScreens/MainScreen_Flx.lua` 改成 `GameMode and GameMode.TUTORIAL or "Tutorial"`：42.22.2 的 `deleteAllGameModeSaves` 只收 `GameMode` 物件；42.21.0 的 `GameMode` 類別已曝露但沒有 `TUTORIAL`，`deleteAllGameModeSaves`、`IsoWorld.setGameMode` 收字串（42.21.0 快照 `LuaManager.java:4919`、`IsoWorld.java:534`）。CH／CN 加回 1.34.0 刪掉的 `Recipes.json` 8 鍵（`SawIronBlockIntoChunks` 等，42.21 的配方還在用）與 `UI_optionscreen_texture2x`／`_tt`，譯文同 1.33.0；42.22 不查這些鍵。`ISRichTextPanel_Flx.lua` 移植的分支只用 `string.find`／`sub`／`trim`，兩版都有。README、Steam 指南的版本需求改回 42.21.0；簡介拿掉遊戲版本那一行，之後簡介不寫最低版本號。
+- **在遊戲 42.21 上和 42.22 不一樣的地方（不處理）**：滑鼠移到技能上，說明會顯示成一串代碼；選出生點的中文地圖是 42.22 的新版畫面，和 42.21 遊戲裡的地形略有出入；「竊賊」特質的說明寫的是 42.22 的效果。把遊戲更新到 42.22 就都正常。
+  > 技術要點：42.21 的 `ISSkillProgressBar:updateTooltip` 用 `perk:getName()`（譯名）拼說明鍵，中文環境一律查不到；補救用的 `SkillDescription_Flx.lua`（登記簿 A23，現 D6）1.34.0 已刪，使用者 2026-11-11 裁定不為 42.21 加回。出生點底圖 zip 的 `pyramid.txt`（bounds、imageSize）與條目數同 1.33.0，tile 是 8-bit RGB／RGBA PNG，42.21.0 的 `PNGDecoder` 支援、`ImagePyramid`／`FileTask_LoadImagePyramidTexture` 兩版逐位元相同（讀碼，沒實測）。
+
 ## [42.22.2-1.35.0] - 2026-11-10
 
 ### Changed
