@@ -50,8 +50,9 @@ Events.OnGameStart.Add(applyChangesIfMapExists)
 
 if ISWorldMap and ISWorldMap.ShowWorldMap then
     local _showWorldMap = ISWorldMap.ShowWorldMap
-    function ISWorldMap.ShowWorldMap(playerNum, centerX, centerY, zoom)
-        local result = _showWorldMap(playerNum, centerX, centerY, zoom)
+    -- 原版 ISWorldMap.lua:1626 只傳 playerNum；Kahlua 少傳的固定參數可能是堆疊殘值，其餘用 ... 原樣轉
+    function ISWorldMap.ShowWorldMap(playerNum, ...)
+        local result = _showWorldMap(playerNum, ...)
         MapLabelEdit.applyChanges(ISWorldMap_instance)
         return result
     end
